@@ -3,8 +3,8 @@
 layout: post
 title: OpenResty - Hello World
 date:   2019-12-29 10:02:42 +0800
-category: HTTP
-tags: [OpenResty]
+category: OpenResty
+tags: [HTTP]
 typora-root-url: ../..
 ---
 
@@ -35,7 +35,7 @@ sudo apt-get update
 sudo apt-get -y install openresty
 ```
 
-需要注意的是，安装openresty时会同时安装openresty-opm 和 openresty-restydoc，如果不想安装这两个包请使用如下命令安装openresty：
+需要注意的是，安装openresty的同时会安装openresty-opm 和 openresty-restydoc，如果不想安装这两个包请使用如下命令安装openresty：
 
 ```shell
 sudo apt-get -y install --no-install-recommends openresty
