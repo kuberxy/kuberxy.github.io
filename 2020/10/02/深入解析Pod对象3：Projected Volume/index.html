@@ -1,0 +1,709 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="kubxy">
+  <meta name="keywords" content="">
+  <title>深入解析Pod对象3：Projected Volume - Kubxy</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Kubxy</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-10-02 07:50" pubdate>
+        2020年10月2日 早上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      38
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">深入解析Pod对象3：Projected Volume</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <p>在 Kubernetes 中，有几种特殊的 Volume，它们存在的意义不是为了存放容器里的数据，也不是用来进行容器和宿主机之间的数据交换。这些特殊 Volume 的作用，是为容器提供预先定义好的数据。所以，从容器的角度来看，这些 Volume 中的信息仿佛就是被 Kubernetes“投射”（Project）进入容器当中的。这正是 Projected Volume 的含义。到目前为止，Kubernetes 支持的 Projected Volume 一共有四种：</p>
+<ul>
+<li>Secret，存放Pod中容器要访问的加密数据。比如，数据库连接用户的用户名和密码</li>
+<li>ConfigMap，存放Pod中容器要访问的配置信息。比如，一个 Java 应用所需的配置文件（.properties 文件）</li>
+<li>Downward API，让Pod中的容器能够直接获取到当前Pod对象本身的信息。</li>
+<li>ServiceAccountToken，保存ServiceAccount对象的授权信息。</li>
+</ul>
+<h2 id="一、Secret"><a href="#一、Secret" class="headerlink" title="一、Secret"></a>一、Secret</h2><p>Secret的作用是，帮我们把 Pod 想要访问的加密数据，存放到 Etcd 中。然后，我们就可以在 Pod 的容器里以挂载 Volume 的方式，访问到这些 Secret 里保存的信息。</p>
+<h3 id="1-1、一个使用Secret的例子"><a href="#1-1、一个使用Secret的例子" class="headerlink" title="1.1、一个使用Secret的例子"></a>1.1、一个使用Secret的例子</h3><p>Secret 最典型的使用场景，莫过于存放数据库的 Credential 信息了，比如下面这个例子：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">test-projected-volume</span> 
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">test-secret-volume</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">busybox</span>
+    <span class="hljs-attr">args:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">sleep</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;86400&quot;</span>
+    <span class="hljs-attr">volumeMounts:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">mysql-cred</span>
+      <span class="hljs-attr">mountPath:</span> <span class="hljs-string">&quot;/projected-volume&quot;</span>
+      <span class="hljs-attr">readOnly:</span> <span class="hljs-literal">true</span>
+  <span class="hljs-attr">volumes:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">mysql-cred</span>
+    <span class="hljs-attr">projected:</span>
+      <span class="hljs-attr">sources:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">secret:</span>
+          <span class="hljs-attr">name:</span> <span class="hljs-string">user</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">secret:</span>
+          <span class="hljs-attr">name:</span> <span class="hljs-string">pass</span></code></pre>
+
+<p>我们可以看到，这个Pod挂载了一个projected类型的Volume。而这个Volume的数据来源，是名为user和pass的两个Secret对象，它们分别对应的是数据库的用户名和密码。</p>
+<h3 id="1-2、直接在命令行创建Secret对象"><a href="#1-2、直接在命令行创建Secret对象" class="headerlink" title="1.2、直接在命令行创建Secret对象"></a>1.2、直接在命令行创建Secret对象</h3><p>前面的Pod所用到的数据库用户名、密码，正是以 Secret 对象的方式提交给 Kubernetes 保存的。完成这个操作的指令，如下所示：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 在文件中，以明文的形式写入用户名和密码</span>
+<span class="hljs-meta">$</span><span class="bash"> cat &gt; ./username.txt &lt;&lt;<span class="hljs-string">EOF</span></span>
+admin
+EOF
+
+<span class="hljs-meta">$</span><span class="bash"> cat &gt; ./password.txt &lt;&lt;<span class="hljs-string">EOF</span></span>
+c1oudc0w!
+EOF
+
+<span class="hljs-meta">#</span><span class="bash"> 创建Secret对象</span>
+<span class="hljs-meta">$</span><span class="bash"> kubectl create secret generic user --from-file=./username.txt</span>
+<span class="hljs-meta">$</span><span class="bash"> kubectl create secret generic pass --from-file=./password.txt</span></code></pre>
+
+<p>在这里，username.txt 和 password.txt 文件里，存放的就是用户名和密码；而kubectl命令中的 user 和 pass，则是我们为 Secret 对象指定的名字。</p>
+<h3 id="1-3、查看Secret对象"><a href="#1-3、查看Secret对象" class="headerlink" title="1.3、查看Secret对象"></a>1.3、查看Secret对象</h3><p>如果我们要查看这些 Secret 对象的话，只要执行一条 kubectl get 命令就可以了：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl get secrets</span>
+NAME           TYPE                                DATA      AGE
+user          Opaque                                1         51s
+pass          Opaque                                1         51s</code></pre>
+
+<h3 id="1-4、通过yaml文件创建Secret对象"><a href="#1-4、通过yaml文件创建Secret对象" class="headerlink" title="1.4、通过yaml文件创建Secret对象"></a>1.4、通过yaml文件创建Secret对象</h3><p>当然，除了使用 kubectl create secret 指令外，我们也可以直接通过编写 YAML 文件的方式来创建这个 Secret 对象，比如：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Secret</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">mysecret</span>
+<span class="hljs-attr">type:</span> <span class="hljs-string">Opaque</span>
+<span class="hljs-attr">data:</span>
+  <span class="hljs-attr">user:</span> <span class="hljs-string">YWRtaW4=</span>
+  <span class="hljs-attr">pass:</span> <span class="hljs-string">MWYyZDFlMmU2N2Rm</span></code></pre>
+
+<p>可以看到，通过编写 YAML 文件创建出来的 Secret 对象只有一个。但它的 data 字段，却以 Key-Value 的格式保存了两份 Secret 数据。其中，“user”就是第一份数据的 Key，“pass”则是第二份数据的 Key。</p>
+<p>需要注意的是，Secret 对象要求这些数据必须是经过 Base64 转码的，以免出现明文密码的安全隐患。这个转码操作也很简单，比如：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> <span class="hljs-built_in">echo</span> -n <span class="hljs-string">&#x27;admin&#x27;</span> | base64</span>
+YWRtaW4=
+<span class="hljs-meta">$</span><span class="bash"> <span class="hljs-built_in">echo</span> -n <span class="hljs-string">&#x27;1f2d1e2e67df&#x27;</span> | base64</span>
+MWYyZDFlMmU2N2Rm</code></pre>
+
+<p>这里需要注意的是，像这样创建的 Secret 对象，它里面的内容仅仅是经过了转码，而并没有被加密。在真正的生产环境中，我们需要在 Kubernetes 中开启 Secret 的加密插件，增强数据的安全性。</p>
+<h3 id="1-5、创建Pod对象"><a href="#1-5、创建Pod对象" class="headerlink" title="1.5、创建Pod对象"></a>1.5、创建Pod对象</h3><p>接下来，我们尝试一下创建这个 Pod：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl create -f test-projected-volume.yaml</span></code></pre>
+
+<p>当 Pod 变成 Running 状态之后，我们再验证一下这些 Secret 对象是不是已经在容器里了：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl <span class="hljs-built_in">exec</span> -it test-projected-volume -- /bin/sh</span>
+<span class="hljs-meta">$</span><span class="bash"> ls /projected-volume/</span>
+user
+pass
+<span class="hljs-meta">$</span><span class="bash"> cat /projected-volume/user</span>
+admin
+<span class="hljs-meta">$</span><span class="bash"> cat /projected-volume/pass</span>
+1f2d1e2e67df</code></pre>
+
+<p>从返回结果中，我们可以看到，保存在 Etcd 里的用户名和密码信息，已经以文件的形式出现在了容器的 Volume 目录里。而这个文件的名字，就是 kubectl create secret 指定的 Key，或者说是 Secret 对象的 data 字段指定的 Key。</p>
+<h3 id="1-6、小结"><a href="#1-6、小结" class="headerlink" title="1.6、小结"></a>1.6、小结</h3><p>Secret对象，不仅可以为我们保存加密数据，但更重要的是，以挂载方式进入到容器里的 Secret，一旦其对应的 Etcd 里的数据被更新，这些 Volume 里的文件内容，同样也会被更新（ kubelet 组件在定时维护这些 Volume）。</p>
+<p>需要注意的是，这个更新可能会有一定的延时。所以在编写应用程序时，在发起数据库连接的代码处写好重试和超时的逻辑，绝对是个好习惯。</p>
+<h2 id="二、ConfigMap"><a href="#二、ConfigMap" class="headerlink" title="二、ConfigMap"></a>二、ConfigMap</h2><p>与 Secret 类似，ConfigMap 保存的是不需要加密的、应用所需的配置信息。ConfigMap 的用法几乎与 Secret 完全相同，我们可以使用 kubectl create configmap 从文件或者目录创建 ConfigMap 对象，也可以直接编写 ConfigMap 对象的 YAML 文件。</p>
+<p>比如，一个 Java 应用所需的配置文件（.properties 文件），就可以通过下面这样的方式保存在 ConfigMap 里：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> .properties文件的内容</span>
+<span class="hljs-meta">$</span><span class="bash"> cat &gt; ./ui.properties &lt;&lt;<span class="hljs-string">EOF</span></span>
+color.good=purple
+color.bad=yellow
+allow.textmode=true
+how.nice.to.look=fairlyNice
+EOF
+
+<span class="hljs-meta">#</span><span class="bash"> 从.properties文件创建ConfigMap</span>
+<span class="hljs-meta">$</span><span class="bash"> kubectl create configmap ui-config --from-file=./ui.properties</span>
+
+<span class="hljs-meta">#</span><span class="bash"> 查看这个ConfigMap里保存的信息(data)</span>
+<span class="hljs-meta">#</span><span class="bash"> 注：kubectl get -o yaml 这样的参数，会将指定的 Pod API 对象以 YAML 的方式展示出来。</span>
+<span class="hljs-meta">$</span><span class="bash"> kubectl get configmaps ui-config -o yaml</span>
+apiVersion: v1
+data:
+  ui.properties: |
+    color.good=purple
+    color.bad=yellow
+    allow.textmode=true
+    how.nice.to.look=fairlyNice
+kind: ConfigMap
+metadata:
+  name: ui-config
+  ...</code></pre>
+
+<h2 id="三、Downward-API"><a href="#三、Downward-API" class="headerlink" title="三、Downward API"></a>三、Downward API</h2><p>Downward API的作用是，让 Pod 里的容器能够直接获取到这个 Pod API 对象本身的信息。</p>
+<h3 id="3-1、示例"><a href="#3-1、示例" class="headerlink" title="3.1、示例"></a>3.1、示例</h3><p>我们来看如下示例：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">test-downwardapi-volume</span>
+  <span class="hljs-attr">labels:</span>
+    <span class="hljs-attr">zone:</span> <span class="hljs-string">us-est-coast</span>
+    <span class="hljs-attr">cluster:</span> <span class="hljs-string">test-cluster1</span>
+    <span class="hljs-attr">rack:</span> <span class="hljs-string">rack-22</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">client-container</span>
+      <span class="hljs-attr">image:</span> <span class="hljs-string">k8s.gcr.io/busybox</span>
+      <span class="hljs-attr">command:</span> [<span class="hljs-string">&quot;sh&quot;</span>, <span class="hljs-string">&quot;-c&quot;</span>]
+      <span class="hljs-attr">args:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">while</span> <span class="hljs-literal">true</span><span class="hljs-string">;</span> <span class="hljs-string">do</span>
+          <span class="hljs-string">if</span> [[ <span class="hljs-string">-e</span> <span class="hljs-string">/etc/podinfo/labels</span> ]]<span class="hljs-string">;</span> <span class="hljs-string">then</span>
+            <span class="hljs-string">echo</span> <span class="hljs-string">-en</span> <span class="hljs-string">&#x27;\n\n&#x27;</span><span class="hljs-string">;</span> <span class="hljs-string">cat</span> <span class="hljs-string">/etc/podinfo/labels;</span> <span class="hljs-string">fi;</span>
+          <span class="hljs-string">sleep</span> <span class="hljs-number">5</span><span class="hljs-string">;</span>
+        <span class="hljs-string">done;</span>
+      <span class="hljs-attr">volumeMounts:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">podinfo</span>
+          <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/etc/podinfo</span>
+          <span class="hljs-attr">readOnly:</span> <span class="hljs-literal">false</span>
+  <span class="hljs-attr">volumes:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">podinfo</span>
+      <span class="hljs-attr">projected:</span>
+        <span class="hljs-attr">sources:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">downwardAPI:</span>
+            <span class="hljs-attr">items:</span>
+              <span class="hljs-bullet">-</span> <span class="hljs-attr">path:</span> <span class="hljs-string">&quot;labels&quot;</span>
+                <span class="hljs-attr">fieldRef:</span>
+                  <span class="hljs-attr">fieldPath:</span> <span class="hljs-string">metadata.labels</span></code></pre>
+
+<p>在这个 Pod 的 YAML 文件中，我们定义了一个简单的容器，声明了一个 projected 类型的 Volume。只不过这次 Volume 的数据来源，变成了 Downward API。而这个 Downward API Volume，则声明要暴露 Pod 的 metadata.labels 信息给容器。</p>
+<p>通过这样的声明方式，当前 Pod 的 Labels 字段的值，就会被 Kubernetes 自动挂载成为容器里的 /etc/podinfo/labels 文件。而这个容器的启动命令，则是不断打印出 /etc/podinfo/labels 里的内容。所以，当我们创建了这个 Pod 之后，就可以通过 kubectl logs 指令，查看到这些 Labels 字段被打印出来，如下所示：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl create -f dapi-volume.yaml</span>
+<span class="hljs-meta">$</span><span class="bash"> kubectl logs test-downwardapi-volume</span>
+cluster=&quot;test-cluster1&quot;
+rack=&quot;rack-22&quot;
+zone=&quot;us-est-coast&quot;</code></pre>
+
+<h3 id="3-2、能获取的信息"><a href="#3-2、能获取的信息" class="headerlink" title="3.2、能获取的信息"></a>3.2、能获取的信息</h3><p>目前，Downward API 支持的字段已经非常丰富了，比如：</p>
+<ul>
+<li>使用fieldRef可以获取：<ul>
+<li>spec.nodeName - 宿主机名字</li>
+<li>status.hostIP - 宿主机IP</li>
+<li>metadata.name - Pod的名字</li>
+<li>metadata.namespace - Pod的Namespace</li>
+<li>status.podIP - Pod的IP</li>
+<li>spec.serviceAccountName - Pod的Service Account的名字</li>
+<li>metadata.uid - Pod的UID</li>
+<li>metadata.labels[‘&lt;KEY&gt;‘] - 指定&lt;KEY&gt;的Label值</li>
+<li>metadata.annotations[‘&lt;KEY&gt;‘] - 指定&lt;KEY&gt;的Annotation值</li>
+<li>metadata.labels - Pod的所有Label</li>
+<li>metadata.annotations - Pod的所有Annotation</li>
+</ul>
+</li>
+<li>使用resourceFieldRef可以获取：<ul>
+<li>容器的CPU limit</li>
+<li>容器的CPU request</li>
+<li>容器的memory limit</li>
+<li>容器的memory request</li>
+</ul>
+</li>
+</ul>
+<p>上面这个列表的内容，随着 Kubernetes 项目的发展肯定还会不断增加。不过，需要注意的是，Downward API 能够获取到的信息，一定是 Pod 里的容器进程启动之前就能够确定下来的信息。而如果我们想要获取 Pod 容器运行后才会出现的信息，比如，容器进程的 PID，那就肯定不能使用 Downward API 了，而应该考虑在 Pod 里定义一个 sidecar 容器。</p>
+<h2 id="四、ServiceAccountToken"><a href="#四、ServiceAccountToken" class="headerlink" title="四、ServiceAccountToken"></a>四、ServiceAccountToken</h2><p>假设我们现在有一个这样的需求：</p>
+<blockquote>
+<p>现在有了一个 Pod，我们能不能在这个 Pod 里安装一个 Kubernetes 的 Client，这样就可以从容器里直接访问并操作这个 Kubernetes 的 API ？</p>
+</blockquote>
+<p>这当然是可以的。不过，我们首先要解决 API Server 的授权问题。</p>
+<h3 id="4-1、一个特殊的Secret对象"><a href="#4-1、一个特殊的Secret对象" class="headerlink" title="4.1、一个特殊的Secret对象"></a>4.1、一个特殊的Secret对象</h3><p>我们需要知道的是，Service Account对象，是Kubernetes系统内置的一种“服务账户”，它是Kubernetes进行权限分配的对象。比如，Service Account A，可以只被允许对Kubernetes API进行GET操作，而Service Account B，则可以有Kubernetes API的所有操作权限。而Service Account 对象的授权信息和文件，则保存在它所绑定的一个特殊的 Secret 对象里。而这个特殊的 Secret 对象，就叫作 ServiceAccountToken。</p>
+<p>任何运行在 Kubernetes 集群上的应用，都必须使用 ServiceAccountToken 里保存的授权信息，也就是 Token，才可以合法地访问 API Server。</p>
+<p>所以说，Kubernetes 项目的 Projected Volume 其实只有三种，因为第四种 ServiceAccountToken，只是一种特殊的 Secret 而已。</p>
+<h3 id="4-2、Pod如何使用默认Service-Account"><a href="#4-2、Pod如何使用默认Service-Account" class="headerlink" title="4.2、Pod如何使用默认Service Account"></a>4.2、Pod如何使用默认Service Account</h3><p>为了方便使用，Kubernetes 已经为我们提供了一个默认“服务账户”（default Service Account）。并且，任何一个运行在 Kubernetes 里的 Pod，都可以直接使用这个默认的 Service Account，而无需显示地声明挂载它。这是如何做到的呢？</p>
+<p>当然还是靠 Projected Volume 机制。如果查看一下任意一个运行在 Kubernetes 集群里的 Pod，就会发现，每一个 Pod，都已经自动声明了一个类型是 Secret、名为 default-token-xxx 的 Volume，然后 自动挂载在每个容器的一个固定目录上。比如：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl describe pod nginx-deployment-5c678cfb6d-lg9lw</span>
+Containers:
+...
+  Mounts:
+    /var/run/secrets/kubernetes.io/serviceaccount from default-token-s8rbq (ro)
+Volumes:
+  default-token-s8rbq:
+  Type:       Secret (a volume populated by a Secret)
+  SecretName:  default-token-s8rbq
+  Optional:    false</code></pre>
+
+<p>这个 Secret 类型的 Volume，正是默认“服务账户”对应的 ServiceAccountToken。所以说，Kubernetes 其实在创建每个 Pod 的时候，自动在它的 spec.volumes 部分添加上了默认 ServiceAccountToken 的定义，然后自动给每个容器加上了对应的 volumeMounts 字段。这个过程对于用户来说是完全透明的。</p>
+<h3 id="4-3、InClusterConfig"><a href="#4-3、InClusterConfig" class="headerlink" title="4.3、InClusterConfig"></a>4.3、InClusterConfig</h3><p>一旦 Pod 创建完成，容器里的应用就可以直接从这个挂载了 ServiceAccountToken 的目录里访问到授权信息和文件。这个目录的路径在容器中是固定的，即：/var/run/secrets/kubernetes.io/serviceaccount ，而这个 Secret 类型的 Volume 里面的内容如下所示：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> ls /var/run/secrets/kubernetes.io/serviceaccount</span> 
+ca.crt namespace  token</code></pre>
+
+<p>所以，我们的应用程序只要直接加载这些授权文件，就可以访问并操作 Kubernetes API 了。而且，如果我们使用的是 Kubernetes 官方的 Client 包（k8s.io/client-go）的话，它会自动加载这个目录下的文件，不需要我们做任何配置或者编码操作。</p>
+<p>这种把 Kubernetes 客户端以容器的方式运行在集群里，然后使用 default Service Account 自动授权的方式，被称作“InClusterConfig”，它也是最推荐的进行 Kubernetes API 编程的授权方式。</p>
+<p>当然，考虑到自动挂载默认 ServiceAccountToken 的潜在风险，Kubernetes 允许我们设置默认不为 Pod 里的容器自动挂载这个 Volume。</p>
+<p>除了这个默认的 Service Account 外，我们很多时候还需要创建一些我们自己定义的 Service Account，来对应不同的权限设置。这样，Pod 里的容器就可以通过挂载这些 Service Account 对应的 ServiceAccountToken，来使用这些自定义的授权信息。</p>
+<h2 id="五、小结"><a href="#五、小结" class="headerlink" title="五、小结"></a>五、小结</h2><p>在这篇文章中，我们主要讨论了如下内容：</p>
+<ul>
+<li>Projected Volume的作用是，为容器提供预先设定好的数据；</li>
+<li>Secret保存的是加密数据；</li>
+<li>ConfigMap保存的是配置文件；</li>
+<li>Downward API保存的是Pod本身的信息；</li>
+<li>ServiceAccountToken，是一个特殊的Secret对象，它保存的是ServiceAccount对象的授权信息；</li>
+</ul>
+<p>我们需要知道的是，Secret、ConfigMap，以及 Downward API 这三种 Projected Volume 定义的信息，大多是可以通过环境变量的方式来定义。但是，通过环境变量获取这些信息的方式，不具备自动更新的能力。所以，一般情况下，建议使用 Volume 文件的方式获取这些信息。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Kubernetes/">Kubernetes</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/10/02/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%921%EF%BC%9A%E7%90%86%E8%A7%A3%E6%8E%A7%E5%88%B6%E5%99%A8%E6%A8%A1%E5%9E%8B/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">容器编排1：理解控制器模型</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/10/02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Pod%E5%AF%B9%E8%B1%A13%EF%BC%9A%E4%BD%BF%E7%94%A8%E8%BF%9B%E9%98%B6/">
+                        <span class="hidden-mobile">深入解析Pod对象3：使用进阶</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "深入解析Pod对象3：Projected Volume&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

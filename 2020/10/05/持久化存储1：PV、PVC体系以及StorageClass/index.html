@@ -1,0 +1,700 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="kubxy">
+  <meta name="keywords" content="">
+  <title>持久化存储1：PV、PVC体系以及StorageClass - Kubxy</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Kubxy</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-10-05 10:20" pubdate>
+        2020年10月5日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      5.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      59
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">持久化存储1：PV、PVC体系以及StorageClass</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <p>在前面的文章中，我们重点讨论了Kubernetes的编排能力。在讨论过程中，我们应该已经发现，容器化一个应用比较麻烦的地方，莫过于对其“状态”的管理。而最常见的“状态”，又莫过于存储状态了。接下来，我们重点讨论Kubernetes项目处理容器持久化存储的核心原理。</p>
+<h2 id="一、从PV和PVC说起"><a href="#一、从PV和PVC说起" class="headerlink" title="一、从PV和PVC说起"></a>一、从PV和PVC说起</h2><p>在讨论StatefulSet 如何管理存储状态的时候，我们简单介绍过的Persistent Volume（PV）和 Persistent Volume Claim（PVC）这套持久化存储体系。</p>
+<h3 id="1-1、PV"><a href="#1-1、PV" class="headerlink" title="1.1、PV"></a>1.1、PV</h3><p>PV 描述的是持久化存储数据卷。这个 API 对象主要定义的是一个持久化存储在宿主机上的目录，比如一个 NFS 的挂载目录。通常情况下，PV 对象是由运维人员事先创建在 Kubernetes 集群里待用的。比如，运维人员可以定义这样一个 NFS 类型的 PV，如下所示：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">PersistentVolume</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">nfs</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">storageClassName:</span> <span class="hljs-string">manual</span>
+  <span class="hljs-attr">capacity:</span>
+    <span class="hljs-attr">storage:</span> <span class="hljs-string">1Gi</span>
+  <span class="hljs-attr">accessModes:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">ReadWriteMany</span>
+  <span class="hljs-attr">nfs:</span>
+    <span class="hljs-attr">server:</span> <span class="hljs-number">10.244</span><span class="hljs-number">.1</span><span class="hljs-number">.4</span>
+    <span class="hljs-attr">path:</span> <span class="hljs-string">&quot;/&quot;</span></code></pre>
+
+<h3 id="1-2、PVC"><a href="#1-2、PVC" class="headerlink" title="1.2、PVC"></a>1.2、PVC</h3><p>PVC 描述的则是 Pod 所希望使用的持久化存储的属性。比如，Volume 存储的大小、可读写权限等等。PVC 对象通常由开发人员创建；或者以 PVC 模板的方式成为 StatefulSet 的一部分，然后由 StatefulSet 控制器负责创建带编号的 PVC。比如，开发人员可以声明一个 1 GiB 大小的 PVC，如下所示：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">PersistentVolumeClaim</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">nfs</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">accessModes:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">ReadWriteMany</span>
+  <span class="hljs-attr">storageClassName:</span> <span class="hljs-string">manual</span>
+  <span class="hljs-attr">resources:</span>
+    <span class="hljs-attr">requests:</span>
+      <span class="hljs-attr">storage:</span> <span class="hljs-string">1Gi</span></code></pre>
+
+<h3 id="1-3、绑定PVC和PV"><a href="#1-3、绑定PVC和PV" class="headerlink" title="1.3、绑定PVC和PV"></a>1.3、绑定PVC和PV</h3><p>用户所创建的 PVC 要真正被容器使用起来，就必须先和某个符合条件的 PV 进行绑定。这里要检查的条件，包括两部分：</p>
+<ul>
+<li><p>第一个条件，是 PV 和 PVC 的 spec 字段。比如，PV 的存储（storage）大小，就必须满足 PVC 的要求。</p>
+</li>
+<li><p>第二个条件，是 PV 和 PVC 的 storageClassName 字段必须一样。</p>
+</li>
+</ul>
+<h3 id="1-3、Pod使用PVC"><a href="#1-3、Pod使用PVC" class="headerlink" title="1.3、Pod使用PVC"></a>1.3、Pod使用PVC</h3><p>在成功地将 PVC 和 PV 进行绑定之后，Pod 就能够像使用 hostPath 等常规类型的 Volume 一样，在自己的 YAML 文件里声明使用这个 PVC 了，如下所示：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">labels:</span>
+    <span class="hljs-attr">role:</span> <span class="hljs-string">web-frontend</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">web</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">nginx</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">web</span>
+        <span class="hljs-attr">containerPort:</span> <span class="hljs-number">80</span>
+    <span class="hljs-attr">volumeMounts:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">nfs</span>
+          <span class="hljs-attr">mountPath:</span> <span class="hljs-string">&quot;/usr/share/nginx/html&quot;</span>
+  <span class="hljs-attr">volumes:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">nfs</span>
+    <span class="hljs-attr">persistentVolumeClaim:</span>
+      <span class="hljs-attr">claimName:</span> <span class="hljs-string">nfs</span></code></pre>
+
+<p>可以看到，Pod 需要做的，就是在 volumes 字段里声明自己要使用的 PVC 名字。接下来，等这个 Pod 创建之后，kubelet 就会把这个 PVC 所对应的 PV，也就是一个 NFS 类型的 Volume，挂载在这个 Pod 容器内的目录上。</p>
+<h3 id="1-4、PersistentVolumeController"><a href="#1-4、PersistentVolumeController" class="headerlink" title="1.4、PersistentVolumeController"></a>1.4、PersistentVolumeController</h3><p>不难看出，PVC 和 PV 的设计，其实跟“面向对象”的思想完全一致。PVC 可以理解为持久化存储的“接口”，它提供了对某种持久化存储的描述，但不提供具体的实现；而这个持久化存储的实现部分则由 PV 负责完成。这样做的好处是，作为应用开发者，我们只需要跟 PVC 这个“接口”打交道，而不必关心具体的实现是 NFS 还是 Ceph。毕竟这些存储相关的知识太专业了，应该交给专业的人去做。</p>
+<p>在上面的讲述中，其实还有一个比较棘手的情况。比如，我们在创建 Pod 的时候，系统里并没有合适的 PV 跟它定义的 PVC 绑定，也就是说此时容器想要使用的 Volume 不存在。这时候，Pod 的启动就会报错。所以，在 Kubernetes 中，实际上存在着一个专门处理持久化存储的控制器，叫作 Volume Controller。这个 Volume Controller 维护着多个控制循环，其中有一个循环，扮演的就是撮合 PV 和 PVC 的“红娘”角色。它的名字叫作 PersistentVolumeController。</p>
+<p>PersistentVolumeController 会不断地查看当前每一个 PVC，是不是已经处于 Bound（已绑定）状态。如果不是，那它就会遍历所有的、可用的 PV，并尝试将其与这个“单身”的 PVC 进行绑定。这样，Kubernetes 就可以保证用户提交的每一个 PVC，只要有合适的 PV 出现，它就能够很快进入绑定状态，从而结束“单身”之旅。</p>
+<p>而所谓将一个 PV 与 PVC 进行“绑定”，其实就是将这个 PV 对象的名字，填在了 PVC 对象的 spec.volumeName 字段上。所以，接下来 Kubernetes 只要获取到这个 PVC 对象，就一定能够找到它所绑定的 PV。</p>
+<blockquote>
+<p>那么，PV 对象，又是如何变成容器里的一个持久化存储的呢？</p>
+</blockquote>
+<p>我在前面讲解容器基础的时候，已经详细剖析了容器 Volume 的挂载机制。用一句话总结，所谓容器的 Volume，其实就是将一个宿主机上的目录，跟一个容器里的目录绑定挂载在了一起。而所谓的“持久化 Volume”，指的就是这个宿主机上的目录，具备“持久性”。即：这个目录里面的内容，既不会因为容器的删除而被清理掉，也不会跟当前的宿主机绑定。这样，当容器被重启或者在其他节点上重建出来之后，它仍然能够通过挂载这个 Volume，访问到这些内容。</p>
+<p>显然，我们前面使用的 emptyDir 和 hostPath 类型的 Volume 并不具备这个特征：它们既有可能被 kubelet 清理掉，也不能被“迁移”到其他节点上。所以，大多数情况下，持久化 Volume 的实现，往往依赖于一个远程存储服务，比如：远程文件存储（比如，NFS、GlusterFS）、远程块存储（比如，公有云提供的远程磁盘）等等。而 Kubernetes 需要做的工作，就是使用这些存储服务，来为容器准备一个持久化的宿主机目录，以供将来进行绑定挂载时使用。而所谓“持久化”，指的是容器在这个目录里写入的文件，都会保存在远程存储中，从而使得这个目录具备了“持久性”。</p>
+<h2 id="二、Kubernetes是如何准备持久化宿主机目录的"><a href="#二、Kubernetes是如何准备持久化宿主机目录的" class="headerlink" title="二、Kubernetes是如何准备持久化宿主机目录的"></a>二、Kubernetes是如何准备持久化宿主机目录的</h2><p>准备“持久化”宿主机目录的过程，我们可以形象地称为“两阶段处理”。接下来，我们通过一个具体的例子来说明。</p>
+<p>当一个 Pod 调度到一个节点上之后，kubelet 就要负责为这个 Pod 创建它的 Volume 目录。默认情况下，kubelet 为 Volume 创建的目录是如下所示的一个宿主机上的路径：</p>
+<pre><code class="hljs shell">/var/lib/kubelet/pods/&lt;Pod的ID&gt;/volumes/kubernetes.io~&lt;Volume类型&gt;/&lt;Volume名字&gt;</code></pre>
+
+<p>接下来，kubelet 要做的操作就取决于我们的 Volume 类型了。</p>
+<h3 id="3-1、远程块存储"><a href="#3-1、远程块存储" class="headerlink" title="3.1、远程块存储"></a>3.1、远程块存储</h3><p>如果我们的 Volume 类型是远程块存储，比如 Google Cloud 的 Persistent Disk（GCE 提供的远程磁盘服务），那么 kubelet 就需要先调用 Goolge Cloud 的 API，将它所提供的 Persistent Disk 挂载到 Pod 所在的宿主机上。这相当于执行：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> gcloud compute instances attach-disk &lt;虚拟机名字&gt; --disk &lt;远程磁盘名字&gt;</span></code></pre>
+
+<p>这一步为虚拟机挂载远程磁盘的操作，对应的正是“两阶段处理”的第一阶段。在 Kubernetes 中，我们把这个阶段称为 Attach。</p>
+<p>Attach 阶段完成后，为了能够使用这个远程磁盘，kubelet 还要进行第二个操作，即：格式化这个磁盘设备，然后将它挂载到宿主机指定的挂载点上。不难理解，这个挂载点，正是我们在前面反复提到的 Volume 的宿主机目录。所以，这一步相当于执行：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 通过lsblk命令获取磁盘设备ID</span>
+<span class="hljs-meta">$</span><span class="bash"> sudo lsblk</span>
+
+<span class="hljs-meta">#</span><span class="bash"> 格式化成ext4格式</span>
+<span class="hljs-meta">$</span><span class="bash"> sudo mkfs.ext4 -m 0 -F -E lazy_itable_init=0,lazy_journal_init=0,discard /dev/&lt;磁盘设备ID&gt;</span>
+
+<span class="hljs-meta">#</span><span class="bash"> 挂载到挂载点</span>
+<span class="hljs-meta">$</span><span class="bash"> sudo mkdir -p /var/lib/kubelet/pods/&lt;Pod的ID&gt;/volumes/kubernetes.io~&lt;Volume类型&gt;/&lt;Volume名字&gt;</span></code></pre>
+
+<p>这个将磁盘设备格式化并挂载到 Volume 宿主机目录的操作，对应的正是“两阶段处理”的第二个阶段，我们一般称为：Mount。</p>
+<p>Mount 阶段完成后，这个 Volume 的宿主机目录就是一个“持久化”的目录了，容器在它里面写入的内容，会保存在 Google Cloud 的远程磁盘中。</p>
+<h3 id="3-2、远程文件存储"><a href="#3-2、远程文件存储" class="headerlink" title="3.2、远程文件存储"></a>3.2、远程文件存储</h3><p>如果我们的 Volume 类型是远程文件存储（比如 NFS）的话，kubelet 的处理过程就会更简单一些。</p>
+<p>因为在这种情况下，kubelet 可以跳过“第一阶段”（Attach）的操作，这是因为一般来说，远程文件存储并没有一个“存储设备”需要挂载在宿主机上。所以，kubelet 会直接从“第二阶段”（Mount）开始准备宿主机上的 Volume 目录。</p>
+<p>在这一步，kubelet 需要作为 client，将远端 NFS 服务器的目录（比如：“/”目录），挂载到 Volume 的宿主机目录上，即相当于执行如下所示的命令：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> mount -t nfs &lt;NFS服务器地址&gt;:/ /var/lib/kubelet/pods/&lt;Pod的ID&gt;/volumes/kubernetes.io~&lt;Volume类型&gt;/&lt;Volume名字&gt;</span></code></pre>
+
+<p>通过这个挂载操作，Volume 的宿主机目录就成为了一个远程 NFS 目录的挂载点，后面我们在这个目录里写入的所有文件，都会被保存在远程 NFS 服务器上。所以，我们也就完成了对这个 Volume 宿主机目录的“持久化”。</p>
+<h3 id="3-3、两个阶段是如何定义和区分的"><a href="#3-3、两个阶段是如何定义和区分的" class="headerlink" title="3.3、两个阶段是如何定义和区分的"></a>3.3、两个阶段是如何定义和区分的</h3><blockquote>
+<p>到这里，我们可能会有疑问，Kubernetes 又是如何定义和区分这两个阶段的呢？</p>
+</blockquote>
+<p>其实很简单，在具体的 Volume 插件的实现接口上，Kubernetes 分别给这两个阶段提供了两种不同的参数列表：</p>
+<ul>
+<li><p>对于“第一阶段”（Attach），Kubernetes 提供的可用参数是 nodeName，即宿主机的名字。</p>
+</li>
+<li><p>对于“第二阶段”（Mount），Kubernetes 提供的可用参数是 dir，即 Volume 的宿主机目录。</p>
+</li>
+</ul>
+<p>所以，作为一个存储插件，我们只需要根据自己的需求进行选择和实现即可。</p>
+<h3 id="3-4、容器挂载Volume"><a href="#3-4、容器挂载Volume" class="headerlink" title="3.4、容器挂载Volume"></a>3.4、容器挂载Volume</h3><p>经过了“两阶段处理”，我们就得到了一个“持久化”的 Volume 宿主机目录。所以，接下来，kubelet 只要把这个 Volume 目录通过 CRI 里的 Mounts 参数，传递给 Docker，然后就可以为 Pod 里的容器挂载这个“持久化”的 Volume 了。其实，这一步相当于执行了如下所示的命令：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> docker run -v /var/lib/kubelet/pods/&lt;Pod的ID&gt;/volumes/kubernetes.io~&lt;Volume类型&gt;/&lt;Volume名字&gt;:/&lt;容器内的目标目录&gt; 我的镜像 ...</span></code></pre>
+
+<p>以上，就是 Kubernetes 创建 PV 的具体原理了。对应地，在删除一个 PV 的时候，Kubernetes 也需要 Unmount 和 Dettach 两个阶段来处理。</p>
+<h3 id="3-5、AttachDetachController-amp-VolumeManagerReconciler"><a href="#3-5、AttachDetachController-amp-VolumeManagerReconciler" class="headerlink" title="3.5、AttachDetachController &amp; VolumeManagerReconciler"></a>3.5、AttachDetachController &amp; VolumeManagerReconciler</h3><p>实际上，我们可能已经发现， PV 的处理流程似乎跟 Pod 以及容器的启动流程没有太多的耦合，只要 kubelet 在向 Docker 发起 CRI 请求之前，确保“持久化”的宿主机目录已经处理完毕即可。所以，在 Kubernetes 中，上述关于 PV 的“两阶段处理”流程，是靠独立于 kubelet 主控制循环（Kubelet Sync Loop）之外的两个控制循环来实现的。</p>
+<p>其中，“第一阶段”的 Attach（以及 Dettach）操作，是由 Volume Controller 负责维护的，这个控制循环的名字叫作：AttachDetachController。而它的作用，就是不断地检查每一个 Pod 对应的 PV，和这个 Pod 所在宿主机之间的挂载情况。从而决定，是否需要对这个 PV 进行 Attach（或者 Dettach）操作。需要注意的是，作为一个 Kubernetes 内置的控制器，Volume Controller 自然是 kube-controller-manager 的一部分。所以，AttachDetachController 也一定是运行在 Master 节点上的。当然，Attach 操作只需要调用公有云或者具体存储项目的 API，并不需要在具体的宿主机上执行操作，所以这个设计没有任何问题。</p>
+<p>而“第二阶段”的 Mount（以及 Unmount）操作，必须发生在 Pod 对应的宿主机上，所以它必须是 kubelet 组件的一部分。这个控制循环的名字，叫作：VolumeManagerReconciler，它运行起来之后，是一个独立于 kubelet 主循环的 Goroutine。</p>
+<p>通过这样将 Volume 的处理同 kubelet 的主循环解耦，Kubernetes 就避免了这些耗时的远程挂载操作拖慢 kubelet 的主控制循环，进而导致 Pod 的创建效率大幅下降的问题。实际上，kubelet 的一个主要设计原则，就是它的主控制循环绝对不可以被 block。</p>
+<h2 id="三、StorageClass"><a href="#三、StorageClass" class="headerlink" title="三、StorageClass"></a>三、StorageClass</h2><p>理解了 Kubernetes 的 Volume 处理机制之后，我们接下来讨论这个体系里最后一个重要概念：StorageClass。</p>
+<h3 id="4-1、Static-Provisioning-amp-Dynamic-Provisioning"><a href="#4-1、Static-Provisioning-amp-Dynamic-Provisioning" class="headerlink" title="4.1、Static Provisioning &amp; Dynamic Provisioning"></a>4.1、Static Provisioning &amp; Dynamic Provisioning</h3><p>在介绍 PV 和 PVC 的时候，我们曾提到过，PV 这个对象的创建，一般是由运维人员完成的。但是，在大规模的生产环境里，这其实是一个非常麻烦的工作。</p>
+<p>在一个大规模的 Kubernetes 集群里很可能有成千上万个 PVC，这就意味着运维人员必须得事先创建出成千上万个 PV。更麻烦的是，随着新的 PVC 不断被提交，运维人员就不得不继续添加新的、能满足条件的 PV，否则新 Pod 就会因为 PVC 绑定不到 PV 而运行失败。这在实际操作中，几乎没办法靠人工做到。</p>
+<p>所以，Kubernetes 为我们提供了一套可以自动创建 PV 的机制，即：Dynamic Provisioning。与之对应的，人工管理 PV 的方式就叫作 Static Provisioning。</p>
+<h3 id="4-2、理解StorageClass对象"><a href="#4-2、理解StorageClass对象" class="headerlink" title="4.2、理解StorageClass对象"></a>4.2、理解StorageClass对象</h3><p>Dynamic Provisioning 的核心，在于一个名叫 StorageClass 的 API 对象。而 StorageClass 对象就是用来自动创建 PV 的模板。具体来说，一个StorageClass 对象会定义如下两部分内容：</p>
+<ul>
+<li><p>PV 的属性。比如，存储类型、Volume 的大小等等。</p>
+</li>
+<li><p>创建PV 需要用到的存储插件。比如，Ceph 等等。</p>
+</li>
+</ul>
+<p>有了这两个信息之后，Kubernetes 就能够根据用户提交的 PVC，找到一个对应的 StorageClass 。然后，Kubernetes 就会调用该 StorageClass 声明的存储插件，创建出所需要的 PV。</p>
+<h4 id="4-2-1、创建StorageClass对象"><a href="#4-2-1、创建StorageClass对象" class="headerlink" title="4.2.1、创建StorageClass对象"></a>4.2.1、创建StorageClass对象</h4><p>举个例子，假如我们的 Volume 类型是 GCE 的 Persistent Disk 的话，运维人员就需要定义一个如下所示的 StorageClass：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">storage.k8s.io/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">StorageClass</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">block-service</span>
+<span class="hljs-attr">provisioner:</span> <span class="hljs-string">kubernetes.io/gce-pd</span>
+<span class="hljs-attr">parameters:</span>
+  <span class="hljs-attr">type:</span> <span class="hljs-string">pd-ssd</span></code></pre>
+
+<p>在这个 YAML 文件里，我们定义了一个名叫 block-service 的 StorageClass。这个 StorageClass 的 provisioner 字段的值是：kubernetes.io/gce-pd，这正是 Kubernetes 内置的 GCE PD 存储插件的名字。而这个 StorageClass 的 parameters 字段，就是 PV 的参数。比如：上面例子里的 type=pd-ssd，指的是这个 PV 的类型是“SSD 格式的 GCE 远程磁盘”。</p>
+<p>需要注意的是，由于需要使用 GCE Persistent Disk，上面这个例子只有在 GCE 提供的 Kubernetes 服务里才能实践。如果想使用部署在本地的 Kubernetes 集群以及 Rook 存储服务的话，我们的 StorageClass 需要使用如下所示的 YAML 文件来定义：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">ceph.rook.io/v1beta1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pool</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">replicapool</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">rook-ceph</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">replicated:</span>
+    <span class="hljs-attr">size:</span> <span class="hljs-number">3</span>
+<span class="hljs-meta">---</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">storage.k8s.io/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">StorageClass</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">block-service</span>
+<span class="hljs-attr">provisioner:</span> <span class="hljs-string">ceph.rook.io/block</span>
+<span class="hljs-attr">parameters:</span>
+  <span class="hljs-attr">pool:</span> <span class="hljs-string">replicapool</span>
+  <span class="hljs-comment">#The value of &quot;clusterNamespace&quot; MUST be the same as the one in which your rook cluster exist</span>
+  <span class="hljs-attr">clusterNamespace:</span> <span class="hljs-string">rook-ceph</span></code></pre>
+
+<p>在这个 YAML 文件中，我们定义的还是一个名叫 block-service 的 StorageClass，只不过它声明使的存储插件是 Rook 。有了 StorageClass 的 YAML 文件之后，我们就可以在 Kubernetes 里创建这个 StorageClass 了：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl create -f sc.yaml</span></code></pre>
+
+<h4 id="4-2-2、创建、查看PVC"><a href="#4-2-2、创建、查看PVC" class="headerlink" title="4.2.2、创建、查看PVC"></a>4.2.2、创建、查看PVC</h4><p>创建好StorageClass之后，我们只需要在 PVC 中指定要使用的 StorageClass 名字即可，如下所示：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">PersistentVolumeClaim</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">claim1</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">accessModes:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">ReadWriteOnce</span>
+  <span class="hljs-attr">storageClassName:</span> <span class="hljs-string">block-service</span>
+  <span class="hljs-attr">resources:</span>
+    <span class="hljs-attr">requests:</span>
+      <span class="hljs-attr">storage:</span> <span class="hljs-string">30Gi</span></code></pre>
+
+<p>可以看到，我们在这个 PVC 里添加了一个叫作 storageClassName 的字段，它指定了该 PVC 所要使用的 StorageClass 的名字是：block-service。</p>
+<p>以 Google Cloud 为例，当我们通过 kubectl create 创建上述 PVC 对象之后，Kubernetes 就会调用 Google Cloud 的 API，创建出一块 SSD 格式的 Persistent Disk。然后，再使用这个 Persistent Disk 的信息，自动创建出一个对应的 PV 对象。我们可以一起来实践一下这个过程（如果使用 Rook 的话下面的流程也是一样的，只不过 Rook 创建出的是 Ceph 类型的 PV）：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl create -f pvc.yaml</span></code></pre>
+
+<p>可以看到，我们创建的 PVC 会绑定一个 Kubernetes 自动创建的 PV，如下所示：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl describe pvc claim1</span>
+Name:           claim1
+Namespace:      default
+StorageClass:   block-service
+Status:         Bound
+Volume:         pvc-e5578707-c626-11e6-baf6-08002729a32b
+Labels:         &lt;none&gt;
+Capacity:       30Gi
+Access Modes:   RWO
+No Events.</code></pre>
+
+<h4 id="4-2-3、查看PV"><a href="#4-2-3、查看PV" class="headerlink" title="4.2.3、查看PV"></a>4.2.3、查看PV</h4><p>通过查看这个自动创建出来的 PV 的属性，我们就可以看到它跟我们在 PVC 里声明的存储的属性是一致的，如下所示：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl describe pv pvc-e5578707-c626-11e6-baf6-08002729a32b</span>
+Name:            pvc-e5578707-c626-11e6-baf6-08002729a32b
+Labels:          &lt;none&gt;
+StorageClass:    block-service
+Status:          Bound
+Claim:           default/claim1
+Reclaim Policy:  Delete
+Access Modes:    RWO
+Capacity:        30Gi
+...
+No events.</code></pre>
+
+<p>此外，我们还可以看到，这个自动创建出来的 PV 的 StorageClass 字段的值，也是 block-service。这是因为，Kubernetes 只会将 StorageClass 相同的 PVC 和 PV 绑定起来。</p>
+<h3 id="4-3、小结"><a href="#4-3、小结" class="headerlink" title="4.3、小结"></a>4.3、小结</h3><p>有了 Dynamic Provisioning 后，运维人员只需要在 Kubernetes 集群里创建出数量有限的 StorageClass 对象就可以了。这就好比，运维人员在 Kubernetes 集群里创建出了各种各样的 PV 模板。这时候，当开发人员提交了包含 StorageClassName 字段的 PVC 之后，Kubernetes 就会根据这个 StorageClass 创建出对应的 PV。</p>
+<h3 id="4-4、补充"><a href="#4-4、补充" class="headerlink" title="4.4、补充"></a>4.4、补充</h3><p>在 Kubernetes 的官方文档里已经列出了默认所支持的 Dynamic Provisioning 存储插件。对于不在文档里的插件，比如 NFS，或者其他非内置存储插件，我们其实可以通过kubernetes-incubator/external-storage这个库来自己编写一个外部插件完成这个工作。就如同 Rook一样，因为它内置了 external-storage 的实现，所以 Rook 是完全支持 Dynamic Provisioning 特性的。</p>
+<p>需要注意的是，StorageClass 对象并不是专门为了 Dynamic Provisioning 而设计的。比如，在文章的开始，我们在 PV 和 PVC 里都声明了 storageClassName=manual。而我们的集群里，实际上并没有一个名叫 manual 的 StorageClass 对象。但这完全没有问题，此时 Kubernetes 进行的是 Static Provisioning，但在做绑定决策的时候，它依然会考虑 PV 和 PVC 的 StorageClass 定义。这么做的好处也很明显：这个 PVC 和 PV 的绑定关系，完全在我们自己的掌控之中。</p>
+<blockquote>
+<p>这里，我们可能会有疑问，在前面讨论 StatefulSet 存储状态的例子中，好像并没有声明 StorageClass 啊？</p>
+</blockquote>
+<p>实际上，如果我们的集群开启了一个名叫 DefaultStorageClass 的 Admission Plugin，那么它就会为 PVC 和 PV 自动添加一个默认的 StorageClass；否则，PVC 的 storageClassName 的值就是“”，这也意味着它只能够跟 storageClassName 也是“”的 PV 进行绑定。</p>
+<h2 id="四、小结"><a href="#四、小结" class="headerlink" title="四、小结"></a>四、小结</h2><p>在这篇文章中，我们主要讨论了如下概念：</p>
+<ul>
+<li>Kubernetes中PVC和PV的设计，仍然符合“面向对象”的思想。其中，PVC是接口，用于用户描述所需要的存储（存储大小、读写权限等）；PV是实现，用于定义存储服务的访问信息。PVC和PV之间是互相独立的，PersistentVolumeContronller会不断地查看每个PVC是否处于绑定状态，如果不是就会尝试将其与合适的PV进行绑定。</li>
+<li>Kubernetes通过“两阶段”完成持久化宿主机目录。这两个阶段分别是Attach / Detach（远程挂载 / 卸载）和Mount / Unmount（本地挂载 / 卸载）。</li>
+<li>根据持久化存储的创建方式，Kubernetes将存储管理理抽象成静态供应（Static Provisioning）和动态供应（Dynamic Provisioning）两种类型。其中，Static Provisioning是一种手动管理方式，创建PVC的同时需要手动创建相应的PV，适用于较小规模的集群；Dynamic Provisioning则是一种动态管理方式，其核心是Storage Class对象。一个Storage Class对象就是一个事先创建好的PV模板，后续一旦有PVC提交，kubernetes就会通过相应Storage Class对象所声明的存储插件创建出满足条件的PV，适用于大规模集群。</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Kubernetes/">Kubernetes</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A81%EF%BC%9A%E7%90%86%E8%A7%A3StorageClass/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">理解StorageClass</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/10/04/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%928%EF%BC%9AOperator/">
+                        <span class="hidden-mobile">容器编排8：Operator</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "持久化存储1：PV、PVC体系以及StorageClass&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,644 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="kubxy">
+  <meta name="keywords" content="">
+  <title>一个简单API Server框架 - Kubxy</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Kubxy</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-12-09 11:21" pubdate>
+        2020年12月9日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      863 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      12
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">一个简单API Server框架</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <p>在前面的文章中，我们讨论REST相关的概念，以及REST在OpenResty中的应用。接下来，我们尝试使用OpenResty中搭建一个简单的API Server。</p>
+<h2 id="一、需求"><a href="#一、需求" class="headerlink" title="一、需求"></a>一、需求</h2><p>实现一个能计算加减乘除的数学计算器</p>
+<h2 id="二、实现"><a href="#二、实现" class="headerlink" title="二、实现"></a>二、实现</h2><p>我们先来看看一个最简陋的实现版本：</p>
+<pre><code class="hljs nginx"><span class="hljs-attribute">worker_processes</span>  <span class="hljs-number">1</span>;
+<span class="hljs-attribute">error_log</span> logs/error.log;
+<span class="hljs-section">events</span> &#123;
+    <span class="hljs-attribute">worker_connections</span> <span class="hljs-number">1024</span>;
+&#125;
+<span class="hljs-section">http</span> &#123;
+    <span class="hljs-section">server</span> &#123;
+        <span class="hljs-attribute">listen</span> <span class="hljs-number">80</span>;
+
+        <span class="hljs-comment"># 加法</span>
+        <span class="hljs-attribute">location</span> /addition &#123;
+           <span class="hljs-section">content_by_lua_block</span> &#123;
+                <span class="hljs-attribute">local</span> args = ngx.req.get_uri_args()
+                ngx.say(args.x + args.y)
+            &#125;
+        &#125;
+
+        <span class="hljs-comment"># 减法</span>
+        location /subtraction &#123;
+            <span class="hljs-section">content_by_lua_block</span> &#123;
+                <span class="hljs-attribute">local</span> args = ngx.req.get_uri_args()
+                ngx.say(args.x - args.y)
+            &#125;
+        &#125;
+
+        <span class="hljs-comment"># 乘法</span>
+        location /multiplication &#123;
+            <span class="hljs-section">content_by_lua_block</span> &#123;
+                <span class="hljs-attribute">local</span> args = ngx.req.get_uri_args()
+                ngx.say(args.x * args.y)
+            &#125;
+        &#125;
+
+        <span class="hljs-comment"># 除法</span>
+        location /division &#123;
+            <span class="hljs-section">content_by_lua_block</span> &#123;
+                <span class="hljs-attribute">local</span> args = ngx.req.get_uri_args()
+                ngx.say(args.x / args.y)
+            &#125;
+        &#125;
+    &#125;
+&#125;</code></pre>
+
+<p>可以看到，整个配置文件看起来非常复杂，下面我们来优化一下</p>
+<h2 id="三、优化"><a href="#三、优化" class="headerlink" title="三、优化"></a>三、优化</h2><p>首先，入口要统一，接口的实现要独立，保持简洁：</p>
+<pre><code class="hljs nginx"><span class="hljs-attribute">worker_processes</span>  <span class="hljs-number">1</span>;
+<span class="hljs-attribute">error_log</span> logs/error.log;
+<span class="hljs-section">events</span> &#123;
+    <span class="hljs-attribute">worker_connections</span> <span class="hljs-number">1024</span>;
+&#125;
+
+<span class="hljs-section">http</span> &#123;
+    <span class="hljs-comment"># 设置默认 lua 搜索路径</span>
+    <span class="hljs-comment"># 此处写相对路径时，需要注意启动 nginx 的路径，因为它会影响自定义模块的导入</span>
+    <span class="hljs-comment"># 绝对路径当然也没问题，但是不可移植，因此应使用变量 $prefix 或 $&#123;prefix&#125;</span>
+    <span class="hljs-attribute">lua_package_path</span> <span class="hljs-string">&#x27;$prefix/lua/?.lua;/blah/?.lua;;&#x27;</span>;
+
+    <span class="hljs-comment"># 这里设置为 off，是为了避免每次修改之后都要重新 reload 的麻烦。</span>
+    <span class="hljs-comment"># 在生产环境上务必确保 lua_code_cache 设置成 on。</span>
+    <span class="hljs-attribute">lua_code_cache</span> <span class="hljs-literal">off</span>;
+
+    <span class="hljs-section">server</span> &#123;
+        <span class="hljs-attribute">listen</span> <span class="hljs-number">80</span>;
+
+        <span class="hljs-comment"># 在代码路径中使用nginx变量</span>
+        <span class="hljs-comment"># 注意： nginx var 的变量一定要谨慎，否则将会带来非常大的风险</span>
+        <span class="hljs-attribute">location</span> <span class="hljs-regexp">~ ^/api/([-_a-zA-Z0-9/]+)</span> &#123;
+            <span class="hljs-attribute">content_by_lua_file</span> lua/<span class="hljs-variable">$1</span>.lua;
+        &#125;
+    &#125;
+&#125;</code></pre>
+
+<p>${prefix}/lua目录下的文件分别如下：</p>
+<pre><code class="hljs lua"><span class="hljs-comment">-- ========== &#123;$prefix&#125;/lua/addition.lua</span>
+<span class="hljs-keyword">local</span> args = ngx.req.get_uri_args()
+ngx.say(args.x + args.y)
+
+<span class="hljs-comment">-- ========== &#123;$prefix&#125;/lua/subtraction.lua</span>
+<span class="hljs-keyword">local</span> args = ngx.req.get_uri_args()
+ngx.say(args.x - args.y)
+
+<span class="hljs-comment">-- ========== &#123;$prefix&#125;/lua/multiplication.lua</span>
+<span class="hljs-keyword">local</span> args = ngx.req.get_uri_args()
+ngx.say(args.x * args.y)
+
+<span class="hljs-comment">-- ========== &#123;$prefix&#125;/lua/division.lua</span>
+<span class="hljs-keyword">local</span> args = ngx.req.get_uri_args()
+ngx.say(args.x / args.y)</code></pre>
+
+<h2 id="四、迭代"><a href="#四、迭代" class="headerlink" title="四、迭代"></a>四、迭代</h2><p>对于一个后端程序来说，怎么可以容忍输入参数不检查呢？万一客户端传入的不是数字或者为空怎么办？所以这些都要过滤掉。我们会发现，这些接口的参数检查过滤方法应该是统一的，那么如何在这几个 API 中如何共享这个方法呢？这时候就需要 Lua 模块来完成了：</p>
+<pre><code class="hljs nginx"><span class="hljs-attribute">worker_processes</span>  <span class="hljs-number">1</span>;
+<span class="hljs-attribute">error_log</span> logs/error.log;
+<span class="hljs-section">events</span> &#123;
+    <span class="hljs-attribute">worker_connections</span> <span class="hljs-number">1024</span>;
+&#125;
+<span class="hljs-section">http</span> &#123;
+    <span class="hljs-section">server</span> &#123;
+        <span class="hljs-attribute">listen</span> <span class="hljs-number">80</span>;
+
+        <span class="hljs-attribute">location</span> <span class="hljs-regexp">~ ^/api/([-_a-zA-Z0-9/]+)</span> &#123;
+            <span class="hljs-comment"># 准入阶段完成参数验证</span>
+            <span class="hljs-attribute">access_by_lua_file</span>  lua/access_check.lua;
+
+            <span class="hljs-attribute">content_by_lua_file</span> lua/<span class="hljs-variable">$1</span>.lua;
+        &#125;
+    &#125;
+&#125;</code></pre>
+
+<p>此处，我们将验证逻辑的执行时机放到了准入阶段，${prefix}/lua/access_check.lua的内容如下：</p>
+<pre><code class="hljs lua"><span class="hljs-keyword">local</span> param= <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;comm.param&quot;</span>)
+<span class="hljs-keyword">local</span> args = ngx.req.get_uri_args()
+
+<span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> args.x <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> args.y <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> param.is_number(args.x, args.y) <span class="hljs-keyword">then</span>
+    ngx.<span class="hljs-built_in">exit</span>(ngx.HTTP_BAD_REQUEST)
+    <span class="hljs-keyword">return</span>
+<span class="hljs-keyword">end</span></code></pre>
+
+<p>模块comm.param的路径为{$prefix}/lua/comm/param.lua，其内如下：</p>
+<pre><code class="hljs lua"><span class="hljs-keyword">local</span> _M = &#123;&#125;
+
+<span class="hljs-comment">-- 对输入参数逐个进行校验，只要有一个不是数字类型，则返回 false</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_M.is_number</span><span class="hljs-params">(...)</span></span>
+    <span class="hljs-keyword">local</span> <span class="hljs-built_in">arg</span> = &#123;...&#125;
+
+    <span class="hljs-keyword">local</span> num
+    <span class="hljs-keyword">for</span> _,v <span class="hljs-keyword">in</span> <span class="hljs-built_in">ipairs</span>(<span class="hljs-built_in">arg</span>) <span class="hljs-keyword">do</span>
+        num = <span class="hljs-built_in">tonumber</span>(v)
+        <span class="hljs-keyword">if</span> <span class="hljs-literal">nil</span> == num <span class="hljs-keyword">then</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+        <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">return</span> _M</code></pre>
+
+<h2 id="五、小结"><a href="#五、小结" class="headerlink" title="五、小结"></a>五、小结</h2><p>通过如上几个步骤，一个简单的API Server就搭建完成了，最终整体的目录结构如下：</p>
+<pre><code class="hljs shell">.
+├── conf
+│   ├── nginx.conf
+├── logs
+│   ├── error.log
+│   └── nginx.pid
+├── lua
+│   ├── access_check.lua
+│   ├── addition.lua
+│   ├── subtraction.lua
+│   ├── multiplication.lua
+│   ├── division.lua
+│   └── comm
+│       └── param.lua
+└── sbin
+    └── nginx</code></pre>
+
+<h2 id="六、参考"><a href="#六、参考" class="headerlink" title="六、参考"></a>六、参考</h2><p><a target="_blank" rel="noopener" href="https://moonbingbing.gitbooks.io/openresty-best-practices/content/">简单API Server框架</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/OpenResty/">OpenResty</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/API-Server%E6%A1%86%E6%9E%B6/">API Server框架</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/12/14/%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B21%EF%BC%9A%E7%90%86%E8%A7%A3kubeadm/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">集群部署1：理解kubeadm</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/09/API%E7%9A%84%E8%AE%BE%E8%AE%A1/">
+                        <span class="hidden-mobile">API的设计</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "一个简单API Server框架&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,756 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="kubxy">
+  <meta name="keywords" content="">
+  <title>访问控制：基于角色的权限控制 - Kubxy</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Kubxy</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-03-14 09:00" pubdate>
+        2021年3月14日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      41
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">访问控制：基于角色的权限控制</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <p>todo</p>
+<h2 id="一、什么是RBAC"><a href="#一、什么是RBAC" class="headerlink" title="一、什么是RBAC"></a>一、什么是RBAC</h2><p>RBAC，是Role-Based Access Control的缩写，即基于角色的访问控制。在Kubernetes项目中，负责完成认证和授权工作的就是RBAC，它主要由三个最基本的内容组成：</p>
+<ul>
+<li>Subject：被作用者，即可以是“人”，也可以是“机器”，还可以是我们在Kubernetes中定义的“用户”。</li>
+<li>Role：角色，它就是一组权限规则，定义了一组可以对Kubernetes API对象进行操作的权限。</li>
+<li>RoleBinding：角色绑定，它定义了“被作用者”和“角色”的绑定关系。</li>
+</ul>
+<h2 id="二、如何使用RBAC"><a href="#二、如何使用RBAC" class="headerlink" title="二、如何使用RBAC"></a>二、如何使用RBAC</h2><h3 id="2-1、定义Role"><a href="#2-1、定义Role" class="headerlink" title="2.1、定义Role"></a>2.1、定义Role</h3><p>在Kubernetes项目中，Role就是一个API对象，它的定义如下：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">kind:</span> <span class="hljs-string">Role</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">rbac.authorization.k8s.io/v1</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">mynamespace</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-role</span>
+<span class="hljs-attr">rules:</span>
+<span class="hljs-bullet">-</span> <span class="hljs-attr">apiGroups:</span> [<span class="hljs-string">&quot;&quot;</span>]
+  <span class="hljs-attr">resources:</span> [<span class="hljs-string">&quot;pods&quot;</span>]
+  <span class="hljs-attr">verbs:</span> [<span class="hljs-string">&quot;get&quot;</span>, <span class="hljs-string">&quot;watch&quot;</span>,<span class="hljs-string">&quot;list&quot;</span>]</code></pre>
+
+<p>首先，我们在名为mynamespace的Namespace下，定义了一个名为my-role的Role对象。</p>
+<p>然后，我们通过rules字段为my-role这个Role对象定义了权限规则。如上，这条规则的含义是：允许“被作用者”，对mynamespace下面的Pod对象，进行get、watch和list操作。</p>
+<h3 id="2-2、定义RoleBinding"><a href="#2-2、定义RoleBinding" class="headerlink" title="2.2、定义RoleBinding"></a>2.2、定义RoleBinding</h3><p>在有了Role后，我们就可以将Role绑定到被作用者上了，即进行RoleBinding。在kubernetes项目中，RoleBinding也是一个API对象，它的定义如下：</p>
+<pre><code class="hljs yaml"><span class="hljs-meta">---</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">RoleBinding</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">rbac.authorization.k8s.io/v1</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">mynamespace</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-rolebinding</span>
+<span class="hljs-attr">subjects:</span>
+<span class="hljs-bullet">-</span> <span class="hljs-attr">kind:</span> <span class="hljs-string">User</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-user</span>
+  <span class="hljs-attr">apiGroup:</span> <span class="hljs-string">rbac.authorization.k8s.io</span>
+<span class="hljs-attr">roleRef:</span>
+  <span class="hljs-attr">kind:</span> <span class="hljs-string">Role</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-role</span>
+  <span class="hljs-attr">apiGroup:</span> <span class="hljs-string">rbac.authorization.k8s.io</span></code></pre>
+
+<p>首先，我们通过subjects字段声明了“被作用者”的信息，它的类型是User，它的名字是my-user。</p>
+<p>然后，通过roleRef字段，我们直接引用了之前创建的Role对象。</p>
+<p>这样，我们就完成了role和”被作用者”的绑定关系，是不是很简单。</p>
+<h2 id="三、理解Subject"><a href="#三、理解Subject" class="headerlink" title="三、理解Subject"></a>三、理解Subject</h2><p>在上面的例子中，我们是不是会有这样的困惑：</p>
+<blockquote>
+<p>在Kubernets中，并没有User类型的API对象。而且，我们也没有创建过User，那这个User到底是从哪里来的呢？</p>
+</blockquote>
+<p>其实，Kubernetes中的“User”，就是“用户”，它只是一个授权系统中的逻辑概念。它需要通过外部认证服务（比如，Keystone）来提供。此外，我们还可以直接给API Server指定一个用户名、密码文件。此时，Kubernetes的授权系统，就可以从这个文件中找到对应的“用户”了。</p>
+<p>在大多数时候，我们其实不会使用“用户”这个功能。在私有环境中，我们只要使用Kubernetes提供的内置“用户”，就足够了。而这个内置用户，就是ServiceAccount。</p>
+<h3 id="3-1、实践ServiceAccount"><a href="#3-1、实践ServiceAccount" class="headerlink" title="3.1、实践ServiceAccount"></a>3.1、实践ServiceAccount</h3><h4 id="3-1-1、定义ServiceAccount"><a href="#3-1-1、定义ServiceAccount" class="headerlink" title="3.1.1、定义ServiceAccount"></a>3.1.1、定义ServiceAccount</h4><p>首先，我们定义一个ServiceAccount，它也是一个API对象，定义如下：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">kind:</span> <span class="hljs-string">ServiceAccount</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">mynamespace</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-sa</span></code></pre>
+
+<p>可以看到，一个最简单的 ServiceAccount 对象只需要 Name 和 Namespace 这两个最基本的字段。</p>
+<h4 id="3-1-2、定义Role"><a href="#3-1-2、定义Role" class="headerlink" title="3.1.2、定义Role"></a>3.1.2、定义Role</h4><p>然后，我们直接使用上面定义的Role对象：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">kind:</span> <span class="hljs-string">Role</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">rbac.authorization.k8s.io/v1</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">mynamespace</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-role</span>
+<span class="hljs-attr">rules:</span>
+<span class="hljs-bullet">-</span> <span class="hljs-attr">apiGroups:</span> [<span class="hljs-string">&quot;&quot;</span>]
+  <span class="hljs-attr">resources:</span> [<span class="hljs-string">&quot;pods&quot;</span>]
+  <span class="hljs-attr">verbs:</span> [<span class="hljs-string">&quot;get&quot;</span>, <span class="hljs-string">&quot;watch&quot;</span>,<span class="hljs-string">&quot;list&quot;</span>]</code></pre>
+
+<h4 id="3-1-3、定义RoleBinding"><a href="#3-1-3、定义RoleBinding" class="headerlink" title="3.1.3、定义RoleBinding"></a>3.1.3、定义RoleBinding</h4><p>接着，我们定义一个RoleBinding，将Role绑定到ServiceAccount，如下：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">kind:</span> <span class="hljs-string">RoleBinding</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">rbac.authorization.k8s.io/v1</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">mynamespace</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-rolebinding</span>
+<span class="hljs-attr">subjects:</span>
+<span class="hljs-bullet">-</span> <span class="hljs-attr">kind:</span> <span class="hljs-string">ServiceAccount</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-sa</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">mynamespace</span>
+<span class="hljs-attr">roleRef:</span>
+  <span class="hljs-attr">kind:</span> <span class="hljs-string">Role</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-role</span>
+  <span class="hljs-attr">apiGroup:</span> <span class="hljs-string">rbac.authorization.k8s.io</span></code></pre>
+
+<p>可以看到，在这个 RoleBinding 对象里，subjects 字段的类型（kind），不再是一个 User，而是一个名为 my-sa 的 ServiceAccount。</p>
+<h4 id="3-1-4、创建对象"><a href="#3-1-4、创建对象" class="headerlink" title="3.1.4、创建对象"></a>3.1.4、创建对象</h4><p>最后，我们用 kubectl 命令创建这三个对象：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl create -f svc-account.yaml</span>
+<span class="hljs-meta">$</span><span class="bash"> kubectl create -f role.yaml</span>
+<span class="hljs-meta">$</span><span class="bash"> kubectl create -f role-binding.yaml</span></code></pre>
+
+<h4 id="3-1-5、查看ServiceAccount"><a href="#3-1-5、查看ServiceAccount" class="headerlink" title="3.1.5、查看ServiceAccount"></a>3.1.5、查看ServiceAccount</h4><p>当创建完成后，我们可以查看一下这个 ServiceAccount 的详细信息：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl get sa -n mynamespace -o yaml</span>
+- apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    creationTimestamp: 2018-09-08T12:59:17Z
+    name: example-sa
+    namespace: mynamespace
+    resourceVersion: &quot;409327&quot;
+    ...
+  secrets:
+  - name: example-sa-token-vmfg6</code></pre>
+
+<p>可以看到，Kubernetes 会为这个 ServiceAccount 自动创建并分配一个 Secret 对象（上述 ServiceAcount 定义里最下面的 secrets 字段）。而这个 Secret对象，就是这个 ServiceAccount 对应的、用来跟 APIServer 进行交互的授权文件，我们一般称它为：Token。Token 文件的内容一般是证书或者密码，它以一个 Secret 对象的方式保存在 Etcd 当中。</p>
+<h4 id="3-1-6、Pod使用ServiceAccount"><a href="#3-1-6、Pod使用ServiceAccount" class="headerlink" title="3.1.6、Pod使用ServiceAccount"></a>3.1.6、Pod使用ServiceAccount</h4><p>有了用户，也进行了授权，那如何使用这个用户呢？</p>
+<p>此时，Kubernetes中的主角Pod就该登场了，我们来看如下定义：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">mynamespace</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">sa-token-test</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">nginx</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">nginx:1.7.9</span>
+  <span class="hljs-attr">serviceAccountName:</span> <span class="hljs-string">my-sa</span></code></pre>
+
+<p>在这里，我们定义了 Pod 要使用的 ServiceAccount 的名字是：my-sa。这样，这个Pod就可以以my-sa这个内置用户的身份对APIServer进行一些操作了。</p>
+<h4 id="3-1-7、ServerAccount的真面目"><a href="#3-1-7、ServerAccount的真面目" class="headerlink" title="3.1.7、ServerAccount的真面目"></a>3.1.7、ServerAccount的真面目</h4><p>等这个 Pod 运行起来之后，我们就可以看到，该 ServiceAccount 的 token，也就是Secret 对象，被 Kubernetes 自动挂载到了容器的 /var/run/secrets/kubernetes.io/serviceaccount 目录下，如下所示：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl describe pod sa-token-test -n mynamespace</span>
+Name:               sa-token-test
+Namespace:          mynamespace
+...
+Containers:
+  nginx:
+    ...
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from example-sa-token-vmfg6 (ro)</code></pre>
+
+<p>这时候，我们可以通过 kubectl exec 查看到这个目录里的文件：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl <span class="hljs-built_in">exec</span> -it sa-token-test -n mynamespace -- /bin/bash</span>
+root@sa-token-test:/# ls /var/run/secrets/kubernetes.io/serviceaccount
+ca.crt namespace  token</code></pre>
+
+<p>如上所示，容器里的应用，就可以使用这个 ca.crt 来访问 APIServer 了。更重要的是，此时它只能够做 GET、WATCH 和 LIST 操作。因为 my-sa 这个 ServiceAccount 的权限，已经被我们绑定的 Role 做了限制。</p>
+<h3 id="3-2、默认ServiceAccount"><a href="#3-2、默认ServiceAccount" class="headerlink" title="3.2、默认ServiceAccount"></a>3.2、默认ServiceAccount</h3><p>到这里，我们可能会有这样的疑问：</p>
+<blockquote>
+<p>我们平时定义Pod时并没有指定ServiceAccount，那是不是说Pod就不能对APIServer进行任何操作了呢？</p>
+</blockquote>
+<p>其实不是。在Kubernetes中，如果一个Pod没有声明ServiceAccount，那么Kubernetes 就会自动在它的 Namespace 下创建一个名为 default 的默认 ServiceAccount，然后分配给这个 Pod。</p>
+<p>在默认情况下，这个默认 ServiceAccount 并没有关联任何 Role。也就是说，此时它有访问 APIServer 的绝大多数权限。当然，这个访问所需要的 Token，还是默认 ServiceAccount 对应的 Secret 对象为它提供的，如下所示：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl describe sa default</span>
+Name:                default
+Namespace:           default
+Labels:              &lt;none&gt;
+Annotations:         &lt;none&gt;
+Image pull secrets:  &lt;none&gt;
+Mountable secrets:   default-token-s8rbq
+Tokens:              default-token-s8rbq
+Events:              &lt;none&gt;
+
+<span class="hljs-meta">$</span><span class="bash"> kubectl get secret</span>
+NAME                  TYPE                                  DATA      AGE
+default-token-s8rbq   kubernetes.io/service-account-token   3         82d
+
+<span class="hljs-meta">$</span><span class="bash"> kubectl describe secret default-token-s8rbq</span>
+Name:         default-token-s8rbq
+Namespace:    default
+Labels:       &lt;none&gt;
+Annotations:  kubernetes.io/service-account.name=default
+              kubernetes.io/service-account.uid=ffcb12b2-917f-11e8-abde-42010aa80002
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  7 bytes
+token:      &lt;TOKEN数据&gt;</code></pre>
+
+<p>可以看到，Kubernetes 会自动为默认 ServiceAccount 创建并绑定一个特殊的 Secret：它的类型是kubernetes.io/service-account-token；它的 Annotation 字段，声明了kubernetes.io/service-account.name=default，即这个 Secret 会跟同一 Namespace 下名叫 default 的 ServiceAccount 进行绑定。</p>
+<p>所以，在生产环境中，强烈建议为所有 Namespace 下的默认 ServiceAccount，绑定一个只读权限的 Role。</p>
+<h3 id="3-3、用户组"><a href="#3-3、用户组" class="headerlink" title="3.3、用户组"></a>3.3、用户组</h3><p>除了“用户”（User）外，Kubernetes 还拥有“用户组”（Group）的概念，也就是一组“用户”的意思。如果我们为 Kubernetes 配置了外部认证服务的话，这个“用户组”的概念就会由外部认证服务提供。而对于 Kubernetes 的内置“用户”ServiceAccount 来说，这个“用户组”的概念也同样适用。</p>
+<h4 id="3-3-1、ServiceAccount组"><a href="#3-3-1、ServiceAccount组" class="headerlink" title="3.3.1、ServiceAccount组"></a>3.3.1、ServiceAccount组</h4><p>实际上，一个 ServiceAccount，在 Kubernetes 里对应的“用户”的名字是：</p>
+<pre><code class="hljs dts"><span class="hljs-symbol">system:</span>serviceaccount:<span class="hljs-params">&lt;Namespace名字&gt;</span>:<span class="hljs-params">&lt;ServiceAccount名字&gt;</span></code></pre>
+
+<p>而它对应的内置“用户组”的名字，就是：</p>
+<pre><code class="hljs dts"><span class="hljs-symbol">system:</span>serviceaccounts:<span class="hljs-params">&lt;Namespace名字&gt;</span></code></pre>
+
+<p>也就是说，ServiceAccount所属的Namespace就是它的组。</p>
+<h4 id="3-3-2、ServiceAccount组的应用"><a href="#3-3-2、ServiceAccount组的应用" class="headerlink" title="3.3.2、ServiceAccount组的应用"></a>3.3.2、ServiceAccount组的应用</h4><p>比如，现在我们可以在 RoleBinding 里定义如下的 subjects：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">subjects:</span>
+<span class="hljs-bullet">-</span> <span class="hljs-attr">kind:</span> <span class="hljs-string">Group</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">system:serviceaccounts:mynamespace</span>
+  <span class="hljs-attr">apiGroup:</span> <span class="hljs-string">rbac.authorization.k8s.io</span></code></pre>
+
+<p>这就意味着这个 Role 的权限规则，作用于 mynamespace 里的所有 ServiceAccount。这就用到了“用户组”的概念。</p>
+<h2 id="四、理解ClusterRole"><a href="#四、理解ClusterRole" class="headerlink" title="四、理解ClusterRole"></a>四、理解ClusterRole</h2><h3 id="4-1、从rules字段说起"><a href="#4-1、从rules字段说起" class="headerlink" title="4.1、从rules字段说起"></a>4.1、从rules字段说起</h3><p>我们先来看一下rules字段，它由如下五个字段构成：</p>
+<ul>
+<li>apiGroups（string array）：声明规则是为哪些API组下的资源定义的。如上，空（“”）表示核心API组。</li>
+<li>resources（string array）：定义规则在哪些资源上生效。如上，Pods表示将规则应用的Pod对象上。</li>
+<li>verbs（string array）：定义可以对资源进行哪些操作。如上，表示可以对资源进行get、watch和list操作。</li>
+<li>resourceNames（string array）：是一个可选字段。它是一个资源名称的白名单，即允许规则在哪些特定的资源上生效。</li>
+<li>nonResourceURLs（string array）：定义了用户可访问的URL。它支持使用“*s”的形式，但只作用于整个url的最后一部分，因为nonResourceURL是没有namespace的，所以该形式，只适用于ClusterRole。一个规则可以在API资源（比如，Pod和Secret）上生效，也可以在非资源的URL（比如，/api）上生效，但不能同时在两者上生效。</li>
+</ul>
+<p>从这里可以看出，在kubernetes项目中，还存在一种ClusterRole对象，那么ClusterRole是用来干什么的呢？</p>
+<h3 id="4-2、ClusterRole-amp-ClusterRoleBinding"><a href="#4-2、ClusterRole-amp-ClusterRoleBinding" class="headerlink" title="4.2、ClusterRole &amp; ClusterRoleBinding"></a>4.2、ClusterRole &amp; ClusterRoleBinding</h3><p>我们需要知道的是，Role 和 RoleBinding 对象都是 Namespaced 对象（Namespaced Object），即它们的权限规则仅在它们自己的 Namespace 内有效，roleRef 也只能引用当前 Namespace 里的 Role 对象。那么，对于非 Namespaced（Non-namespaced）对象（比如：Node），或者，某一个 Role 想要作用于所有的 Namespace 的时候，我们又该如何去做授权呢？</p>
+<p>这时候，我们就必须要使用 ClusterRole 和 ClusterRoleBinding 这两个组合了。这两个 API 对象的用法跟 Role 和 RoleBinding 完全一样。只不过，它们的定义里，没有了 Namespace 字段，如下所示：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">kind:</span> <span class="hljs-string">ClusterRole</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">rbac.authorization.k8s.io/v1</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-clusterrole</span>
+<span class="hljs-attr">rules:</span>
+<span class="hljs-bullet">-</span> <span class="hljs-attr">apiGroups:</span> [<span class="hljs-string">&quot;&quot;</span>]
+  <span class="hljs-attr">resources:</span> [<span class="hljs-string">&quot;pods&quot;</span>]
+  <span class="hljs-attr">verbs:</span> [<span class="hljs-string">&quot;get&quot;</span>, <span class="hljs-string">&quot;watch&quot;</span>, <span class="hljs-string">&quot;list&quot;</span>]
+<span class="hljs-meta">---</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">ClusterRoleBinding</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">rbac.authorization.k8s.io/v1</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-clusterrolebinding</span>
+<span class="hljs-attr">subjects:</span>
+<span class="hljs-bullet">-</span> <span class="hljs-attr">kind:</span> <span class="hljs-string">User</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-user</span>
+  <span class="hljs-attr">apiGroup:</span> <span class="hljs-string">rbac.authorization.k8s.io</span>
+<span class="hljs-attr">roleRef:</span>
+  <span class="hljs-attr">kind:</span> <span class="hljs-string">ClusterRole</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-clusterrole</span>
+  <span class="hljs-attr">apiGroup:</span> <span class="hljs-string">rbac.authorization.k8s.io</span></code></pre>
+
+<p>通过如上ClusterRole 和 ClusterRoleBinding 的组合，名为 my-user 的用户，就拥有对所有 Namespace 里的 Pod 进行 GET、WATCH 和 LIST 操作的权限。</p>
+<h3 id="4-3、系统保留的ClusterRole"><a href="#4-3、系统保留的ClusterRole" class="headerlink" title="4.3、系统保留的ClusterRole"></a>4.3、系统保留的ClusterRole</h3><p>在 Kubernetes 中已经内置了很多个为系统保留的 ClusterRole，它们的名字都以 system: 开头。我们可以通过 <code>kubectl get clusterroles </code>查看到它们。</p>
+<p>一般来说，这些系统 ClusterRole，是绑定给 Kubernetes 系统组件对应的 ServiceAccount 使用的。比如，其中一个名叫 system:kube-scheduler 的 ClusterRole，定义的权限规则是 kube-scheduler（Kubernetes 的调度器组件）运行所需的必要权限。我们可以通过如下指令查看这些权限的列表：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl describe clusterrole system:kube-scheduler</span>
+Name:         system:kube-scheduler
+...
+PolicyRule:
+  Resources                    Non-Resource URLs Resource Names    Verbs
+  ---------                    -----------------  --------------    -----
+...
+  services                     []                 []                [get list watch]
+  replicasets.apps             []                 []                [get list watch]
+  statefulsets.apps            []                 []                [get list watch]
+  replicasets.extensions       []                 []                [get list watch]
+  poddisruptionbudgets.policy  []                 []                [get list watch]
+  pods/status                  []                 []                [patch update]</code></pre>
+
+<p>这个 system:kube-scheduler 的 ClusterRole，就会被绑定给 kube-system Namesapce 下名叫 kube-scheduler 的 ServiceAccount，它正是 Kubernetes 调度器的 Pod 声明使用的 ServiceAccount。</p>
+<p>除此之外，Kubernetes 还提供了四个预先定义好的 ClusterRole 来供用户直接使用：</p>
+<ul>
+<li>cluster-admin</li>
+<li>addmin</li>
+<li>edit</li>
+<li>view</li>
+</ul>
+<p>通过它们的名字，我们应该能大致猜出它们都定义了哪些权限。比如，这个名叫 view 的 ClusterRole，就规定了被作用者只有 Kubernetes API 的只读权限。</p>
+<p>我们需要注意的是，上面这个 cluster-admin 角色，对应的是整个 Kubernetes 项目中的最高权限（verbs=*），如下所示：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl describe clusterrole cluster-admin</span>
+Name:         cluster-admin
+Labels:       kubernetes.io/bootstrapping=rbac-defaults
+Annotations:  rbac.authorization.kubernetes.io/autoupdate=true
+PolicyRule:
+  Resources  Non-Resource URLs Resource Names  Verbs
+  ---------  -----------------  --------------  -----
+  *.*        []                 []              [*]
+             [*]                []              [*]</code></pre>
+
+<p>所以，务必要谨慎而小心地使用 cluster-admin。</p>
+<h3 id="4-4、权限设置"><a href="#4-4、权限设置" class="headerlink" title="4.4、权限设置"></a>4.4、权限设置</h3><p>在 Role 或者 ClusterRole 里面，如果要赋予用户 my-user 所有权限，那我们就可以给它指定一个 verbs 字段的全集，如下所示：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">verbs:</span> [<span class="hljs-string">&quot;get&quot;</span>, <span class="hljs-string">&quot;list&quot;</span>, <span class="hljs-string">&quot;watch&quot;</span>, <span class="hljs-string">&quot;create&quot;</span>, <span class="hljs-string">&quot;update&quot;</span>, <span class="hljs-string">&quot;patch&quot;</span>, <span class="hljs-string">&quot;delete&quot;</span>]</code></pre>
+
+<p>这些就是当前 Kubernetes（v1.11）里能够对 API 对象进行的所有操作了。</p>
+<p>类似地，Role 对象的 rules 字段也可以进一步细化。比如，我们可以只针对某一个具体的对象进行权限设置，如下所示：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">rules:</span>
+<span class="hljs-bullet">-</span> <span class="hljs-attr">apiGroups:</span> [<span class="hljs-string">&quot;&quot;</span>]
+  <span class="hljs-attr">resources:</span> [<span class="hljs-string">&quot;configmaps&quot;</span>]
+  <span class="hljs-attr">resourceNames:</span> [<span class="hljs-string">&quot;my-config&quot;</span>]
+  <span class="hljs-attr">verbs:</span> [<span class="hljs-string">&quot;get&quot;</span>]</code></pre>
+
+<p>这个例子就表示，这条规则的“被作用者”，只对名叫“my-config”的 ConfigMap 对象，有进行 GET 操作的权限。</p>
+<h2 id="五、小结"><a href="#五、小结" class="headerlink" title="五、小结"></a>五、小结</h2><p>在这篇文章中，我们主要讨论了Kubernetes项目中的RBAC机制，我们需要掌握如下几个概念：</p>
+<ul>
+<li>Subject：被作用者，即认证用户，它可以是“用户”，也可以是“用户组”，在Kubernetes中通常使用的是ServiceAccount（Kubernetes系统的内置用户）。</li>
+<li>Role：角色，即一组权限规则，它可以分为Role和ClusterRole，前者的作用范围是特定的Namespace，后者的作用范围是所有的Namespace。</li>
+<li>Rolebinding：角色绑定，用于将“角色”与“被作用者”绑定，即为用户分配权限。</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Kubernetes/">Kubernetes</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/12/25/%E5%8E%9F%E7%94%9F%E5%AE%B6%E5%BA%AD/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">原生家庭</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/02/28/%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%E5%90%88%E9%80%82%E7%9A%84%E5%BC%80%E5%8F%91%E6%A8%A1%E5%BC%8F/">
+                        <span class="hidden-mobile">如何选择合适的开发模式</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "访问控制：基于角色的权限控制&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

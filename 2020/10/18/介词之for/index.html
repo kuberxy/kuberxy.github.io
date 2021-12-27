@@ -1,0 +1,854 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="kubxy">
+  <meta name="keywords" content="">
+  <title>介词之for - Kubxy</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Kubxy</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-10-18 09:50" pubdate>
+        2020年10月18日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      29
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">介词之for</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <p>todo</p>
+<h3 id="1、给、对-表示对象或用途"><a href="#1、给、对-表示对象或用途" class="headerlink" title="1、给、对 [表示对象或用途]"></a>1、给、对 [表示对象或用途]</h3><blockquote>
+<p>used to say who is intenede to get or use something, or where something is intended to be used</p>
+</blockquote>
+<p>例句：</p>
+<ul>
+<li><p>I’ve got a present for you</p>
+<p>我有件礼物送给你</p>
+</li>
+<li><p>Someone left a message for Vicky</p>
+<p>有人给维基留了言</p>
+</li>
+<li><p>An English course for foreign students</p>
+<p>为外国学生开的一门英语课程</p>
+</li>
+<li><p>We need a new battery for the radio</p>
+<p>我们的收音机需要一节新电池</p>
+</li>
+<li><p>These chairs are for the office</p>
+<p>这些椅子是办公室的</p>
+</li>
+</ul>
+<h3 id="2、为了、以帮助"><a href="#2、为了、以帮助" class="headerlink" title="2、为了、以帮助"></a>2、为了、以帮助</h3><blockquote>
+<p>in order to help someone or something</p>
+</blockquote>
+<p>例句：</p>
+<ul>
+<li><p>I looked after the kids for them</p>
+<p>我为他们照看孩子</p>
+</li>
+<li><p>Let me carry that bag for you</p>
+<p>我来给你拿那个包吧</p>
+</li>
+<li><p>The doctor knew that there was nothing he cloud do for her</p>
+<p>医生知道自己无能为力，帮不了她</p>
+</li>
+<li><p>Charles died fighting for his country</p>
+<p>查尔斯在战斗中为国捐躯</p>
+</li>
+<li><p>What can I do for you?</p>
+<p>= used to ask a customer if you can help them?</p>
+<p>我可以帮您做点什么吗？</p>
+</li>
+</ul>
+<h3 id="3、为了、供-表示目的"><a href="#3、为了、供-表示目的" class="headerlink" title="3、为了、供 [表示目的]"></a>3、为了、供 [表示目的]</h3><blockquote>
+<p>used to say what the purpose of an object, action etc is</p>
+</blockquote>
+<p>例句：</p>
+<ul>
+<li><p>Knife for cutting bread</p>
+<p>切面包的刀子</p>
+</li>
+<li><p>What did you do that  for?</p>
+<p>你那样做是为了什么？</p>
+</li>
+<li><p>I’ve bought him a watch for his birthday</p>
+<p>我给他买了块手表作为生日礼物</p>
+</li>
+<li><p>The documents  prepared for his defence</p>
+<p>为给他辩护而准备的文件</p>
+</li>
+</ul>
+<h3 id="4、为了要；为了做；为了得到"><a href="#4、为了要；为了做；为了得到" class="headerlink" title="4、为了要；为了做；为了得到"></a>4、为了要；为了做；为了得到</h3><blockquote>
+<p>in order to have, do, get, or obtain something</p>
+</blockquote>
+<p>例句：</p>
+<ul>
+<li><p>Are you waiting for the bus?</p>
+<p>你在等公共汽车吗？</p>
+</li>
+<li><p>the qualifications necessary for a careerin broadcasting</p>
+<p>从事广播业必须具备的资格</p>
+</li>
+<li><p>Mother was too ill to get up for a dinner</p>
+<p>母亲病得无法起床吃晚饭</p>
+</li>
+<li><p>I paid $3 for a ticket</p>
+<p>我花三美元买了张票</p>
+</li>
+<li><p>For further details, write to this address</p>
+<p>欲知详情，请致函此地址</p>
+</li>
+<li><p>Let’s go for a walk</p>
+<p>我们去散步吧</p>
+</li>
+</ul>
+<h3 id="5、达，计-表示动作或情况持续的时间"><a href="#5、达，计-表示动作或情况持续的时间" class="headerlink" title="5、达，计 [表示动作或情况持续的时间]"></a>5、达，计 [表示动作或情况持续的时间]</h3><blockquote>
+<p>used to say how long an action or situation continues for</p>
+</blockquote>
+<p>例句：</p>
+<ul>
+<li><p>Bake the cake for 40 minutes</p>
+<p>将蛋糕烘烤40分钟</p>
+</li>
+<li><p>Wh had been talking for a good half hour</p>
+<p>我们谈了足足半小时</p>
+</li>
+<li><p>He’s been off work for a while</p>
+</li>
+</ul>
+<h3 id="6、达、计-表示距离"><a href="#6、达、计-表示距离" class="headerlink" title="6、达、计 [表示距离]"></a>6、达、计 [表示距离]</h3><blockquote>
+<p>used to talk about distance</p>
+</blockquote>
+<p>例句：</p>
+<ul>
+<li><p>We walked for miles</p>
+<p>我们走了好几英里</p>
+</li>
+<li><p>Factories stretch for quite a way along the canal</p>
+<p>工厂沿运河延伸了很长一段距离</p>
+</li>
+</ul>
+<h3 id="7、在…时间-表示安排"><a href="#7、在…时间-表示安排" class="headerlink" title="7、在…时间 [表示安排]"></a>7、在…时间 [表示安排]</h3><blockquote>
+<p>if something is arranged for a particular time, it is planned that it should happen then</p>
+</blockquote>
+<p>例句：</p>
+<ul>
+<li><p>I’ve invited them for 9 o’clock</p>
+<p>我邀请他们9点来</p>
+</li>
+<li><p>A meeting was arranged for 18th May</p>
+<p>我有一个会议安排在5月18日</p>
+</li>
+</ul>
+<h3 id="8、往、向-表示去向"><a href="#8、往、向-表示去向" class="headerlink" title="8、往、向 [表示去向]"></a>8、往、向 [表示去向]</h3><blockquote>
+<p>used to say where a person, vehicle etc is going</p>
+</blockquote>
+<p>例句：</p>
+<ul>
+<li><p>I set off for work</p>
+<p>我动身去上班</p>
+</li>
+<li><p>the train for Manchester</p>
+<p>开往曼彻斯特的列车</p>
+</li>
+<li><p>A few days later she would be leaving for New York</p>
+<p>过几天她就要去纽约了</p>
+</li>
+</ul>
+<h3 id="9、达、计-表示价格或价值"><a href="#9、达、计-表示价格或价值" class="headerlink" title="9、达、计 [表示价格或价值]"></a>9、达、计 [表示价格或价值]</h3><blockquote>
+<p>used to say what the price or value of something is</p>
+</blockquote>
+<p>例句：</p>
+<ul>
+<li><p>a cheque for a hundred pounds</p>
+<p>一张100英镑的支票</p>
+</li>
+<li><p>The diamond was insured for two thousand dollars</p>
+<p>这颗钻石上了2000美元的保险</p>
+</li>
+</ul>
+<h3 id="10、由于、因为"><a href="#10、由于、因为" class="headerlink" title="10、由于、因为"></a>10、由于、因为</h3><blockquote>
+<p>because of or a result of something</p>
+</blockquote>
+<p>例句：</p>
+<ul>
+<li><p>If, for any reason, you cannot attend, please inform us</p>
+<p>如因故不能出席，请通知我们</p>
+</li>
+<li><p>We could hardly see for the mist</p>
+<p>由于雾气，我们几乎什么也看不见</p>
+</li>
+<li><p>You’ll feel better for a break</p>
+<p>休息一下你会感觉好些</p>
+</li>
+<li><p>a reward for making good progress</p>
+<p>对取得良好进步的奖赏</p>
+</li>
+<li><p>Campbell was arrested for dangerous driving</p>
+<p>坎贝尔因危险驾车而遭逮捕</p>
+</li>
+</ul>
+<h3 id="11、对于-表示陈述或问题的对象"><a href="#11、对于-表示陈述或问题的对象" class="headerlink" title="11、对于 [表示陈述或问题的对象]"></a>11、对于 [表示陈述或问题的对象]</h3><blockquote>
+<p>used to say which thing or person your statement or question is related to</p>
+</blockquote>
+<p>例句：</p>
+<ul>
+<li><p>I’m sure she’s the ideal person for the job</p>
+<p>我确信她是这个职位最理想的人选</p>
+</li>
+<li><p>The questiosn on this paper are too difficult for 10-years-olds</p>
+<p>这张试卷上的题目对于10岁的孩子来说太难了</p>
+</li>
+<li><p>Are you all right for money?</p>
+<p>钱你没有问题吧？</p>
+</li>
+<li><p>Fortunately for him, he can swim</p>
+<p>好在他会游泳</p>
+</li>
+</ul>
+<h3 id="12、对于-表示情感表露的对象"><a href="#12、对于-表示情感表露的对象" class="headerlink" title="12、对于 [表示情感表露的对象]"></a>12、对于 [表示情感表露的对象]</h3><blockquote>
+<p>used to say which person or thing your feeling are directed towards</p>
+</blockquote>
+<p>例句：</p>
+<ul>
+<li><p>I came away feeling sorry for poor old George</p>
+<p>我走的时候，心里为可怜的老乔治感到难过</p>
+</li>
+<li><p>My deep love for him still remains</p>
+<p>我对他深爱依旧</p>
+</li>
+<li><p>They show no respect for authority</p>
+<p>他们无视权威</p>
+</li>
+</ul>
+<h3 id="13、当作-表示食物在哪一餐吃"><a href="#13、当作-表示食物在哪一餐吃" class="headerlink" title="13、当作 [表示食物在哪一餐吃]"></a>13、当作 [表示食物在哪一餐吃]</h3><blockquote>
+<p>used to say at which meal you eat something</p>
+</blockquote>
+<p>例句：</p>
+<ul>
+<li><p>We had pasta for lunch</p>
+<p>我们午餐吃了意大利面</p>
+</li>
+</ul>
+<h3 id="14、受雇于、效力于"><a href="#14、受雇于、效力于" class="headerlink" title="14、受雇于、效力于"></a>14、受雇于、效力于</h3><blockquote>
+<p>used to say which company, team etc you belong to</p>
+</blockquote>
+<p>例句：</p>
+<ul>
+<li><p>I’ve worked for the BBC ever since I left university</p>
+<p>我大学毕业后一直在英国广播公司工作</p>
+</li>
+<li><p>Deborah used to play for the A team</p>
+<p>德博拉增效力于A队</p>
+</li>
+<li><p>He writes fro a weekly paper</p>
+<p>他为一家周报撰稿</p>
+</li>
+</ul>
+<h3 id="15、支持、拥护、赞同"><a href="#15、支持、拥护、赞同" class="headerlink" title="15、支持、拥护、赞同"></a>15、支持、拥护、赞同</h3><blockquote>
+<p>supporting or in agreement with something or someone</p>
+</blockquote>
+<p>例句：</p>
+<ul>
+<li><p>We have studied the arguments for and against nuclear energy</p>
+<p>我们研究了支持和反对核能的论点</p>
+</li>
+<li><p>How many people voted for the proposal?</p>
+<p>有多少人投票支持这项提议？</p>
+</li>
+<li><p>Three sheels for the captain</p>
+<p>为队长欢呼三声</p>
+</li>
+<li><p>I’m all for giving people more freedom</p>
+<p>我完全赞成给予民众更多的自由</p>
+</li>
+</ul>
+<h3 id="16、意思是，词语或标志表示"><a href="#16、意思是，词语或标志表示" class="headerlink" title="16、意思是，词语或标志表示"></a>16、意思是，词语或标志表示</h3><blockquote>
+<p>used to say what a word or sign means</p>
+</blockquote>
+<p>例句：</p>
+<ul>
+<li><p>What’s the French word for ‘happy’?</p>
+<p>法语“开心”怎么讲</p>
+</li>
+<li><p>Red is for danger</p>
+<p>红色表示危险</p>
+</li>
+</ul>
+<h3 id="17、就…而言-表示某种特点令人惊讶"><a href="#17、就…而言-表示某种特点令人惊讶" class="headerlink" title="17、就…而言 [表示某种特点令人惊讶]"></a>17、就…而言 [表示某种特点令人惊讶]</h3><blockquote>
+<p>used to say that a particular quality of someone or something is surprising when you consider what the are</p>
+</blockquote>
+<p>例句：</p>
+<ul>
+<li><p>She looks young for her age</p>
+<p>就她的年龄而言，她看上去算是年轻的</p>
+</li>
+<li><p>It’s cold for July</p>
+<p>就7月份来说，这天气算是冷的</p>
+</li>
+</ul>
+<h3 id="18、代表"><a href="#18、代表" class="headerlink" title="18、代表"></a>18、代表</h3><blockquote>
+<p>as a representative of other people</p>
+</blockquote>
+<p>例句：</p>
+<ul>
+<li><p>Paisley claims to speak for the majority of local people</p>
+<p>佩斯利声称自己是当地大部分民众的喉舌</p>
+</li>
+</ul>
+<h3 id="19、对-某人-来说-可能、困难、必须、不寻常等"><a href="#19、对-某人-来说-可能、困难、必须、不寻常等" class="headerlink" title="19、对 [某人] 来说 [可能、困难、必须、不寻常等]"></a>19、对 [某人] 来说 [可能、困难、必须、不寻常等]</h3><blockquote>
+<p>used to say what is possible, difficult, necessary unusual etc</p>
+</blockquote>
+<p>例句：</p>
+<ul>
+<li>It’s unusual for Donald to be so bad-tempered</li>
+<li>There is an urgent need for someone to tackle thie problem</li>
+<li>Here is a chance fo everyone to learn new skills</li>
+<li>There’s nothing worse than for a parent to ill-treat a child</li>
+<li>It was too far for her to walk in high-heeled shoes</li>
+</ul>
+<h3 id="20、每…就有"><a href="#20、每…就有" class="headerlink" title="20、每…就有"></a>20、每…就有</h3><blockquote>
+<p>for each / every used to say that there is a relationship between one amount and another</p>
+</blockquote>
+<p>例句：</p>
+<ul>
+<li><p>For each mistake, you’ll half a point</p>
+<p>你每错一处，就要扣去半分</p>
+</li>
+<li><p>For every threee people who agree, you’ll find five who don’t</p>
+<p>每三个人同一，就有五个人不同意</p>
+</li>
+</ul>
+<h3 id="21、某事物不合某人之意"><a href="#21、某事物不合某人之意" class="headerlink" title="21、某事物不合某人之意"></a>21、某事物不合某人之意</h3><blockquote>
+<p>sth is not for sb </p>
+<p>used to say that something is not the kind of thing that someone likes or will enjoy</p>
+</blockquote>
+<p>例句：</p>
+<ul>
+<li><p>City life is not for me</p>
+<p>城市生活不适合我</p>
+</li>
+<li><p>This book is not for everyone</p>
+<p>这本书不是所有人都会喜欢的</p>
+</li>
+</ul>
+<h3 id="22、（不）应该由某人来做某事"><a href="#22、（不）应该由某人来做某事" class="headerlink" title="22、（不）应该由某人来做某事"></a>22、（不）应该由某人来做某事</h3><blockquote>
+<p>it is (not) for sb to do sth </p>
+<p>used to say whether it is someone’s right or duty to do something</p>
+</blockquote>
+<p>例句：</p>
+<ul>
+<li><p>It’s not for me to tell you what to do</p>
+<p>不应该由我来告诉你怎么办</p>
+</li>
+<li><p>It will be for you to decide what action you should take</p>
+<p>你应该采取什么行动由你自己来决定</p>
+</li>
+</ul>
+<h3 id="23、要不是某人-某物"><a href="#23、要不是某人-某物" class="headerlink" title="23、要不是某人/某物"></a>23、要不是某人/某物</h3><blockquote>
+<p>if it wasn’t / weren’t fo sb / sth </p>
+<p>= if it hadn’t been for sb / sth</p>
+<p>used to say who or what prevents or prevented something from happening</p>
+</blockquote>
+<p>例句：</p>
+<ul>
+<li><p>If it hadn’t been for you, I should have drowned</p>
+<p>要不是你的话，我就淹死了</p>
+</li>
+</ul>
+<h3 id="24、那正是某人-某物的特点-尤用于表示某人或某物不可能有多好"><a href="#24、那正是某人-某物的特点-尤用于表示某人或某物不可能有多好" class="headerlink" title="24、那正是某人/某物的特点 [尤用于表示某人或某物不可能有多好]"></a>24、那正是某人/某物的特点 [尤用于表示某人或某物不可能有多好]</h3><blockquote>
+<p>that’s / there’s sb / sth for you [口语]</p>
+<p>used to say that a particular kind of behaviour or situation is typical of someone or something, especially when you do not expect anything better from that person or thing</p>
+</blockquote>
+<ul>
+<li><p>I know it’s outrageous, but that’s Melissa for you</p>
+<p>我知道这很离谱，但梅利莎就是这么个人</p>
+</li>
+</ul>
+<h3 id="25、那还能算是…？那恰好跟…相反！"><a href="#25、那还能算是…？那恰好跟…相反！" class="headerlink" title="25、那还能算是…？那恰好跟…相反！"></a>25、那还能算是…？那恰好跟…相反！</h3><blockquote>
+<p>that’s / there’s sb / sth for you [口语]</p>
+<p>used when you are annoyed or disappointed to say that something is the opposite of the quality you are mentioning</p>
+</blockquote>
+<p>例句：</p>
+<ul>
+<li><p>Well, there’s gratitude for you! Here am I trying to help and you tell me not to interfere</p>
+<p>嘿，哪有这样表示感谢的！我来帮忙，你却叫我别插手</p>
+</li>
+</ul>
+<h3 id="26、要挨骂，要受罚"><a href="#26、要挨骂，要受罚" class="headerlink" title="26、要挨骂，要受罚"></a>26、要挨骂，要受罚</h3><blockquote>
+<p>be (in) for it [口语]</p>
+<p>to be likely to be blamed or punished</p>
+</blockquote>
+<p>例句：</p>
+<ul>
+<li><p>You’ll be in for it if she finds out what you’ve done</p>
+<p>要是她发现你干的事，你就麻烦了</p>
+</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E8%8B%B1%E8%AF%AD/">英语</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E8%8B%B1%E8%AF%AD%E8%AF%AD%E6%B3%95/">英语语法</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/11/15/hello-world/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Hello World</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/10/13/%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A65%EF%BC%9AGPU%E7%AE%A1%E7%90%86%E4%B8%8EDevice-Plugin%E6%9C%BA%E5%88%B6/">
+                        <span class="hidden-mobile">作业调度5：GPU管理与Device Plugin机制</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "介词之for&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

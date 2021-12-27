@@ -1,0 +1,647 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="kubxy">
+  <meta name="keywords" content="">
+  <title>深入解析Pod对象2：基本概念 - Kubxy</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Kubxy</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-10-02 07:50" pubdate>
+        2020年10月2日 早上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      36
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">深入解析Pod对象2：基本概念</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <p>在前面的文章中，我们详细讨论了Pod的实现原理和容器设计模式。接下来，我们来看看有关Pod对象的更多细节。</p>
+<h2 id="一、Pod-VS-虚拟机"><a href="#一、Pod-VS-虚拟机" class="headerlink" title="一、Pod VS 虚拟机"></a>一、Pod VS 虚拟机</h2><p>在 Kubernetes 项目中，最小的编排单位是Pod。将这个设计落实到 API 对象上后，容器（Container）就成了 Pod 属性里的一个普通的字段。此时，一个很自然的问题就是：</p>
+<blockquote>
+<p>到底哪些字段属于 Pod 对象，而又有哪些字段属于 Container ？</p>
+</blockquote>
+<p>要彻底理解这个问题，我们就一定要牢记这样一个结论：Pod 扮演的是传统部署环境里“虚拟机”的角色。这样的设计，是为了使用户从传统环境（虚拟机环境）向 Kubernetes（容器环境）的迁移，更加平滑。</p>
+<p>如果我们能把 Pod 看成传统环境里的“机器”、把容器看作是运行在这个“机器”里的“用户程序”，那么很多关于 Pod 对象的设计就非常容易理解了。比如，凡是调度、网络、存储，以及安全相关的属性，基本上是 Pod 级别的。这些属性的共同特征是，它们描述的是“机器”这个整体，而不是里面运行的“程序”。比如：</p>
+<ul>
+<li>配置这个“机器”的网卡（即：Pod 的网络定义），</li>
+<li>配置这个“机器”的磁盘（即：Pod 的存储定义），</li>
+<li>配置这个“机器”的防火墙（即：Pod 的安全定义），</li>
+<li>这台“机器”运行在哪个服务器之上（即：Pod 的调度）。</li>
+</ul>
+<h2 id="二、Pod级的重要字段"><a href="#二、Pod级的重要字段" class="headerlink" title="二、Pod级的重要字段"></a>二、Pod级的重要字段</h2><p>下面，我们一起来讨论一下Pod 中几个重要字段的含义和用法。</p>
+<h3 id="2-1、NodeSelector"><a href="#2-1、NodeSelector" class="headerlink" title="2.1、NodeSelector"></a>2.1、NodeSelector</h3><p>NodeSelector：是一个供用户将 Pod 与 Node 进行绑定的字段，用法如下所示：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-string">...</span>
+<span class="hljs-attr">spec:</span>
+ <span class="hljs-attr">nodeSelector:</span>
+   <span class="hljs-attr">disktype:</span> <span class="hljs-string">ssd</span></code></pre>
+
+<p>这样的一个配置，意味着这个 Pod 永远只能运行在携带了“disktype: ssd”标签（Label）的节点上；否则，它将调度失败。</p>
+<h3 id="2-2、NodeName"><a href="#2-2、NodeName" class="headerlink" title="2.2、NodeName"></a>2.2、NodeName</h3><p>NodeName：一旦 Pod 的这个字段被赋值，Kubernetes 项目就会认为这个 Pod 已经被调度过了，调度的结果就是赋值的节点名字。所以，这个字段一般由调度器负责设置，但我们可以通过设置它来“骗过”调度器，当然这个做法一般是在测试或者调试的时候才会用到。其用法如下：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-string">...</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">nodeName:</span> <span class="hljs-string">node1</span></code></pre>
+
+<p>在这里，我们指定将Pod调度到node1上。</p>
+<h3 id="2-3、HostAliases"><a href="#2-3、HostAliases" class="headerlink" title="2.3、HostAliases"></a>2.3、HostAliases</h3><p>HostAliases：定义了 Pod 的 hosts 文件（比如 /etc/hosts）里的内容，用法如下：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-string">...</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">hostAliases:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">ip:</span> <span class="hljs-string">&quot;10.1.2.3&quot;</span>
+    <span class="hljs-attr">hostnames:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;foo.remote&quot;</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;bar.remote&quot;</span>
+<span class="hljs-string">...</span></code></pre>
+
+<p>在这个 Pod 的 YAML 文件中，我们设置了一组 IP 和 hostname 数据。这样，这个 Pod 启动后，/etc/hosts 文件的内容将如下所示：</p>
+<pre><code class="hljs shell">cat /etc/hosts
+<span class="hljs-meta">#</span><span class="bash"> Kubernetes-managed hosts file.</span>
+127.0.0.1 localhost
+...
+10.244.135.10 hostaliases-pod
+10.1.2.3 foo.remote
+10.1.2.3 bar.remote</code></pre>
+
+<p>其中，最下面的两行记录，就是我们通过 HostAliases 字段为 Pod 设置的。需要指出的是，在 Kubernetes 项目中，如果要设置 hosts 文件里的内容，一定要通过这种方法。否则，如果直接修改 hosts 文件，在 Pod 被删除重建之后，kubelet 会自动覆盖掉被修改的内容。</p>
+<h3 id="2-4、与Namespace相关的字段"><a href="#2-4、与Namespace相关的字段" class="headerlink" title="2.4、与Namespace相关的字段"></a>2.4、与Namespace相关的字段</h3><p>除了上述跟“机器”相关的配置外，我们可能也会发现，凡是跟容器的 Linux Namespace 相关的属性，也一定是 Pod 级别的。这个原因也很容易理解：Pod 的设计，就是要让它里面的容器尽可能多地共享 Linux Namespace，仅保留必要的隔离和限制能力。这样，Pod 模拟出的效果，就跟虚拟机里程序间的关系非常类似了。</p>
+<p>举个例子，在下面这个 Pod 的 YAML 文件中，我们定义了 shareProcessNamespace=true：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">nginx</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">shareProcessNamespace:</span> <span class="hljs-literal">true</span>
+  <span class="hljs-attr">containers:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">nginx</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">nginx</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">shell</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">busybox</span>
+    <span class="hljs-attr">stdin:</span> <span class="hljs-literal">true</span>
+    <span class="hljs-attr">tty:</span> <span class="hljs-literal">true</span></code></pre>
+
+<p>这就意味着这个 Pod 里的容器要共享 PID Namespace。而在这个 YAML 文件中，我们还定义了两个容器：一个是 nginx 容器，一个是开启了 tty 和 stdin 的 shell 容器。当这个 Pod 被创建后，我们就可以使用 shell 容器的 tty 跟这个容器进行交互了。我们一起实践一下：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl create -f nginx.yaml</span></code></pre>
+
+<p>接下来，我们使用 kubectl attach 命令，连接到 shell 容器的 tty 上：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl attach -it nginx -c shell</span></code></pre>
+
+<p>这样，我们就可以在 shell 容器里执行 ps 指令，查看所有正在运行的进程：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl attach -it nginx -c shell</span>
+/ # ps ax
+PID   USER     TIME  COMMAND
+    1 root      0:00 /pause
+    8 root      0:00 nginx: master process nginx -g daemon off;
+   14 101       0:00 nginx: worker process
+   15 root      0:00 sh
+   21 root      0:00 ps ax</code></pre>
+
+<p>可以看到，在这个容器里，我们不仅可以看到它本身的 ps ax 指令，还可以看到 nginx 容器的进程，以及 Infra 容器的 /pause 进程。这就意味着，这个 Pod 里的每个容器中的进程，对于所有容器来说都是可见的，因为它们共享了同一个 PID Namespace。</p>
+<p>类似地，凡是 Pod 中的容器要共享宿主机的 Namespace，也一定是 Pod 级别的定义，比如：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">nginx</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">hostNetwork:</span> <span class="hljs-literal">true</span>
+  <span class="hljs-attr">hostIPC:</span> <span class="hljs-literal">true</span>
+  <span class="hljs-attr">hostPID:</span> <span class="hljs-literal">true</span>
+  <span class="hljs-attr">containers:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">nginx</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">nginx</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">shell</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">busybox</span>
+    <span class="hljs-attr">stdin:</span> <span class="hljs-literal">true</span>
+    <span class="hljs-attr">tty:</span> <span class="hljs-literal">true</span></code></pre>
+
+<p>在这个 Pod 中，我定义了共享宿主机的 Network、IPC 和 PID Namespace。这就意味着，这个 Pod 里的所有容器，会直接使用宿主机的网络、直接与宿主机进行 IPC 通信、看到宿主机里正在运行的所有进程。</p>
+<h2 id="三、Container级的重要字段"><a href="#三、Container级的重要字段" class="headerlink" title="三、Container级的重要字段"></a>三、Container级的重要字段</h2><p>除了上面这些属性外，Pod 里最重要的字段当属“Containers”了。而在之前的文章中，我们还介绍过“Init Containers”。其实，这两个字段都属于 Pod 对容器的定义，内容也完全相同，只是 Init Containers 的生命周期，会先于所有的 Containers，并且严格按照定义的顺序执行。</p>
+<p>在Kubernetes 项目中对 Container 的定义，和 Docker 相比并没有什么太大区别。容器技术中的概念，比如，Image（镜像）、Command（启动命令）、workingDir（容器的工作目录）、Ports（容器要开放的端口），以及 volumeMounts（容器要挂载的 Volume）都是构成 Kubernetes 项目中 Container 的主要字段。不过在这里，还有这么几个属性值得我们额外关注。</p>
+<h3 id="3-1、ImagePullPolicy"><a href="#3-1、ImagePullPolicy" class="headerlink" title="3.1、ImagePullPolicy"></a>3.1、ImagePullPolicy</h3><p>首先，是 ImagePullPolicy 字段。它定义了镜像拉取策略。而它之所以是一个 Container 级别的属性，是因为容器镜像本来就是 Container 定义中的一部分。</p>
+<p>ImagePullPolicy 的值默认是 Always，即每次创建 Pod 都重新拉取一次镜像。另外，当容器的镜像是类似于 nginx 或者 nginx:latest 这样的名字时，ImagePullPolicy 也会被认为是Always。而如果它的值被定义为 Never 或者 IfNotPresent，就意味着 Pod 永远不会主动拉取这个镜像，或者只在宿主机上不存在这个镜像时才拉取。</p>
+<h3 id="3-2、Lifecycle"><a href="#3-2、Lifecycle" class="headerlink" title="3.2、Lifecycle"></a>3.2、Lifecycle</h3><p>其次，是 Lifecycle 字段。它定义的是 Container Lifecycle Hooks。顾名思义，它是在容器状态发生变化时触发的一系列“钩子”。我们来看这样一个例子：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">lifecycle-demo</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">lifecycle-demo-container</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">nginx</span>
+    <span class="hljs-attr">lifecycle:</span>
+      <span class="hljs-attr">postStart:</span>
+        <span class="hljs-attr">exec:</span>
+          <span class="hljs-attr">command:</span> [<span class="hljs-string">&quot;/bin/sh&quot;</span>, <span class="hljs-string">&quot;-c&quot;</span>, <span class="hljs-string">&quot;echo Hello from the postStart handler &gt; /usr/share/message&quot;</span>]
+      <span class="hljs-attr">preStop:</span>
+        <span class="hljs-attr">exec:</span>
+          <span class="hljs-attr">command:</span> [<span class="hljs-string">&quot;/usr/sbin/nginx&quot;</span>,<span class="hljs-string">&quot;-s&quot;</span>,<span class="hljs-string">&quot;quit&quot;</span>]</code></pre>
+
+<p>这是一个来自与 Kubernetes 官方文档中的 Pod YAML 文件。它其实非常简单，只是定义了一个 nginx 镜像的容器。不过，在这个 YAML 文件的容器（Containers）部分，我们可以看到这个容器分别设置了一个 postStart 和 preStop 参数。这是什么意思呢？</p>
+<ul>
+<li><p>先说 postStart 吧。它指的是，在容器启动后，立刻执行一个指定的操作。需要注意的是，postStart 定义的操作，虽然是在容器 ENTRYPOINT 执行之后，但它并不严格保证顺序。也就是说，在 postStart 启动时，ENTRYPOINT 有可能还没有结束。当然，如果 postStart 执行超时或者错误，会导致 Pod 也处于失败的状态，同时 Kubernetes 会在该 Pod 的 Events 中报出该容器启动失败的错误信息。</p>
+</li>
+<li><p>而类似地，preStop 发生的时机，则是容器被杀死之前（比如，收到了 SIGKILL 信号）。但需要注意的是，preStop 操作的执行，是同步的。即，它会阻塞当前容器的杀死流程，直到这个 Hook 定义操作完成之后，才允许容器被杀死，这跟 postStart 完全不一样。</p>
+</li>
+</ul>
+<p>所以，在这个例子中，我们在容器成功启动之后，在 /usr/share/message 里写入了一句“欢迎信息”（即 postStart 定义的操作）。而在这个容器被删除之前，我们则先调用了 nginx 的退出指令（即 preStop 定义的操作），从而实现了容器的“优雅退出”。</p>
+<h2 id="四、Pod的生命周期"><a href="#四、Pod的生命周期" class="headerlink" title="四、Pod的生命周期"></a>四、Pod的生命周期</h2><p>在熟悉了 Pod 以及它的 Container 部分的主要字段之后，我们在来看一下Pod 对象在 Kubernetes 中的生命周期。</p>
+<p>Pod 生命周期的变化，主要体现在 Pod API 对象的 Status 部分，这是它除了 Metadata 和 Spec 之外的第三个重要字段。其中，pod.status.phase，就是 Pod 的当前状态，它有如下几种可能的情况：</p>
+<ul>
+<li>Pending。这个状态意味着，Pod的YAML文件已经提交给了kubernetes，API对象已经被创建并保存在Etcd中。但是，这个Pod里有些容器因为某种原因而不能被顺利创建。比如，调度不成功。</li>
+<li>Running。这个状态下，Pod已经调度成功，并跟一个具体的节点绑定。它所包含的容器都已经创建成功，并且至少有一个正在运行中。</li>
+<li>Succeeded。这个状态意味着，Pod里有所有容器都正常运行完毕，并且已经退出了。这种情况在运行一次性任务时最为常见。</li>
+<li>Failed。这个状态下，Pod里至少有一个容器以不正常的状态（非0的返回码）退出。这个状态的出现，意味着我们得想办法Debug这个Pod中的容器，比如查看Pod的Events和日志。</li>
+<li>Unknown。这是一个异常状态，意味着Pod的状态不能持续地被kubelet汇报给kube-apiserver，这很有可能是主从节点（Master和Kubelet）间的通信出现了问题。</li>
+</ul>
+<p>更进一步地，Pod 对象的 Status 字段，还可以再细分出一组 Conditions。这些细分状态的值包括：PodScheduled、Ready、Initialized，以及 Unschedulable。它们主要用于描述造成当前 Status 的具体原因是什么。比如，Pod 当前的 Status 是 Pending，对应的 Condition 是 Unschedulable，这就意味着它的调度出现了问题。而其中，Ready 这个细分状态非常值得我们关注：它意味着 Pod 不仅已经正常启动（Running 状态），而且已经可以对外提供服务（Ready状态）了。这两者之间（Running 和 Ready）是有区别的。</p>
+<p>Pod 的这些状态信息，是我们判断应用运行情况的重要标准，尤其是 Pod 进入了非“Running”状态后，我们一定要能迅速做出反应，根据它所代表的异常情况开始跟踪和定位，而不是去手忙脚乱地查阅文档。</p>
+<h2 id="五、小结"><a href="#五、小结" class="headerlink" title="五、小结"></a>五、小结</h2><p>在这篇文章中，我们主要讨论了如下内容：</p>
+<ul>
+<li><p>在Kubernetes中，当我们描述一个应用时，可以把Pod看作虚拟机，把容器看作应用程序。因此，凡是与“机器”有关的字段（比如，调度、存储、网络等）都属于Pod级，凡是与“进程”相关的字段（比如，镜像、启动命令、工作目录等）都属于Container级。</p>
+</li>
+<li><p>Pod级的重要字段有NodeSelector、NodeName、HostAliases等</p>
+</li>
+<li><p>Container级的重要字段有ImagePullPolicy、Lifecycle等</p>
+</li>
+<li><p>在Kubernetes中，Pod对象是有生命周期的，每个Pod都有一个名为pod.status.phase的字段，它反映了Pod的当前状态，这个字段的值可能是：</p>
+<ul>
+<li>Pending：已经在etcd中创建了API对象，但Pod还未被成功调度。</li>
+<li>Running：Pod已经调度成功，并与某个节点绑定。它所包含的容器都已经创建成功，并且至少有一个正在运行中。</li>
+<li>Succeeded：一般出现在一次性任务中。表示Pod中的所有容器都已正常运行完毕，并且退出了。</li>
+<li>Failed：Pod中至少有一个容器以不正常的状态（非0的返回码）退出。</li>
+<li>Unknown：Pod的状态不能持续地被kubelet汇报给kube-apiserver。</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Kubernetes/">Kubernetes</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/10/02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Pod%E5%AF%B9%E8%B1%A13%EF%BC%9A%E4%BD%BF%E7%94%A8%E8%BF%9B%E9%98%B6/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">深入解析Pod对象3：使用进阶</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/10/02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Pod%E5%AF%B9%E8%B1%A11%EF%BC%9A%E6%88%91%E4%BB%AC%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81Pod/">
+                        <span class="hidden-mobile">深入解析Pod对象1：我们为什么需要Pod</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "深入解析Pod对象2：基本概念&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

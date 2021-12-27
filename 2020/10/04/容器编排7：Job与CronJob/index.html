@@ -1,0 +1,813 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="kubxy">
+  <meta name="keywords" content="">
+  <title>容器编排7：Job与CronJob - Kubxy</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Kubxy</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-10-04 09:19" pubdate>
+        2020年10月4日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      5.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      63
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">容器编排7：Job与CronJob</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <p>在前面的文章中，我们已经讨论Deployment、StatefulSet以及DaemonSet这三个编排对象。接下来，我们讨论另一种重要的对象：Job</p>
+<h2 id="一、在线业务-vs-离线业务"><a href="#一、在线业务-vs-离线业务" class="headerlink" title="一、在线业务 vs 离线业务"></a>一、在线业务 vs 离线业务</h2><p>Deployment、StatefulSet，以及 DaemonSet 这三个编排对象，它们主要编排的都是“在线业务”，即：Long Running Task（长作业）。比如，我在前面举例时常用的 Nginx、Tomcat，以及 MySQL 等等。这些应用一旦运行起来，除非出错或者停止，它的容器进程会一直保持在 Running 状态。</p>
+<p>但是，有一类作业显然不满足这样的条件，这就是“离线业务”，或者叫作 Batch Job（计算业务）。这种业务在计算完成后就直接退出了，而此时如果我们依然用 Deployment 来管理这种业务的话，就会发现 Pod 会在计算结束后退出，然后被 Deployment Controller 不断地重启；而像“滚动更新”这样的编排功能，更无从谈起了。</p>
+<p>所以，早在 Borg 项目中，Google 就已经对作业进行了分类处理，提出了 LRS（Long Running Service）和 Batch Jobs 两种作业形态，对它们进行“分别管理”和“混合调度”。</p>
+<p>不过，在 2015 年 Borg 论文刚刚发布的时候，Kubernetes 项目并不支持对 Batch Job 的管理。直到 v1.4 版本之后，社区才逐步设计出了一个用来描述离线业务的 API 对象，它的名字就是：Job。</p>
+<h2 id="二、理解Job对象"><a href="#二、理解Job对象" class="headerlink" title="二、理解Job对象"></a>二、理解Job对象</h2><h3 id="2-1、从一个Job示例说起"><a href="#2-1、从一个Job示例说起" class="headerlink" title="2.1、从一个Job示例说起"></a>2.1、从一个Job示例说起</h3><p>Job API 对象的定义非常简单，我来举个例子，如下所示：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">batch/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Job</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">pi</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">template:</span>
+    <span class="hljs-attr">spec:</span>
+      <span class="hljs-attr">containers:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">pi</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">resouer/ubuntu-bc</span> 
+        <span class="hljs-attr">command:</span> [<span class="hljs-string">&quot;sh&quot;</span>, <span class="hljs-string">&quot;-c&quot;</span>, <span class="hljs-string">&quot;echo &#x27;scale=10000; 4*a(1)&#x27; | bc -l &quot;</span>]
+      <span class="hljs-attr">restartPolicy:</span> <span class="hljs-string">Never</span>
+  <span class="hljs-attr">backoffLimit:</span> <span class="hljs-number">4</span></code></pre>
+
+<p>在这个 Pod 模板中，我们定义了一个 Ubuntu 镜像的容器（准确地说，是一个安装了 bc 命令的 Ubuntu 镜像），它运行的程序是：</p>
+<pre><code class="hljs shell">echo &quot;scale=10000; 4*a(1)&quot; | bc -l</code></pre>
+
+<p>其中，bc 命令是 Linux 里的“计算器”；-l 表示，我们现在要使用标准数学库；而 a(1)，则是调用数学库中的 arctangent 函数，计算 atan(1)。这是什么意思呢？我们知道：tan(π/4) = 1。所以，4*atan(1)正好就是π，也就是 3.1415926…。所以，这其实就是一个计算π值的容器。而通过 scale=10000，我指定了输出的小数点后的位数是 10000。</p>
+<p>需要注意的是，跟其他控制器不同，Job 对象并不要求我们定义一个 spec.selector 来描述要控制哪些 Pod。</p>
+<h3 id="2-2、创建、并查看Job对象"><a href="#2-2、创建、并查看Job对象" class="headerlink" title="2.2、创建、并查看Job对象"></a>2.2、创建、并查看Job对象</h3><p>现在，我们就可以创建这个 Job 了：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl create -f job.yaml</span></code></pre>
+
+<p>在成功创建后，我们来查看一下这个 Job 对象，如下所示：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl describe <span class="hljs-built_in">jobs</span>/pi</span>
+Name:             pi
+Namespace:        default
+Selector:         controller-uid=c2db599a-2c9d-11e6-b324-0209dc45a495
+Labels:           controller-uid=c2db599a-2c9d-11e6-b324-0209dc45a495
+                  job-name=pi
+Annotations:      &lt;none&gt;
+Parallelism:      1
+Completions:      1
+..
+Pods Statuses:    0 Running / 1 Succeeded / 0 Failed
+Pod Template:
+  Labels:       controller-uid=c2db599a-2c9d-11e6-b324-0209dc45a495
+                job-name=pi
+  Containers:
+   ...
+  Volumes:              &lt;none&gt;
+Events:
+  FirstSeen    LastSeen    Count    From            SubobjectPath    Type        Reason            Message
+  ---------    --------    -----    ----            -------------    --------    ------            -------
+  1m           1m          1        &#123;job-controller &#125;                Normal      SuccessfulCreate  Created pod: pi-rq5rl</code></pre>
+
+<p>可以看到，这个 Job 对象在创建后，它的 Pod 模板，被自动加上了一个 controller-uid=&lt; 一个随机字符串 &gt; 这样的 Label。而这个 Job 对象本身，则被自动加上了这个 Label 对应的 Selector，从而 保证了 Job 与它所管理的 Pod 之间的匹配关系。</p>
+<p>而 Job Controller 之所以要使用这种携带了 UID 的 Label，就是为了避免不同 Job 对象所管理的 Pod 发生重合。需要注意的是，这种自动生成的 Label 对用户来说并不友好，所以不太适合推广到 Deployment 等长作业编排对象上。</p>
+<h3 id="2-3、Job对象下的Pod"><a href="#2-3、Job对象下的Pod" class="headerlink" title="2.3、Job对象下的Pod"></a>2.3、Job对象下的Pod</h3><p>接下来，我们可以看到这个 Job 创建的 Pod 进入了 Running 状态，这意味着它正在计算 Pi 的值。</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl get pods</span>
+NAME                                READY     STATUS    RESTARTS   AGE
+pi-rq5rl                            1/1       Running   0          10s</code></pre>
+
+<p>而几分钟后计算结束，这个 Pod 就会进入 Completed 状态：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl get pods</span>
+NAME                                READY     STATUS      RESTARTS   AGE
+pi-rq5rl                            0/1       Completed   0          4m</code></pre>
+
+<p>这也是我们需要在 Pod 模板中定义 restartPolicy=Never 的原因：离线计算的 Pod 永远都不应该被重启，否则它们会再重新计算一遍。事实上，restartPolicy 在 Job 对象里只允许被设置为 Never 和 OnFailure；而在 Deployment 对象里，restartPolicy 则只允许被设置为 Always。</p>
+<p>此时，我们通过 kubectl logs 查看一下这个 Pod 的日志，就可以看到计算得到的 Pi 值已经被打印了出来：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl logs pi-rq5rl</span>
+3.141592653589793238462643383279...</code></pre>
+
+<h3 id="2-4、离线作业失败了该怎么办？"><a href="#2-4、离线作业失败了该怎么办？" class="headerlink" title="2.4、离线作业失败了该怎么办？"></a>2.4、离线作业失败了该怎么办？</h3><p>这时候，我们一定会想到这样一个问题，如果这个离线作业失败了要怎么办？比如，我们在这个例子中定义了 restartPolicy=Never，那么离线作业失败后 Job Controller 就会不断地尝试创建一个新 Pod，如下所示：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl get pods</span>
+NAME                                READY     STATUS              RESTARTS   AGE
+pi-55h89                            0/1       ContainerCreating   0          2s
+pi-tqbcz                            0/1       Error               0          5s</code></pre>
+
+<p>可以看到，这时候会不断地有新 Pod 被创建出来。当然，这个尝试肯定不能无限进行下去。所以，我们就在 Job 对象的 spec.backoffLimit 字段里定义了重试次数为 4（即，backoffLimit=4），而这个字段的默认值是 6。</p>
+<p>需要注意的是，Job Controller 重新创建 Pod 的间隔是呈指数增加的，即下一次重新创建 Pod 的动作会分别发生在 10 s、20 s、40 s …后。</p>
+<p>而如果我们定义的 restartPolicy=OnFailure，那么离线作业失败后，Job Controller 就不会去尝试创建新的 Pod。但是，它会不断地尝试重启 Pod 里的容器。</p>
+<h3 id="2-5、Job的最长运行时间"><a href="#2-5、Job的最长运行时间" class="headerlink" title="2.5、Job的最长运行时间"></a>2.5、Job的最长运行时间</h3><p>如前所述，当一个 Job 的 Pod 运行结束后，它会进入 Completed 状态。但是，如果这个 Pod 因为某种原因一直不肯结束呢？在 Job 的 API 对象里，有一个 spec.activeDeadlineSeconds 字段可以设置最长运行时间，比如：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">spec:</span>
+ <span class="hljs-attr">backoffLimit:</span> <span class="hljs-number">5</span>
+ <span class="hljs-attr">activeDeadlineSeconds:</span> <span class="hljs-number">100</span></code></pre>
+
+<p>一旦运行超过了 100 s，这个 Job 的所有 Pod 都会被终止。并且，我们可以在 Pod 的状态里看到终止的原因是 reason: DeadlineExceeded。</p>
+<h2 id="三、并行作业"><a href="#三、并行作业" class="headerlink" title="三、并行作业"></a>三、并行作业</h2><p>以上，就是一个 Job API 对象最主要的概念和用法了。不过，离线业务之所以被称为 Batch Job，当然是因为它们可以以“Batch”，也就是并行的方式去运行。接下来，我们理解一下Job Controller 对并行作业的控制方法。</p>
+<p>在 Job 对象中，负责并行控制的参数有两个：</p>
+<ul>
+<li>spec.parallelism，它定义的是一个Job在任意时间最多可以启动多少个Pod同时运行；</li>
+<li>spec.competions，它定义的是Job至少要完成的Pod数目，即Job的最小完成数。</li>
+</ul>
+<p>这两个参数听起来有点儿抽象，我通过一个具体的例子来理解。</p>
+<h3 id="3-1、定义Job对象"><a href="#3-1、定义Job对象" class="headerlink" title="3.1、定义Job对象"></a>3.1、定义Job对象</h3><p>在之前计算 Pi 值的 Job 里，添加这两个参数：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">batch/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Job</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">pi</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">parallelism:</span> <span class="hljs-number">2</span>
+  <span class="hljs-attr">completions:</span> <span class="hljs-number">4</span>
+  <span class="hljs-attr">template:</span>
+    <span class="hljs-attr">spec:</span>
+      <span class="hljs-attr">containers:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">pi</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">resouer/ubuntu-bc</span>
+        <span class="hljs-attr">command:</span> [<span class="hljs-string">&quot;sh&quot;</span>, <span class="hljs-string">&quot;-c&quot;</span>, <span class="hljs-string">&quot;echo &#x27;scale=5000; 4*a(1)&#x27; | bc -l &quot;</span>]
+      <span class="hljs-attr">restartPolicy:</span> <span class="hljs-string">Never</span>
+  <span class="hljs-attr">backoffLimit:</span> <span class="hljs-number">4</span></code></pre>
+
+<p>这样，我们就指定了这个 Job 最大的并行数是 2，而最小的完成数是 4。</p>
+<h3 id="3-2、创建、并查看Job对象"><a href="#3-2、创建、并查看Job对象" class="headerlink" title="3.2、创建、并查看Job对象"></a>3.2、创建、并查看Job对象</h3><p>接下来，我们来创建这个 Job 对象：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl create -f job.yaml</span></code></pre>
+
+<p>可以看到，这个 Job 其实也维护了两个状态字段，即 DESIRED 和 SUCCESSFUL，如下所示：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl get job</span>
+NAME      DESIRED   SUCCESSFUL   AGE
+pi        4         0            3s</code></pre>
+
+<p>其中，DESIRED 的值，正是 completions 定义的最小完成数。</p>
+<h3 id="3-3、Job对象下的Pod"><a href="#3-3、Job对象下的Pod" class="headerlink" title="3.3、Job对象下的Pod"></a>3.3、Job对象下的Pod</h3><p>然后，我们可以看到，这个 Job 首先创建了两个并行运行的 Pod 来计算 Pi：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl get pods</span>
+NAME       READY     STATUS    RESTARTS   AGE
+pi-5mt88   1/1       Running   0          6s
+pi-gmcq5   1/1       Running   0          6s</code></pre>
+
+<p>而在 40 s 后，这两个 Pod 相继完成计算。这时我们可以看到，每当有一个 Pod 完成计算进入 Completed 状态时，就会有一个新的 Pod 被自动创建出来，并且快速地从 Pending 状态进入到 ContainerCreating 状态：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl get pods</span>
+NAME       READY     STATUS    RESTARTS   AGE
+pi-gmcq5   0/1       Completed   0         40s
+pi-84ww8   0/1       Pending   0         0s
+pi-5mt88   0/1       Completed   0         41s
+pi-62rbt   0/1       Pending   0         0s
+
+<span class="hljs-meta">$</span><span class="bash"> kubectl get pods</span>
+NAME       READY     STATUS    RESTARTS   AGE
+pi-gmcq5   0/1       Completed   0         40s
+pi-84ww8   0/1       ContainerCreating   0         0s
+pi-5mt88   0/1       Completed   0         41s
+pi-62rbt   0/1       ContainerCreating   0         0s</code></pre>
+
+<p>紧接着，Job Controller 第二次创建出来的两个并行的 Pod 也进入了 Running 状态：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl get pods</span> 
+NAME       READY     STATUS      RESTARTS   AGE
+pi-5mt88   0/1       Completed   0          54s
+pi-62rbt   1/1       Running     0          13s
+pi-84ww8   1/1       Running     0          14s
+pi-gmcq5   0/1       Completed   0          54s</code></pre>
+
+<p>最终，后面创建的这两个 Pod 也完成了计算，进入了 Completed 状态。这时，由于所有的 Pod 均已经成功退出，这个 Job 也就执行完了，所以我们会看到它的 SUCCESSFUL字段的值变成了 4：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl get pods</span> 
+NAME       READY     STATUS      RESTARTS   AGE
+pi-5mt88   0/1       Completed   0          5m
+pi-62rbt   0/1       Completed   0          4m
+pi-84ww8   0/1       Completed   0          4m
+pi-gmcq5   0/1       Completed   0          5m
+
+<span class="hljs-meta">$</span><span class="bash"> kubectl get job</span>
+NAME      DESIRED   SUCCESSFUL   AGE
+pi        4         4            5m</code></pre>
+
+<h3 id="3-4、小结"><a href="#3-4、小结" class="headerlink" title="3.4、小结"></a>3.4、小结</h3><p>通过上述 Job 的 DESIRED 和 SUCCESSFUL 字段的关系，我们就可以很容易地理解Job Controller 的工作原理了。</p>
+<p>首先，Job Controller 控制的对象，直接就是 Pod。</p>
+<p>其次，Job Controller 在控制循环中进行的调谐（Reconcile）操作，是根据实际处于Running 状态 Pod 的数目、已经成功退出的 Pod 的数目，以及 parallelism、completions 参数的值共同计算出，在这个周期里应该创建或者删除的 Pod 数目，然后调用 Kubernetes API 来执行这个操作。</p>
+<p>以创建 Pod 为例。在上面计算 Pi 值的这个例子中，当 Job 一开始创建出来时，实际处于 Running 状态的 Pod 数目 =0，已经成功退出的 Pod 数目 =0，而用户定义的 completions，也就是最终用户需要的 Pod 数目 =4。</p>
+<p>所以，在这个时刻，需要创建的 Pod 数目 = 最终需要的 Pod 数目 - 实际在 Running 状态 Pod 数目 - 已经成功退出的 Pod 数目 = 4 - 0 - 0= 4。也就是说，Job Controller 需要创建 4 个 Pod 来纠正这个不一致状态。</p>
+<p>可是，我们又定义了这个 Job 的 parallelism=2。也就是说，我们规定了每次并发创建的 Pod 个数不能超过 2 个。所以，Job Controller 会对前面的计算结果做一个修正，修正后的期望创建的 Pod 数目应该是：2 个。这时候，Job Controller 就会并发地向 kube-apiserver 发起两个创建 Pod 的请求。</p>
+<p>类似地，如果在这次调谐周期里，Job Controller 发现实际在 Running 状态的 Pod 数目，比 parallelism 还大，那么它就会删除一些 Pod，使两者相等。</p>
+<p>综上所述，Job Controller 实际上控制了，作业执行的并行度，以及总共需要完成的任务数这两个重要参数。而在实际使用时，我们需要根据作业的特性，来决定并行度（parallelism）和任务数（completions）的合理取值。</p>
+<h2 id="四、Job对象三种常用的用法"><a href="#四、Job对象三种常用的用法" class="headerlink" title="四、Job对象三种常用的用法"></a>四、Job对象三种常用的用法</h2><h3 id="4-1、外部管理器-Job模板"><a href="#4-1、外部管理器-Job模板" class="headerlink" title="4.1、外部管理器 + Job模板"></a>4.1、外部管理器 + Job模板</h3><p>第一种用法，也是最简单粗暴的用法：外部管理器 +Job 模板。</p>
+<p>这种模式的特定用法是：把 Job 的 YAML 文件定义为一个“模板”，然后用一个外部工具控制这些“模板”来生成 Job。这时，Job 的定义方式如下所示：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">batch/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Job</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">process-item-$ITEM</span>
+  <span class="hljs-attr">labels:</span>
+    <span class="hljs-attr">jobgroup:</span> <span class="hljs-string">jobexample</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">template:</span>
+    <span class="hljs-attr">metadata:</span>
+      <span class="hljs-attr">name:</span> <span class="hljs-string">jobexample</span>
+      <span class="hljs-attr">labels:</span>
+        <span class="hljs-attr">jobgroup:</span> <span class="hljs-string">jobexample</span>
+    <span class="hljs-attr">spec:</span>
+      <span class="hljs-attr">containers:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">c</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">busybox</span>
+        <span class="hljs-attr">command:</span> [<span class="hljs-string">&quot;sh&quot;</span>, <span class="hljs-string">&quot;-c&quot;</span>, <span class="hljs-string">&quot;echo Processing item $ITEM &amp;&amp; sleep 5&quot;</span>]
+      <span class="hljs-attr">restartPolicy:</span> <span class="hljs-string">Never</span></code></pre>
+
+<p>可以看到，我们在这个 Job 的 YAML 里，定义了 $ITEM 这样的“变量”。所以，在控制这种 Job 时，我们只要注意如下两个方面即可：</p>
+<ul>
+<li><p>创建 Job 时，替换掉 $ITEM 这样的变量；</p>
+</li>
+<li><p>所有来自于同一个模板的 Job，都有一个 jobgroup: jobexample 标签，也就是说这一组 Job 使用这样一个相同的标识。</p>
+</li>
+</ul>
+<p>而做到第一点非常简单。比如，我们可以通过这样一句 shell 把 $ITEM 替换掉：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> mkdir ./<span class="hljs-built_in">jobs</span></span>
+<span class="hljs-meta">$</span><span class="bash"> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> apple banana cherry</span>
+do
+  cat job-tmpl.yaml | sed &quot;s/\$ITEM/$i/&quot; &gt; ./jobs/job-$i.yaml
+done</code></pre>
+
+<p>这样，一组来自于同一个模板的不同 Job 的 yaml 就生成了。接下来，我们就可以通过一句 kubectl create 指令创建这些 Job 了：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl create -f ./<span class="hljs-built_in">jobs</span></span>
+<span class="hljs-meta">$</span><span class="bash"> kubectl get pods -l jobgroup=jobexample</span>
+NAME                        READY     STATUS      RESTARTS   AGE
+process-item-apple-kixwv    0/1       Completed   0          4m
+process-item-banana-wrsf7   0/1       Completed   0          4m
+process-item-cherry-dnfu9   0/1       Completed   0          4m</code></pre>
+
+<p>这个模式看起来虽然很“傻”，但却是 Kubernetes 社区里使用 Job 的一个很普遍的模式。原因很简单：大多数用户在需要管理 Batch Job 的时候，都已经有了一套自己的方案，需要做的往往就是集成工作。这时候，Kubernetes 项目对这些方案来说最有价值的，就是 Job 这个 API 对象。所以，我们只需要编写一个外部工具（等同于我们这里的 for 循环）来管理这些 Job 即可。这种模式最典型的应用，就是 TensorFlow 社区的 KubeFlow 项目。</p>
+<p>很容易理解，在这种模式下使用 Job 对象，completions 和 parallelism 这两个字段都应该使用默认值 1，而不应该由我们自行设置。而作业 Pod 的并行控制，应该完全交由外部工具来进行管理（比如，KubeFlow）。</p>
+<h3 id="4-2、拥有最终任务数的并行Job"><a href="#4-2、拥有最终任务数的并行Job" class="headerlink" title="4.2、拥有最终任务数的并行Job"></a>4.2、拥有最终任务数的并行Job</h3><p>第二种用法：拥有最终任务数的并行 Job。</p>
+<p>这种模式下，我们只关心最后是否有指定数目（spec.completions）的任务成功退出。至于执行时的并行度是多少，我们并不关心。</p>
+<p>比如，我们这个计算 Pi 值的例子，就是这样一个典型的、拥有最终任务数目（completions=4）的应用场景。 它的 parallelism 值是 2；或者，我们可以干脆不指定 parallelism，直接使用默认的并行度（即：1）。</p>
+<p>此外，我们还可以使用一个工作队列（Work Queue）进行任务分发。这时，Job 的 YAML 文件定义如下所示：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">batch/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Job</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">job-wq-1</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">completions:</span> <span class="hljs-number">8</span>
+  <span class="hljs-attr">parallelism:</span> <span class="hljs-number">2</span>
+  <span class="hljs-attr">template:</span>
+    <span class="hljs-attr">metadata:</span>
+      <span class="hljs-attr">name:</span> <span class="hljs-string">job-wq-1</span>
+    <span class="hljs-attr">spec:</span>
+      <span class="hljs-attr">containers:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">c</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">myrepo/job-wq-1</span>
+        <span class="hljs-attr">env:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">BROKER_URL</span>
+          <span class="hljs-attr">value:</span> <span class="hljs-string">amqp://guest:guest@rabbitmq-service:5672</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">QUEUE</span>
+          <span class="hljs-attr">value:</span> <span class="hljs-string">job1</span>
+      <span class="hljs-attr">restartPolicy:</span> <span class="hljs-string">OnFailure</span></code></pre>
+
+<p>我们可以看到，它的 completions 的值是：8，这意味着我们总共要处理的任务数目是 8 个。也就是说，总共会有 8 个任务会被逐一放入工作队列里（我们可以运行一个外部小程序作为生产者，来提交任务）。</p>
+<p>在这个实例中，我们选择充当工作队列的是一个运行在 Kubernetes 里的 RabbitMQ。所以，我们需要在 Pod 模板里定义 BROKER_URL，来作为消费者。</p>
+<p>所以，一旦我们用 kubectl create 创建了这个 Job，它就会以并发度为 2 的方式，每两个 Pod 一组，创建出 8 个 Pod。每个 Pod 都会去连接 BROKER_URL，从 RabbitMQ 里读取任务，然后各自进行处理。这个 Pod 里的执行逻辑，我们可以用这样一段伪代码来表示：</p>
+<pre><code class="hljs shell">/* job-wq-1的伪代码 */
+queue := newQueue($BROKER_URL, $QUEUE)
+task := queue.Pop()
+process(task)
+exit</code></pre>
+
+<p>可以看到，每个 Pod 只需要将任务信息读取出来，处理完成，然后退出即可。而作为用户，我们只关心最终一共有 8 个计算任务启动并且退出，只要这个目标达到，我们就认为整个 Job 处理完成了。所以说，这种用法，对应的就是“任务总数固定”的场景。</p>
+<h3 id="4-3、指定并行度但不设置固定的completions"><a href="#4-3、指定并行度但不设置固定的completions" class="headerlink" title="4.3、指定并行度但不设置固定的completions"></a>4.3、指定并行度但不设置固定的completions</h3><p>第三种用法，也是很常用的一个用法：指定并行度（parallelism），但不设置固定的 completions 的值。</p>
+<p>此时，我们就必须自己想办法，来决定什么时候启动新 Pod，什么时候 Job 才算执行完成。在这种情况下，任务的总数是未知的，所以我们不仅需要一个工作队列来负责任务分发，还需要能够判断工作队列已经为空（即：所有的工作已经结束了）。</p>
+<p>这时候，Job 的定义基本上没变化，只不过是不再需要定义 completions 的值了而已：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">batch/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Job</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">job-wq-2</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">parallelism:</span> <span class="hljs-number">2</span>
+  <span class="hljs-attr">template:</span>
+    <span class="hljs-attr">metadata:</span>
+      <span class="hljs-attr">name:</span> <span class="hljs-string">job-wq-2</span>
+    <span class="hljs-attr">spec:</span>
+      <span class="hljs-attr">containers:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">c</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">gcr.io/myproject/job-wq-2</span>
+        <span class="hljs-attr">env:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">BROKER_URL</span>
+          <span class="hljs-attr">value:</span> <span class="hljs-string">amqp://guest:guest@rabbitmq-service:5672</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">QUEUE</span>
+          <span class="hljs-attr">value:</span> <span class="hljs-string">job2</span>
+      <span class="hljs-attr">restartPolicy:</span> <span class="hljs-string">OnFailure</span></code></pre>
+
+<p>而对应的 Pod 的逻辑会稍微复杂一些，我们可以用这样一段伪代码来描述：</p>
+<pre><code class="hljs shell">/* job-wq-2的伪代码 */
+for !queue.IsEmpty($BROKER_URL, $QUEUE) &#123;
+  task := queue.Pop()
+  process(task)
+&#125;
+print(&quot;Queue empty, exiting&quot;)
+exit</code></pre>
+
+<p>由于任务数目的总数不固定，所以每一个 Pod 必须能够知道，自己什么时候可以退出。比如，在这个例子中，我们简单地以“队列为空”，作为任务全部完成的标志。所以说，这种用法，对应的是“任务总数不固定”的场景。</p>
+<p>不过，在实际的应用中，我们需要处理的条件往往会非常复杂。比如，任务完成后的输出、每个任务 Pod 之间是不是有资源的竞争和协同等等。</p>
+<h2 id="五、CronJon"><a href="#五、CronJon" class="headerlink" title="五、CronJon"></a>五、CronJon</h2><p>最后，我们讨论一个非常有用的 Job 对象，叫作：CronJob。顾名思义，CronJob 描述的，正是定时任务。它的 API 对象，如下所示：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">batch/v1beta1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">CronJob</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">hello</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">schedule:</span> <span class="hljs-string">&quot;*/1 * * * *&quot;</span>
+  <span class="hljs-attr">jobTemplate:</span>
+    <span class="hljs-attr">spec:</span>
+      <span class="hljs-attr">template:</span>
+        <span class="hljs-attr">spec:</span>
+          <span class="hljs-attr">containers:</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">hello</span>
+            <span class="hljs-attr">image:</span> <span class="hljs-string">busybox</span>
+            <span class="hljs-attr">args:</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-string">/bin/sh</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-string">-c</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-string">date;</span> <span class="hljs-string">echo</span> <span class="hljs-string">Hello</span> <span class="hljs-string">from</span> <span class="hljs-string">the</span> <span class="hljs-string">Kubernetes</span> <span class="hljs-string">cluster</span>
+          <span class="hljs-attr">restartPolicy:</span> <span class="hljs-string">OnFailure</span></code></pre>
+
+<p>在这个 YAML 文件中，最重要的关键词就是 jobTemplate。看到它，我们一定恍然大悟，原来 CronJob 是一个 Job 对象的控制器（Controller）！</p>
+<p>没错，CronJob 与 Job 的关系，正如同 Deployment 与 Pod 的关系一样。CronJob 是一个专门用来管理 Job 对象的控制器。只不过，它创建和删除 Job 的依据，是 schedule 字段定义的、一个标准的Unix Cron格式的表达式。比如，”*/1 * * * *”。这个 Cron 表达式里 */1 中的 * 表示从 0 开始，/ 表示“每”，1 表示偏移量。所以，它的意思就是：从 0 开始，每 1 个时间单位执行一次。</p>
+<p>那么，时间单位又是什么呢？Cron 表达式中的五个部分分别代表：分钟、小时、日、月、星期。所以，上面这句 Cron 表达式的意思是：从当前开始，每分钟执行一次。而这里要执行的内容，就是 jobTemplate 定义的 Job 了。所以，这个 CronJob 对象在创建 1 分钟后，就会有一个 Job 产生了，如下所示：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl create -f ./cronjob.yaml</span>
+cronjob &quot;hello&quot; created
+
+<span class="hljs-meta">#</span><span class="bash"> 一分钟后</span>
+<span class="hljs-meta">$</span><span class="bash"> kubectl get <span class="hljs-built_in">jobs</span></span>
+NAME               DESIRED   SUCCESSFUL   AGE
+hello-4111706356   1         1         2s</code></pre>
+
+<p>此时，CronJob 对象会记录下这次 Job 执行的时间：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl get cronjob hello</span>
+NAME      SCHEDULE      SUSPEND   ACTIVE    LAST-SCHEDULE
+hello     */1 * * * *   False     0         Thu, 6 Sep 2018 14:34:00 -070</code></pre>
+
+<p>需要注意的是，由于定时任务的特殊性，很可能某个 Job 还没有执行完，另外一个新 Job 就产生了。这时候，我们可以通过 spec.concurrencyPolicy 字段来定义具体的处理策略。比如：</p>
+<ul>
+<li>concurrencyPolicy=Allow，这也是默认情况，这意味着这些 Job 可以同时存在；</li>
+<li>oncurrencyPolicy=Forbid，这意味着不会创建新的 Pod，该创建周期被跳过；</li>
+<li>concurrencyPolicy=Replace，这意味着新产生的 Job 会替换旧的、没有执行完的 Job。</li>
+</ul>
+<p>而如果某一次 Job 创建失败，这次创建就会被标记为“miss”。当在指定的时间窗口内，miss 的数目达到 100 时，那么 CronJob 会停止再创建这个 Job。这个时间窗口，可以由 spec.startingDeadlineSeconds 字段指定。比如 startingDeadlineSeconds=200，意味着在过去 200 s 里，如果 miss 的数目达到了 100 次，那么这个 Job 就不会被创建执行了。</p>
+<h2 id="六、小结"><a href="#六、小结" class="headerlink" title="六、小结"></a>六、小结</h2><p>在这篇文章中，我们主要讨论了如下概念：</p>
+<ul>
+<li>离线业务是Job对象的主要应用场景。比如，在计算业务中，我们可以通过Job对象控制计算业务的并发数（parallelism）和最终完成的业务数（completions）。</li>
+<li>在Job对象中，有一种特殊的Job名叫CronJob。它类似与Uninx系统中的定时任务。</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Kubernetes/">Kubernetes</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/10/04/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%928%EF%BC%9AOperator/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">容器编排8：Operator</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/10/04/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%926%EF%BC%9ADaemonSet/">
+                        <span class="hidden-mobile">容器编排6：DaemonSet</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "容器编排7：Job与CronJob&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,637 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="kubxy">
+  <meta name="keywords" content="">
+  <title>集群部署1：理解kubeadm - Kubxy</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Kubxy</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-12-14 08:20" pubdate>
+        2020年12月14日 早上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      39
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">集群部署1：理解kubeadm</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <p>todo</p>
+<h2 id="一、容器化Kubernetes的难点在哪？"><a href="#一、容器化Kubernetes的难点在哪？" class="headerlink" title="一、容器化Kubernetes的难点在哪？"></a>一、容器化Kubernetes的难点在哪？</h2><p>我们知道，Kubernetes的每一个组件都是一个需要被执行的、单独的二进制文件。像Ansible这样的运维工具或者由社区维护的部署脚本，就是把这些二进制文件传输到指定的机器当中，然后编写控制脚本来启停这些组件。</p>
+<p>在学习了容器技术之后，我们可能会萌生这样的想法：是否使用容器部署Kubernetes？这样，我们只要为每个组件做一个容器镜像，然后在每台宿主机上用docker run指令启动这些组件容器，部署不就完成了吗？</p>
+<p>实际上，在Kubernetes项目早期的部署脚本中，确实有一个用Docker部署Kubernetes的脚本，这个脚本相比于Ansible等部署方式要简单不少。但是，这样部署的方式会带来一个比较棘手的问题，即，如何容器化kubelet？</p>
+<p>我们知道，kubelet作为Kubernetes集群节点的agent，除了跟容器运行时打交道外，还会在管理容器数据卷、配置容器网络时直接操作宿主机。而如果将kubelet运行在一个容器里，那么直接操作宿主机就会变得很麻烦。</p>
+<p>对于网络配置来说，kubelet容器可以通过不开启Network Namespace（即Docker的host network模式）的方式，直接共享宿主机的网络栈。但是，要让kubelet隔着容器的文件系统和Mount Namespace，操作宿主机的文件系统，那就有点儿困难了。比如，如果我们想要使用NFS做容器的持久化数据卷，那么kubelet就需要在容器进行绑定挂载前，在宿主机的指定目录上，先挂载NFS的远程目录。</p>
+<p>这时候问题又来了。由于现在kubelet运行在容器中，这就意味着“mount -F nfs”这个挂载远程目录的命令，被隔离在了一个单独的Mount Namespace当中。也就是说，kubelet做的挂载操作，不能被“传播”到宿主机上。对于这个问题，有人说，可以使用setns()系统调用，在宿主机的Mount Namespace中执行这些操作；也有人说，可以让Docker支持一个-mnt=host的参数。但是，到目前为止，在容器里运行kubelet，依然没有很好的解决办法，因此，不推荐使用容器部署Kubernetes项目。</p>
+<p>正因为如此，kubeadm选择了一种妥协方案：把kubelet直接运行在宿主机上，然后使用容器部署其他的Kubernetes组件。所以，我们使用kubeadm的第一步，是在机器上手动安装kubeadm、kubelet和kubectl这三个二进制文件。当然，kubeadm 已经为各个发行版的 Linux 准备好了安装包，所以我们只需要配置好软件仓库，使用包管理直接安装就可以了。</p>
+<h2 id="二、kubeadm-init的工作流程"><a href="#二、kubeadm-init的工作流程" class="headerlink" title="二、kubeadm init的工作流程"></a>二、kubeadm init的工作流程</h2><p>在安装了kubeadm、kubelet和kubectl这个三个组件之后，我们接下来要做的就是使用“kubeadm init”部署Master节点了。</p>
+<h3 id="2-1、Preflight-Checks"><a href="#2-1、Preflight-Checks" class="headerlink" title="2.1、Preflight Checks"></a>2.1、Preflight Checks</h3><p>当我们执行了kubeadm init命令后，kubeadm首先要做的，是一系列的检查工作，以确定这台机器可以被用来部署Kubernetes。对于这一步检查工作，我们称为“Preflight Checks”，它包括了很多方面，比如：</p>
+<ul>
+<li>Linux内核版本是否是3.10以上？</li>
+<li>Linux Cgroups 模块是否可用？</li>
+<li>机器的 hostname 是否标准？ 在 Kubernetes 项目里，机器的名字以及一切存储在 Etcd 中的 API 对象，都必须使用标准的 DNS 命名（RFC 1123）。</li>
+<li>安装的 kubeadm 和 kubelet 的版本是否匹配？</li>
+<li>机器上是不是已经安装了 Kubernetes 的二进制文件？</li>
+<li>Kubernetes 的工作端口 10250/10251/10252 端口是不是已经被占用？</li>
+<li>ip、mount 等 Linux 指令是否存在？</li>
+<li>Docker 是否已经安装？</li>
+<li>…</li>
+</ul>
+<h3 id="2-2、生成证书"><a href="#2-2、生成证书" class="headerlink" title="2.2、生成证书"></a>2.2、生成证书</h3><p>在通过了 Preflight Checks 之后，kubeadm 要做的是生成 Kubernetes 对外提供服务所需的各种证书和对应的目录。Kubernetes 对外提供服务时，除非专门开启“不安全模式”，否则都要通过 HTTPS 才能访问 kube-apiserver。这就需要为 Kubernetes 集群配置好证书文件。</p>
+<p>kubeadm 为 Kubernetes 项目生成的证书文件都放在 Master 节点的 /etc/kubernetes/pki 目录下。在这个目录下，最主要的证书文件是 ca.crt 和对应的私钥 ca.key。</p>
+<p>此外，用户使用 kubectl 获取容器日志等 streaming 操作时，需要通过 kube-apiserver 向 kubelet 发起请求，这个连接也必须是安全的。kubeadm 为这一步生成的是 apiserver-kubelet-client.crt 文件，对应的私钥是 apiserver-kubelet-client.key。</p>
+<p>除此之外，Kubernetes 集群中还有 Aggregate APIServer 等特性，也需要用到专门的证书，这里就不再一一列举了。需要指出的是，我们可以选择不让 kubeadm 为你生成这些证书，而是拷贝现有的证书到如下证书的目录里：</p>
+<pre><code class="hljs shell">/etc/kubernetes/pki/ca.&#123;crt,key&#125;</code></pre>
+
+<p>这时，kubeadm 就会跳过证书生成的步骤，把它完全交给用户处理。</p>
+<h3 id="2-3、生成访问kube-apiserver所需的配置文件"><a href="#2-3、生成访问kube-apiserver所需的配置文件" class="headerlink" title="2.3、生成访问kube-apiserver所需的配置文件"></a>2.3、生成访问kube-apiserver所需的配置文件</h3><p>证书生成后，kubeadm 接下来会为其他组件生成访问 kube-apiserver 所需的配置文件。这些文件的路径是：/etc/kubernetes/xxx.conf：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> ls /etc/kubernetes/</span>
+admin.conf  controller-manager.conf  kubelet.conf  scheduler.conf</code></pre>
+
+<p>这些文件里面记录的是，当前这个 Master 节点的服务器地址、监听端口、证书目录等信息。这样，对应的客户端（比如 scheduler，kubelet 等），可以直接加载相应的文件，使用里面的信息与 kube-apiserver 建立安全连接。</p>
+<h3 id="2-4、生成集群组件的Pod配置文件"><a href="#2-4、生成集群组件的Pod配置文件" class="headerlink" title="2.4、生成集群组件的Pod配置文件"></a>2.4、生成集群组件的Pod配置文件</h3><p>接下来，kubeadm 会为 Master 组件生成 Pod 配置文件。我们知道 Kubernetes 有三个 Master 组件 kube-apiserver、kube-controller-manager、kube-scheduler，而它们都会以 Pod 的方式被部署起来。</p>
+<blockquote>
+<p>我们可能会有疑问：此时，Kubernetes 集群尚不存在，难道 kubeadm 会直接执行 docker run 来启动这些容器吗？</p>
+</blockquote>
+<p>当然不是。我们要知道的是：在 Kubernetes 中，有一种特殊的容器启动方法叫做“Static Pod”。它允许我们把要部署的 Pod 的 YAML 文件放在一个指定的目录里。这样，当这台机器上的 kubelet 启动时，它会自动检查这个目录，加载所有的 Pod YAML 文件，然后在这台机器上启动它们。从这一点也可以看出，kubelet 在 Kubernetes 项目中的地位非常高，在设计上它就是一个完全独立的组件，而其他 Master 组件，则更像是辅助性的系统容器。</p>
+<p>在 kubeadm 中，Master 组件的 YAML 文件会被生成在 /etc/kubernetes/manifests 路径下。比如，kube-apiserver.yaml：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">annotations:</span>
+    <span class="hljs-attr">scheduler.alpha.kubernetes.io/critical-pod:</span> <span class="hljs-string">&quot;&quot;</span>
+  <span class="hljs-attr">creationTimestamp:</span> <span class="hljs-literal">null</span>
+  <span class="hljs-attr">labels:</span>
+    <span class="hljs-attr">component:</span> <span class="hljs-string">kube-apiserver</span>
+    <span class="hljs-attr">tier:</span> <span class="hljs-string">control-plane</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">kube-apiserver</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">kube-system</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">command:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">kube-apiserver</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">--authorization-mode=Node,RBAC</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">--runtime-config=api/all=true</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">--advertise-address=10.168.0.2</span>
+    <span class="hljs-string">...</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">--tls-cert-file=/etc/kubernetes/pki/apiserver.crt</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">--tls-private-key-file=/etc/kubernetes/pki/apiserver.key</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">k8s.gcr.io/kube-apiserver-amd64:v1.11.1</span>
+    <span class="hljs-attr">imagePullPolicy:</span> <span class="hljs-string">IfNotPresent</span>
+    <span class="hljs-attr">livenessProbe:</span>
+      <span class="hljs-string">...</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">kube-apiserver</span>
+    <span class="hljs-attr">resources:</span>
+      <span class="hljs-attr">requests:</span>
+        <span class="hljs-attr">cpu:</span> <span class="hljs-string">250m</span>
+    <span class="hljs-attr">volumeMounts:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/usr/share/ca-certificates</span>
+      <span class="hljs-attr">name:</span> <span class="hljs-string">usr-share-ca-certificates</span>
+      <span class="hljs-attr">readOnly:</span> <span class="hljs-literal">true</span>
+    <span class="hljs-string">...</span>
+  <span class="hljs-attr">hostNetwork:</span> <span class="hljs-literal">true</span>
+  <span class="hljs-attr">priorityClassName:</span> <span class="hljs-string">system-cluster-critical</span>
+  <span class="hljs-attr">volumes:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">hostPath:</span>
+      <span class="hljs-attr">path:</span> <span class="hljs-string">/etc/ca-certificates</span>
+      <span class="hljs-attr">type:</span> <span class="hljs-string">DirectoryOrCreate</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">etc-ca-certificates</span>
+  <span class="hljs-string">...</span></code></pre>
+
+<p>对于上面的YAML文件，我们需要关注这样几个信息：</p>
+<ul>
+<li>这个 Pod 里只定义了一个容器，它使用的镜像是：k8s.gcr.io/kube-apiserver-amd64:v1.11.1 。这个镜像是 Kubernetes 官方维护的一个组件镜像。</li>
+<li>这个容器的启动命令（commands）是 kube-apiserver –authorization-mode=Node,RBAC …，这样一句非常长的命令。其实，它就是容器里 kube-apiserver 这个二进制文件再加上指定的配置参数而已。</li>
+<li>如果我们要修改一个已有集群的 kube-apiserver 的配置，就需要修改这个 YAML 文件。</li>
+</ul>
+<p>注：这些组件的参数可以在部署时指定。</p>
+<p>在这一步完成后，kubeadm 还会再生成一个 Etcd 的 Pod YAML 文件，此时，同样会通过 Static Pod 的方式启动 Etcd。所以，最后 Master 组件的 Pod YAML 文件如下所示：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> ls /etc/kubernetes/manifests/</span>
+etcd.yaml  kube-apiserver.yaml  kube-controller-manager.yaml  kube-scheduler.yaml</code></pre>
+
+<h3 id="2-5、创建Pod"><a href="#2-5、创建Pod" class="headerlink" title="2.5、创建Pod"></a>2.5、创建Pod</h3><p>一旦上面这些 YAML 文件出现在了被 kubelet 监视的 /etc/kubernetes/manifests 目录下，kubelet 就会自动创建这些 YAML 文件中定义的 Pod，即 Master 组件的容器。</p>
+<h3 id="2-6、生成token"><a href="#2-6、生成token" class="headerlink" title="2.6、生成token"></a>2.6、生成token</h3><p>当 Master 组件容器启动后，kubeadm 会通过检查 localhost:6443/healthz 这个 Master 组件的健康检查 URL，等待 Master 组件完全运行起来。然后，kubeadm 就会为集群生成一个 bootstrap token。之后，只要持有这个 token，任何一个安装了 kubelet 和 kubadm 的节点，都可以通过 kubeadm join 加入到这个集群当中。</p>
+<p>注：这个 token 的值和使用方法，会在 kubeadm init 结束后被打印出来。</p>
+<h3 id="2-7、在Etcd中保存节点信息"><a href="#2-7、在Etcd中保存节点信息" class="headerlink" title="2.7、在Etcd中保存节点信息"></a>2.7、在Etcd中保存节点信息</h3><p>在 token 生成之后，kubeadm 会将 ca.crt 等 Master 节点的重要信息，通过 ConfigMap 的方式保存在 Etcd 当中，供后续部署 Node 节点使用。这个 ConfigMap 的名字是 cluster-info。</p>
+<h3 id="2-8、安装默认插件"><a href="#2-8、安装默认插件" class="headerlink" title="2.8、安装默认插件"></a>2.8、安装默认插件</h3><p>kubeadm init 的最后一步，就是安装默认插件。Kubernetes 默认 kube-proxy 和 DNS 这两个插件是必须安装的。它们分别用来提供整个集群的服务发现和 DNS 功能。其实，这两个插件也只是两个容器镜像而已，所以 kubeadm 只要用 Kubernetes 客户端创建两个 Pod 就可以了。</p>
+<h2 id="三、理解kubeadm-join"><a href="#三、理解kubeadm-join" class="headerlink" title="三、理解kubeadm join"></a>三、理解kubeadm join</h2><p>在kubeadm init生成 bootstrap token 之后，我们就可以在任意一台安装了 kubelet 和 kubeadm 的机器上执行 kubeadm join 了。</p>
+<blockquote>
+<p>可是，为什么执行 kubeadm join 需要这样一个 token 呢？</p>
+</blockquote>
+<p>因为，任何一台机器想要成为 Kubernetes 集群中的一个节点，就必须在集群的 kube-apiserver 上注册。可是，要想跟 apiserver 打交道，这台机器就必须要获取到相应的证书文件（CA 文件）。可是，为了能够一键安装，我们就不能让用户去 Master 节点上手动拷贝这些文件。所以，kubeadm 至少需要向kube-apiserver发起一次“不安全模式”的访问，从而拿到保存在 ConfigMap 中的 cluster-info（它保存了 APIServer 的授权信息）。而 bootstrap token，扮演的就是这个过程中的安全验证的角色。</p>
+<p>只要有了 cluster-info 里的 kube-apiserver 的地址、端口、证书，kubelet 就可以以“安全模式”连接到 apiserver 上，这样一个新的节点就部署完成了。接下来，我们只要在其他节点上重复这个指令就可以了。</p>
+<h2 id="四、定制集群参数"><a href="#四、定制集群参数" class="headerlink" title="四、定制集群参数"></a>四、定制集群参数</h2><p>到这里，我们一定会有这样的疑问：kubeadm 确实简单易用，可是我们又该如何定制我们的集群组件参数呢？比如，我们要指定 kube-apiserver 的启动参数，该怎么办？</p>
+<p>其实，在使用 kubeadm init 部署 Master 节点时，可以使用下面这条指令：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubeadm init --config kubeadm.yaml</span></code></pre>
+
+<p>在这里，我们给 kubeadm 提供一个 YAML 文件（比如，kubeadm.yaml），它的内容如下所示（这里仅列举了主要部分）：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">kubeadm.k8s.io/v1alpha2</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">MasterConfiguration</span>
+<span class="hljs-attr">kubernetesVersion:</span> <span class="hljs-string">v1.11.0</span>
+<span class="hljs-attr">api:</span>
+  <span class="hljs-attr">advertiseAddress:</span> <span class="hljs-number">192.168</span><span class="hljs-number">.0</span><span class="hljs-number">.102</span>
+  <span class="hljs-attr">bindPort:</span> <span class="hljs-number">6443</span>
+  <span class="hljs-string">...</span>
+<span class="hljs-attr">etcd:</span>
+  <span class="hljs-attr">local:</span>
+    <span class="hljs-attr">dataDir:</span> <span class="hljs-string">/var/lib/etcd</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">&quot;&quot;</span>
+<span class="hljs-attr">imageRepository:</span> <span class="hljs-string">k8s.gcr.io</span>
+<span class="hljs-attr">kubeProxy:</span>
+  <span class="hljs-attr">config:</span>
+    <span class="hljs-attr">bindAddress:</span> <span class="hljs-number">0.0</span><span class="hljs-number">.0</span><span class="hljs-number">.0</span>
+    <span class="hljs-string">...</span>
+<span class="hljs-attr">kubeletConfiguration:</span>
+  <span class="hljs-attr">baseConfig:</span>
+    <span class="hljs-attr">address:</span> <span class="hljs-number">0.0</span><span class="hljs-number">.0</span><span class="hljs-number">.0</span>
+    <span class="hljs-string">...</span>
+<span class="hljs-attr">networking:</span>
+  <span class="hljs-attr">dnsDomain:</span> <span class="hljs-string">cluster.local</span>
+  <span class="hljs-attr">podSubnet:</span> <span class="hljs-string">&quot;&quot;</span>
+  <span class="hljs-attr">serviceSubnet:</span> <span class="hljs-number">10.96</span><span class="hljs-number">.0</span><span class="hljs-number">.0</span><span class="hljs-string">/12</span>
+<span class="hljs-attr">nodeRegistration:</span>
+  <span class="hljs-attr">criSocket:</span> <span class="hljs-string">/var/run/dockershim.sock</span>
+  <span class="hljs-string">...</span></code></pre>
+
+<p>通过制定这样一个部署参数配置文件，我们就可以很方便地在这个文件里填写各种自定义的部署参数了。比如，我们现在要指定 kube-apiserver 的参数，那么我们只要在这个文件里加上这样一段信息：</p>
+<pre><code class="hljs yaml"><span class="hljs-string">...</span>
+<span class="hljs-attr">apiServerExtraArgs:</span>
+  <span class="hljs-attr">advertise-address:</span> <span class="hljs-number">192.168</span><span class="hljs-number">.0</span><span class="hljs-number">.103</span>
+  <span class="hljs-attr">anonymous-auth:</span> <span class="hljs-literal">false</span>
+  <span class="hljs-attr">enable-admission-plugins:</span> <span class="hljs-string">AlwaysPullImages,DefaultStorageClass</span>
+  <span class="hljs-attr">audit-log-path:</span> <span class="hljs-string">/home/johndoe/audit.log</span></code></pre>
+
+<p>然后，kubeadm 就会使用上面这些信息替换 /etc/kubernetes/manifests/kube-apiserver.yaml 里的 command 字段里的参数了。</p>
+<p>这个 YAML 文件提供的可配置项远不止这些。比如，我们还可以修改 kubelet 和 kube-proxy 的配置，修改 Kubernetes 使用的基础镜像的 URL（默认的k8s.gcr.io/xxx镜像 URL 在国内访问是有困难的），指定自己的证书文件，指定特殊的容器运行时等等。</p>
+<h2 id="五、小结"><a href="#五、小结" class="headerlink" title="五、小结"></a>五、小结</h2><p>在这篇文章中，我们主要讨论了kubeadm的工作原理，我们需要知道的是：</p>
+<ul>
+<li>容器化Kubernetes的难点在于如何容器化kubelet？作为kubernetes集群节点的agent，kubelet不仅会同容器运行时交互，而且还会直接操作宿主机。尤其是直接操作宿主机文件系统，这对容器来说是一个不小的挑战，因此，kubeadm选择了一种折中方案：直接在宿主机上运行kubelet，然后使用容器部署kubenetes集群的其他组件。</li>
+<li>kubeadm在容器化kubenetes集群组件时，使用到了一种特殊的容器启动方式：Static Pod。它允许我们事先将要部署的Pod的YAML文件放到一个指定的目录下，这样，当kubelet启动时，就会自动检查这个目录（/etc/kubernetes/manifests），加载所有的Pod YAML文件，然后启动它们。</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Kubernetes%E3%80%81kubeadm/">Kubernetes、kubeadm</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/12/14/Lua%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Lua错误处理</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/09/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95API-Server%E6%A1%86%E6%9E%B6/">
+                        <span class="hidden-mobile">一个简单API Server框架</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "集群部署1：理解kubeadm&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
