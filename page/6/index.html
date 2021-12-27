@@ -176,6 +176,54 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2020/10/04/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%928%EF%BC%9AOperator/">容器编排8：Operator</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/10/04/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%928%EF%BC%9AOperator/">
+          
+          
+            
+          
+          在 Kubernetes 中，管理“有状态应用”是一个比较复杂的过程，尤其是编写 Pod 模板的时候，总有一种“在 YAML 文件里编程序”的感觉，让人很不舒服。而在 Kubernetes 生态中，还有一个相对更加灵活和编程友好的管理“有状态应用”的解决方案，它就是：Operator。接下来，我们就以 Etcd Operator 为例，讨论一下 Operator 的工作原理和编写方法。
+一、Ope
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-04 09:20" pubdate>
+              2020-10-04
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2020/10/04/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%927%EF%BC%9AJob%E4%B8%8ECronJob/">容器编排7：Job与CronJob</a>
       </h1>
 
@@ -571,57 +619,6 @@
           
           在前面的文章中，我们已经深入讨论了Pod的API对象，以及Pod和Container的关系。接下来，我们先从一种特殊的Volume开始，更加深入地理解Pod对象各个重要字段的含义。
 一、Projected Volume在 Kubernetes 中，有几种特殊的 Volume，它们存在的意义不是为了存放容器里的数据，也不是用来进行容器和宿主机之间的数据交换。这些特殊 Volume 的作用，是为容器提
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-02 07:50" pubdate>
-              2020-10-02
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Kubernetes/">Kubernetes</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Pod%E5%AF%B9%E8%B1%A12%EF%BC%9A%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">深入解析Pod对象2：基本概念</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Pod%E5%AF%B9%E8%B1%A12%EF%BC%9A%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">
-          
-          
-            
-          
-          在前面的文章中，我们详细讨论了Pod的实现原理和容器设计模式。接下来，我们来看看有关Pod对象的更多细节。
-一、Pod VS 虚拟机在 Kubernetes 项目中，最小的编排单位是Pod。将这个设计落实到 API 对象上后，容器（Container）就成了 Pod 属性里的一个普通的字段。此时，一个很自然的问题就是：
-
-到底哪些字段属于 Pod 对象，而又有哪些字段属于 Container ？
-
         </a>
       </p>
 

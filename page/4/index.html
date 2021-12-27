@@ -176,6 +176,54 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2020/10/13/%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A61%EF%BC%9AKubernetes%E7%9A%84%E8%B5%84%E6%BA%90%E6%A8%A1%E5%9E%8B/">作业调度1：Kubernetes的资源模型</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/10/13/%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A61%EF%BC%9AKubernetes%E7%9A%84%E8%B5%84%E6%BA%90%E6%A8%A1%E5%9E%8B/">
+          
+          
+            
+          
+          作为一个编排与管理容器集群的项目，Kubernetes 为用户提供的基础设施能力，不仅包括了对应用的定义和描述，还包括了对应用的资源管理和调度。接下来，我们重点讨论后面这部分内容。
+一、从Kubernetes的资源模型说起1.1、两种资源类型我们知道，在 Kubernetes 里，Pod 是最小的原子调度单位。这也就意味着，所有跟调度和资源管理相关的属性都应该属于 Pod 对象的字段。而这其中最重
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-13 08:14" pubdate>
+              2020-10-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Kubernetes/">Kubernetes</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A6/">作业调度</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2020/10/10/GoReplay%E5%85%A5%E9%97%A8/">GoReplay入门</a>
       </h1>
 
@@ -577,54 +625,6 @@ Kubernetes 里的 Pod 默认都是“允许所有”（Accept Al
           
           在前面的文章中，我们讨论了单机容器间通信的原理，并引出了“跨主机容器间通信问题”。接下来，我们重点讨论跨主机容器间通信的原理。
 一、从Flannel项目说起要理解容器“跨主机通信”的原理，就一定要先从 Flannel 这个项目说起。Flannel 项目是 CoreOS 公司主推的容器网络方案。事实上，Flannel 项目本身只是一个框架，真正为我们提供容器网络功能的，是 Flannel 的后端实现
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-06 08:49" pubdate>
-              2020-10-06
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Kubernetes/">Kubernetes</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/06/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C1%EF%BC%9A%E6%B5%85%E8%B0%88%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C/">容器网络1：浅谈容器网络</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/06/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C1%EF%BC%9A%E6%B5%85%E8%B0%88%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C/">
-          
-          
-            
-          
-          在前面的文章中，我们讨论了数据持久化方面的内容。接下来，我们重点讨论与容器网络相关的内容。
-一、从单机容器间如何通信说起我们需要知道的是，一个 Linux 容器能看见的“网络栈”，实际上是被隔离在它自己的 Network Namespace 当中的。而这里所谓的“网络栈”，就包括了：网卡（Network Interface）、回环设备（Loopback Device）、路由表（Routing Ta
         </a>
       </p>
 

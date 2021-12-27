@@ -176,6 +176,57 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2020/10/02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Pod%E5%AF%B9%E8%B1%A12%EF%BC%9A%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">深入解析Pod对象2：基本概念</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/10/02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Pod%E5%AF%B9%E8%B1%A12%EF%BC%9A%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">
+          
+          
+            
+          
+          在前面的文章中，我们详细讨论了Pod的实现原理和容器设计模式。接下来，我们来看看有关Pod对象的更多细节。
+一、Pod VS 虚拟机在 Kubernetes 项目中，最小的编排单位是Pod。将这个设计落实到 API 对象上后，容器（Container）就成了 Pod 属性里的一个普通的字段。此时，一个很自然的问题就是：
+
+到底哪些字段属于 Pod 对象，而又有哪些字段属于 Container ？
+
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-02 07:50" pubdate>
+              2020-10-02
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2020/10/02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Pod%E5%AF%B9%E8%B1%A11%EF%BC%9A%E6%88%91%E4%BB%AC%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81Pod/">深入解析Pod对象1：我们为什么需要Pod</a>
       </h1>
 
@@ -582,54 +633,6 @@ JVM垃圾回收
             <i class="iconfont icon-date"></i>
             <time datetime="2020-09-26 09:15" pubdate>
               2020-09-26
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Java/">Java</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/JVM/">JVM</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/09/20/JVM%E5%8D%B3%E6%97%B6%E7%BC%96%E8%AF%91/">JVM即时编译</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/09/20/JVM%E5%8D%B3%E6%97%B6%E7%BC%96%E8%AF%91/">
-          
-          
-            
-          
-          在讨论java类编译加载执行过程中，我们提到了即时编译这个概念。说到编译，我们一定会想到将.java文件编译成.class文件的过程，这个编译我们一般称为前端编译。Java的编译和运行剁成非常复杂，除了前端编译外，还有运行时编译。
-一、什么是即时编译即时编译，也被称为运行时编译。由于操作系统无法直接运行java生成的字节码，因此，在运行时，JIT或解释器会将字节码转换成机器码，这个转换过程就叫运行
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-20 17:08" pubdate>
-              2020-09-20
             </time>
           </div>
         
