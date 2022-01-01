@@ -176,6 +176,56 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2020/10/13/%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A62%EF%BC%9AKubernetes%E7%9A%84%E9%BB%98%E8%AE%A4%E8%B0%83%E5%BA%A6%E5%99%A8/">作业调度2：Kubernetes的默认调度器</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/10/13/%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A62%EF%BC%9AKubernetes%E7%9A%84%E9%BB%98%E8%AE%A4%E8%B0%83%E5%BA%A6%E5%99%A8/">
+          
+          
+            
+          
+          在前面的文章中，我们主要讨论了 Kubernetes 里关于资源模型的设计。接下来，我们来讨论一下 Kubernetes 的默认调度器（default scheduler）。
+一、默认调度器的设计1.1、从默认调度器的职责说起在 Kubernetes 项目中，默认调度器的主要职责，就是为一个新创建出来的 Pod，寻找一个最合适的节点（Node）。而这里“最合适”的含义，包括两层：
+
+从集群所有的节
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-13 08:14" pubdate>
+              2020-10-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Kubernetes/">Kubernetes</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A6/">作业调度</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2020/10/13/%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A61%EF%BC%9AKubernetes%E7%9A%84%E8%B5%84%E6%BA%90%E6%A8%A1%E5%9E%8B/">作业调度1：Kubernetes的资源模型</a>
       </h1>
 
@@ -585,54 +635,6 @@ Kubernetes 里的 Pod 默认都是“允许所有”（Accept Al
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
             <time datetime="2020-10-06 08:50" pubdate>
-              2020-10-06
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Kubernetes/">Kubernetes</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/06/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C2%EF%BC%9A%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%AE%B9%E5%99%A8%E8%B7%A8%E4%B8%BB%E6%9C%BA%E7%BD%91%E7%BB%9C/">容器网络2：深入解析容器跨主机网络</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/06/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C2%EF%BC%9A%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%AE%B9%E5%99%A8%E8%B7%A8%E4%B8%BB%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-          
-          
-            
-          
-          在前面的文章中，我们讨论了单机容器间通信的原理，并引出了“跨主机容器间通信问题”。接下来，我们重点讨论跨主机容器间通信的原理。
-一、从Flannel项目说起要理解容器“跨主机通信”的原理，就一定要先从 Flannel 这个项目说起。Flannel 项目是 CoreOS 公司主推的容器网络方案。事实上，Flannel 项目本身只是一个框架，真正为我们提供容器网络功能的，是 Flannel 的后端实现
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-06 08:49" pubdate>
               2020-10-06
             </time>
           </div>
