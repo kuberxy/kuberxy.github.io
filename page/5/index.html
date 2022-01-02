@@ -340,17 +340,20 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A82%EF%BC%9A%E7%90%86%E8%A7%A3Local%20PV/">持久化存储2：理解Local Persistent Volume</a>
+        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A82%EF%BC%9A%E5%AE%9E%E8%B7%B5Local%20PV/">持久化存储2：实践Local PV</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A82%EF%BC%9A%E7%90%86%E8%A7%A3Local%20PV/">
+        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A82%EF%BC%9A%E5%AE%9E%E8%B7%B5Local%20PV/">
           
           
             
           
-          在前面的文章中，我们都是基于一个外部的存储服务来提供PV。此时，我们可能有这样的疑问：能否直接使用宿主机上的目录或磁盘作为PV呢？答案是肯定的。这就是我们今天就要讨论的主题：Local Persistent Volume。
-1.1、Local PVKubernetes 支持直接使用宿主机上目录或磁盘，而不依赖于远程存储服务来提供“持久化”的 Volume。这样做的好处显而易见：由于这个 Volum
+          在开始使用 Local Persistent Volume 之前，我们首先需要在集群里配置好磁盘或者块设备。在公有云上，这个操作等同于给虚拟机额外挂载一个磁盘，比如 GCE 的 Local SSD 类型的磁盘就是一个典型例子。而在我们部署的私有环境中，有两种办法来完成这个步骤。
+
+第一种，当然就是给宿主机挂载并格式化一个可用的本地磁盘，这也是最常规的操作；
+
+第二种，对于实验环境，你其实可以在宿主
         </a>
       </p>
 
@@ -388,20 +391,17 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A82%EF%BC%9A%E5%AE%9E%E8%B7%B5Local%20PV/">持久化存储2：实践Local PV</a>
+        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A82%EF%BC%9A%E7%90%86%E8%A7%A3Local%20PV/">持久化存储2：理解Local Persistent Volume</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A82%EF%BC%9A%E5%AE%9E%E8%B7%B5Local%20PV/">
+        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A82%EF%BC%9A%E7%90%86%E8%A7%A3Local%20PV/">
           
           
             
           
-          在开始使用 Local Persistent Volume 之前，我们首先需要在集群里配置好磁盘或者块设备。在公有云上，这个操作等同于给虚拟机额外挂载一个磁盘，比如 GCE 的 Local SSD 类型的磁盘就是一个典型例子。而在我们部署的私有环境中，有两种办法来完成这个步骤。
-
-第一种，当然就是给宿主机挂载并格式化一个可用的本地磁盘，这也是最常规的操作；
-
-第二种，对于实验环境，你其实可以在宿主
+          在前面的文章中，我们都是基于一个外部的存储服务来提供PV。此时，我们可能有这样的疑问：能否直接使用宿主机上的目录或磁盘作为PV呢？答案是肯定的。这就是我们今天就要讨论的主题：Local Persistent Volume。
+1.1、Local PVKubernetes 支持直接使用宿主机上目录或磁盘，而不依赖于远程存储服务来提供“持久化”的 Volume。这样做的好处显而易见：由于这个 Volum
         </a>
       </p>
 
@@ -537,17 +537,17 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A81%EF%BC%9A%E7%90%86%E8%A7%A3StorageClass/">理解StorageClass</a>
+        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A81%EF%BC%9A%E7%90%86%E8%A7%A3PV%E3%80%81PVC%E4%BD%93%E7%B3%BB/">持久化存储1：理解PV、PVC对象</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A81%EF%BC%9A%E7%90%86%E8%A7%A3StorageClass/">
+        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A81%EF%BC%9A%E7%90%86%E8%A7%A3PV%E3%80%81PVC%E4%BD%93%E7%B3%BB/">
           
           
             
           
-          在前面的文章中，我们通过手动的方式创建出了所需要的PV。接下来，我们来看一种自动创建PV的方式。
-1.1、Static Provisioning &amp; Dynamic Provisioning在一个大规模的Kubernetes集群中，集群用户可能会创建出成千上万个PVC，这时，集群管理员就需要不停地创建出满足一定条件的PV，否则新Pod就会因为PVC无法绑定PV而运行失败。显然，在实际操作中
+          一个优秀的云计算项目自然少不了存储资源的管理。在kubernetes中，为了简化用户使用持久化存储的门槛，引入了一组叫作  Persistent Volume（PV）和Persistent Volume Claim（PVC）的 API 对象。
+1.1、PV对象PV对象用于描述集群中的存储资源。它主要定义了存储服务的访问信息（或实现细节），比如一个NFS服务的共享信息。通常情况下，PV对象是由集群管
         </a>
       </p>
 
@@ -585,17 +585,17 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A81%EF%BC%9A%E7%90%86%E8%A7%A3PV%E3%80%81PVC%E4%BD%93%E7%B3%BB/">持久化存储1：理解PV、PVC对象</a>
+        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A81%EF%BC%9A%E7%90%86%E8%A7%A3StorageClass/">理解StorageClass</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A81%EF%BC%9A%E7%90%86%E8%A7%A3PV%E3%80%81PVC%E4%BD%93%E7%B3%BB/">
+        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A81%EF%BC%9A%E7%90%86%E8%A7%A3StorageClass/">
           
           
             
           
-          一个优秀的云计算项目自然少不了存储资源的管理。在kubernetes中，为了简化用户使用持久化存储的门槛，引入了一组叫作  Persistent Volume（PV）和Persistent Volume Claim（PVC）的 API 对象。
-1.1、PV对象PV对象用于描述集群中的存储资源。它主要定义了存储服务的访问信息（或实现细节），比如一个NFS服务的共享信息。通常情况下，PV对象是由集群管
+          在前面的文章中，我们通过手动的方式创建出了所需要的PV。接下来，我们来看一种自动创建PV的方式。
+1.1、Static Provisioning &amp; Dynamic Provisioning在一个大规模的Kubernetes集群中，集群用户可能会创建出成千上万个PVC，这时，集群管理员就需要不停地创建出满足一定条件的PV，否则新Pod就会因为PVC无法绑定PV而运行失败。显然，在实际操作中
         </a>
       </p>
 
