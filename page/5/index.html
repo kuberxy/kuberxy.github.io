@@ -340,20 +340,17 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A82%EF%BC%9A%E5%AE%9E%E8%B7%B5Local%20PV/">持久化存储2：实践Local PV</a>
+        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A82%EF%BC%9A%E7%90%86%E8%A7%A3Local%20PV/">持久化存储2：理解Local Persistent Volume</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A82%EF%BC%9A%E5%AE%9E%E8%B7%B5Local%20PV/">
+        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A82%EF%BC%9A%E7%90%86%E8%A7%A3Local%20PV/">
           
           
             
           
-          在开始使用 Local Persistent Volume 之前，我们首先需要在集群里配置好磁盘或者块设备。在公有云上，这个操作等同于给虚拟机额外挂载一个磁盘，比如 GCE 的 Local SSD 类型的磁盘就是一个典型例子。而在我们部署的私有环境中，有两种办法来完成这个步骤。
-
-第一种，当然就是给宿主机挂载并格式化一个可用的本地磁盘，这也是最常规的操作；
-
-第二种，对于实验环境，你其实可以在宿主
+          在前面的文章中，我们都是基于一个外部的存储服务来提供PV。此时，我们可能有这样的疑问：能否直接使用宿主机上的目录或磁盘作为PV呢？答案是肯定的。这就是我们今天就要讨论的主题：Local Persistent Volume。
+1.1、Local PVKubernetes 支持直接使用宿主机上目录或磁盘，而不依赖于远程存储服务来提供“持久化”的 Volume。这样做的好处显而易见：由于这个 Volum
         </a>
       </p>
 
@@ -391,17 +388,20 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A82%EF%BC%9A%E7%90%86%E8%A7%A3Local%20PV/">持久化存储2：理解Local Persistent Volume</a>
+        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A82%EF%BC%9A%E5%AE%9E%E8%B7%B5Local%20PV/">持久化存储2：实践Local PV</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A82%EF%BC%9A%E7%90%86%E8%A7%A3Local%20PV/">
+        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A82%EF%BC%9A%E5%AE%9E%E8%B7%B5Local%20PV/">
           
           
             
           
-          在前面的文章中，我们都是基于一个外部的存储服务来提供PV。此时，我们可能有这样的疑问：能否直接使用宿主机上的目录或磁盘作为PV呢？答案是肯定的。这就是我们今天就要讨论的主题：Local Persistent Volume。
-1.1、Local PVKubernetes 支持直接使用宿主机上目录或磁盘，而不依赖于远程存储服务来提供“持久化”的 Volume。这样做的好处显而易见：由于这个 Volum
+          在开始使用 Local Persistent Volume 之前，我们首先需要在集群里配置好磁盘或者块设备。在公有云上，这个操作等同于给虚拟机额外挂载一个磁盘，比如 GCE 的 Local SSD 类型的磁盘就是一个典型例子。而在我们部署的私有环境中，有两种办法来完成这个步骤。
+
+第一种，当然就是给宿主机挂载并格式化一个可用的本地磁盘，这也是最常规的操作；
+
+第二种，对于实验环境，你其实可以在宿主
         </a>
       </p>
 
