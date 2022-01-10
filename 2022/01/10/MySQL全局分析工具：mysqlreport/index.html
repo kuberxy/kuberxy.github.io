@@ -1,0 +1,694 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="kubxy">
+  <meta name="keywords" content="">
+  <title>MySQL全局分析工具：mysqlreport - Kubxy</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Kubxy</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-01-10 16:10" pubdate>
+        2022年1月10日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      50
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">MySQL全局分析工具：mysqlreport</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <p>todo</p>
+<h2 id="一、安装"><a href="#一、安装" class="headerlink" title="一、安装"></a>一、安装</h2><h2 id="二、使用"><a href="#二、使用" class="headerlink" title="二、使用"></a>二、使用</h2><h2 id="三、输出解读"><a href="#三、输出解读" class="headerlink" title="三、输出解读"></a>三、输出解读</h2><h3 id="key-索引报表"><a href="#key-索引报表" class="headerlink" title="key - 索引报表"></a>key - 索引报表</h3><p>该部分显示了MyISAM引擎的shared key buffer的使用情况，如下：</p>
+<pre><code class="hljs markdown"><span class="hljs-strong">__ Key __</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">__<span class="hljs-emphasis">_</span></span>
+<span class="hljs-strong"><span class="hljs-emphasis">Buffer used     3.00k of  16.00M  %Used:   0.02</span></span>
+<span class="hljs-strong"><span class="hljs-emphasis">  Current       2.92M            %Usage:  18.26</span></span>
+<span class="hljs-strong"><span class="hljs-emphasis">Write hit       0.00%</span></span>
+<span class="hljs-strong"><span class="hljs-emphasis">Read hit       50.00%</span></span></code></pre>
+
+<p>我们可以看到，配置的Key Buffer为16M。MySQL每次使用的Key Buffer最大为3k，占总大小的0.02%。当前总共使用了2.92M的Key Buffer，占总大小的18.26%。</p>
+<p>Write hit和Read hit分别是指索引的写命中率和读命中率。对于索引的写命中率，在写操作（update、insert等）多的场景下命中率可能接近0%，在读操作（select等）多的场景下命中率可能高于90%，而当命中率小于0%时，表示MySQL经常将磁盘写入磁盘中。对于索引的读命中率，当命中率低于99%时，表示Key Buffer过小需要从磁盘读取索引。</p>
+<h3 id="questions-操作报表"><a href="#questions-操作报表" class="headerlink" title="questions - 操作报表"></a>questions - 操作报表</h3><p>该部分显示了MySQL Server正在忙些什么以及有多忙，其中包括MySQL的各种操作和MySQL协议通信。如下：</p>
+<pre><code class="hljs markdown"><span class="hljs-strong">__ Questions __</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-emphasis">_</span>
+<span class="hljs-emphasis">Total          98.06k   47.46/s</span>
+<span class="hljs-emphasis">  DMS          81.23k   39.32/s  %Total:  82.84</span>
+<span class="hljs-emphasis">  QC Hits      16.58k    8.02/s           16.91</span>
+<span class="hljs-emphasis">  COM_</span>QUIT        200    0.10/s            0.20
+  Com<span class="hljs-emphasis">_            131    0.06/s            0.13</span>
+<span class="hljs-emphasis">  -Unknown         82    0.04/s            0.08</span>
+<span class="hljs-emphasis">Slow 5 s            0    0.00/s            0.00  %DMS:   0.00  Log:  ON</span>
+<span class="hljs-emphasis">DMS            81.23k   39.32/s           82.84</span>
+<span class="hljs-emphasis">  SELECT       64.44k   31.19/s           65.72         79.33</span>
+<span class="hljs-emphasis">  INSERT       16.75k    8.11/s           17.08         20.61</span>
+<span class="hljs-emphasis">  UPDATE           41    0.02/s            0.04          0.05</span>
+<span class="hljs-emphasis">  REPLACE           0    0.00/s            0.00          0.00</span>
+<span class="hljs-emphasis">  DELETE            0    0.00/s            0.00          0.00</span>
+<span class="hljs-emphasis">Com_</span>              131    0.06/s            0.13
+  change<span class="hljs-emphasis">_db       119    0.06/s            0.12</span>
+<span class="hljs-emphasis">  show_</span>fields       9    0.00/s            0.01
+  show<span class="hljs-emphasis">_status       2    0.00/s            0.00</span></code></pre>
+
+<p>在Total部分是MySQL对所有操作的总计，以及这些操作在MySQL Server正常运行的时间内的速率。这些总计的数据包含如下内容：</p>
+<ul>
+<li>DMS，即数据操作语句。在这里它只包括了select、insert、replcate、update、delete操作</li>
+<li>QC Hits，即查询缓存命中率，是指MySQL从查询缓存中检索结果而不是执行实际的查询获取结果的次数</li>
+<li>COM_QUIT，是一些可以忽略的不重要的操作。</li>
+<li>Com_，是MySQL处理的所有各种命令，通常与协议相关。理想情况下，该值应该很低。</li>
+<li>-Unknown，是那些MySQL没有为其维护单独状态值的操作。通常，该值应该很低。</li>
+</ul>
+<p>在Slow部分显示了MySQL执行的慢查询数量。如上，执行时间超过5s秒的操作将被视为慢查询，当前总计到了0条慢查询。<code>%DMS</code>表示数据操作语句在慢查询中的比重。<code>LOG</code>表示是否将慢查询记录到日志中。</p>
+<p>在DMS部分则显示了数据操作语句详细分布情况。</p>
+<p>在Com_部分则显示了MySQL处理的各种命令的分布情况。</p>
+<h3 id="select-and-sort-查询和排序报表"><a href="#select-and-sort-查询和排序报表" class="headerlink" title="select and sort - 查询和排序报表"></a>select and sort - 查询和排序报表</h3><p>该部分显示了各种类型的select语句的详细分布情况，如下：</p>
+<pre><code class="hljs apache"><span class="hljs-attribute">__</span> SELECT and Sort _____________________________________________________
+<span class="hljs-attribute">Scan</span>               <span class="hljs-number">38</span>    <span class="hljs-number">0</span>.<span class="hljs-number">02</span>/s %SELECT:   <span class="hljs-number">0</span>.<span class="hljs-number">06</span>
+<span class="hljs-attribute">Range</span>              <span class="hljs-number">14</span>    <span class="hljs-number">0</span>.<span class="hljs-number">01</span>/s            <span class="hljs-number">0</span>.<span class="hljs-number">02</span>
+<span class="hljs-attribute">Full</span> join           <span class="hljs-number">3</span>    <span class="hljs-number">0</span>.<span class="hljs-number">00</span>/s            <span class="hljs-number">0</span>.<span class="hljs-number">00</span>
+<span class="hljs-attribute">Range</span> check         <span class="hljs-number">0</span>    <span class="hljs-number">0</span>.<span class="hljs-number">00</span>/s            <span class="hljs-number">0</span>.<span class="hljs-number">00</span>
+<span class="hljs-attribute">Full</span> rng join       <span class="hljs-number">0</span>    <span class="hljs-number">0</span>.<span class="hljs-number">00</span>/s            <span class="hljs-number">0</span>.<span class="hljs-number">00</span>
+<span class="hljs-attribute">Sort</span> scan          <span class="hljs-number">14</span>    <span class="hljs-number">0</span>.<span class="hljs-number">01</span>/s
+<span class="hljs-attribute">Sort</span> range         <span class="hljs-number">26</span>    <span class="hljs-number">0</span>.<span class="hljs-number">01</span>/s
+<span class="hljs-attribute">Sort</span> mrg pass       <span class="hljs-number">0</span>    <span class="hljs-number">0</span>.<span class="hljs-number">00</span>/s</code></pre>
+
+<p>其中，Scan表示全表扫描，Range表示范围查询，Full join表示联合全表扫描。正常情况下，应该有很多的Range范围查询，而如果Scan和Full join过多，则说明SQL 写得有问题。</p>
+<h3 id="query-cache-查询缓存报表"><a href="#query-cache-查询缓存报表" class="headerlink" title="query cache - 查询缓存报表"></a>query cache - 查询缓存报表</h3><p>该部分显示了查询缓存的使用情况，如下：</p>
+<pre><code class="hljs apache"><span class="hljs-attribute">__</span> Query Cache _________________________________________________________
+<span class="hljs-attribute">Memory</span> usage   <span class="hljs-number">17</span>.<span class="hljs-number">81</span>M of  <span class="hljs-number">32</span>.<span class="hljs-number">00</span>M  %Used:  <span class="hljs-number">55</span>.<span class="hljs-number">66</span>
+<span class="hljs-attribute">Block</span> Fragmnt  <span class="hljs-number">13</span>.<span class="hljs-number">05</span>%
+<span class="hljs-attribute">Hits</span>           <span class="hljs-number">16</span>.<span class="hljs-number">58</span>k    <span class="hljs-number">8</span>.<span class="hljs-number">02</span>/s
+<span class="hljs-attribute">Inserts</span>        <span class="hljs-number">48</span>.<span class="hljs-number">50</span>k   <span class="hljs-number">23</span>.<span class="hljs-number">48</span>/s
+<span class="hljs-attribute">Prunes</span>         <span class="hljs-number">33</span>.<span class="hljs-number">46</span>k   <span class="hljs-number">16</span>.<span class="hljs-number">20</span>/s
+<span class="hljs-attribute">Insrt</span>:Prune    <span class="hljs-number">1</span>.<span class="hljs-number">45</span>:<span class="hljs-number">1</span>    <span class="hljs-number">7</span>.<span class="hljs-number">28</span>/s
+<span class="hljs-attribute">Hit</span>:Insert     <span class="hljs-number">0</span>.<span class="hljs-number">34</span>:<span class="hljs-number">1</span></code></pre>
+
+<p>在Memory usage部分显示了查询缓存的内存使用情况。当查询缓存占用了大量的内存时，会体现在Prunes部分。</p>
+<p>在Block Fragmnt部分显示了查询缓存所使用的内存的碎片情况。该值是可用缓存块与总块的百分比。值越大，说明碎片越多。10%到20%是平均水平。如上示例，碎片率是13.05%，这个可以接受的，但可以尝试调整query_cache_min_res_unit参数，看看碎片率是否会下降。</p>
+<p>在Hits、Inserts、Prunes部分显示了对查询缓存的操作情况。其中，Hits表示命中查询缓存的次数、Inserts表示在查询缓存中插入新数据的次数，Prunes表示删减查询缓存中的数据的次数。</p>
+<p>在Insert:Prunes部分显示了查询缓存的波动性。Insert大于Prunes，说明查询缓存稳定；Insert小于Prunes，说明查询缓存易失。查询缓存稳定表示缓存经常被使用，查询缓存易失表示缓存的大小过小（此时增大缓存大小即可）或MySQL试图缓存所有的东西（此时可以调整查询缓存的使用类型调整为2，默认为1）。</p>
+<p>在Hit:Insert部分显示了查询缓存的有效性。在理想的情况下，MySQL应该在查询缓存中插入一堆稳定的查询，然后直接从查询缓存中获取结果。因此，如果查询缓存的有效性高，那么Hit应该大于Insert。当Insert大于或等于Hit时，表示查询缓存不稳定。</p>
+<h3 id="Table-Locks-表锁报表"><a href="#Table-Locks-表锁报表" class="headerlink" title="Table Locks - 表锁报表"></a>Table Locks - 表锁报表</h3><p>该部分显示了MySQL锁的使用情况，如下：</p>
+<pre><code class="hljs markdown"><span class="hljs-strong">__ Table Locks __</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">__<span class="hljs-emphasis">_</span></span>
+<span class="hljs-strong"><span class="hljs-emphasis">Waited          1.01k    0.49/s  %Total:   1.24</span></span>
+<span class="hljs-strong"><span class="hljs-emphasis">Immediate      80.04k   38.74/s</span></span></code></pre>
+
+<p>在Waited部分显示了MySQL必须等待才能获得表锁的数量，该值应该尽可能低。等待表锁的百分比不应超过10%，较高的百分比意味着表或查询索引不佳或者查询速度较慢。</p>
+<p>在Immediate部分显示了MySQL立即获得表锁的数量。</p>
+<h3 id="tables-表报表"><a href="#tables-表报表" class="headerlink" title="tables - 表报表"></a>tables - 表报表</h3><p>在该部分显示了表的使用情况，如下：</p>
+<pre><code class="hljs shell">__ Tables ______________________________________________________________
+Open              107 of 1024    %Cache:  10.45
+Opened            118    0.06/s</code></pre>
+
+<p>在Open部分显示了当前打开的表数、可打开的表总数、表缓存的使用率。</p>
+<p>在Opened部分显示了MySQL曾经打开的表的总数、MySQL运行期间的打开速率。</p>
+<p>在这里有两件事很重要：首先是表缓存的使用。有100%的表缓存使用率是不错的，但是如果接近100%，那么增加table_cache系统变量可能是有益的。其次，打开表的速率也有助于确定table_cache是否太低。一般来说，这个值小于1/s是很好的，但是，一个繁忙且运行良好的MySQL服务器可以打开7个表/秒，并以100%的表缓存运行。 </p>
+<h3 id="Created-Temp-临时表报表"><a href="#Created-Temp-临时表报表" class="headerlink" title="Created Temp - 临时表报表"></a>Created Temp - 临时表报表</h3><p>该部分显示了MySQL临时表的创建情况，如下：</p>
+<pre><code class="hljs markdown"><span class="hljs-strong">__ Created Temp __</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">__</span>
+<span class="hljs-strong">Disk table         10    0.00/s</span>
+<span class="hljs-strong">Table              26    0.01/s    Size:  4.00M</span>
+<span class="hljs-strong">File                3    0.00/s</span></code></pre>
+
+<p>MySQL可以在硬盘、RAM和临时文件中创建临时表，分别对应于如上的三行数据。</p>
+<p>这些值是相对的，没有标准。由于硬盘上的临时表是最慢的（由第一行disk table表示），所以最好是三个表中最小的一个。只有当临时表不能放入受系统变量tmp_table_size限制的RAM中的临时表时，才会在硬盘上创建临时表。tmp_table_size的值由第二行第三列的size指示。RAM中的临时表（由第二行表表示）和临时文件非常常见，以至于这些值与MySQL服务器完全相关。</p>
+<h3 id="Connections-连接报表"><a href="#Connections-连接报表" class="headerlink" title="Connections - 连接报表"></a>Connections - 连接报表</h3><pre><code class="hljs markdown"><span class="hljs-strong">__ Connections __</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">__<span class="hljs-emphasis">_</span></span>
+<span class="hljs-strong"><span class="hljs-emphasis">Max used           77 of  600      %Max:  12.83</span></span>
+<span class="hljs-strong"><span class="hljs-emphasis">Total             202    0.10/s</span></span></code></pre>
+
+<p>在Max used部分显示了当前并发连接数、允许的最大并发连接数、当前并发连接数与允许的最大并发连接数的比率。</p>
+<p>在Total部分显示了MySQL曾经的并发连接数、MySQL运行期间的连接建立速率。</p>
+<p>如果使用的最大连接数接近100%（第一行，第三列），则可能需要增加max_connections系统变量。然而，这往往是误导。人们经常会看到MySQL服务器有非常高的max_连接，这是毫无道理的。默认值为100，即使是非常繁忙、优化良好的服务器也可以使用。一个到MySQL的连接应该持续几秒钟，所以即使100个连接也可以很长时间。如果最大连接数非常高或随时间缓慢增加，则问题可能出在其他地方，如查询速度慢、索引不良或甚至DNS解析速度慢。在将max_connections设置为100个以上之前，请找出一次100个连接不够的根本原因，并验证这是一个合理的需求，而不是另一个表现为连接太少的问题。</p>
+<p>关于每秒的连接数，这个值可能相当高。事实上，如果它很高，而其他一切都很好，这通常是一个很好的迹象。超过10个连接/秒是可能的，但大多数服务器的连接/秒都低于5个/秒。 </p>
+<h3 id="Threads-线程报表"><a href="#Threads-线程报表" class="headerlink" title="Threads - 线程报表"></a>Threads - 线程报表</h3><p>该部分显示了与MySQL线程相关的信息，但却是最不重要的一部分，如下：</p>
+<pre><code class="hljs markdown"><span class="hljs-strong">__ Threads __</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">__<span class="hljs-emphasis">_</span></span>
+<span class="hljs-strong"><span class="hljs-emphasis">Running            55 of   77</span></span>
+<span class="hljs-strong"><span class="hljs-emphasis">Cache               0              %Hit:    0.5</span></span>
+<span class="hljs-strong"><span class="hljs-emphasis">Created           201    0.10/s</span></span>
+<span class="hljs-strong"><span class="hljs-emphasis">Slow                0    0.00/s</span></span>
+<span class="hljs-strong"><span class="hljs-emphasis"></span></span>
+<span class="hljs-strong"><span class="hljs-emphasis"><span class="hljs-strong">__ Aborted __</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">__<span class="hljs-emphasis">_</span></span></span></span>
+<span class="hljs-strong"><span class="hljs-emphasis"><span class="hljs-strong"><span class="hljs-emphasis">Clients             0    0.00/s</span></span></span></span>
+<span class="hljs-strong"><span class="hljs-emphasis"><span class="hljs-strong"><span class="hljs-emphasis">Connects            8    0.00/s</span></span></span></span>
+<span class="hljs-strong"><span class="hljs-emphasis"><span class="hljs-strong"><span class="hljs-emphasis"></span></span></span></span>
+<span class="hljs-strong"><span class="hljs-emphasis"><span class="hljs-strong"><span class="hljs-emphasis"><span class="hljs-strong">__ Bytes __</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span>_</span></span></span></span>
+<span class="hljs-strong"><span class="hljs-emphasis"><span class="hljs-strong">Sent           38.46M  18.62k/s</span></span></span>
+<span class="hljs-strong"><span class="hljs-emphasis"><span class="hljs-strong">Received        7.98M   3.86k/s</span></span></span></code></pre>
+
+<p>特别注意，Threads报告下的的Cache和%Hit行。每个到MySQL的连接都由一个单独的线程处理。在启动时，MySQL会创建一些线程，并将这些线程保存在线程缓存中，这样就不必不断地杀死和创建线程。虽然线程制作成本不高，但“线程搜索”并不好。当MySQL的连接数超过线程缓存（由系统变量thread_cache_size设置）时，MySQL开始线程震荡：创建线程以满足新连接的需求变得疯狂。当发生这种情况时，线程缓存命中率会下降。因此，如果MySQL服务器有线程抖动（即线程缓存命中率很低），请增加线程缓存的大小。 </p>
+<p>在这个例子中，线程缓存命中率是非常低的0.5%，这意味着几乎每一个新连接都会导致MySQL创建一个新线程。很容易看出原因：Cache行的第一列表示缓存中只剩下零个线程。因此，应该增加线程缓存的大小。还要注意Created行中创建的线程与前面的connections total之间的相关性：201 threads created，202 total connections之间的相关性。因此，几乎为零的线程缓存命中率。 </p>
+<h3 id="InnoDB-Buffer-Pool-InnoDB缓存池报表"><a href="#InnoDB-Buffer-Pool-InnoDB缓存池报表" class="headerlink" title="InnoDB Buffer Pool - InnoDB缓存池报表"></a>InnoDB Buffer Pool - InnoDB缓存池报表</h3><p>我们知道，InnoDB引擎会将索引数据和表数据都缓存到Buffer Pool中，而在其内部实现上，InnoDB Buffer Pool则是由包含不同类型数据的16KB页组成。该部分显示了InnoDB引擎的Buffer Pool的使用情况，如下：</p>
+<pre><code class="hljs apache"><span class="hljs-attribute">__</span> InnoDB Buffer Pool __________________________________________________
+<span class="hljs-attribute">Usage</span>           <span class="hljs-number">3</span>.<span class="hljs-number">95</span>M of   <span class="hljs-number">7</span>.<span class="hljs-number">00</span>M  %Used:  <span class="hljs-number">56</span>.<span class="hljs-number">47</span>
+<span class="hljs-attribute">Read</span> hit       <span class="hljs-number">99</span>.<span class="hljs-number">99</span>%
+<span class="hljs-attribute">Pages</span>
+  <span class="hljs-attribute">Free</span>            <span class="hljs-number">195</span>            %Total:  <span class="hljs-number">43</span>.<span class="hljs-number">53</span>
+  <span class="hljs-attribute">Data</span>            <span class="hljs-number">249</span>                     <span class="hljs-number">55</span>.<span class="hljs-number">58</span> %Drty:   <span class="hljs-number">0</span>.<span class="hljs-number">00</span>
+  <span class="hljs-attribute">Misc</span>              <span class="hljs-number">4</span>                      <span class="hljs-number">0</span>.<span class="hljs-number">89</span>
+  <span class="hljs-attribute">Latched</span>           <span class="hljs-number">0</span>                      <span class="hljs-number">0</span>.<span class="hljs-number">00</span>
+<span class="hljs-attribute">Reads</span>         <span class="hljs-number">574</span>.<span class="hljs-number">56</span>k     <span class="hljs-number">0</span>.<span class="hljs-number">6</span>/s
+  <span class="hljs-attribute">From</span> file       <span class="hljs-number">176</span>     <span class="hljs-number">0</span>.<span class="hljs-number">0</span>/s            <span class="hljs-number">0</span>.<span class="hljs-number">03</span>
+  <span class="hljs-attribute">Ahead</span> Rnd         <span class="hljs-number">4</span>     <span class="hljs-number">0</span>.<span class="hljs-number">0</span>/s
+  <span class="hljs-attribute">Ahead</span> Sql         <span class="hljs-number">2</span>     <span class="hljs-number">0</span>.<span class="hljs-number">0</span>/s
+<span class="hljs-attribute">Writes</span>        <span class="hljs-number">160</span>.<span class="hljs-number">82</span>k     <span class="hljs-number">0</span>.<span class="hljs-number">2</span>/s
+<span class="hljs-attribute">Flushes</span>         <span class="hljs-number">1</span>.<span class="hljs-number">04</span>k     <span class="hljs-number">0</span>.<span class="hljs-number">0</span>/s
+<span class="hljs-attribute">Wait</span> Free           <span class="hljs-number">0</span>       <span class="hljs-number">0</span>/s</code></pre>
+
+<p>我们可以看到，配置的InnoDB Buffer Pool大小为7M，当前使用了3.95M，占总大小的56.47%。</p>
+<p>Read hit是指读操作（读索引/读数据）命中缓存的比率。该值应该非常接近100%，在多数情况下，该值大于99.98%。</p>
+<p>在Pages部分显示了Buffer Pool的详细使用情况。每一行对应不同类型的缓存页，它们分别是：</p>
+<ul>
+<li>Free，空闲页。是指剩余可用的缓存页。如上，剩余195个缓存页，占Buffer Pool总大小的43.43%。</li>
+<li>Data，数据页。是指缓存索引和数据所使用的页。如上，缓存索引和数据使用了249个缓存页，占Buffer Pool总大小的55.58%，其中包含0%的脏页（已修改但尚未刷新到磁盘的数据页）。</li>
+<li>Misc，杂页。是指因分配了管理任务（如行锁、自适应哈希索引等）而繁忙的数据页。如上，有4个繁忙的页，占Buffer Pool总大小的0.89%</li>
+<li>Latched，锁页。是指当前正在进行读取或写入操作的页，或者是由于一些原因无法刷新或删除的页。</li>
+</ul>
+<p>在Reads部分显示了InnoDB Buffer Pool的读取活动。它们的含义如下：</p>
+<ul>
+<li>第一行，是读取缓冲池的情况。在繁忙的服务器上，这个值应该很高，因为InnoDB会从RAM中的缓冲池读取大部分页面。这里的值可以看作是InnoDB缓冲池的读吞吐量。由于InnoDB所需的几乎所有内容都可以保存在缓冲池中，并可以从中检索，因此缓冲池的读取应该尽可能快。如上，当前InnoDB缓冲池的读取速率为0.6k/s，但它超过200k/s也是有可能的。</li>
+<li>第二行，是需要从磁盘读取缓冲池页面的次数。</li>
+<li>第三行，是InnoDB创建的随机预读数量。当查询语句使用随机排序扫描一个大表时，就会发生这种情况。</li>
+<li>第四行，是InnoDB创建的顺序预读数量。当查询语句进行顺序的全表扫描时，就会发生这种情况。</li>
+</ul>
+<p>在Writes部分显示了InnoDB Buffer Pool的写入活动。可以看作是InnoDB缓冲池的写吞吐量。该行列出了写入缓冲池的次数和速率。在执行大量更新或插入操作的服务器上，该值可能会很高。</p>
+<p>在Flushes部分显示了Buffer Pool页面刷新请求的数量。</p>
+<p>在Wait Free部分显示了使用Buffer Pool时的等待情况。通常，对InnoDB缓冲池的写入是在后台进行的。但在需要读取或创建一个页面，而又没有可用的干净页时，则需要等待页面先刷新。如果缓冲池大小设置正确，则该值应该很小。</p>
+<h3 id="InnoDB-Lock-InnoDB锁报表"><a href="#InnoDB-Lock-InnoDB锁报表" class="headerlink" title="InnoDB Lock - InnoDB锁报表"></a>InnoDB Lock - InnoDB锁报表</h3><p>我们知道，MyISAM是表级锁，InnoDB是行级锁。该部分显示了InnoDB行锁的情况，如下：</p>
+<pre><code class="hljs markdown"><span class="hljs-strong">__ InnoDB Lock __</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">__<span class="hljs-emphasis">_</span></span>
+<span class="hljs-strong"><span class="hljs-emphasis">Waits               0       0/s</span></span>
+<span class="hljs-strong"><span class="hljs-emphasis">Current             0</span></span>
+<span class="hljs-strong"><span class="hljs-emphasis">Time acquiring</span></span>
+<span class="hljs-strong"><span class="hljs-emphasis">  Total             0 ms</span></span>
+<span class="hljs-strong"><span class="hljs-emphasis">  Average           0 ms</span></span>
+<span class="hljs-strong"><span class="hljs-emphasis">  Max               0 ms</span></span></code></pre>
+
+<p>在Waits部分显示了等待锁的次数。该部分最好为零。</p>
+<p>在Current部分显示了当前正在等待的行锁数。该部分最好为零。</p>
+<p>在Time acquiring部分显示了等待行锁时所花费的时间情况，它们的含义分别是：</p>
+<ul>
+<li>Total：等待行锁的总毫秒数</li>
+<li>Average：等待行锁的平均毫秒数</li>
+<li>Max：等待行锁的最大毫秒数</li>
+</ul>
+<p>根据经验，锁平均时间最好接近零。锁次数可以有，因为这个值是累加的，所以数据库启动时间长，用得多，锁次数就会增加。</p>
+<h3 id="InnoDB-Data、Pages、Rows-InnoDB数据、页、行信息报表"><a href="#InnoDB-Data、Pages、Rows-InnoDB数据、页、行信息报表" class="headerlink" title="InnoDB Data、Pages、Rows - InnoDB数据、页、行信息报表"></a>InnoDB Data、Pages、Rows - InnoDB数据、页、行信息报表</h3><p>该部分显示了用于衡量InnoDB引擎吞吐量的一些常用指标，如下：</p>
+<pre><code class="hljs apache"><span class="hljs-attribute">__</span> InnoDB Data, Pages, Rows ____________________________________________
+ <span class="hljs-attribute">Data</span>
+   <span class="hljs-attribute">Reads</span>           <span class="hljs-number">225</span>     <span class="hljs-number">0</span>.<span class="hljs-number">0</span>/s
+   <span class="hljs-attribute">Writes</span>          <span class="hljs-number">799</span>     <span class="hljs-number">0</span>.<span class="hljs-number">0</span>/s
+   <span class="hljs-attribute">fsync</span>           <span class="hljs-number">541</span>     <span class="hljs-number">0</span>.<span class="hljs-number">0</span>/s
+   <span class="hljs-attribute">Pending</span>
+     <span class="hljs-attribute">Reads</span>           <span class="hljs-number">0</span>
+     <span class="hljs-attribute">Writes</span>          <span class="hljs-number">0</span>
+     <span class="hljs-attribute">fsync</span>           <span class="hljs-number">0</span>
+
+ <span class="hljs-attribute">Pages</span>
+   <span class="hljs-attribute">Created</span>          <span class="hljs-number">23</span>     <span class="hljs-number">0</span>.<span class="hljs-number">0</span>/s
+   <span class="hljs-attribute">Read</span>            <span class="hljs-number">226</span>     <span class="hljs-number">0</span>.<span class="hljs-number">0</span>/s
+   <span class="hljs-attribute">Written</span>       <span class="hljs-number">1</span>.<span class="hljs-number">04</span>k     <span class="hljs-number">0</span>.<span class="hljs-number">0</span>/s
+
+ <span class="hljs-attribute">Rows</span>
+   <span class="hljs-attribute">Deleted</span>      <span class="hljs-number">25</span>.<span class="hljs-number">04</span>k     <span class="hljs-number">0</span>.<span class="hljs-number">0</span>/s
+   <span class="hljs-attribute">Inserted</span>     <span class="hljs-number">25</span>.<span class="hljs-number">04</span>k     <span class="hljs-number">0</span>.<span class="hljs-number">0</span>/s
+   <span class="hljs-attribute">Read</span>         <span class="hljs-number">81</span>.<span class="hljs-number">91</span>k     <span class="hljs-number">0</span>.<span class="hljs-number">1</span>/s
+   <span class="hljs-attribute">Updated</span>           <span class="hljs-number">0</span>       <span class="hljs-number">0</span>/s</code></pre>
+
+<p>在Data部分显示了四个与InnoDB数据相关的操作情况，它们分别是：</p>
+<ul>
+<li>Read，指InnoDB引擎执行的数据读取次数。</li>
+<li>Writes，指InnoDB引擎执行的数据写入次数。</li>
+<li>fsync，指InnoDB引擎将数据从RAM刷入磁盘的次数。通常，该值低于读或写。</li>
+<li>Pending，指当前被挂起的数据读取、写入和同步数量。这些值最好为零。</li>
+</ul>
+<p>在Pages部分显示了三个与InnoDB缓存页相关的操作情况，它们分别是：</p>
+<ul>
+<li>Created，是指在InnoDB缓存池中创建页的数量和速率；</li>
+<li>Read，是指在InnoDB缓存池中读取页的数量和速率；</li>
+<li>Written，是指在InnoDB缓存池中写入页的数量和速率；</li>
+</ul>
+<p>在Rows部分显示了四个与InnoDB表中行相关的操作情况，它们分别是：</p>
+<ul>
+<li>Deleted，是指从InnoDB表中删除的行数量和速率；</li>
+<li>Inserted，是指在InnoDB表中插入的行数量和速率；</li>
+<li>Read，是指从InnoDB表中读取的行数量和速率；</li>
+<li>Updated，是指在InnoDB表中更新的行数量和速率；</li>
+</ul>
+<h2 id="四、参考"><a href="#四、参考" class="headerlink" title="四、参考"></a>四、参考</h2><p><a target="_blank" rel="noopener" href="https://github.com/daniel-nichter/hackmysql.com/tree/master/mysqlreport">https://github.com/daniel-nichter/hackmysql.com/tree/master/mysqlreport</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/mysql/">mysql</a>
+                    
+                      <a class="hover-with-bg" href="/tags/mysqlreport/">mysqlreport</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/01/09/%E5%A6%82%E4%BD%95%E9%AB%98%E6%95%88%E5%A4%8D%E7%9B%98/">
+                        <span class="hidden-mobile">如何高效复盘</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "MySQL全局分析工具：mysqlreport&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
