@@ -177,7 +177,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.1k 字
+      4.2k 字
     </span>
   
 
@@ -221,16 +221,16 @@
             
             <div class="markdown-body" id="post-body">
               <p>todo</p>
-<h2 id="一、安装"><a href="#一、安装" class="headerlink" title="一、安装"></a>一、安装</h2><h2 id="二、使用"><a href="#二、使用" class="headerlink" title="二、使用"></a>二、使用</h2><h2 id="三、输出解读"><a href="#三、输出解读" class="headerlink" title="三、输出解读"></a>三、输出解读</h2><h3 id="key-索引报表"><a href="#key-索引报表" class="headerlink" title="key - 索引报表"></a>key - 索引报表</h3><p>该部分显示了MyISAM引擎的shared key buffer的使用情况，如下：</p>
+<h2 id="一、安装"><a href="#一、安装" class="headerlink" title="一、安装"></a>一、安装</h2><h2 id="二、使用"><a href="#二、使用" class="headerlink" title="二、使用"></a>二、使用</h2><h2 id="三、输出解读"><a href="#三、输出解读" class="headerlink" title="三、输出解读"></a>三、输出解读</h2><h3 id="3-1、key-索引报表"><a href="#3-1、key-索引报表" class="headerlink" title="3.1、key - 索引报表"></a>3.1、key - 索引报表</h3><p>该部分显示了MyISAM引擎的shared key buffer的使用情况，如下：</p>
 <pre><code class="hljs markdown"><span class="hljs-strong">__ Key __</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">__<span class="hljs-emphasis">_</span></span>
 <span class="hljs-strong"><span class="hljs-emphasis">Buffer used     3.00k of  16.00M  %Used:   0.02</span></span>
 <span class="hljs-strong"><span class="hljs-emphasis">  Current       2.92M            %Usage:  18.26</span></span>
 <span class="hljs-strong"><span class="hljs-emphasis">Write hit       0.00%</span></span>
 <span class="hljs-strong"><span class="hljs-emphasis">Read hit       50.00%</span></span></code></pre>
 
-<p>我们可以看到，配置的Key Buffer为16M。MySQL每次使用的Key Buffer最大为3k，占总大小的0.02%。当前总共使用了2.92M的Key Buffer，占总大小的18.26%。</p>
-<p>Write hit和Read hit分别是指索引的写命中率和读命中率。对于索引的写命中率，在写操作（update、insert等）多的场景下命中率可能接近0%，在读操作（select等）多的场景下命中率可能高于90%，而当命中率小于0%时，表示MySQL经常将磁盘写入磁盘中。对于索引的读命中率，当命中率低于99%时，表示Key Buffer过小需要从磁盘读取索引。</p>
-<h3 id="questions-操作报表"><a href="#questions-操作报表" class="headerlink" title="questions - 操作报表"></a>questions - 操作报表</h3><p>该部分显示了MySQL Server正在忙些什么以及有多忙，其中包括MySQL的各种操作和MySQL协议通信。如下：</p>
+<p>可以看到，当前的key_buffer_size为16M。在过去的一段时间中，MySQ单次使用的Key Buffer最大为3k，占总大小的0.02%，当该比值大于等于80%时，可以考虑调大key_buffer_size。需要注意的是，该值永远不可能大于95%，因为mysql内部的数据结构也会占用shared key buffer，但mysqlreport无法统计到它们。此外，还可以看到，当前总共使用了2.92M的Key Buffer，占总大小的18.26%。</p>
+<p>Write hit和Read hit，分别指索引的写命中率和读命中率。对于索引的写命中率，在写操作（update、insert等）多的场景下命中率可能接近0%，在读操作（select等）多的场景下命中率可能高于90%，而当命中率小于0%时，表示MySQL经常将索引写入磁盘中。对于索引的读命中率，当命中率低于99%时，表示Key Buffer过小，大量索引需要从磁盘读取。</p>
+<h3 id="3-2、questions-操作报表"><a href="#3-2、questions-操作报表" class="headerlink" title="3.2、questions - 操作报表"></a>3.2、questions - 操作报表</h3><p>该部分显示了MySQL Server正在忙些什么以及有多忙，其中包括MySQL的各种操作和MySQL协议通信。如下：</p>
 <pre><code class="hljs markdown"><span class="hljs-strong">__ Questions __</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-emphasis">_</span>
 <span class="hljs-emphasis">Total          98.06k   47.46/s</span>
 <span class="hljs-emphasis">  DMS          81.23k   39.32/s  %Total:  82.84</span>
@@ -250,7 +250,7 @@
 <span class="hljs-emphasis">  show_</span>fields       9    0.00/s            0.01
   show<span class="hljs-emphasis">_status       2    0.00/s            0.00</span></code></pre>
 
-<p>在Total部分是MySQL对所有操作的总计，以及这些操作在MySQL Server正常运行的时间内的速率。这些总计的数据包含如下内容：</p>
+<p>在Total部分是MySQL对所有操作的总计，以及这些操作自MySQL Server启动以来的速率。这些总计的数据包含如下内容：</p>
 <ul>
 <li>DMS，即数据操作语句。在这里它只包括了select、insert、replcate、update、delete操作</li>
 <li>QC Hits，即查询缓存命中率，是指MySQL从查询缓存中检索结果而不是执行实际的查询获取结果的次数</li>
