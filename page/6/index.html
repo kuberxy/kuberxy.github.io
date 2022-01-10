@@ -224,17 +224,17 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A81%EF%BC%9APV%E3%80%81PVC%E4%BD%93%E7%B3%BB%E4%BB%A5%E5%8F%8AStorageClass/">持久化存储1：PV、PVC体系以及StorageClass</a>
+        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A81%EF%BC%9A%E7%90%86%E8%A7%A3StorageClass/">理解StorageClass</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A81%EF%BC%9APV%E3%80%81PVC%E4%BD%93%E7%B3%BB%E4%BB%A5%E5%8F%8AStorageClass/">
+        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A81%EF%BC%9A%E7%90%86%E8%A7%A3StorageClass/">
           
           
             
           
-          在前面的文章中，我们重点讨论了Kubernetes的编排能力。在讨论过程中，我们应该已经发现，容器化一个应用比较麻烦的地方，莫过于对其“状态”的管理。而最常见的“状态”，又莫过于存储状态了。接下来，我们重点讨论Kubernetes项目处理容器持久化存储的核心原理。
-一、从PV和PVC说起在讨论StatefulSet 如何管理存储状态的时候，我们简单介绍过的Persistent Volume（PV）
+          在前面的文章中，我们通过手动的方式创建出了所需要的PV。接下来，我们来看一种自动创建PV的方式。
+1.1、Static Provisioning &amp; Dynamic Provisioning在一个大规模的Kubernetes集群中，集群用户可能会创建出成千上万个PVC，这时，集群管理员就需要不停地创建出满足一定条件的PV，否则新Pod就会因为PVC无法绑定PV而运行失败。显然，在实际操作中
         </a>
       </p>
 
@@ -272,17 +272,17 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A81%EF%BC%9A%E7%90%86%E8%A7%A3StorageClass/">理解StorageClass</a>
+        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A81%EF%BC%9APV%E3%80%81PVC%E4%BD%93%E7%B3%BB%E4%BB%A5%E5%8F%8AStorageClass/">持久化存储1：PV、PVC体系以及StorageClass</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A81%EF%BC%9A%E7%90%86%E8%A7%A3StorageClass/">
+        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A81%EF%BC%9APV%E3%80%81PVC%E4%BD%93%E7%B3%BB%E4%BB%A5%E5%8F%8AStorageClass/">
           
           
             
           
-          在前面的文章中，我们通过手动的方式创建出了所需要的PV。接下来，我们来看一种自动创建PV的方式。
-1.1、Static Provisioning &amp; Dynamic Provisioning在一个大规模的Kubernetes集群中，集群用户可能会创建出成千上万个PVC，这时，集群管理员就需要不停地创建出满足一定条件的PV，否则新Pod就会因为PVC无法绑定PV而运行失败。显然，在实际操作中
+          在前面的文章中，我们重点讨论了Kubernetes的编排能力。在讨论过程中，我们应该已经发现，容器化一个应用比较麻烦的地方，莫过于对其“状态”的管理。而最常见的“状态”，又莫过于存储状态了。接下来，我们重点讨论Kubernetes项目处理容器持久化存储的核心原理。
+一、从PV和PVC说起在讨论StatefulSet 如何管理存储状态的时候，我们简单介绍过的Persistent Volume（PV）
         </a>
       </p>
 
