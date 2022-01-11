@@ -177,7 +177,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.2k 字
+      4.3k 字
     </span>
   
 
@@ -187,7 +187,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      50
+      52
        分钟
     </span>
   
@@ -250,18 +250,18 @@
 <span class="hljs-emphasis">  show_</span>fields       9    0.00/s            0.01
   show<span class="hljs-emphasis">_status       2    0.00/s            0.00</span></code></pre>
 
-<p>在Total部分是MySQL对所有操作的总计，以及这些操作自MySQL Server启动以来的速率。这些总计的数据包含如下内容：</p>
+<p>在Total部分是MySQL对所有操作的总计，以及这些操作自MySQL Server启动以来的速率。这些总计数据包含如下内容：</p>
 <ul>
-<li>DMS，即数据操作语句。在这里它只包括了select、insert、replcate、update、delete操作</li>
+<li>DMS，即数据操作语句。主要包括了select、insert、replcate、update、delete等操作。在一个长时间运行的系统中，该部分应该是占比最高的。</li>
 <li>QC Hits，即查询缓存命中率，是指MySQL从查询缓存中检索结果而不是执行实际的查询获取结果的次数</li>
-<li>COM_QUIT，是一些可以忽略的不重要的操作。</li>
-<li>Com_，是MySQL处理的所有各种命令，通常与协议相关。理想情况下，该值应该很低。</li>
-<li>-Unknown，是那些MySQL没有为其维护单独状态值的操作。通常，该值应该很低。</li>
+<li>COM_QUIT，是一些可忽略的、不重要的操作。</li>
+<li>Com_，是MySQL处理的各种命令，通常与协议相关。理想情况下，该值应该很低，过高则说明MySQL一直在空转。</li>
+<li>Unknown，是一些未知的操作。通常，该值应该很低。</li>
 </ul>
 <p>在Slow部分显示了MySQL执行的慢查询数量。如上，执行时间超过5s秒的操作将被视为慢查询，当前总计到了0条慢查询。<code>%DMS</code>表示数据操作语句在慢查询中的比重。<code>LOG</code>表示是否将慢查询记录到日志中。</p>
 <p>在DMS部分则显示了数据操作语句详细分布情况。</p>
 <p>在Com_部分则显示了MySQL处理的各种命令的分布情况。</p>
-<h3 id="select-and-sort-查询和排序报表"><a href="#select-and-sort-查询和排序报表" class="headerlink" title="select and sort - 查询和排序报表"></a>select and sort - 查询和排序报表</h3><p>该部分显示了各种类型的select语句的详细分布情况，如下：</p>
+<h3 id="3-3、select-and-sort-查询和排序报表"><a href="#3-3、select-and-sort-查询和排序报表" class="headerlink" title="3.3、select and sort - 查询和排序报表"></a>3.3、select and sort - 查询和排序报表</h3><p>该部分显示了各种类型的select语句的详细分布情况，如下：</p>
 <pre><code class="hljs apache"><span class="hljs-attribute">__</span> SELECT and Sort _____________________________________________________
 <span class="hljs-attribute">Scan</span>               <span class="hljs-number">38</span>    <span class="hljs-number">0</span>.<span class="hljs-number">02</span>/s %SELECT:   <span class="hljs-number">0</span>.<span class="hljs-number">06</span>
 <span class="hljs-attribute">Range</span>              <span class="hljs-number">14</span>    <span class="hljs-number">0</span>.<span class="hljs-number">01</span>/s            <span class="hljs-number">0</span>.<span class="hljs-number">02</span>
@@ -272,8 +272,8 @@
 <span class="hljs-attribute">Sort</span> range         <span class="hljs-number">26</span>    <span class="hljs-number">0</span>.<span class="hljs-number">01</span>/s
 <span class="hljs-attribute">Sort</span> mrg pass       <span class="hljs-number">0</span>    <span class="hljs-number">0</span>.<span class="hljs-number">00</span>/s</code></pre>
 
-<p>其中，Scan表示全表扫描，Range表示范围查询，Full join表示联合全表扫描。正常情况下，应该有很多的Range范围查询，而如果Scan和Full join过多，则说明SQL 写得有问题。</p>
-<h3 id="query-cache-查询缓存报表"><a href="#query-cache-查询缓存报表" class="headerlink" title="query cache - 查询缓存报表"></a>query cache - 查询缓存报表</h3><p>该部分显示了查询缓存的使用情况，如下：</p>
+<p>其中，Scan表示全表扫描，Range表示范围查询，Full join表示联合全表扫描。正常情况下，应该有很多的Range范围查询，而如果Scan和Full join过多，则说明SQL写得有问题。</p>
+<h3 id="3-4、query-cache-查询缓存报表"><a href="#3-4、query-cache-查询缓存报表" class="headerlink" title="3.4、query cache - 查询缓存报表"></a>3.4、query cache - 查询缓存报表</h3><p>该部分显示了查询缓存的使用情况，如下：</p>
 <pre><code class="hljs apache"><span class="hljs-attribute">__</span> Query Cache _________________________________________________________
 <span class="hljs-attribute">Memory</span> usage   <span class="hljs-number">17</span>.<span class="hljs-number">81</span>M of  <span class="hljs-number">32</span>.<span class="hljs-number">00</span>M  %Used:  <span class="hljs-number">55</span>.<span class="hljs-number">66</span>
 <span class="hljs-attribute">Block</span> Fragmnt  <span class="hljs-number">13</span>.<span class="hljs-number">05</span>%
@@ -284,42 +284,39 @@
 <span class="hljs-attribute">Hit</span>:Insert     <span class="hljs-number">0</span>.<span class="hljs-number">34</span>:<span class="hljs-number">1</span></code></pre>
 
 <p>在Memory usage部分显示了查询缓存的内存使用情况。当查询缓存占用了大量的内存时，会体现在Prunes部分。</p>
-<p>在Block Fragmnt部分显示了查询缓存所使用的内存的碎片情况。该值是可用缓存块与总块的百分比。值越大，说明碎片越多。10%到20%是平均水平。如上示例，碎片率是13.05%，这个可以接受的，但可以尝试调整query_cache_min_res_unit参数，看看碎片率是否会下降。</p>
-<p>在Hits、Inserts、Prunes部分显示了对查询缓存的操作情况。其中，Hits表示命中查询缓存的次数、Inserts表示在查询缓存中插入新数据的次数，Prunes表示删减查询缓存中的数据的次数。</p>
-<p>在Insert:Prunes部分显示了查询缓存的波动性。Insert大于Prunes，说明查询缓存稳定；Insert小于Prunes，说明查询缓存易失。查询缓存稳定表示缓存经常被使用，查询缓存易失表示缓存的大小过小（此时增大缓存大小即可）或MySQL试图缓存所有的东西（此时可以调整查询缓存的使用类型调整为2，默认为1）。</p>
+<p>在Block Fragmnt部分显示了查询缓存所使用内存的碎片情况。该值是可用缓存块与总块的百分比。值越大，说明碎片越多。10%到20%是平均水平。如上示例，碎片率是13.05%，这个可以接受的，但可以尝试调整query_cache_min_res_unit参数，看看碎片率是否会下降。</p>
+<p>在Hits、Inserts、Prunes部分显示了对查询缓存的操作情况。其中，Hits表示命中查询缓存的次数、Inserts表示在查询缓存中插入新数据的次数，Prunes表示删减查询缓存中数据的次数。</p>
+<p>在Insert:Prunes部分显示了查询缓存的波动性。Insert大于Prunes，说明查询缓存稳定；Insert小于Prunes，说明查询缓存易失。查询缓存稳定表示缓存经常被使用，查询缓存易失表示缓存大小过小（此时增大缓存大小即可）或MySQL试图缓存所有的东西（此时可以调整查询缓存的使用类型调整为2，默认为1）。</p>
 <p>在Hit:Insert部分显示了查询缓存的有效性。在理想的情况下，MySQL应该在查询缓存中插入一堆稳定的查询，然后直接从查询缓存中获取结果。因此，如果查询缓存的有效性高，那么Hit应该大于Insert。当Insert大于或等于Hit时，表示查询缓存不稳定。</p>
-<h3 id="Table-Locks-表锁报表"><a href="#Table-Locks-表锁报表" class="headerlink" title="Table Locks - 表锁报表"></a>Table Locks - 表锁报表</h3><p>该部分显示了MySQL锁的使用情况，如下：</p>
+<h3 id="3-5、Table-Locks-表锁报表"><a href="#3-5、Table-Locks-表锁报表" class="headerlink" title="3.5、Table Locks - 表锁报表"></a>3.5、Table Locks - 表锁报表</h3><p>该部分显示了MySQL锁的使用情况，如下：</p>
 <pre><code class="hljs markdown"><span class="hljs-strong">__ Table Locks __</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">__<span class="hljs-emphasis">_</span></span>
 <span class="hljs-strong"><span class="hljs-emphasis">Waited          1.01k    0.49/s  %Total:   1.24</span></span>
 <span class="hljs-strong"><span class="hljs-emphasis">Immediate      80.04k   38.74/s</span></span></code></pre>
 
-<p>在Waited部分显示了MySQL必须等待才能获得表锁的数量，该值应该尽可能低。等待表锁的百分比不应超过10%，较高的百分比意味着表或查询索引不佳或者查询速度较慢。</p>
+<p>在Waited部分显示了MySQL必须等待才能获得表锁的数量。该值应该尽可能低，等待表锁的百分比不应超过10%，较高的百分比意味着表或查询索引不佳或者查询速度较慢。</p>
 <p>在Immediate部分显示了MySQL立即获得表锁的数量。</p>
-<h3 id="tables-表报表"><a href="#tables-表报表" class="headerlink" title="tables - 表报表"></a>tables - 表报表</h3><p>在该部分显示了表的使用情况，如下：</p>
+<h3 id="3-6、tables-表报表"><a href="#3-6、tables-表报表" class="headerlink" title="3.6、tables - 表报表"></a>3.6、tables - 表报表</h3><p>在该部分显示了表的使用情况，如下：</p>
 <pre><code class="hljs shell">__ Tables ______________________________________________________________
 Open              107 of 1024    %Cache:  10.45
 Opened            118    0.06/s</code></pre>
 
-<p>在Open部分显示了当前打开的表数、可打开的表总数、表缓存的使用率。</p>
-<p>在Opened部分显示了MySQL曾经打开的表的总数、MySQL运行期间的打开速率。</p>
-<p>在这里有两件事很重要：首先是表缓存的使用。有100%的表缓存使用率是不错的，但是如果接近100%，那么增加table_cache系统变量可能是有益的。其次，打开表的速率也有助于确定table_cache是否太低。一般来说，这个值小于1/s是很好的，但是，一个繁忙且运行良好的MySQL服务器可以打开7个表/秒，并以100%的表缓存运行。 </p>
-<h3 id="Created-Temp-临时表报表"><a href="#Created-Temp-临时表报表" class="headerlink" title="Created Temp - 临时表报表"></a>Created Temp - 临时表报表</h3><p>该部分显示了MySQL临时表的创建情况，如下：</p>
+<p>在Open部分显示了当前打开的表数、可打开的表总数、表缓存的使用率。而在Opened部分则显示了MySQL自启动以来打开的表总数和打开速率。</p>
+<p>在这里我们需要知道两件事：首先，表缓存使用率。如果接近100%，那么可以考虑调大table_cache。其次，打开表的速率。它可以用于确定table_cache是否太低。一般来说，这个值应该小于1/s。但是，对于一个繁忙且运行良好的MySQL服务器来说，每秒打开7个表，并以100%的表缓存使用率运行，也是没有问题的。</p>
+<h3 id="3-7、Connections-连接报表"><a href="#3-7、Connections-连接报表" class="headerlink" title="3.7、Connections - 连接报表"></a>3.7、Connections - 连接报表</h3><pre><code class="hljs markdown"><span class="hljs-strong">__ Connections __</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">__<span class="hljs-emphasis">_</span></span>
+<span class="hljs-strong"><span class="hljs-emphasis">Max used           77 of  600      %Max:  12.83</span></span>
+<span class="hljs-strong"><span class="hljs-emphasis">Total             202    0.10/s</span></span></code></pre>
+
+<p>在Max used部分显示了当前并发连接数、允许的最大并发连接数、当前并发连接数与允许的最大并发连接数的比率。而在Total部分则显示了MySQL自启动以来建立连接的总数和建立连接的速率。</p>
+<p>如果连接使用率接近100%（第一行，第三列），则可能需要调大max_connections系统变量。但我们需要知道的是，对于优化良好的服务器来说，即使在非常繁忙的场景下，采用默认值（100）也是适用的。一个到MySQL的连接应该只持续几秒钟，所以即使100个连接也可以用很长时间。如果最大连接数非常高或者随时间缓慢增加，则问题可能出在其他地方，比如查询速度慢、索引不良或甚至DNS解析速度慢等。因此，在调大max_connections之前，先定位出100个连接不够使用的根本原因，并验证这是一个合理的需求而不是其它问题，然后再进行调整。</p>
+<p>关于每秒连接数，这个值可能相当高。事实上，如果该值很高，并且一切运行良好，这也是正常的。通常，超过10个连接/秒是可能的，但大多数服务器的连接/秒都低于5。 </p>
+<h3 id="3-8、Created-Temp-临时表报表"><a href="#3-8、Created-Temp-临时表报表" class="headerlink" title="3.8、Created Temp - 临时表报表"></a>3.8、Created Temp - 临时表报表</h3><p>该部分显示了MySQL临时表的创建情况，如下：</p>
 <pre><code class="hljs markdown"><span class="hljs-strong">__ Created Temp __</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">__</span>
 <span class="hljs-strong">Disk table         10    0.00/s</span>
 <span class="hljs-strong">Table              26    0.01/s    Size:  4.00M</span>
 <span class="hljs-strong">File                3    0.00/s</span></code></pre>
 
-<p>MySQL可以在硬盘、RAM和临时文件中创建临时表，分别对应于如上的三行数据。</p>
-<p>这些值是相对的，没有标准。由于硬盘上的临时表是最慢的（由第一行disk table表示），所以最好是三个表中最小的一个。只有当临时表不能放入受系统变量tmp_table_size限制的RAM中的临时表时，才会在硬盘上创建临时表。tmp_table_size的值由第二行第三列的size指示。RAM中的临时表（由第二行表表示）和临时文件非常常见，以至于这些值与MySQL服务器完全相关。</p>
-<h3 id="Connections-连接报表"><a href="#Connections-连接报表" class="headerlink" title="Connections - 连接报表"></a>Connections - 连接报表</h3><pre><code class="hljs markdown"><span class="hljs-strong">__ Connections __</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">__<span class="hljs-emphasis">_</span></span>
-<span class="hljs-strong"><span class="hljs-emphasis">Max used           77 of  600      %Max:  12.83</span></span>
-<span class="hljs-strong"><span class="hljs-emphasis">Total             202    0.10/s</span></span></code></pre>
-
-<p>在Max used部分显示了当前并发连接数、允许的最大并发连接数、当前并发连接数与允许的最大并发连接数的比率。</p>
-<p>在Total部分显示了MySQL曾经的并发连接数、MySQL运行期间的连接建立速率。</p>
-<p>如果使用的最大连接数接近100%（第一行，第三列），则可能需要增加max_connections系统变量。然而，这往往是误导。人们经常会看到MySQL服务器有非常高的max_连接，这是毫无道理的。默认值为100，即使是非常繁忙、优化良好的服务器也可以使用。一个到MySQL的连接应该持续几秒钟，所以即使100个连接也可以很长时间。如果最大连接数非常高或随时间缓慢增加，则问题可能出在其他地方，如查询速度慢、索引不良或甚至DNS解析速度慢。在将max_connections设置为100个以上之前，请找出一次100个连接不够的根本原因，并验证这是一个合理的需求，而不是另一个表现为连接太少的问题。</p>
-<p>关于每秒的连接数，这个值可能相当高。事实上，如果它很高，而其他一切都很好，这通常是一个很好的迹象。超过10个连接/秒是可能的，但大多数服务器的连接/秒都低于5个/秒。 </p>
-<h3 id="Threads-线程报表"><a href="#Threads-线程报表" class="headerlink" title="Threads - 线程报表"></a>Threads - 线程报表</h3><p>该部分显示了与MySQL线程相关的信息，但却是最不重要的一部分，如下：</p>
+<p>MySQL可以在硬盘、RAM和临时文件中创建临时表，分别对应于如上的三行数据。这些值都是相对的，没有一个明确的标准。由于硬盘上的临时表是最慢的（由第一行disk table表示），所以该值应该是三个中最小的一个。只有当MySQL不能在内存（大小由tmp_table_size设置）中创建临时表时，才会在硬盘上创建临时表。tmp_table_size的值由第二行第三列的size指示。理想情况下，应该是在RAM或临时文件中创建临时表。</p>
+<h3 id="3-9、Threads-线程报表"><a href="#3-9、Threads-线程报表" class="headerlink" title="3.9、Threads - 线程报表"></a>3.9、Threads - 线程报表</h3><p>该部分显示了与MySQL线程相关的信息，如下：</p>
 <pre><code class="hljs markdown"><span class="hljs-strong">__ Threads __</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">__<span class="hljs-emphasis">_</span></span>
 <span class="hljs-strong"><span class="hljs-emphasis">Running            55 of   77</span></span>
 <span class="hljs-strong"><span class="hljs-emphasis">Cache               0              %Hit:    0.5</span></span>
@@ -334,9 +331,12 @@ Opened            118    0.06/s</code></pre>
 <span class="hljs-strong"><span class="hljs-emphasis"><span class="hljs-strong">Sent           38.46M  18.62k/s</span></span></span>
 <span class="hljs-strong"><span class="hljs-emphasis"><span class="hljs-strong">Received        7.98M   3.86k/s</span></span></span></code></pre>
 
-<p>特别注意，Threads报告下的的Cache和%Hit行。每个到MySQL的连接都由一个单独的线程处理。在启动时，MySQL会创建一些线程，并将这些线程保存在线程缓存中，这样就不必不断地杀死和创建线程。虽然线程制作成本不高，但“线程搜索”并不好。当MySQL的连接数超过线程缓存（由系统变量thread_cache_size设置）时，MySQL开始线程震荡：创建线程以满足新连接的需求变得疯狂。当发生这种情况时，线程缓存命中率会下降。因此，如果MySQL服务器有线程抖动（即线程缓存命中率很低），请增加线程缓存的大小。 </p>
-<p>在这个例子中，线程缓存命中率是非常低的0.5%，这意味着几乎每一个新连接都会导致MySQL创建一个新线程。很容易看出原因：Cache行的第一列表示缓存中只剩下零个线程。因此，应该增加线程缓存的大小。还要注意Created行中创建的线程与前面的connections total之间的相关性：201 threads created，202 total connections之间的相关性。因此，几乎为零的线程缓存命中率。 </p>
-<h3 id="InnoDB-Buffer-Pool-InnoDB缓存池报表"><a href="#InnoDB-Buffer-Pool-InnoDB缓存池报表" class="headerlink" title="InnoDB Buffer Pool - InnoDB缓存池报表"></a>InnoDB Buffer Pool - InnoDB缓存池报表</h3><p>我们知道，InnoDB引擎会将索引数据和表数据都缓存到Buffer Pool中，而在其内部实现上，InnoDB Buffer Pool则是由包含不同类型数据的16KB页组成。该部分显示了InnoDB引擎的Buffer Pool的使用情况，如下：</p>
+<p>这里需要特别注意的是，Cache和%Hit。每个到MySQL的连接都是由单独的线程处理的。在启动时，MySQL会创建一些线程，并将这些线程保存在线程缓存中，这样就不必不断地杀死和创建线程。虽然重建线程的成本并不高，但频繁地线程抖动也不好。当并发连接数超过线程缓存（由系统变量thread_cache_size设置）时，MySQL就会开始线程抖动，即疯狂地创建线程以满足新连接的需求。当发生这种情况时，线程缓存命中率会下降。因此，如果MySQL服务器有线程抖动（即线程缓存命中率很低），可以考虑调大线程缓存大小。 </p>
+<blockquote>
+<p>如果你有一个繁忙的服务器，并且有很多快速连接，请将你的线程缓存设置得足够高，以便SHOW STATUS中的Threads_created值停止增加。您的 CPU 会感谢您。…线程缓存确实不是我们最糟糕的问题。但在我们修复了所有较大的问题之后，情况变得更糟。</p>
+</blockquote>
+<p>在这个例子中，线程缓存的命中率非常低，只有0.5%，这意味着几乎每一个新连接都会导致MySQL创建一个新线程。很容易看出原因：Cache行的第一列表示线程缓存中剩余零个线程。因此，应该调大线程缓存大小。此外，需要注意的是，这里的Created行与前面的connections total行之间的相关性，即201个线程创建和202个总连接数之间的相关性。因此，这里的线程缓存命中率几乎为0。 </p>
+<h3 id="3-10、InnoDB-Buffer-Pool-InnoDB缓存池报表"><a href="#3-10、InnoDB-Buffer-Pool-InnoDB缓存池报表" class="headerlink" title="3.10、InnoDB Buffer Pool - InnoDB缓存池报表"></a>3.10、InnoDB Buffer Pool - InnoDB缓存池报表</h3><p>我们知道，InnoDB引擎会将索引数据和表数据都缓存到Buffer Pool中，而在其内部实现上，InnoDB Buffer Pool则是由包含不同类型数据的16KB页组成。因此，该部分显示了InnoDB Buffer Pool中页的使用情况，如下：</p>
 <pre><code class="hljs apache"><span class="hljs-attribute">__</span> InnoDB Buffer Pool __________________________________________________
 <span class="hljs-attribute">Usage</span>           <span class="hljs-number">3</span>.<span class="hljs-number">95</span>M of   <span class="hljs-number">7</span>.<span class="hljs-number">00</span>M  %Used:  <span class="hljs-number">56</span>.<span class="hljs-number">47</span>
 <span class="hljs-attribute">Read</span> hit       <span class="hljs-number">99</span>.<span class="hljs-number">99</span>%
@@ -364,15 +364,15 @@ Opened            118    0.06/s</code></pre>
 </ul>
 <p>在Reads部分显示了InnoDB Buffer Pool的读取活动。它们的含义如下：</p>
 <ul>
-<li>第一行，是读取缓冲池的情况。在繁忙的服务器上，这个值应该很高，因为InnoDB会从RAM中的缓冲池读取大部分页面。这里的值可以看作是InnoDB缓冲池的读吞吐量。由于InnoDB所需的几乎所有内容都可以保存在缓冲池中，并可以从中检索，因此缓冲池的读取应该尽可能快。如上，当前InnoDB缓冲池的读取速率为0.6k/s，但它超过200k/s也是有可能的。</li>
-<li>第二行，是需要从磁盘读取缓冲池页面的次数。</li>
-<li>第三行，是InnoDB创建的随机预读数量。当查询语句使用随机排序扫描一个大表时，就会发生这种情况。</li>
-<li>第四行，是InnoDB创建的顺序预读数量。当查询语句进行顺序的全表扫描时，就会发生这种情况。</li>
+<li>第一行，是读取缓冲池的情况。在繁忙的服务器上，这个值应该很高，因为InnoDB会从位于RAM的缓冲池中读取大部分页面。该值可用于衡量InnoDB缓冲池的写吞吐量。由于InnoDB所需的几乎所有内容都可以保存在缓冲池中，并可以从中检索数据，因此缓冲池的读取速度应该是很快的。如上，当前InnoDB缓冲池的读取速率为0.6k/s，但它超过200k/s也是有可能的。</li>
+<li>第二行，是值因InnoDB缓冲池无法满足，而从磁盘读取的次数。</li>
+<li>第三行，是InnoDB发起的随机预读数。当查询随机顺序扫描一个表的部分内容时，就会发生这种情况。</li>
+<li>第四行，是InnoDB发起的顺序预读数。当查询执行顺序全表扫描时，就会发生这种情况。该值应该尽可能小。</li>
 </ul>
-<p>在Writes部分显示了InnoDB Buffer Pool的写入活动。可以看作是InnoDB缓冲池的写吞吐量。该行列出了写入缓冲池的次数和速率。在执行大量更新或插入操作的服务器上，该值可能会很高。</p>
-<p>在Flushes部分显示了Buffer Pool页面刷新请求的数量。</p>
-<p>在Wait Free部分显示了使用Buffer Pool时的等待情况。通常，对InnoDB缓冲池的写入是在后台进行的。但在需要读取或创建一个页面，而又没有可用的干净页时，则需要等待页面先刷新。如果缓冲池大小设置正确，则该值应该很小。</p>
-<h3 id="InnoDB-Lock-InnoDB锁报表"><a href="#InnoDB-Lock-InnoDB锁报表" class="headerlink" title="InnoDB Lock - InnoDB锁报表"></a>InnoDB Lock - InnoDB锁报表</h3><p>我们知道，MyISAM是表级锁，InnoDB是行级锁。该部分显示了InnoDB行锁的情况，如下：</p>
+<p>在Writes部分显示了InnoDB Buffer Pool的写入活动。可以看作是InnoDB缓冲池的写吞吐量。该行列出了写缓冲池的次数和速率。在执行了大量的update或insert操作的服务器上，该值可能会很高。</p>
+<p>在Flushes部分显示了Buffer Pool页面刷新的请求数。</p>
+<p>在Wait Free部分显示了使用Buffer Pool时的等待情况。通常，对InnoDB缓冲池的写操作是在后台进行的。但在读取或创建一个页面，而又没有可用的干净页时，需要等待页面先刷新。如果缓冲池大小设置正确，则该值应该很小。</p>
+<h3 id="3-11、InnoDB-Lock-InnoDB锁报表"><a href="#3-11、InnoDB-Lock-InnoDB锁报表" class="headerlink" title="3.11、InnoDB Lock - InnoDB锁报表"></a>3.11、InnoDB Lock - InnoDB锁报表</h3><p>我们知道，MyISAM是表级锁，InnoDB是行级锁。该部分显示了InnoDB行锁的情况，如下：</p>
 <pre><code class="hljs markdown"><span class="hljs-strong">__ InnoDB Lock __</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">__<span class="hljs-emphasis">_</span></span>
 <span class="hljs-strong"><span class="hljs-emphasis">Waits               0       0/s</span></span>
 <span class="hljs-strong"><span class="hljs-emphasis">Current             0</span></span>
@@ -382,15 +382,15 @@ Opened            118    0.06/s</code></pre>
 <span class="hljs-strong"><span class="hljs-emphasis">  Max               0 ms</span></span></code></pre>
 
 <p>在Waits部分显示了等待锁的次数。该部分最好为零。</p>
-<p>在Current部分显示了当前正在等待的行锁数。该部分最好为零。</p>
-<p>在Time acquiring部分显示了等待行锁时所花费的时间情况，它们的含义分别是：</p>
+<p>在Current部分显示了当前正在等待行锁的数量。该部分最好为零。</p>
+<p>在Time acquiring部分显示了在等待行锁时所花费的时间情况，它们的含义分别是：</p>
 <ul>
 <li>Total：等待行锁的总毫秒数</li>
 <li>Average：等待行锁的平均毫秒数</li>
 <li>Max：等待行锁的最大毫秒数</li>
 </ul>
 <p>根据经验，锁平均时间最好接近零。锁次数可以有，因为这个值是累加的，所以数据库启动时间长，用得多，锁次数就会增加。</p>
-<h3 id="InnoDB-Data、Pages、Rows-InnoDB数据、页、行信息报表"><a href="#InnoDB-Data、Pages、Rows-InnoDB数据、页、行信息报表" class="headerlink" title="InnoDB Data、Pages、Rows - InnoDB数据、页、行信息报表"></a>InnoDB Data、Pages、Rows - InnoDB数据、页、行信息报表</h3><p>该部分显示了用于衡量InnoDB引擎吞吐量的一些常用指标，如下：</p>
+<h3 id="3-12、InnoDB-Data、Pages、Rows-InnoDB数据、页、行信息报表"><a href="#3-12、InnoDB-Data、Pages、Rows-InnoDB数据、页、行信息报表" class="headerlink" title="3.12、InnoDB Data、Pages、Rows - InnoDB数据、页、行信息报表"></a>3.12、InnoDB Data、Pages、Rows - InnoDB数据、页、行信息报表</h3><p>该部分显示了用于衡量InnoDB引擎吞吐量的一些常用指标，如下：</p>
 <pre><code class="hljs apache"><span class="hljs-attribute">__</span> InnoDB Data, Pages, Rows ____________________________________________
  <span class="hljs-attribute">Data</span>
    <span class="hljs-attribute">Reads</span>           <span class="hljs-number">225</span>     <span class="hljs-number">0</span>.<span class="hljs-number">0</span>/s
@@ -414,10 +414,10 @@ Opened            118    0.06/s</code></pre>
 
 <p>在Data部分显示了四个与InnoDB数据相关的操作情况，它们分别是：</p>
 <ul>
-<li>Read，指InnoDB引擎执行的数据读取次数。</li>
-<li>Writes，指InnoDB引擎执行的数据写入次数。</li>
-<li>fsync，指InnoDB引擎将数据从RAM刷入磁盘的次数。通常，该值低于读或写。</li>
-<li>Pending，指当前被挂起的数据读取、写入和同步数量。这些值最好为零。</li>
+<li>Read，指InnoDB引擎执行的数据读取总次数。</li>
+<li>Writes，指InnoDB引擎执行的数据写入总次数。</li>
+<li>fsync，指InnoDB引擎将数据从RAM刷入磁盘的总次数。通常，该值低于读或写。</li>
+<li>Pending，指当前被挂起的数据读取、写入和同步的总次数。这些值最好为零。</li>
 </ul>
 <p>在Pages部分显示了三个与InnoDB缓存页相关的操作情况，它们分别是：</p>
 <ul>
