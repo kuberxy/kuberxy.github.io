@@ -177,7 +177,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.3k 字
+      5.5k 字
     </span>
   
 
@@ -187,7 +187,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      52
+      66
        分钟
     </span>
   
@@ -220,8 +220,64 @@
             <h1 style="display: none">MySQL全局分析工具：mysqlreport</h1>
             
             <div class="markdown-body" id="post-body">
-              <p>todo</p>
-<h2 id="一、安装"><a href="#一、安装" class="headerlink" title="一、安装"></a>一、安装</h2><h2 id="二、使用"><a href="#二、使用" class="headerlink" title="二、使用"></a>二、使用</h2><h2 id="三、输出解读"><a href="#三、输出解读" class="headerlink" title="三、输出解读"></a>三、输出解读</h2><h3 id="3-1、key-索引报表"><a href="#3-1、key-索引报表" class="headerlink" title="3.1、key - 索引报表"></a>3.1、key - 索引报表</h3><p>该部分显示了MyISAM引擎的shared key buffer的使用情况，如下：</p>
+              <p>mysqlreport可以将MySQL中一些重要的状态变量生成为一个易读的报告。有了这份报告，我们就能快速发现一些配置上的问题。</p>
+<h2 id="一、安装"><a href="#一、安装" class="headerlink" title="一、安装"></a>一、安装</h2><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> MySQL 8.0</span>
+sudo apt-get install libdbi-perl libdbd-mysql-perl -y
+
+cd /tmp &amp;&amp; git clone https://github.com/daniel-nichter/hackmysql.com.git
+sudo cp ./hackmysql.com/mysqlreport/mysqlreport /usr/bin/
+
+<span class="hljs-meta">#</span><span class="bash"> MySQL 5.7</span>
+sudo apt-get install libdbi-perl libdbd-mysql-perl -y
+
+sudo apt-get install mysql-client-5.7 -y</code></pre>
+
+<h2 id="二、使用"><a href="#二、使用" class="headerlink" title="二、使用"></a>二、使用</h2><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> mysqlreport --user root --password 123456 --host 127.0.0.1 --port 3306 --no-mycnf --flush-status --outfile myreport-$(date +%Y%m%dT%H%M%S)</span>
+<span class="hljs-meta">$</span><span class="bash"> mysqlreport --<span class="hljs-built_in">help</span></span>
+mysqlreport v3.5 Apr 16 2008
+mysqlreport makes an easy-to-read report of important MySQL status values.
+
+Command line options (abbreviations work):
+   --user USER       Connect to MySQL as USER
+   --password PASS   Use PASS or prompt for MySQL user&#x27;s password
+   --host ADDRESS    Connect to MySQL at ADDRESS
+   --port PORT       Connect to MySQL at PORT
+   --socket SOCKET   Connect to MySQL at SOCKET
+   --no-mycnf        Don&#x27;t read ~/.my.cnf
+   --infile FILE     Read status values from FILE instead of MySQL
+   --outfile FILE    Write report to FILE
+   --email ADDRESS   Email report to ADDRESS (doesn&#x27;t work on Windows)
+   --flush-status    Issue FLUSH STATUS; after getting current values
+   --relative X      Generate relative reports. If X is an integer,
+                     reports are live from the MySQL server X seconds apart.
+                     If X is a list of infiles (file1 file2 etc.),
+                     reports are generated from the infiles in the order
+                     that they are given.
+   --report-count N  Collect N number of live relative reports (default 1)
+   --detach          Fork and detach from terminal (run in background)
+   --help            Prints this
+   --debug           Print debugging information
+
+Visit http://hackmysql.com/mysqlreport for more information.</code></pre>
+
+<p>参数说明：</p>
+<ul>
+<li><p>–infile表示用文件中读取show status值，而不是从MySQL中获取。</p>
+</li>
+<li><p>–outfile表示将报告输出到屏幕后，再输出的文件中。</p>
+</li>
+<li><p>–email表示将报告输出到屏幕后，再通过电子邮件发送到指定地址。此选项要求sendmail位于/usr/sbin/，因此在Windows上不起作用。</p>
+</li>
+<li><p>–flush-status表示在生成报告后执行“flush status”语句。</p>
+</li>
+<li><p>–relative用于设置报告的生成间隔。mysqlreport通常生成的报告显示了MySQL服务器在整个正常运行时间内的值。–relative选项使mysqlreport生成与以前的报告相关的报告。如果–relative选项为X指定了一个整数值，那么mysqlreport将从MySQL服务器生成相隔X秒的相对报告。报告数由–report count选项控制。默认值为1个相对报告。例如，给定选项–relative 60，mysqlreport将生成2个报告：第一个报告将立即生成；这是开始报告或基线报告。第二个报告将在60秒后生成。第二个报告的值将相对于开始报告。例如，假设在开始的报告中总共有10.00个问题。然后假设在60秒的时间间隔内，MySQL服务器又回答了1k个问题。第二份报告将显示总共1.00k个问题，而不是11.00k个问题。如果给–relative选项指定了一个内嵌列表（类似于–infile选项所使用的列表），那么mysqlreport将仅从给定的内嵌中按给定内嵌的顺序生成相关报告。给定列表中的内嵌名称应使用空格分隔；例如：file1 file2等。在命令行中按正确的时间顺序指定内嵌很重要：先指定旧的内嵌。第一个内嵌应具有系统变量值（来自“显示变量”或“手动包含”）。内嵌可以有一组或多组MySQL SHOW STATUS值。但是请注意，“mysqladmin-r-inextended”的输出将不起作用，因为带有-r选项的mysqladmin已经将SHOW STATUS值相对化。 因为mysqlreport首先将报告写入临时文件，所以当–relative与整数（而不是与infies一起使用）一起使用时，mysqlreport将说明它正在写入哪个临时文件。这样，人们就可以在撰写相关报告时观察其进展情况。</p>
+</li>
+<li><p>–report-count表示生成多少个报告。此选项仅适用于–relative，当为–relative指定一个整数值时。mysqlreport实际上生成N+1个报告：第一个报告是开始报告或基线报告。然后，生成N个相关报告。</p>
+</li>
+<li><p>–detach表示后台运行。此选项将导致mysqlreport分叉，从终端分离，并在后台继续运行。分叉之后，mysqlreport将说明它正在写入哪个临时文件。此选项还需要选项–outfile或–email。如果既没有给出–outfile也没有给出–email，那么报告就会被删除，因为因为mysqlreport从终端分离，报告无法打印到终端。此选项与option–relative一起使用，这样mysqlreport就可以长时间收集相关报告，而不必使用控制终端（即用户登录）。例如，可以通过运行mysqlreport在一个小时内捕获一个相对报告，并将整个报告通过电子邮件发送给自己</p>
+</li>
+</ul>
+<h2 id="三、输出解读"><a href="#三、输出解读" class="headerlink" title="三、输出解读"></a>三、输出解读</h2><h3 id="3-1、key-索引报表"><a href="#3-1、key-索引报表" class="headerlink" title="3.1、key - 索引报表"></a>3.1、key - 索引报表</h3><p>该部分显示了MyISAM引擎的shared key buffer的使用情况，如下：</p>
 <pre><code class="hljs markdown"><span class="hljs-strong">__ Key __</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">____</span><span class="hljs-strong">__<span class="hljs-emphasis">_</span></span>
 <span class="hljs-strong"><span class="hljs-emphasis">Buffer used     3.00k of  16.00M  %Used:   0.02</span></span>
 <span class="hljs-strong"><span class="hljs-emphasis">  Current       2.92M            %Usage:  18.26</span></span>
