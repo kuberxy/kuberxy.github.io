@@ -176,6 +176,54 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2020/10/02/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%922%EF%BC%9A%E5%89%AF%E6%9C%AC%E4%B8%8E%E6%B0%B4%E5%B9%B3%E6%89%A9%E5%B1%95/">容器编排2：副本与水平扩展</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/10/02/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%922%EF%BC%9A%E5%89%AF%E6%9C%AC%E4%B8%8E%E6%B0%B4%E5%B9%B3%E6%89%A9%E5%B1%95/">
+          
+          
+            
+          
+          在前面讨论控制器模式的文章中，我们提到了Deployment这个控制器，接下来，我们重点讨论一下这个控制器的工作原理。
+一、从ReplicaSet说起Deployment 看似简单，但实际上，它实现了 Kubernetes 项目中两个非常重要的功能：Pod 的“水平扩展 / 收缩”（horizontal scaling out/in）和“滚动更新”（rolling update）。举个例子，如果我
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-02 16:20" pubdate>
+              2020-10-02
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2020/10/02/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%921%EF%BC%9A%E7%90%86%E8%A7%A3%E6%8E%A7%E5%88%B6%E5%99%A8%E6%A8%A1%E5%9E%8B/">容器编排1：理解控制器模型</a>
       </h1>
 
@@ -595,56 +643,6 @@ $ pstree -gt
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/Docker/">Docker</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/09/26/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E8%B0%83%E4%BC%98%E7%AD%96%E7%95%A5/">JVM垃圾回收调优策略</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/09/26/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E8%B0%83%E4%BC%98%E7%AD%96%E7%95%A5/">
-          
-          
-            
-          
-          面对不同的业务场景，垃圾回收调优策略是不一样的。比如，在对内存要求苛刻的情况下，需要提高对象回收效率；在CPU使用率高的情况下，需要降低高并发时垃圾回收的频率。那么面对不同的场景，我们该如何进行调优呢？
-一、GC性能衡量指标在进行实际的GC调优前，我们需要根据一些GC性能指标，确定具体的调优方向。常用的GC性能指标如下：
-
-吞吐量，这里的吞吐量是指应用程序所花费的时间和系统总运行时间的比值。我们可
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-26 15:46" pubdate>
-              2020-09-26
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Java/">Java</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/JVM/">JVM</a>
             
           </div>
         
