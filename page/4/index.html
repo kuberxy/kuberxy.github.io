@@ -176,6 +176,252 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2020/12/09/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95API-Server%E6%A1%86%E6%9E%B6/">一个简单API Server框架</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/12/09/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95API-Server%E6%A1%86%E6%9E%B6/">
+          
+          
+            
+          
+          在前面的文章中，我们讨论REST相关的概念，以及REST在OpenResty中的应用。接下来，我们尝试使用OpenResty中搭建一个简单的API Server。
+一、需求实现一个能计算加减乘除的数学计算器
+二、实现我们先来看看一个最简陋的实现版本：
+worker_processes  1;
+error_log logs/error.log;
+events &#123;
+    worker_co
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-09 11:21" pubdate>
+              2020-12-09
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/OpenResty/">OpenResty</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/API-Server%E6%A1%86%E6%9E%B6/">API Server框架</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/12/09/API%E7%9A%84%E8%AE%BE%E8%AE%A1/">API的设计</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/12/09/API%E7%9A%84%E8%AE%BE%E8%AE%A1/">
+          
+          
+            
+          
+          OpenResty最擅长的应用场景之一就是API Server。一提到API Server我们的脑海里一定会冒出许多与REST相关的概念，下面我们来看看在OpenResty中如何实现REST风格的API Server。
+一、为什么要使用REST首先，我们先来看看不采用REST的API Server长什么样，如下示例：
+server &#123;
+    listen       80;
+    s
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-09 09:46" pubdate>
+              2020-12-09
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/OpenResty/">OpenResty</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Web%E6%9C%8D%E5%8A%A1%E3%80%81REST/">Web服务、REST</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/12/06/%E9%99%90%E6%B5%81%E8%AF%A5%E6%80%8E%E4%B9%88%E5%81%9A/">限流该怎么做</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/12/06/%E9%99%90%E6%B5%81%E8%AF%A5%E6%80%8E%E4%B9%88%E5%81%9A/">
+          
+          
+            
+          
+          限流的核心在于：能“限”在被限制对象的能力上限附近。简单来说就是，设定的阈值要接近被限制对象的能力。一方面，如果阈值过高，限流形同虚设，达不到相应的效果；另一方面，如果阈值过低，频繁触发干预，就会造成误伤。最终都会导致很差的用户体验。因此：
+
+首先，要明确限流对象
+
+然后，要获得被限制对象的能力上限
+
+其次，要制定干预流量的策略
+
+最后，就是限流方案的选择与实现
+
+
+一、确定限流对象大体上，我们可
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-06 13:04" pubdate>
+              2020-12-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%B3%BB%E7%BB%9F%E5%AE%B9%E9%87%8F/">系统容量</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E9%99%90%E6%B5%81/">限流</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/12/06/%E6%B5%85%E8%B0%88%E5%B8%B8%E7%94%A8%E9%99%90%E6%B5%81%E7%AD%96%E7%95%A5/">浅谈常用限流策略</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/12/06/%E6%B5%85%E8%B0%88%E5%B8%B8%E7%94%A8%E9%99%90%E6%B5%81%E7%AD%96%E7%95%A5/">
+          
+          
+            
+          
+          在实际的应用场景中，常用的限流策略可以概括为一个词：两窗两桶。其中，两窗是指固定窗口和滑动窗口；两桶是指漏桶和令牌桶。
+一、固定窗口固定窗口，是指设定一个固定的统计周期（比如，30秒或1分钟），然后通过累加计数器对每个周期内的流量进行统计。在一个周期内，如果流量达到了设定的阈值，就进行流量干预，直到进入下一个统计周期，计数器清零，流量接收恢复正常。该策略可以用如下示意图来理解：
+
+二、滑动窗口滑动
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-06 10:16" pubdate>
+              2020-12-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%B3%BB%E7%BB%9F%E5%AE%B9%E9%87%8F/">系统容量</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E9%99%90%E6%B5%81%E7%AD%96%E7%95%A5/">限流策略</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/11/15/hello-world/">Hello World</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/15/hello-world/">
+          
+          
+            
+          
+          Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
+Quick
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-15 21:11" pubdate>
+              2020-11-15
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2020/10/18/%E4%BB%8B%E8%AF%8D%E4%B9%8Bfor/">介词之for</a>
       </h1>
 
@@ -426,253 +672,11 @@ Predicates 在调度过程中的作用，可以理解为 Filter，即：它按�
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/13/%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A61%EF%BC%9AKubernetes%E7%9A%84%E8%B5%84%E6%BA%90%E6%A8%A1%E5%9E%8B/">作业调度1：Kubernetes的资源模型</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/13/%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A61%EF%BC%9AKubernetes%E7%9A%84%E8%B5%84%E6%BA%90%E6%A8%A1%E5%9E%8B/">
-          
-          
-            
-          
-          作为一个编排与管理容器集群的项目，Kubernetes 为用户提供的基础设施能力，不仅包括了对应用的定义和描述，还包括了对应用的资源管理和调度。接下来，我们重点讨论后面这部分内容。
-一、从Kubernetes的资源模型说起1.1、两种资源类型我们知道，在 Kubernetes 里，Pod 是最小的原子调度单位。这也就意味着，所有跟调度和资源管理相关的属性都应该属于 Pod 对象的字段。而这其中最重
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-13 08:14" pubdate>
-              2020-10-13
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Kubernetes/">Kubernetes</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A6/">作业调度</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/10/GoReplay%E5%85%A5%E9%97%A8/">GoReplay入门</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/10/GoReplay%E5%85%A5%E9%97%A8/">
-          
-          
-            
-          
-          随着应用功能的不断增加，测试它所需的工作量也会成倍增加。GoReplay则为我们提供了一个简单而快速的测试方法，即重用现有流量进行测试。它能够记录和分析应用程序的流量，且不会对应用程序造成影响。
-一、简介GoReplay，又称Gor，是一个采用Golang编写的、开源的HTTP实时流量捕获和重放工具。通过它可以完成流量复制、负载测试、流量监控和流量分析等工作。它以守护进程（而不是Proxy）的形式
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-10 16:05" pubdate>
-              2020-10-10
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E6%B5%81%E9%87%8F%E5%A4%8D%E5%88%B6/">流量复制</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Gor/">Gor</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/08/%E6%80%8E%E6%A0%B7%E5%88%B6%E5%AE%9A%E4%B8%80%E4%BB%BD%E7%A7%91%E5%AD%A6%E7%9A%84%E8%B7%91%E6%AD%A5%E6%96%B9%E6%A1%88%EF%BC%9F/">怎样制定一份科学的跑步方案？</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/08/%E6%80%8E%E6%A0%B7%E5%88%B6%E5%AE%9A%E4%B8%80%E4%BB%BD%E7%A7%91%E5%AD%A6%E7%9A%84%E8%B7%91%E6%AD%A5%E6%96%B9%E6%A1%88%EF%BC%9F/">
-          
-          
-            
-          
-          todo
-一、体脂率（跑步训练的启动指标）1.1、什么是体脂率体脂率是指体内的脂肪占体重总数的百分比。
-比如，男性的体脂率高于26%就属于肥胖，如果能维持在14%左右就可以在腹部看到肌肉。女性的体脂率高于32%就属于肥胖，如果能维持在23%左右就能看到肌肉线条。
-1.2、体脂率的作用体脂率不仅是判断身体是否肥胖的参考指标，而且还是能否开始跑步的参考指标。当男性的体脂率低于26%、女性的体脂率低于3
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-08 16:55" pubdate>
-              2020-10-08
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E7%B2%BE%E5%8A%9B%E7%AE%A1%E7%90%86/">精力管理</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E8%B7%91%E6%AD%A5/">跑步</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C8%EF%BC%9AService%E4%B8%8EIngress/">容器网络8：Service与Ingress</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C8%EF%BC%9AService%E4%B8%8EIngress/">
-          
-          
-            
-          
-          在前面的文章中，我们讨论了将Service 暴露给外界的三种方法。接下来，我们重点讨论另外一种方法：Ingreess。
-一、什么是Ingress在将 Service 暴露给外界的三种方法。其中有一个叫作 LoadBalancer 类型的 Service，它会为我们在 Cloud Provider（比如：Google Cloud 或者 OpenStack）里创建一个与该 Service 对应的负载均
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-07 10:50" pubdate>
-              2020-10-07
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Kubernetes/">Kubernetes</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C7%EF%BC%9A%E4%BB%8E%E5%A4%96%E9%83%A8%E8%AE%BF%E9%97%AEService/">容器网络7：从外部访问Service</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C7%EF%BC%9A%E4%BB%8E%E5%A4%96%E9%83%A8%E8%AE%BF%E9%97%AEService/">
-          
-          
-            
-          
-          在前面的文章中，我们讨论了Kubernetes内部的Pod之间如何互相访问。接下来，我们重点讨论如何从外部访问Kubernetes内部的Pod。
-一、NodePort通过前面的讲解，我们应该能够明白这样一个事实：Service 的访问信息在 Kubernetes 集群之外，其实是无效的。这其实也容易理解：所谓 Service 的访问入口，其实就是每台宿主机上由 kube-proxy 生成的 ipt
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-07 10:49" pubdate>
-              2020-10-07
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Kubernetes/">Kubernetes</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/3/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/5/"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/3/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/5/"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
   
