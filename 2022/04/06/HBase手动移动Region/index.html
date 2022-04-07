@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="kubxy">
   <meta name="keywords" content="">
-  <title>Hello World - Kubxy</title>
+  <title>HBase手动移动Region - Kubxy</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -165,8 +165,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-11-15 21:11" pubdate>
-        2020年11月15日 晚上
+      <time datetime="2022-04-06 18:39" pubdate>
+        2022年4月6日 晚上
       </time>
     </span>
   
@@ -177,7 +177,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      75 字
+      349 字
     </span>
   
 
@@ -187,7 +187,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      4
        分钟
     </span>
   
@@ -217,28 +217,48 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">Hello World</h1>
+            <h1 style="display: none">HBase手动移动Region</h1>
             
             <div class="markdown-body" id="post-body">
-              <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span></code></pre>
+              <p>当HBase的某个表的region集中在某台RegionServer上时，会出现热点问题，此时为了负载均衡就需要移动均分到其他RS上</p>
+<h2 id="一、缘起"><a href="#一、缘起" class="headerlink" title="一、缘起"></a>一、缘起</h2><p>最近捣鼓性能测试，创建了200W用户数据。然而，在测试登录接口的性能时，发现请求全落在了同一台RegionServer上，出现了热点问题。最初，想通过HBase的负载均衡策略自动解决这个问题，于是执行了balancer操作，结果热点问题依然存在。最后，在RS UI页面上发现用户数据连续分布在一台RS上，于是想使用手动的方式将region移动到其他几个节点上，实现负载均衡。</p>
+<h2 id="二、流程"><a href="#二、流程" class="headerlink" title="二、流程"></a>二、流程</h2><p>手动移动region的过程其实很简单，只需一个move命令即可，其使用方式如下：</p>
+<pre><code class="hljs shell">hbase(main):011:0* help &#x27;move&#x27;
+Move a region.  Optionally specify target regionserver else we choose one
+at random.  NOTE: You pass the encoded region name, not the region name so
+this command is a little different to the others.  The encoded region name
+is the hash suffix on region names: e.g. if the region name were
+TestTable,0094429456,1289497600452.527db22f95c8a9e0116f0cc13c680396. then
+the encoded region name portion is 527db22f95c8a9e0116f0cc13c680396
+A server name is its host, port plus startcode. For example:
+host187.example.com,60020,1289493121758
+Examples:
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre><code class="hljs bash">$ hexo server</code></pre>
+<span class="hljs-meta">  hbase&gt;</span><span class="bash"> move <span class="hljs-string">&#x27;ENCODED_REGIONNAME&#x27;</span></span>
+<span class="hljs-meta">  hbase&gt;</span><span class="bash"> move <span class="hljs-string">&#x27;ENCODED_REGIONNAME&#x27;</span>, <span class="hljs-string">&#x27;SERVER_NAME&#x27;</span></span></code></pre>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre><code class="hljs bash">$ hexo generate</code></pre>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre><code class="hljs bash">$ hexo deploy</code></pre>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<p>其中，ENCODED_REGIONNAME和SERVER_NAME可以在HBase的UI上获取</p>
+<h2 id="三、参考"><a href="#三、参考" class="headerlink" title="三、参考"></a>三、参考</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qingzhenli/article/details/72963439">Hbase region移动_自由盼盼的博客-CSDN博客_hbase 移动region</a></p>
 
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/HBase/">HBase</a>
+                    
+                  </div>
                 
               </div>
               
@@ -249,9 +269,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/12/06/%E6%B5%85%E8%B0%88%E5%B8%B8%E7%94%A8%E9%99%90%E6%B5%81%E7%AD%96%E7%95%A5/">
+                      <a href="/2022/04/07/Region%E8%BF%81%E7%A7%BB/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">浅谈常用限流策略</span>
+                        <span class="hidden-mobile">Region迁移</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -259,8 +279,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/10/18/%E4%BB%8B%E8%AF%8D%E4%B9%8Bfor/">
-                        <span class="hidden-mobile">介词之for</span>
+                      <a href="/2022/04/06/HBase%E7%9A%84%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5/">
+                        <span class="hidden-mobile">HBase的负载均衡策略</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -403,7 +423,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Hello World&nbsp;",
+        "HBase手动移动Region&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

@@ -384,12 +384,12 @@ TheMaster-bin.000001     481</code></pre>
   <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;-c&quot;</span>
   <span class="hljs-bullet">-</span> <span class="hljs-string">|</span>
     <span class="hljs-string">set</span> <span class="hljs-string">-ex</span>
-    
+
     <span class="hljs-comment"># 从Pod的序号，生成server-id</span>
     [[ <span class="hljs-string">`hostname`</span> <span class="hljs-string">=~</span> <span class="hljs-string">-(</span>[<span class="hljs-number">0</span><span class="hljs-number">-9</span>]<span class="hljs-string">+)$</span> ]] <span class="hljs-string">||</span> <span class="hljs-string">exit</span> <span class="hljs-number">1</span>
     <span class="hljs-string">ordinal=$&#123;BASH_REMATCH[1]&#125;</span>
     <span class="hljs-string">echo</span> [<span class="hljs-string">mysqld</span>] <span class="hljs-string">&gt;</span> <span class="hljs-string">/mnt/conf.d/server-id.cnf</span>
-    
+
     <span class="hljs-comment"># 由于server-id=0有特殊含义，我们给ID加一个100来避开它</span>
     <span class="hljs-string">echo</span> <span class="hljs-string">server-id=$((100</span> <span class="hljs-string">+</span> <span class="hljs-string">$ordinal))</span> <span class="hljs-string">&gt;&gt;</span> <span class="hljs-string">/mnt/conf.d/server-id.cnf</span>
     <span class="hljs-comment"># 如果Pod序号是0，说明它是Master节点，从ConfigMap里把Master的配置文件拷贝到/mnt/conf.d/目录；</span>
@@ -428,18 +428,18 @@ TheMaster-bin.000001     481</code></pre>
   <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;-c&quot;</span>
   <span class="hljs-bullet">-</span> <span class="hljs-string">|</span>
     <span class="hljs-string">set</span> <span class="hljs-string">-ex</span>
-    
+
     <span class="hljs-comment"># 拷贝操作只需要在第一次启动时进行，所以如果数据已经存在，跳过</span>
     [[ <span class="hljs-string">-d</span> <span class="hljs-string">/var/lib/mysql/mysql</span> ]] <span class="hljs-string">&amp;&amp;</span> <span class="hljs-string">exit</span> <span class="hljs-number">0</span>
-    
+
     <span class="hljs-comment"># Master节点(序号为0)不需要做这个操作</span>
     [[ <span class="hljs-string">`hostname`</span> <span class="hljs-string">=~</span> <span class="hljs-string">-(</span>[<span class="hljs-number">0</span><span class="hljs-number">-9</span>]<span class="hljs-string">+)$</span> ]] <span class="hljs-string">||</span> <span class="hljs-string">exit</span> <span class="hljs-number">1</span>
     <span class="hljs-string">ordinal=$&#123;BASH_REMATCH[1]&#125;</span>
     [[ <span class="hljs-string">$ordinal</span> <span class="hljs-string">-eq</span> <span class="hljs-number">0</span> ]] <span class="hljs-string">&amp;&amp;</span> <span class="hljs-string">exit</span> <span class="hljs-number">0</span>
-    
+
     <span class="hljs-comment"># 使用ncat指令，远程地从前一个节点拷贝数据到本地</span>
     <span class="hljs-string">ncat</span> <span class="hljs-string">--recv-only</span> <span class="hljs-string">mysql-$(($ordinal-1)).mysql</span> <span class="hljs-number">3307</span> <span class="hljs-string">|</span> <span class="hljs-string">xbstream</span> <span class="hljs-string">-x</span> <span class="hljs-string">-C</span> <span class="hljs-string">/var/lib/mysql</span>
-    
+
     <span class="hljs-comment"># 执行--prepare，这样拷贝来的数据就可以用作恢复了</span>
     <span class="hljs-string">xtrabackup</span> <span class="hljs-string">--prepare</span> <span class="hljs-string">--target-dir=/var/lib/mysql</span>
   <span class="hljs-attr">volumeMounts:</span>
@@ -475,7 +475,7 @@ TheMaster-bin.000001     481</code></pre>
   <span class="hljs-bullet">-</span> <span class="hljs-string">|</span>
     <span class="hljs-string">set</span> <span class="hljs-string">-ex</span>
     <span class="hljs-string">cd</span> <span class="hljs-string">/var/lib/mysql</span>
-    
+
     <span class="hljs-comment"># 从备份信息文件里读取MASTER_LOG_FILEM和MASTER_LOG_POS这两个字段的值，用来拼装集群初始化SQL</span>
     <span class="hljs-string">if</span> [[ <span class="hljs-string">-f</span> <span class="hljs-string">xtrabackup_slave_info</span> ]]<span class="hljs-string">;</span> <span class="hljs-string">then</span>
       <span class="hljs-comment"># 如果xtrabackup_slave_info文件存在，说明这个备份数据来自于另一个Slave节点。这种情况下，XtraBackup工具在备份的时候，就已经在这个文件里自动生成了&quot;CHANGE MASTER TO&quot; SQL语句。所以，我们只需要把这个文件重命名为change_master_to.sql.in，后面直接使用即可</span>
@@ -490,13 +490,13 @@ TheMaster-bin.000001     481</code></pre>
       <span class="hljs-string">echo</span> <span class="hljs-string">&quot;CHANGE MASTER TO MASTER_LOG_FILE=&#x27;$&#123;BASH_REMATCH[1]&#125;&#x27;,\</span>
 <span class="hljs-string">            MASTER_LOG_POS=$&#123;BASH_REMATCH[2]&#125;&quot;</span> <span class="hljs-string">&gt;</span> <span class="hljs-string">change_master_to.sql.in</span>
     <span class="hljs-string">fi</span>
-    
+
     <span class="hljs-comment"># 如果change_master_to.sql.in，就意味着需要做集群初始化工作</span>
     <span class="hljs-string">if</span> [[ <span class="hljs-string">-f</span> <span class="hljs-string">change_master_to.sql.in</span> ]]<span class="hljs-string">;</span> <span class="hljs-string">then</span>
       <span class="hljs-comment"># 但一定要先等MySQL容器启动之后才能进行下一步连接MySQL的操作</span>
       <span class="hljs-string">echo</span> <span class="hljs-string">&quot;Waiting for mysqld to be ready (accepting connections)&quot;</span>
       <span class="hljs-string">until</span> <span class="hljs-string">mysql</span> <span class="hljs-string">-h</span> <span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span> <span class="hljs-string">-e</span> <span class="hljs-string">&quot;SELECT 1&quot;</span><span class="hljs-string">;</span> <span class="hljs-string">do</span> <span class="hljs-string">sleep</span> <span class="hljs-number">1</span><span class="hljs-string">;</span> <span class="hljs-string">done</span>
-      
+
       <span class="hljs-string">echo</span> <span class="hljs-string">&quot;Initializing replication from clone position&quot;</span>
       <span class="hljs-comment"># 将文件change_master_to.sql.in改个名字，防止这个Container重启的时候，因为又找到了change_master_to.sql.in，从而重复执行一遍这个初始化流程</span>
       <span class="hljs-string">mv</span> <span class="hljs-string">change_master_to.sql.in</span> <span class="hljs-string">change_master_to.sql.orig</span>
@@ -510,7 +510,7 @@ TheMaster-bin.000001     481</code></pre>
     <span class="hljs-string">START</span> <span class="hljs-string">SLAVE;</span>
     <span class="hljs-string">EOF</span>
     <span class="hljs-string">fi</span>
-    
+
     <span class="hljs-comment"># 使用ncat监听3307端口。它的作用是，在收到传输请求的时候，直接执行&quot;xtrabackup --backup&quot;命令，备份MySQL的数据并发送给请求者</span>
     <span class="hljs-string">exec</span> <span class="hljs-string">ncat</span> <span class="hljs-string">--listen</span> <span class="hljs-string">--keep-open</span> <span class="hljs-string">--send-only</span> <span class="hljs-string">--max-conns=1</span> <span class="hljs-number">3307</span> <span class="hljs-string">-c</span> <span class="hljs-string">\</span>
       <span class="hljs-string">&quot;xtrabackup --backup --slave-info --stream=xbstream --host=127.0.0.1 --user=root&quot;</span>

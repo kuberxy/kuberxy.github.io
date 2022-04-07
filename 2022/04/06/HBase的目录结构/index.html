@@ -1,0 +1,637 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="kubxy">
+  <meta name="keywords" content="">
+  <title>HBase的目录结构 - Kubxy</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Kubxy</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-04-06 14:59" pubdate>
+        2022年4月6日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.7k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      25
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">HBase的目录结构</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h2 id="一、HBase目录结构"><a href="#一、HBase目录结构" class="headerlink" title="一、HBase目录结构"></a>一、HBase目录结构</h2><h3 id="1-1、On-ZooKeeper"><a href="#1-1、On-ZooKeeper" class="headerlink" title="1.1、On ZooKeeper"></a>1.1、On ZooKeeper</h3><pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> $(<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;ls /hbase&quot;</span> | zookeeper-client | tail -2 | head -1 | awk -F <span class="hljs-string">&#x27;[][]&#x27;</span> <span class="hljs-string">&#x27;&#123;print $2&#125;&#x27;</span>); <span class="hljs-keyword">do</span> <span class="hljs-built_in">echo</span> <span class="hljs-variable">$i</span>; <span class="hljs-keyword">done</span></span>
+meta-region-server,
+rs,
+splitWAL,
+backup-masters,
+table-lock,
+flush-table-proc,
+master-maintenance,
+online-snapshot,
+master,
+switch,
+running,
+draining,
+namespace,
+hbaseid,
+table</code></pre>
+
+<p>说明：</p>
+<ul>
+<li>meta-region-server：包含meta region</li>
+<li>rs</li>
+<li>splitWAL</li>
+<li>backup-masters</li>
+<li>table-lock</li>
+<li>flush-table-proc</li>
+<li>master-maintenance</li>
+<li>online-snapshot</li>
+<li>master</li>
+<li>switch</li>
+<li>running</li>
+<li>draining</li>
+<li>namespace</li>
+<li>hbaseid</li>
+<li>table</li>
+</ul>
+<h3 id="1-2、On-HDFS"><a href="#1-2、On-HDFS" class="headerlink" title="1.2、On HDFS"></a>1.2、On HDFS</h3><h4 id="1-2-1、根级目录-文件"><a href="#1-2-1、根级目录-文件" class="headerlink" title="1.2.1、根级目录/文件"></a>1.2.1、根级目录/文件</h4><pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> sudo -u hdfs hadoop fs -ls /hbase</span>
+Found 14 items
+drwxr-xr-x   - hdfs  supergroup          0 2019-11-12 03:31 /hbase/.hbase-snapshot
+drwxr-xr-x   - hbase supergroup          0 2019-11-12 03:16 /hbase/.tmp
+drwxr-xr-x   - hbase supergroup          0 2019-11-12 04:30 /hbase/MasterProcWALs
+drwxr-xr-x   - hbase supergroup          0 2019-11-12 03:16 /hbase/WALs
+drwxr-xr-x   - hbase supergroup          0 2019-11-12 03:31 /hbase/archive
+drwxr-xr-x   - hbase supergroup          0 2019-11-12 03:13 /hbase/corrupt
+drwxr-xr-x   - hbase supergroup          0 2019-11-12 03:17 /hbase/data
+-rw-r--r--   3 hbase supergroup         42 2019-11-12 03:13 /hbase/hbase.id
+-rw-r--r--   3 hbase supergroup          7 2019-11-12 03:13 /hbase/hbase.version
+drwxr-xr-x   - hbase supergroup          0 2019-11-12 04:30 /hbase/oldWALs</code></pre>
+
+<p>说明：</p>
+<ul>
+<li>/hbase/.hbase-snapshot - 存储Snapshot的相关信息</li>
+<li>/hbase/.tmp - 临时目录。比如，写一个hbase.id文件，先在这里写成功后，再rename到/hbase/hbase.id</li>
+<li>/hbase/MasterProcWALs - 保存master执行过程中程序的状态，用于中断恢复执行使用</li>
+<li>/hbase/WALs - 记录每台regionserver上的WAL日志文件</li>
+<li>/hbase/archive - 归档目录。进行snapshot或者升级时会使用该目录，compaction删除hfile时也会把旧的hfile归档到这里。该目录由 HMaster 上的一个定时任务定期去清理。</li>
+<li>/hbase/corrupt - splitlog的corrupt目录，以及corrupt hfile的目录</li>
+<li>/hbase/data - HBase的表数据目录。从0.98版本开始支持 namespace 的概念模型，系统会预置两个 namespace 即: hbase 和 default</li>
+<li>/hbase/hbase.id - 集群的唯一ID文件。在集群启动时初始化生成</li>
+<li>/hbase/hbase.version - 版本文件（hbase软件版本、代码静态版本），现在都是8</li>
+<li>/hbase/oldWALs - 历史WAL日志。已经确认持久化了的WAL日志文件会被移到这里，完成了splitlog的旧日志，也会被放到这里。</li>
+</ul>
+<h4 id="1-2-2、子目录-文件"><a href="#1-2-2、子目录-文件" class="headerlink" title="1.2.2、子目录/文件"></a>1.2.2、子目录/文件</h4><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># /hbase/WALs</span></span>
+<span class="hljs-meta">#</span><span class="bash"> 对于每个regionServer节点,WALs日志目录下都包含一个对应的子目录</span>
+<span class="hljs-meta">#</span><span class="bash"> 用于记录每台RegionServer上的WAL日志文件</span>
+<span class="hljs-meta">#</span><span class="bash"> regionServer目录的名字是有时间的。下一次启动时，RS目录就会使用新的目录结构存放wal，这个旧的RS目录会被splitlog拆分回放</span>
+<span class="hljs-meta">$</span><span class="bash"> sudo -u hdfs hadoop fs -ls /hbase/WALs</span>
+Found 4 items
+drwxr-xr-x   - hbase supergroup          0 2019-11-12 05:16 /hbase/WALs/node2,16020,1573528597339
+drwxr-xr-x   - hbase supergroup          0 2019-11-12 05:16 /hbase/WALs/node3,16020,1573528597152
+drwxr-xr-x   - hbase supergroup          0 2019-11-12 05:16 /hbase/WALs/node4,16020,1573528597150
+drwxr-xr-x   - hbase supergroup          0 2019-11-12 05:16 /hbase/WALs/node5,16020,1573528597109
+
+<span class="hljs-meta">#</span><span class="bash"> 每个子目录下会有多个HLog文件（因为日志滚动）</span>
+<span class="hljs-meta">$</span><span class="bash"> sudo -u hdfs hadoop fs -ls /hbase/WALs/node2,16020,1573528597339</span>
+Found 1 items
+-rw-r--r--   3 hbase supergroup          0 2019-11-12 05:16 /hbase/WALs/node2,16020,1573528597339/node2%2C16020%2C1573528597339.node2%2C16020%2C1573528597339.regiongroup-0.1573535804334
+
+
+<span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># /hbase/oldWALs</span></span>
+<span class="hljs-meta">#</span><span class="bash"> 具体的oldWALs文件</span>
+<span class="hljs-meta">$</span><span class="bash"> sudo -u hdfs hadoop fs -ls /hbase/oldWALs</span>
+Found 220 items
+-rw-r--r--   3 hbase supergroup         91 2019-11-12 06:16 /hbase/oldWALs/node2%2C16020%2C1573528597339.node2%2C16020%2C1573528597339.regiongroup-0.1573535804334
+-rw-r--r--   3 hbase supergroup         91 2019-11-12 06:16 /hbase/oldWALs/node3%2C16020%2C1573528597152.node3%2C16020%2C1573528597152.regiongroup-0.1573535804199
+-rw-r--r--   3 hbase supergroup         91 2019-11-12 06:16 /hbase/oldWALs/node4%2C16020%2C1573528597150.meta.1573535805180.meta
+-rw-r--r--   3 hbase supergroup         91 2019-11-12 06:16 /hbase/oldWALs/node4%2C16020%2C1573528597150.node4%2C16020%2C1573528597150.regiongroup-0.1573535804696
+-rw-r--r--   3 hbase supergroup         91 2019-11-12 06:16 /hbase/oldWALs/node5%2C16020%2C1573528597109.node5%2C16020%2C1573528597109.regiongroup-0.1573535804408
+-rw-r--r--   3 hbase supergroup   33602916 2019-11-12 03:34 /hbase/oldWALs/pv2-00000000000000000001.log
+
+
+<span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># /hbase/archive/</span></span>
+<span class="hljs-meta">#</span><span class="bash"> 表的归档和快照具体目录形如:</span>
+/hbase/archive/data/default/表名/region名/列族名/fd2221d8d1ae4e579c21882f0ec4c5a5
+
+
+<span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># /hbase/data/</span></span>
+<span class="hljs-meta">#</span><span class="bash"> default存放所有用户的数据表</span>
+<span class="hljs-meta">#</span><span class="bash"> hbase存放HBase的系统表</span>
+<span class="hljs-meta">$</span><span class="bash"> sudo -u hdfs hadoop fs -ls /hbase/data</span>
+Found 2 items
+drwxr-xr-x   - hbase supergroup          0 2019-11-12 03:17 /hbase/data/default
+drwxr-xr-x   - hbase supergroup          0 2019-11-12 03:16 /hbase/data/hbase
+
+
+<span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># /hbase/data/hbase</span></span>
+<span class="hljs-meta">#</span><span class="bash"> meta是元数据表，记录region相关信息</span>
+<span class="hljs-meta">#</span><span class="bash"> namespace存储了HBase中的所有namespace信息，包括预置的hbase 和 default</span>
+<span class="hljs-meta">$</span><span class="bash"> sudo -u hdfs hadoop fs -ls /hbase/data/hbase</span>
+Found 2 items
+drwxr-xr-x   - hbase supergroup          0 2019-11-12 03:13 /hbase/data/hbase/meta
+drwxr-xr-x   - hbase supergroup          0 2019-11-12 03:16 /hbase/data/hbase/namespace</code></pre>
+
+<h4 id="1-2-3、表目录"><a href="#1-2-3、表目录" class="headerlink" title="1.2.3、表目录"></a>1.2.3、表目录</h4><pre><code class="hljs shell">/hbase/data/default/TestTable/.tabledesc/
+/hbase/data/default/TestTable/.tabledesc/.tableinfo.0000000001
+/hbase/data/default/TestTable/.tabledesc/.tmp
+/hbase/data/default/TestTable/fc06f27a6c5bc2ff57ea38018b4dd399/</code></pre>
+
+<p>它们的作用分别是：</p>
+<ul>
+<li>存放表的元数据信息文件</li>
+<li>表具体的元数据信息文件</li>
+<li>存放中间数据的临时目录，当.tableinfo被更新时该目录就会被用到 </li>
+<li>表中的region目录 ，  由表名+Start Key+时间戳产生的hashcode </li>
+</ul>
+<h4 id="1-2-4、region目录"><a href="#1-2-4、region目录" class="headerlink" title="1.2.4、region目录"></a>1.2.4、region目录</h4><pre><code class="hljs shell">/hbase/data/default/TestTable/fc06f27a6c5bc2ff57ea38018b4dd399/列族名/
+/hbase/data/default/TestTable/fc06f27a6c5bc2ff57ea38018b4dd399/列族名/2e58b3e274ba4d889408b05e526d4b7b
+/hbase/data/default/TestTable/fc06f27a6c5bc2ff57ea38018b4dd399/recovered.edits/340.seqid
+/hbase/data/default/TestTable/fc06f27a6c5bc2ff57ea38018b4dd399/.regioninfo
+/hbase/data/default/TestTable/fc06f27a6c5bc2ff57ea38018b4dd399/.tmp
+/hbase/data/default/TestTable/fc06f27a6c5bc2ff57ea38018b4dd399/.splits
+/hbase/data/default/TestTable/fc06f27a6c5bc2ff57ea38018b4dd399/.merges</code></pre>
+
+<p>它们的作用分别是：</p>
+<ul>
+<li>存储该列族所有的数据文件</li>
+<li>该列族实际的数据文件（HFile）</li>
+<li>当splitlog发生时，一个RS的wal会按照region级别split WALs写到对应目录下的的recovered.edits目录上，使得此region再次被open的时候，回放这些recovered.edits 日志。 </li>
+<li>regioninfo文件。 包含了region的HRegionInfo的序列化信息，与tableinfo类似。hbase hbck 工具可以用它来生成丢失的表条目元数据 </li>
+<li>compaction时的临时目录 </li>
+<li>split时的临时目录，如果region上一次的split没有完成就被中断了，这个region再open时会自动清理这个目录，一般不需要人工干预。 </li>
+<li>merges时的临时目录，和split一样，如果没有正常完成就被中断了，那么在下次被open的时候自动清理。一般也不需要人工干预。 </li>
+</ul>
+<h2 id="二、HBase涉及的主要文件"><a href="#二、HBase涉及的主要文件" class="headerlink" title="二、HBase涉及的主要文件"></a>二、HBase涉及的主要文件</h2><ul>
+<li>hfile -  数据文件 </li>
+<li>hfilelink - hbase snapshot会用到, migration upgrade 也会使用到。 </li>
+<li>reference -  用来指定half hfile，一个region有reference时，这个region不能split。split/merge会创建这个。进行compaction后生成新的hfile后，会把这个reference删除。hfile的reference文件名格式一般是 hfile.parentEncRegion。如：/hbase/data/default/table/region-one/family/hfilename。其region-two有reference hfile文件名格式为：/hbase/data/default/table/region-two/family/hfile.region-one 通常无效引用就是 region-one的hfile不存在了，那么这个引用就会失效。他的修复方法一般是把reference无效的引用移除。 </li>
+<li>.regioninfo - 保存着 endkey/offline标志/regionid/regionName/split标志/startkey/tablename等信息</li>
+<li>tableinfo  保存着 tableName/table属性信息/table级别config信息/family信息。其中family信息保存着 famliyName/famiy属性/famliy级别config信息等。 </li>
+</ul>
+<h2 id="三、参考"><a href="#三、参考" class="headerlink" title="三、参考"></a>三、参考</h2><p> <a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000014708618">https://segmentfault.com/a/1190000014708618</a> </p>
+<p> <a target="_blank" rel="noopener" href="https://lihuimintu.github.io/2019/06/19/HBase-File-ZK-Structure/#%E5%9C%A8-hdfs-%E8%B7%AF%E5%BE%84](https://lihuimintu.github.io/2019/06/19/HBase-File-ZK-Structure/#%E5%9C%A8-hdfs-%E8%B7%AF%E5%BE%84)">https://lihuimintu.github.io/2019/06/19/HBase-File-ZK-Structure/#%E5%9C%A8-hdfs-%E8%B7%AF%E5%BE%84](https://lihuimintu.github.io/2019/06/19/HBase-File-ZK-Structure/#在-hdfs-路径)</a> </p>
+<p><a target="_blank" rel="noopener" href="https://blog.bcmeng.com/post/hbase-hdfs.html">https://blog.bcmeng.com/post/hbase-hdfs.html</a> </p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/HBase/">HBase</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/04/06/HBase%E7%9A%84%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">HBase的负载均衡策略</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/02/26/%E5%A6%82%E4%BD%95%E5%AE%89%E6%85%B0/">
+                        <span class="hidden-mobile">安慰</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "HBase的目录结构&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
