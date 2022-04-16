@@ -176,6 +176,95 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2020/10/02/%E5%AE%B9%E5%99%A8%E5%9F%BA%E7%A1%804%EF%BC%9A%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86Docker/">容器基础4：重新认识Docker</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/10/02/%E5%AE%B9%E5%99%A8%E5%9F%BA%E7%A1%804%EF%BC%9A%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86Docker/">
+          
+          
+            
+          
+          在前面的文章中，我们围绕“Namespace做隔离、Cgroups做限制、Rootfs做文件系统”对Linux容器的核心实现原理展开了详细的讨论。接下来，我们通过一个实际案例对前面的内容做一次深入的总结和扩展。
+一、从一个Python应用说起在开始实践之前，我们需要准备一台 Linux 机器，并安装 Docker。这个流程可以参考Docker官网，就不在此赘述了。
+这一次，我们用 Docker 部
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-02 07:46" pubdate>
+              2020-10-02
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Docker/">Docker</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/10/01/%E5%AE%B9%E5%99%A8%E5%9F%BA%E7%A1%803%EF%BC%9A%E7%90%86%E8%A7%A3%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/">容器基础3：理解容器镜像</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/10/01/%E5%AE%B9%E5%99%A8%E5%9F%BA%E7%A1%803%EF%BC%9A%E7%90%86%E8%A7%A3%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/">
+          
+          
+            
+          
+          todo
+一、理解Mount Namespace如下，是一个小程序，它的作用是在创建子进程时开启指定的Namespace。
+#define _GNU_SOURCE
+#include &lt;sys/mount.h&gt; 
+#include &lt;sys/types.h&gt;
+#include &lt;sys/wait.h&gt;
+#include &lt;stdio.h&gt;
+#inclu
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-01 13:51" pubdate>
+              2020-10-01
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2020/10/01/%E5%AE%B9%E5%99%A8%E5%9F%BA%E7%A1%802%EF%BC%9A%E9%9A%94%E7%A6%BB%E4%B8%8E%E9%99%90%E5%88%B6/">容器基础2：隔离与限制</a>
       </h1>
 
@@ -566,108 +655,11 @@ public class JVMcase &#123;
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/09/20/Java%E7%B1%BB%E7%BC%96%E8%AF%91%E5%8A%A0%E8%BD%BD%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B/">Java类编译加载执行过程</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/09/20/Java%E7%B1%BB%E7%BC%96%E8%AF%91%E5%8A%A0%E8%BD%BD%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B/">
-          
-          
-            
-          
-          在JVM内存模型中，对方法区进行说明时，我们简单提到了java类的执行过程。接下来，我们详细了解一下Java类从编译到运行的整个过程，这个过程包括编译、加载、链接、初始化和即时编译等阶段。如下图：
-
-一、类编译当我们编写好java源代码后，需要将.java源代码文件编译成.class文件，这样才能在JVM虚拟机上运行代码。.java文件的编译通常是由JDK中自带的javac工具完成的，一个简单的.
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-20 12:00" pubdate>
-              2020-09-20
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Java/">Java</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/JVM/">JVM</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/09/20/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">JVM内存模型</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/09/20/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">
-          
-          
-            
-          
-          我们知道JVM具有自动分配和回收内存的管理机制，但这个机制实则是把双刃剑。它在提升Java开发效率的同时，也容易使开发人员过度依赖于这个机制，从而弱化对内存的管理能力。这样系统就很容易发生堆内存异常，垃圾回收方式不合适以及GC次数过于频繁等问题，而这些问题都将直接影响到应用服务的性能。
-在深入了解JVM内存分配和回收原理前，我们先来看看JVM的内存模型。JVM内存主要被划分为了堆、方法区、程序计数
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-20 07:51" pubdate>
-              2020-09-20
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Java/">Java</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/JVM/">JVM</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/8/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span>
+      <a class="extend prev" rel="prev" href="/page/8/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/10/"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
   

@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="kubxy">
   <meta name="keywords" content="">
-  <title>归档 - Kubxy</title>
+  <title>Kubxy</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -43,7 +43,7 @@
 
 
 <body>
-  <header style="height: 60vh;">
+  <header style="height: 100vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -150,6 +150,10 @@
           </div>
 
           
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
         </div>
       </div>
     </div>
@@ -159,37 +163,116 @@
     
       <div class="container nopadding-md">
         <div class="py-5" id="board"
-          >
+          style=margin-top:0>
           
           <div class="container">
             <div class="row">
               <div class="col-12 col-md-10 m-auto">
                 
 
-<div class="list-group">
-  <p class="h4">共计 92 篇文章</p>
-  <hr>
-  
+
+  <div class="row mx-auto index-card">
     
-      
-      <p class="h5">2020</p>
     
-    <a href="/2020/12/06/%E9%99%90%E6%B5%81%E8%AF%A5%E6%80%8E%E4%B9%88%E5%81%9A/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">限流该怎么做</span>
-      <time style="float: right;">12-06</time>
-    </a>
-  
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/09/20/Java%E7%B1%BB%E7%BC%96%E8%AF%91%E5%8A%A0%E8%BD%BD%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B/">Java类编译加载执行过程</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/09/20/Java%E7%B1%BB%E7%BC%96%E8%AF%91%E5%8A%A0%E8%BD%BD%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B/">
+          
+          
+            
+          
+          在JVM内存模型中，对方法区进行说明时，我们简单提到了java类的执行过程。接下来，我们详细了解一下Java类从编译到运行的整个过程，这个过程包括编译、加载、链接、初始化和即时编译等阶段。如下图：
+
+一、类编译当我们编写好java源代码后，需要将.java源代码文件编译成.class文件，这样才能在JVM虚拟机上运行代码。.java文件的编译通常是由JDK中自带的javac工具完成的，一个简单的.
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-09-20 12:00" pubdate>
+              2020-09-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Java/">Java</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/JVM/">JVM</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
     
-    <a href="/2020/12/06/%E6%B5%85%E8%B0%88%E5%B8%B8%E7%94%A8%E9%99%90%E6%B5%81%E7%AD%96%E7%95%A5/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">浅谈常用限流策略</span>
-      <time style="float: right;">12-06</time>
-    </a>
-  
-</div>
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/09/20/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">JVM内存模型</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/09/20/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">
+          
+          
+            
+          
+          我们知道JVM具有自动分配和回收内存的管理机制，但这个机制实则是把双刃剑。它在提升Java开发效率的同时，也容易使开发人员过度依赖于这个机制，从而弱化对内存的管理能力。这样系统就很容易发生堆内存异常，垃圾回收方式不合适以及GC次数过于频繁等问题，而这些问题都将直接影响到应用服务的性能。
+在深入了解JVM内存分配和回收原理前，我们先来看看JVM的内存模型。JVM内存主要被划分为了堆、方法区、程序计数
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-09-20 07:51" pubdate>
+              2020-09-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Java/">Java</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/JVM/">JVM</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/archives/2020/12/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/archives/2020/12/">1</a><span class="page-number current">2</span>
+      <a class="extend prev" rel="prev" href="/page/9/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span>
     </span>
   </nav>
   
@@ -294,7 +377,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "归档&nbsp;",
+        "输出，是最好的输入&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
