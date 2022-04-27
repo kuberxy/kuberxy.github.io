@@ -177,7 +177,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.3k 字
+      1.5k 字
     </span>
   
 
@@ -187,7 +187,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      14
+      17
        分钟
     </span>
   
@@ -220,37 +220,89 @@
             <h1 style="display: none">JVM内存分配</h1>
             
             <div class="markdown-body" id="post-body">
-              <p>我们知道，在大多数情况下，我们基本不用去调整JVM内存分配，因为一些初始化的参数已经可以保证应用服务正常稳定地工作了。但这并不意味着我们不需要理解JVM内存分配，尤其是在遇到一些性能问题时。那么，当出现JVM内存性能问题时，我们该如何调优呢？在回答这个问题之前，我们先来认识一下JVM的内存分配。</p>
+              <p>我们知道，在大多数情况下，我们基本不用去调整JVM内存分配，因为一些初始化的参数已经可以保证应用服务正常稳定地工作了。但这并不意味着我们不需要理解JVM内存分配，尤其是在遇到一些性能问题时。</p>
+<p>那么，当出现JVM内存性能问题时，我们该如何调优呢？在回答这个问题之前，我们先来了解一下JVM的内存分配。</p>
 <h2 id="一、JVM的内存性能问题"><a href="#一、JVM的内存性能问题" class="headerlink" title="一、JVM的内存性能问题"></a>一、JVM的内存性能问题</h2><p>谈到JVM表现出的内存性能问题时，我们可能会想到一些线上的JVM内存溢出事故。但这方面的事故往往是应用程序创建对象导致的内存回收对象难，一般属于代码编程问题。</p>
-<p>但其实很多时候，在特定场景下，应用服务的JVM内存分配不合理带来的性能表现并不会像内存溢出问题这么突出。如果没有深入到各项性能指标中去，很难发现其中隐藏的性能损耗。</p>
-<p>JVM内存分配不合理最直接的表现就是频繁的GC，这会导致上下文切换等性能问题，从而降低系统的吞吐量、增加系统的响应时间。因此，如果在线程环境或性能测试时，发现频繁的GC，且是正常的对象创建和回收，这时就需要考虑调整JVM内存分配，从而减少GC所带来的性能开销。</p>
-<h2 id="二、对象在对堆的生存周期"><a href="#二、对象在对堆的生存周期" class="headerlink" title="二、对象在对堆的生存周期"></a>二、对象在对堆的生存周期</h2><p>我们知道，在JVM内存模型中，堆被划分为新生代和老年代，新生代又被进一步划分为Eden区和Survivor区，而Survivor是由From Survivor和To Survivor组成的。</p>
+<p>很多时候，在一些特定场景下，应用服务的JVM内存分配不合理带来的性能表现并不会像内存溢出问题这么突出。如果没有深入到各项性能指标中去，很难发现其中隐藏的性能损耗。</p>
+<p>JVM内存分配不合理最直接的表现就是频繁GC，这会导致上下文切换等性能问题，增加系统的响应时间，从而降低系统的吞吐量。因此，如果在线程环境或性能测试时，发现频繁GC，且是正常的对象创建和回收，这时就需要考虑调整JVM内存分配，从而减少GC所带来的性能开销。</p>
+<h2 id="二、对象在对堆的生存周期"><a href="#二、对象在对堆的生存周期" class="headerlink" title="二、对象在对堆的生存周期"></a>二、对象在对堆的生存周期</h2><p>我们知道，在JVM内存模型中，堆被划分为新生代和老年代，新生代又被进一步划分为Eden区和Survivor区，而Survivor又是由From Survivor和To Survivor组成的。</p>
 <p>当我们创建一个对象时，对象会被优先分配到新生代的Eden区中，这时虚拟机会给对象定义一个对象年龄计数器（通过参数-XX:MaxTenuringThreshold设置）。</p>
-<p>同时，也有另外一种情况，当Eden空间不足时，虚拟机将会执行一个新生代的垃圾回收（Minor GC）。这时，JVM会把存活的对象转移到Survivor中，并给对象的年龄+1。对象在Survivor中同样也会经历Minor GC，每经过一次Minor GC，对象的年龄就会+1。</p>
-<p>当然，内存空间也是可以设置阈值的，通过-XX:PetenureSizeThreshold参数可以设置直接被分配到老年代的最大对象。这时，如果分配的对象超过了设置的阈值，对象就会直接被分配到老年代，这样做的好处就是可以减少新生代的垃圾回收（Minor GC）。</p>
+<p>此外，还有另外一种情况，当Eden空间不足时，虚拟机会执行一个新生代的垃圾回收（Minor GC）。这时，JVM会把存活的对象转移到Survivor中，并给对象的年龄+1。对象在Survivor中同样也会经历Minor GC，每经过一次Minor GC，对象的年龄就会+1。</p>
+<p>当然，通过-XX:PetenureSizeThreshold参数可以设置直接将大对象分配到老年代。这时，如果分配的对象超过了设置的阈值，对象就会直接被分配到老年代，这样做的好处就是可以减少新生代的垃圾回收（Minor GC）。</p>
 <h2 id="三、查看JVM堆内存大小"><a href="#三、查看JVM堆内存大小" class="headerlink" title="三、查看JVM堆内存大小"></a>三、查看JVM堆内存大小</h2><p>在默认不配置JVM堆内存大小的情况下，JVM根据默认值来配置当前内存大小。我们可以通过以下命令，查看堆内存的配置值：</p>
-<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> java -XX:+PrintFlagsFinal -version |grep HeapSize</span>
+<pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> java -XX:+PrintFlagsFinal -version | grep HeapSize</span>
     uintx ErgoHeapSizeLimit                         = 0                                   &#123;product&#125;
     uintx HeapSizePerGCThread                       = 87241520                            &#123;product&#125;
-    uintx InitialHeapSize                          := 130023424                          &#123;product&#125;
+    uintx InitialHeapSize                          := 1585446912                          &#123;product&#125;
     uintx LargePageHeapSizeThreshold                = 134217728                           &#123;product&#125;
-    uintx MaxHeapSize                              := 2051014656                         &#123;product&#125;
-java version &quot;1.8.0_181&quot;
-Java(TM) SE Runtime Environment (build 1.8.0_181-b13)
-Java HotSpot(TM) 64-Bit Server VM (build 25.181-b13, mixed mode)</code></pre>
+    uintx MaxHeapSize                              := 25341984768                         &#123;product&#125;
+java version &quot;1.8.0_281&quot;
+Java(TM) SE Runtime Environment (build 1.8.0_281-b09)
+Java HotSpot(TM) 64-Bit Server VM (build 25.281-b09, mixed mode)
+
+<span class="hljs-meta">#</span><span class="bash"> jmap -heap 11200</span>
+Attaching to process ID 11200, please wait...
+Debugger attached successfully.
+Server compiler detected.
+JVM version is 25.281-b09
+
+using thread-local object allocation.
+Garbage-First (G1) GC with 13 thread(s)
+
+Heap Configuration:
+   MinHeapFreeRatio         = 40
+   MaxHeapFreeRatio         = 70
+   MaxHeapSize              = 1073741824 (1024.0MB)
+   NewSize                  = 1363144 (1.2999954223632812MB)
+   MaxNewSize               = 643825664 (614.0MB)
+   OldSize                  = 5452592 (5.1999969482421875MB)
+   NewRatio                 = 2
+   SurvivorRatio            = 8
+   MetaspaceSize            = 21807104 (20.796875MB)
+   CompressedClassSpaceSize = 260046848 (248.0MB)
+   MaxMetaspaceSize         = 268435456 (256.0MB)
+   G1HeapRegionSize         = 1048576 (1.0MB)
+
+Heap Usage:
+G1 Heap:
+   regions  = 1024
+   capacity = 1073741824 (1024.0MB)
+   used     = 17378344 (16.573280334472656MB)
+   free     = 1056363480 (1007.4267196655273MB)
+   1.6184844076633453% used
+G1 Young Generation:
+Eden Space:
+   regions  = 10
+   capacity = 49283072 (47.0MB)
+   used     = 10485760 (10.0MB)
+   free     = 38797312 (37.0MB)
+   21.27659574468085% used
+Survivor Space:
+   regions  = 7
+   capacity = 7340032 (7.0MB)
+   used     = 7340032 (7.0MB)
+   free     = 0 (0.0MB)
+   100.0% used
+G1 Old Generation:
+   regions  = 0
+   capacity = 1017118720 (970.0MB)
+   used     = 0 (0.0MB)
+   free     = 1017118720 (970.0MB)
+   0.0% used
+
+6274 interned Strings occupying 451800 bytes.</code></pre>
 
 <p>我们可以看到，在这台机器上启动的JVM默认最大堆内存为1956MB，初始化大小为124MB。</p>
-<h2 id="四、JVM堆内存分配"><a href="#四、JVM堆内存分配" class="headerlink" title="四、JVM堆内存分配"></a>四、JVM堆内存分配</h2><p>我们知道了一个对象从创建至回收到堆中的过程，接下来我们再来看看JVM堆内存是如何分配的。</p>
-<p>在JDK1.7中，默认情况下新生代和老年代的比例是1:2，我们可以通过-XX:NewRatio重置该配置项。新生代中的Eden和To Survivor、From Survivor的比例是8:1:1，我们可以通过-XX:SurvivorRatio重置该配置项。</p>
-<p>在JDK1.7中，如果开启了-XX:+UseAdaptiveSizePolicy参数，JVM将会动态调整Java堆中各个区域的大小以及进入老年代的年龄。此时，-XX:NewRatio和-XX:SurvivorRatio将会失效。</p>
-<p>在JDK1.8中，是默认开启-XX:+UseAdaptiveSizePolicy参数的，不要随便关闭该参数，除非你已经对初始化堆内存/最大堆内存、新生代/老年代以及Eden区/Survivor区有非常明确的规划了。在默认情况下，JVM将会分配最小堆内存，新生代/老年代按1:2进行分配，Eden区和Survivor区则按8:2进行分配。</p>
+<h2 id="四、JVM堆内存分配"><a href="#四、JVM堆内存分配" class="headerlink" title="四、JVM堆内存分配"></a>四、JVM堆内存分配</h2><p>我们知道了一个对象从创建至回收的过程，接下来我们再来看看JVM堆内存是如何分配的。</p>
+<p>在JDK1.7中，默认情况下新生代和老年代的比例是1:2，可以通过-XX:NewRatio重置该配置项。新生代中的Eden和To Survivor、From Survivor的比例是8:1:1，可以通过-XX:SurvivorRatio重置该配置项。需要注意的是，如果开启了-XX:+UseAdaptiveSizePolicy参数，JVM将会动态调整Java堆中各个区域的大小以及进入老年代的年龄。此时，-XX:NewRatio和-XX:SurvivorRatio将会失效。</p>
+<p>在JDK1.8中，-XX:+UseAdaptiveSizePolicy参数默认是开启的，不要随便关闭该参数，除非已经对初始化堆内存/最大堆内存、新生代/老年代以及Eden区/Survivor区有非常明确的规划了。在默认情况下，JVM将会分配最小堆内存，新生代/老年代按1:2进行分配，Eden区和Survivor区则按8:2进行分配。</p>
 <p>我们需要知道的是，默认分配策略未必是应用服务的最佳配置，因此可能会给应用服务带来严重的性能问题。</p>
-<h2 id="五、小结"><a href="#五、小结" class="headerlink" title="五、小结"></a>五、小结</h2><p>在这篇文章中，我们主要提到了如下概念：</p>
+<h2 id="五、小结"><a href="#五、小结" class="headerlink" title="五、小结"></a>五、小结</h2><p>在这篇文章中，我们主要讨论了如下概念：</p>
 <ul>
-<li>频繁GC是JVM内存分配不合理的直接表现。这会导致上下文切换等性能问题，从而增加系统影响时间、降低系统吞吐量。</li>
-<li>一个对象会经历从Eden区到Survivor区再到老年代的过程，而在这个过程中会发生多次Minor GC。</li>
-<li>通过<code>java -XX:+PrintFlagsFinal -version |grep HeapSize</code>命令可以查看到堆内存的配置值。</li>
-<li>默认情况下，JVM堆内存分配大体是按照新生代/老年代1:2、Eden/From Survivor/To Survivor8:1:1分配的。</li>
+<li>频繁GC是JVM内存分配不合理的主要表现。这会导致上下文切换等性能问题，增加系统响应时间，从而降低系统吞吐量。</li>
+<li>一个对象会经历从Eden区到Survivor区再到老年代的过程，在这个过程中会发生多次Minor GC。</li>
+<li>通过设置-XX:PetenureSizeThreshold参数，可以将较大对象，直接分配到老年代内存中，这样可以减少Minor GC</li>
+<li>默认情况下，JVM堆内存是按照新生代/老年代1:2、Eden/From Survivor/To Survivor8:1:1的比例分配的。</li>
 </ul>
 
             </div>
@@ -282,9 +334,9 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.181-b13, mixed mode)</code></pre>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/09/26/JVM%E5%A0%86%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%9A%84%E8%B0%83%E4%BC%98%E8%BF%87%E7%A8%8B/">
+                      <a href="/2020/09/26/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E8%B0%83%E4%BC%98%E7%AD%96%E7%95%A5/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">JVM堆内存分配的调优过程</span>
+                        <span class="hidden-mobile">JVM垃圾回收调优策略</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -292,8 +344,8 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.181-b13, mixed mode)</code></pre>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/09/20/JVM%E5%8D%B3%E6%97%B6%E7%BC%96%E8%AF%91/">
-                        <span class="hidden-mobile">JVM即时编译</span>
+                      <a href="/2020/09/26/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/">
+                        <span class="hidden-mobile">JVM垃圾回收机制</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

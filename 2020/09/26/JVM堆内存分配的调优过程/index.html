@@ -177,7 +177,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.4k 字
+      1.2k 字
     </span>
   
 
@@ -187,7 +187,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      15
+      13
        分钟
     </span>
   
@@ -227,14 +227,14 @@
     List&lt;Byte[]&gt; temp = <span class="hljs-keyword">new</span> ArrayList&lt;Byte[]&gt;();
     Byte[] b = <span class="hljs-keyword">new</span> Byte[<span class="hljs-number">1024</span>*<span class="hljs-number">1024</span>];
     temp.add(b);
-    
+
     <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;success&quot;</span>;
 &#125;</code></pre>
 
 <p>注：这里我们先使用JVM的默认配置</p>
 <h2 id="二、AB压测"><a href="#二、AB压测" class="headerlink" title="二、AB压测"></a>二、AB压测</h2><p>分别对应用服务进行压力测试，以下是请求接口的吞吐量和响应时间在不同并发用户数下的变化情况：</p>
 <p>可以看到，当并发数量到了一定值时，吞吐量就上不去了，响应时间也迅速增加。那么，在 JVM 内部运行又是怎样的呢？</p>
-<h2 id="三、分析GC日志"><a href="#三、分析GC日志" class="headerlink" title="三、分析GC日志"></a>三、分析GC日志</h2><p>此时我们可以通过GC日志查看具体的回收日志。我们可以通过设置VM参数，将运行期间的GC日志dump下来，具体配置参数如下：</p>
+<h2 id="三、分析GC日志"><a href="#三、分析GC日志" class="headerlink" title="三、分析GC日志"></a>三、分析GC日志</h2><p>此时我们可以通过GC日志查看具体的回收日志。我们可以通过设置JVM参数，将运行期间的GC日志dump下来，具体配置参数如下：</p>
 <pre><code class="hljs shell">-XX:+PrintGCTimeStamps -XX:+PrintGCDetails -Xloggc:/log/heapTest.log</code></pre>
 
 <p>以下是各个配置项的说明：</p>
@@ -245,31 +245,30 @@
 </ul>
 <p>收集到GC日志后，我们就可以通过GCViewer工具打开它，进而查看到具体的GC日志如下：</p>
 <p>主页面显示FullGC发生了13次，右下角显示新生代和老年代的内存使用率几乎达到了100%。而FullGC会导致stop-the-world的发生，从而严重影响到应用服务的性能。此时，我们需要调整堆内存的大小来减少FullGC的发生。</p>
-<h2 id="四、参考指标"><a href="#四、参考指标" class="headerlink" title="四、参考指标"></a>四、参考指标</h2><p>我们可以将某些指标的预期值作为参考指标，上面的GC频率就是其中之一，那么还有哪些指标可以为我们提供一些具体的调优方向呢？</p>
+<h2 id="四、参考指标"><a href="#四、参考指标" class="headerlink" title="四、参考指标"></a>四、参考指标</h2><p>我们可以将某些指标的预期值作为参考指标，常用的参考指标如下：</p>
 <ul>
 <li>GC频率，高频的FullGC会给系统带来非常大的性能消耗，虽然MinorGC相对FullGC来说会好许多，但过多的MinorGC仍会给系统带来压力。</li>
 <li>内存，这里的内存指的是堆内存大小。堆内存又分为新生代和老年代内存。首先，我们要分析堆内存大小是否合适，其次是分析新生代和老年代的比例是否合适。如果内存不足或分配不均匀，会增加FullGC，严重的情况将导致CPU持续爆满，影响系统性能。</li>
 <li>吞吐量，频繁的FullGC将会引起线程的上下文切换，增加系统的性能开销，从而影响每次处理的线程请求，最终导致系统的吞吐量下降。</li>
 <li>延时，JVM的GC持续时间也会影响到每次请求的响应时间。</li>
 </ul>
-<h2 id="五、具体调优方法"><a href="#五、具体调优方法" class="headerlink" title="五、具体调优方法"></a>五、具体调优方法</h2><h3 id="调整堆内存空间"><a href="#调整堆内存空间" class="headerlink" title="调整堆内存空间"></a>调整堆内存空间</h3><p>调整堆内存空间减少FullGC。通过日志分析，堆内存基本被用完了，而且存在量FullGC，这意味着我们的堆内存严重不足。这时，我们需要调大堆内存的空间。</p>
+<h2 id="五、具体调优方法"><a href="#五、具体调优方法" class="headerlink" title="五、具体调优方法"></a>五、具体调优方法</h2><h3 id="5-1、调整堆内存空间"><a href="#5-1、调整堆内存空间" class="headerlink" title="5.1、调整堆内存空间"></a>5.1、调整堆内存空间</h3><p>调整堆内存空间减少FullGC。通过日志分析，堆内存基本被用完了，而且存在量FullGC，这意味着我们的堆内存严重不足。这时，我们需要调大堆内存的空间。</p>
 <pre><code class="hljs shell">java -jar -Xms4g -Xmx4g heapTest-0.0.1-SNAPSHOT.jar</code></pre>
 
-<p>以下是各个配置项的说明：</p>
+<p>说明：</p>
 <ul>
 <li>-Xms，堆初始大小</li>
 <li>-Xmx，堆最大值</li>
 </ul>
-<p>调大堆内存之后，我们再来测试一下性能情况，发现吞吐量提高了40%左右，响应时间也降低了将近50%。</p>
-<p>再查看GC日志，发现FullGC频率降低了，老年代的使用率只有16%了。</p>
-<h3 id="调整新生代大小"><a href="#调整新生代大小" class="headerlink" title="调整新生代大小"></a>调整新生代大小</h3><p>调整新生代减少MinorGC。通过调整堆内存大小，我们已经提升了整体的吞吐量，降低了响应时间。那还有优化空间吗？我们还可以将新生代设置得大一些，从而减少一些MinorGC：</p>
+<h3 id="5-2、调整新生代大小"><a href="#5-2、调整新生代大小" class="headerlink" title="5.2、调整新生代大小"></a>5.2、调整新生代大小</h3><p>除了调整堆内存大小外，我们还可以将新生代设置得大一些，从而减少一些MinorGC：</p>
 <pre><code class="hljs shell">java -jar -Xms4g -Xmx4g -Xmn3g heapTest-0.0.1-SNAPSHOT.jar</code></pre>
 
-<p>再进行AB压测，发现吞吐量上去了。</p>
-<p>再查看GC日志，发现MinorGC也明显降低了，GC花费的总时间也减少了。</p>
-<h3 id="设置Eden、Survivor区比例"><a href="#设置Eden、Survivor区比例" class="headerlink" title="设置Eden、Survivor区比例"></a>设置Eden、Survivor区比例</h3><p>设置Eden、Survivor区比例。在JVM中，如果开启AdaptiveSizePolicy，则每次GC后都会重新计算Eden、From Survivor和To Survivor区的大小，计算依据是GC过程中统计的GC时间、内存占用量和吞吐量。这时，SurvivorRatio默认设置的比例会失效。</p>
+<p>说明：</p>
+<ul>
+<li>-Xmn，新生代大小</li>
+</ul>
+<h3 id="5-3、设置Eden、Survivor区比例"><a href="#5-3、设置Eden、Survivor区比例" class="headerlink" title="5.3、设置Eden、Survivor区比例"></a>5.3、设置Eden、Survivor区比例</h3><p>在JVM中，如果开启AdaptiveSizePolicy，则每次GC后都会重新计算Eden、From Survivor和To Survivor区的大小，计算的依据是GC过程中统计的GC时间、内存占用量和吞吐量。这时，SurvivorRatio默认设置的比例会失效。</p>
 <p>在JDK1.8中，默认是开启AdaptiveSizePolicy的，我们可以通过-XX:-UseAdaptiveSizePolicy关闭该项配置，或显示运行-XX:SurvivorRatio=8将Eden、Survivor的比例设置为8:2。大部分新对象都是在Eden区创建的，我们可以固定Eden区的占用比例，来调优JVM的内存分配性能。</p>
-<p>再进行AB性能测试，我们可以看到吞吐量提升了，响应时间降低了。</p>
 <h2 id="六、小结"><a href="#六、小结" class="headerlink" title="六、小结"></a>六、小结</h2><p>在这篇文章中，我们通过一个案例熟悉了JVM堆内存分配的调优过程。涉及到的核心概念是：</p>
 <ul>
 <li>GC日志分析是进行调优的前提。</li>
@@ -306,9 +305,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/09/26/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/">
+                      <a href="/2020/09/28/%E5%AE%B9%E5%99%A8%E5%9F%BA%E7%A1%801%EF%BC%9A%E6%88%91%E4%BB%AC%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3%E5%AE%B9%E5%99%A8%E5%90%97%EF%BC%9F/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">JVM垃圾回收机制</span>
+                        <span class="hidden-mobile">容器基础1：我们真的了解容器吗？</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -316,8 +315,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/09/26/JVM%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/">
-                        <span class="hidden-mobile">JVM内存分配</span>
+                      <a href="/2020/09/26/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E8%B0%83%E4%BC%98%E7%AD%96%E7%95%A5/">
+                        <span class="hidden-mobile">JVM垃圾回收调优策略</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

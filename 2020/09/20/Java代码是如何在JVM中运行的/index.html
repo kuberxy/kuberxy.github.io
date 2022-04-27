@@ -177,7 +177,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      739 字
+      730 字
     </span>
   
 
@@ -224,29 +224,29 @@
 <pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">JVMcase</span> </span>&#123;
     <span class="hljs-comment">// final修饰的常量</span>
     <span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">static</span> String MAN_SEX_TYPE = <span class="hljs-string">&quot;man&quot;</span>;
-    
+
     <span class="hljs-comment">// 静态变量</span>
     <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String WOMAN_SEX_TYPE = <span class="hljs-string">&quot;woman&quot;</span>;
-    
+
     <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
         Student stu = <span class="hljs-keyword">new</span> Student();
         stu.setName(<span class="hljs-string">&quot;nick&quot;</span>);
         stu.setSexType(MAN_SEX_TYPE);
         stu.setAgen(<span class="hljs-number">20</span>);
-        
+
         JVMCase jvmcase = <span class="hljs-keyword">new</span> JVMCase();
-        
+
         <span class="hljs-comment">// 调用静态方法</span>
         print(stu);
         <span class="hljs-comment">// 调用非静态方法</span>
         jvmcase.sayHello(stu);
     &#125;
-    
+
     <span class="hljs-comment">// 常规静态方法</span>
     <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">print</span><span class="hljs-params">(Student stu)</span> </span>&#123;
         System.out.println(<span class="hljs-string">&quot;name: &quot;</span> + stu.getName() + <span class="hljs-string">&quot;; sex: &quot;</span> + stu.getSexType() + <span class="hljs-string">&quot;; age: &quot;</span> + stu.getAge());
     &#125;
-    
+
     <span class="hljs-comment">// 非静态方法</span>
     <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">sayHello</span><span class="hljs-params">(Student stu)</span> </span>&#123;
         System.out.println(stu.getName() + <span class="hljs-string">&quot;sya: hello&quot;</span>);
@@ -257,50 +257,50 @@
     String name;
     String sexType;
     <span class="hljs-keyword">int</span> age;
-    
+
     <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getName</span><span class="hljs-params">()</span> </span>&#123;
         <span class="hljs-keyword">return</span> name;
     &#125;
-    
+
     <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setName</span><span class="hljs-params">(String name)</span> </span>&#123;
         <span class="hljs-keyword">this</span>.name = name;
     &#125;
-    
+
     <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getSexType</span><span class="hljs-params">()</span> </span>&#123;
         <span class="hljs-keyword">return</span> sexType;
     &#125;
-    
+
     <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setSexType</span><span class="hljs-params">(String sexType)</span> </span>&#123;
         hits.sexType = sexType;
     &#125;
-    
+
     <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getAget</span><span class="hljs-params">()</span> </span>&#123;
         <span class="hljs-keyword">return</span> age;
     &#125;
-    
+
     <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setAge</span><span class="hljs-params">(<span class="hljs-keyword">int</span> age)</span> </span>&#123;
         <span class="hljs-keyword">this</span>.age = age;
     &#125;
 &#125;</code></pre>
 
 <p>当我们通过Java运行以上代码时，JVM的整个处理过程如下：</p>
-<h2 id="一、内存申请"><a href="#一、内存申请" class="headerlink" title="一、内存申请"></a>一、内存申请</h2><p>JVM向操作系统申请内存。JVM第一步就是通过配置参数或者默认配置参数向操作系统申请内存空间，操作系统会根据申请的内存大小找到具体的内存分配表，然后把内存段的起始地址和终止地址分配给JVM。接下来JVM就会进行内部分配。</p>
-<h2 id="二、内部分配"><a href="#二、内部分配" class="headerlink" title="二、内部分配"></a>二、内部分配</h2><p>JVM获得内存空间后，会根据配置参数分配堆、方法区以及栈内存大小。</p>
+<h2 id="一、申请内存"><a href="#一、申请内存" class="headerlink" title="一、申请内存"></a>一、申请内存</h2><p>JVM第一步是通过配置参数或者默认配置参数向操作系统申请内存空间，操作系统会根据申请的内存大小找到具体的内存分配表，然后把内存段的起始地址和终止地址分配给JVM。接下来JVM就会进行内部分配。</p>
+<h2 id="二、内部分配"><a href="#二、内部分配" class="headerlink" title="二、内部分配"></a>二、内部分配</h2><p>在获得内存空间后，JVM就会根据配置参数分配堆、方法区以及栈的内存大小。</p>
 <h2 id="三、加载、链接"><a href="#三、加载、链接" class="headerlink" title="三、加载、链接"></a>三、加载、链接</h2><p>完成内部分配后，JVM会将class文件加载到内存中，并进行验证、准备、解析等操作。其中，在准备阶段会为类的静态变量分配内存，初始化为系统的初始值。</p>
 <p><img src="/img/image-20200920163103371.png" srcset="/img/loading.gif" alt="image-20200920163103371"></p>
 <h2 id="四、初始化"><a href="#四、初始化" class="headerlink" title="四、初始化"></a>四、初始化</h2><p>完成链接操作后，JVM会进行最后一个初始化阶段。在这个阶段中，JVM首先会执行构造器方法。此时，静态变量的初始值（null）会被初始化为用户自定义的值。</p>
 <p><img src="/img/image-20200920163907881.png" srcset="/img/loading.gif" alt="image-20200920163907881"></p>
-<h2 id="五、执行方法"><a href="#五、执行方法" class="headerlink" title="五、执行方法"></a>五、执行方法</h2><p>初始化完成后，JVM就会启动main线程，执行main方法，开始第一行代码的执行。此时，堆内存中首先会创建一个Student对象，Student对象的引用就存放在栈中。</p>
+<h2 id="五、执行方法"><a href="#五、执行方法" class="headerlink" title="五、执行方法"></a>五、执行方法</h2><p>初始化完成后，JVM就会启动main线程，执行main方法，开始第一行代码的执行。此时，首先会在堆内存中创建一个Student对象，Student对象的引用就存放在栈中。</p>
 <p><img src="/img/image-20200920164529917.png" srcset="/img/loading.gif" alt="image-20200920164529917"></p>
-<p>再接着会创建一个JVMCase对象，调用sayHello非静态方法，sayHello方法属于对象JVMCase，此时sayHello方法入栈，并通过栈中的Student引用调用堆中的Student对象；</p>
+<p>接着会创建一个JVMCase对象，调用sayHello非静态方法，sayHello方法属于对象JVMCase，此时sayHello方法入栈，并通过栈中的Student引用调用堆中的Student对象；</p>
 <p><img src="/img/image-20200920165305309.png" srcset="/img/loading.gif" alt="image-20200920165305309"></p>
-<p>在之后，调用静态方法print，print静态方法属于JVMCase类，是从静态方法中获取，之后放入到栈中，也是通过栈中的student引用调用堆中student对象。</p>
+<p>最后，调用静态方法print，print静态方法属于JVMCase类，是从静态方法中获取，之后放入到栈中，也是通过栈中的student引用调用堆中student对象。</p>
 <p><img src="/img/image-20200920165445131.png" srcset="/img/loading.gif" alt="image-20200920165445131"></p>
 <h2 id="六、小结"><a href="#六、小结" class="headerlink" title="六、小结"></a>六、小结</h2><p>在这篇文章中，我们主要讨论了Java代码是如何在JVM中运行的，这个过程包括：</p>
 <ul>
-<li>内存申请</li>
+<li>申请内存</li>
 <li>内部分配</li>
-<li>加载、链接</li>
+<li>加载、连接</li>
 <li>初始化</li>
 <li>执行方法</li>
 </ul>

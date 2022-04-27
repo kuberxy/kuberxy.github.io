@@ -177,7 +177,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.4k 字
+      1.3k 字
     </span>
   
 
@@ -187,7 +187,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      16
+      15
        分钟
     </span>
   
@@ -220,21 +220,27 @@
             <h1 style="display: none">Java类编译加载执行过程</h1>
             
             <div class="markdown-body" id="post-body">
-              <p>在JVM内存模型中，对方法区进行说明时，我们简单提到了java类的执行过程。接下来，我们详细了解一下Java类从编译到运行的整个过程，这个过程包括编译、加载、链接、初始化和即时编译等阶段。如下图：</p>
+              <p>JVM在执行某个类的时候，需要经过编译、加载、链接、初始化和运行时编译等过程。整个过程如下图所示：</p>
 <p><img src="/img/image-20200920122012583.png" srcset="/img/loading.gif" alt="image-20200920122012583"></p>
-<h2 id="一、类编译"><a href="#一、类编译" class="headerlink" title="一、类编译"></a>一、类编译</h2><p>当我们编写好java源代码后，需要将.java源代码文件编译成.class文件，这样才能在JVM虚拟机上运行代码。.java文件的编译通常是由JDK中自带的javac工具完成的，一个简单的.java文件，我们可以通过javac命令生成.class文件。如下示例：</p>
-<pre><code class="hljs java"></code></pre>
-
-<h2 id="二、类加载"><a href="#二、类加载" class="headerlink" title="二、类加载"></a>二、类加载</h2><p>当一个类被创建实例或者被其它对象引用时，如果虚拟机没有加载过这个类，就会通过类加载器将字节码文件（.java文件）加载到内存中。</p>
-<p>不同的实现类会由不同的类加载器进行加载，JDK中的本地方法类一般由根加载器（Bootstrap loader）加载，JDK中内部实现的扩展类一般由扩展加载器（ExtClassLoader）加载，而程序中的类文件则由系统加载器（AppClassLoader）加载。</p>
-<p>在类加载后，class类文件中的常量池信息以及其它数据会被保存到JVM内存的方法区中。</p>
-<h2 id="三、类链接"><a href="#三、类链接" class="headerlink" title="三、类链接"></a>三、类链接</h2><p>在类被加载到JVM内存中后，会进行连接操作，这个过程又包括验证、准备和解析三个部分：</p>
+<p>接下来，我们详细了解一下Java类从编译到运行的整个过程。</p>
+<h2 id="一、类编译"><a href="#一、类编译" class="headerlink" title="一、类编译"></a>一、类编译</h2><p>在我们编写好java源代码后，需要将.java源代码文件编译成.class字节码文件，这样代码才能在JVM虚拟机上正常运行。.java文件的编译通常是由JDK中自带的javac工具完成的，对于一个简单的.java文件，我们可以通过javac命令生成.class文件。</p>
+<h2 id="二、类加载"><a href="#二、类加载" class="headerlink" title="二、类加载"></a>二、类加载</h2><p>当一个类被创建实例或者被其它对象引用时，如果虚拟机没有加载过这个类，那么就会通过类加载器将字节码文件（.java文件）加载到内存中。</p>
+<p>不同的实现类是由不同的类加载器进行加载的。JDK中的本地方法类一般由根加载器（Bootstrap loader）加载，JDK中内部实现的扩展类一般由扩展加载器（ExtClassLoader）加载，而程序中的类文件则由系统加载器（AppClassLoader）加载。</p>
+<p>在类加载后，class类文件中的常量池信息以及其它数据都会被保存到JVM内存的方法区中。</p>
+<h2 id="三、类连接"><a href="#三、类连接" class="headerlink" title="三、类连接"></a>三、类连接</h2><p>当类被加载到JVM内存中后，会进行连接操作，这个过程又包括验证、准备和解析三个部分：</p>
 <ul>
-<li>验证，验证类符合Java规范和JVM规范，在保证符合规范的前提下，避免危害虚拟机安全。</li>
-<li>准备，为类的静态变量分配内存，初始化为系统的初始值。对于final static修饰的变量，则会直接赋值为用户的定义值。例如，<code>private final static int valut = 123</code>，会在准备阶段分配内存，并初始化值为123；而如果是<code>private static int value = 123</code>，在准备阶段value的值仍然为0。</li>
-<li>解析，将符号引用转为直接引用。在编译时，java类并不知道所引用类的实际地址，因此只能使用符号引用来代替。class文件的常量池中存储了符号引用，包括类和接口的全限定名、类引用、方法引用以及成员变量引用等。如果要使用这些类和方法，就需要把它们转化为JVM可以直接获取的内存地址或指针，即直接引用。</li>
+<li><p>验证，验证类是否符合Java规范和JVM规范，在保证符合规范的前提下，避免危害虚拟机安全。</p>
+</li>
+<li><p>准备，为类的静态变量分配内存，初始化为系统的初始值。对于final static修饰的变量，则会直接赋值为用户的定义值。</p>
+<p>例如，<code>private final static int valut = 123</code>，会在准备阶段分配内存，并初始化值为123；而如果是<code>private static int value = 123</code>，在准备阶段value的值仍然为0。</p>
+</li>
+<li><p>解析，将符号引用转为直接引用。在编译时，java类并不知道所引用类的实际地址，因此只能使用符号引用来代替。class文件的常量池中存储了符号引用，包括类和接口的全限定名、类引用、方法引用以及成员变量引用等。如果要使用这些类和方法，就需要把它们转化为JVM可以直接获取的内存地址或指针，即直接引用。</p>
+</li>
 </ul>
-<h2 id="四、类初始化"><a href="#四、类初始化" class="headerlink" title="四、类初始化"></a>四、类初始化</h2><p>在完成连接操作后，会进行类初始化工作，在这个阶段中，JVM首先会执行构造器方法（即<code>&lt;clinit&gt;</code>方法）。编译器在将.java文件编译成.class文件时，会将所有类初始化代码，包括静态变量赋值语句、静态代码块、静态方法，收集在一起成为<code>&lt;clinet&gt;</code>方法。</p>
+<h2 id="四、类初始化"><a href="#四、类初始化" class="headerlink" title="四、类初始化"></a>四、类初始化</h2><p>在完成连接操作后，还要进行类初始化工作，在这个阶段中，JVM首先会执行构造器方法（即<code>&lt;clinit&gt;</code>方法）。编译器在将.java文件编译成.class文件时，会将所有的类初始化代码，包括静态变量赋值语句、静态代码块、静态方法，收集在一起组成为<code>&lt;clinet&gt;</code>方法。</p>
+<blockquote>
+<p>注：JVM会保证构造器方法的线程安全，即同一时间只有一个线程执行。</p>
+</blockquote>
 <p>类初始化时，会将类的静态变量和静态代码块初始化为用户自定义的值，初始化的顺序和java源码从上到下的顺序一致。例如：</p>
 <pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;
 
@@ -260,18 +266,18 @@
     System.out.println(i);
 &#125;</code></pre>
 
-<p>此时的运行结果为：</p>
+<p>运行结果为：</p>
 <pre><code class="hljs plain">1</code></pre>
 
 <p>子类初始化时，首先会调用父类的构造器方法，然后再执行子类的构造器方法，如下代码：</p>
 <pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Parent</span></span>&#123;
     <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String parentStr = <span class="hljs-string">&quot;parent static string&quot;</span>;
-    
+
     <span class="hljs-keyword">static</span> &#123;
         System.out.println(<span class="hljs-string">&quot;parent static fields&quot;</span>);
         System.out.println(parentStr);
     &#125;
-    
+
     <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Parent</span><span class="hljs-params">()</span></span>&#123;
         System.out.println(<span class="hljs-string">&quot;parent instance initialization&quot;</span>);
     &#125;
@@ -279,16 +285,16 @@
 
 <span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Sub</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Parent</span></span>&#123;
     <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String subStr = <span class="hljs-string">&quot;sub static string&quot;</span>;
-    
-    <span class="hljs-keyword">static</span>&#123;
+
+    <span class="hljs-keyword">static</span> &#123;
         System.out.println(<span class="hljs-string">&quot;sub static fields&quot;</span>);
         System.out.println(subStr);
     &#125;
-    
+
     <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Sub</span><span class="hljs-params">()</span></span>&#123;
         System.out.println(<span class="hljs-string">&quot;sub instance initialization&quot;</span>);
     &#125;
-    
+
     <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span></span>&#123;
         System.out.println(<span class="hljs-string">&quot;sub main&quot;</span>);
         <span class="hljs-keyword">new</span> Sub();
@@ -304,18 +310,15 @@ sub main
 parent<span class="hljs-built_in"> instance </span>initialization
 sub<span class="hljs-built_in"> instance </span>initialization</code></pre>
 
-<p>JVM会保证构造器方法的线程安全，即同一时间只有一个线程执行。</p>
-<p>JVM在初始化代码时，如果实例化一个新对象，则会调用<code>&lt;init&gt;</code>方法对实例变量进行初始化，并会执行对应的构造方法内的代码。</p>
-<h2 id="五、即时编译"><a href="#五、即时编译" class="headerlink" title="五、即时编译"></a>五、即时编译</h2><p>初始化完成后，在类的调用执行过程中，首先执行引擎会把类的字节码转化为机器码，然后才会在操作系统中执行类。在将字节码转化为机器码的过程中，虚拟机中还存在着一道编辑，那就是即时编译。</p>
-<p>最初，虚拟机中的字节码是由解释器完成编译的，当虚拟机发现某个方法或代码块运行地特别频繁时，就会把这些代码认定为“热点代码”。</p>
-<p>为了提高热点代码的执行效率，在运行时，即时编译器（JIT）会把这些代码编译成与本地平台相关的机器码，并进行各层次的优化，然后保存到内存中。</p>
-<h2 id="六、小结"><a href="#六、小结" class="headerlink" title="六、小结"></a>六、小结</h2><p>在这篇文章中，我们主要讨论了java类的编译加载执行过程，这个过程包括：</p>
+<p>初始化代码时，如果实例化一个新对象，则会调用<code>&lt;init&gt;</code>方法对实例变量进行初始化，并会执行对应的构造方法内的代码。</p>
+<h2 id="五、运行时编译"><a href="#五、运行时编译" class="headerlink" title="五、运行时编译"></a>五、运行时编译</h2><p>完成初始化后，类在调用执行过程中，执行引擎会把类的字节码转化为机器码，然后才会在操作系统中执行类。这里将在将字节码转化为机器码的过程，就是运行时编译。</p>
+<h2 id="六、小结"><a href="#六、小结" class="headerlink" title="六、小结"></a>六、小结</h2><p>在本篇文章中，我们主要讨论了java类的编译加载执行过程，这个过程包括：</p>
 <ul>
 <li>类编译，将源码文件（.java文件）编译成字节码文件（.class文件）</li>
 <li>类加载，将字节码文件加载到内存中</li>
 <li>类链接，对内存中的类进行验证、准备、解析等一系列操作</li>
 <li>类初始化，执行类的构造器方法</li>
-<li>即时编译，将类的字节码转为化机器码，并在操作系统上执行</li>
+<li>运行时编译，将类的字节码转为化机器</li>
 </ul>
 
             </div>

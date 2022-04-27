@@ -165,8 +165,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-09-26 13:53" pubdate>
-        2020年9月26日 下午
+      <time datetime="2020-09-26 09:15" pubdate>
+        2020年9月26日 上午
       </time>
     </span>
   
@@ -177,7 +177,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.9k 字
+      2.1k 字
     </span>
   
 
@@ -187,7 +187,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      20
+      23
        分钟
     </span>
   
@@ -220,26 +220,26 @@
             <h1 style="display: none">JVM垃圾回收机制</h1>
             
             <div class="markdown-body" id="post-body">
-              <p>我们知道，JVM具备自动回收内存的机制，这个机制可以减轻很多工作量。但完全交由JVM处理，也会增加回收性能的不确定性。尤其是在一些特殊的业务场景下，不合适的垃圾回收算法以及策略，都有可能导致系统性能下降。</p>
+              <p>JVM具备自动内存管理机制，这个机制虽然可以减轻很多工作量，但是完全交由JVM处理，也会增加回收性能的不确定性。尤其是在一些特殊的业务场景下，不合适的垃圾回收算法以及策略，都有可能导致系统性能下降。因此，我们有必要了解一下JVM的垃圾回收机制。</p>
 <h2 id="一、GC机制"><a href="#一、GC机制" class="headerlink" title="一、GC机制"></a>一、GC机制</h2><p>在认识GC算法之前，我们需要先弄清楚3个问题。第一，回收发生在哪里？第二，对象在什么时候可以被回收？第三，如何回收这些对象？</p>
 <h3 id="1-1、回收发生在哪里？-Where"><a href="#1-1、回收发生在哪里？-Where" class="headerlink" title="1.1、回收发生在哪里？ - Where"></a>1.1、回收发生在哪里？ - Where</h3><blockquote>
 <p>JVM垃圾回收发生在哪一块内存中？</p>
 </blockquote>
 <p>在JVM的内存模型中，程序计数器、虚拟机栈和本地方法栈这3个区域是线程私有的，随着线程的创建而创建，销毁而销毁。因此，这三个区域的内存分配和回收都具有确定性。</p>
-<p>那么垃圾回收的重点就是堆和方法区中的数据了，堆中的回收主要是对象的回收，方法区的回收主要是废弃常量和无用的类的回收。</p>
+<p>垃圾回收的重点是堆和方法区中的数据，堆中被回收的主要是对象，方法区中被回收的主要是废弃常量和无用的类。</p>
 <h3 id="1-2、对象在什么时候可以被回收？-When"><a href="#1-2、对象在什么时候可以被回收？-When" class="headerlink" title="1.2、对象在什么时候可以被回收？ - When"></a>1.2、对象在什么时候可以被回收？ - When</h3><blockquote>
 <p>JVM如何判断一个对象是可以被回收的呢？</p>
 </blockquote>
 <p>一般一个对象不再被引用，就代表该对象可以被回收。目前有以下两种算法可以判断一个对象是否可以被回收。</p>
 <ul>
-<li>引用计数算法，这种算法通过每个对象的引用计算器来判断一个对象是否被引用了。每当对象被引用，引用计数器就会加1；每当引用失效，计数器就会减1。当对象的引用计数器的值为0时，就说明该对象不再被引用，可以被回收了。这里需要注意的是，引用计数算法虽然实现简单、判断效率也很高，但是存在着对象之间互相循环引用的问题。</li>
-<li>可达性分析算法，该算法的基础是GC Roots。GC Roots是所有对象的根对象，在JVM加载时，会创建一些普通对象引用正常对象。这些对象作为正常对象的起始点，在垃圾回收时，会从这些GC Roots开始向下搜索，当一个对象到GC Roots没有任何引用链相连时，就证明此对象是不可用的。目前，HotSpot虚拟机采用的就是这种算法。</li>
+<li>引用计数算法，这种算法是通过每个对象的引用计算器来判断对象是否被引用。每当对象被引用，引用计数器就会加1；每当引用失效，计数器就会减1。当对象的引用计数器的值为0时，就说明该对象不再被引用，可以被回收了。这里需要注意的是，引用计数算法虽然实现简单、判断效率也很高，但是存在着对象之间互相循环引用的问题。</li>
+<li>可达性分析算法，该算法的基础是GC Roots。GC Roots是所有对象的根对象，在JVM加载时，会创建一些普通对象作为正常对象的引用。这些普通对象作为正常对象的起始点，在垃圾回收时，会从GC Roots开始向下搜索，当一个对象到GC Roots没有任何引用链相连时，就证明此对象是不可用的。目前，HotSpot虚拟机采用的就是这种算法。</li>
 </ul>
 <p>以上两种算法都是通过引用来判断对象是否可以被回收的。在JDK1.2之后，Java对引用的概念进行了扩充，将引用分为了以下四种：</p>
 <ul>
 <li>强引用（Strong Reference），被强引用关联的对象，永远不会被回收</li>
-<li>软引用（Soft Reference），被软引用关联的对象，只用当系统将要发生内存溢出时才会被回收</li>
 <li>弱引用（Weak Reference），只被弱引用关联的对象，只要发生垃圾回收事件就会被回收</li>
+<li>软引用（Soft Reference），被软引用关联的对象，只用当系统将要发生内存溢出时才会被回收</li>
 <li>虚引用（Phantom Reference），被虚引用关联的对象，其唯一的作用是在对象被回收时能收到一个系统通知</li>
 </ul>
 <h3 id="1-3、如何回收这些对象？-How"><a href="#1-3、如何回收这些对象？-How" class="headerlink" title="1.3、如何回收这些对象？ - How"></a>1.3、如何回收这些对象？ - How</h3><blockquote>
@@ -248,30 +248,140 @@
 <p>JVM垃圾回收遵循以下两个特性：</p>
 <ul>
 <li>自动性，Java提供了一个系统级的线程来跟踪每一块被分配出去的内存空间，当JVM处于空闲循环时，垃圾回收线程就会自动检查每一块被分配出去的内存空间，然后自动回收空闲的内存块。</li>
-<li>不可预期性，当一个对象没有被引用时，该对象是否立刻被回收呢？答案是不可预期的。我们很难确定一个没有被引用的对象是不是会被立刻回收掉，因为有可能当程序结束后，这个对象仍在内存中。</li>
+<li>不可预期性，即使一个对象没有被引用，JVM也不一定会回收它。我们很难确定一个没有被引用的对象，是不是会被立刻回收掉，因为有可能当程序结束后，这个对象仍在内存中。</li>
 </ul>
 <p>垃圾回收线程在JVM中是自动执行的，Java程序无法强制执行。我们唯一能做的就是通过调用System.gc方法来“建议”执行垃圾回收，但是否可执行，什么时候执行？仍然是不可预期的。</p>
-<h2 id="二、GC算法"><a href="#二、GC算法" class="headerlink" title="二、GC算法"></a>二、GC算法</h2><p>JVM提供了不同的回收算法来实现其回收机制，通常垃圾收集器的回收算法可以分为以下几种：</p>
-<ul>
-<li>标记-消除算法（Mark-Sweep），优点是不需要移动对象；缺点是效率低，会产生内存碎片。</li>
-<li>复制算法（Copying），优点是不会产生内存碎片；缺点是内存使用率低，且有可能产生频繁复制问题。</li>
-<li>标记-整理算法（Mark-Compact），优点是综合了前两种算法的优点；缺点是仍需要移动局部对象。</li>
-<li>分代收集算法（Generational Collection），优点是分区回收；缺点是对于长时间存活对象的场景回收效果不明显，甚至起到反作用。</li>
-</ul>
+<h2 id="二、GC算法"><a href="#二、GC算法" class="headerlink" title="二、GC算法"></a>二、GC算法</h2><p>JVM提供了几种不同的回收算法来实现其回收机制。垃圾收集器实现的回收算法可以分为以下几种：</p>
+<table>
+<thead>
+<tr>
+<th>回收算法类型</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>标记 - 清除算法（Mark - Sweep）</td>
+<td>不需要移动对象，简单高效</td>
+<td>标记 - 清除过程效率低，容易产生内存碎片</td>
+</tr>
+<tr>
+<td>复制算法（Copying）</td>
+<td>不会产生内存碎片，简单高效</td>
+<td>内存使用率低，且有可能产生频繁复制问题</td>
+</tr>
+<tr>
+<td>标记 - 整理算法（Mark - Compact）</td>
+<td>综合了前两种算法的优点</td>
+<td>仍需要移动局部对象</td>
+</tr>
+<tr>
+<td>分代收集算法（Generational Collection）</td>
+<td>分区回收</td>
+<td>对于有长时间存活对象的场景，回收效果不明显，甚至起到反作用</td>
+</tr>
+</tbody></table>
 <h2 id="三、垃圾回收器"><a href="#三、垃圾回收器" class="headerlink" title="三、垃圾回收器"></a>三、垃圾回收器</h2><p>如果说收集算法是内存回收的方法论，那么垃圾回收器就是内存回收的具体实现，JDK1.7 update14之后HotSpot虚拟机支持的所有回收器如下（注：以下均为服务端回收器）：</p>
-<ul>
-<li>Serial New / Serial Old回收器，采用复制算法 / 标记-整理算法，特点是单线程复制回收，简单高效，但会暂停程序导致停顿。可以通过参数-XX:+UseSerialGC（新生代、老年代回收器分别为：Serial New、Serial Old）来设置</li>
-<li>ParNew New / ParNew Old回收器，采用复制算法 / 标记-整理算法，特点是多线程复制回收，降低了停顿时间，但容易增加上下文切换。可以通过参数-XX:UseParNewGC（新生代、老年代回收器分别为：ParNew New、Serial Old，JDK1.8中无效）来设置</li>
-<li>Parallel Scavenge回收器，采用复制算法，特点是并行回收，吞吐量高、CPU利用率高。可以通过参数-XX:UseParallelGC（新生代、老年代回收器分别为：Parallel Scavenge、Seria Old）和-XX:ParallelGCThreads=4（并发线程数）来设置</li>
-<li>CMS回收器，采用标记-清理算法，特点是老年代回收器，高并发、低停顿，追求最短GC回收停顿时间，CPU占用比较高，响应时间快，停顿时间短。可以通过参数-XX:UseConcMarkSweepGC（新生代、老年代回收器分别为ParNew New、CMS（Serial Old作为备用））来设置</li>
-<li>G1回收器，采用标记-整理+复制算法，特点是高并发、低停顿，可预测停顿时间。可以通过参数-XX:UseG1GC（新生代、老年代回收器分别为：G1、G1）和-XX:MaxGCPauseMillis=200（最大暂停时间）来设置</li>
-</ul>
-<p>其实，在JVM规范中并没有明确GC的运作方式，各个厂商可以采用不同的方式实际垃圾回收器。我们可以通过JVM工具查询当前JVM使用的垃圾回收器类型，首先通过ps命令查询出进程ID，再通过<code>jmap -heap 进程ID</code>查询出JVM的配置信息，其中就包括垃圾回收器的设置类型。</p>
+<table>
+<thead>
+<tr>
+<th>回收器类型</th>
+<th>回收算法</th>
+<th>特点</th>
+<th>设置参数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Serial New / Serial Old回收器</td>
+<td>复制算法 / 标记 - 整理算法</td>
+<td>单线程复制回收，简单高效，但会暂停程序导致停顿</td>
+<td>-XX:+UseSerialGC（年轻代、老年代回收器分别为：Serial New、Serial Old）</td>
+</tr>
+<tr>
+<td>ParNew New / ParNew Old回收器</td>
+<td>复制算法 / 标记 - 整理算法</td>
+<td>多线程复制回收，降低了停顿时间，但容易增加上下文切换</td>
+<td>-XX:+UseParNewGC（年轻代、老年代回收器分别为：ParNew New、Serial Old，JDK1.8中无效）                               -XX:+UseParallelOldGC（年轻代、老年代回收器分别为：Parallel Scavenge、Parallel Old）</td>
+</tr>
+<tr>
+<td>Parallel Scavenge回收器</td>
+<td>复制算法</td>
+<td>并行回收器，追求高吞吐量，高效利用CPU</td>
+<td>-XX:+UseParallelGC（年轻代、老年代回收器分别为：Parallel Scavenge、Serial Old）                                                           -XX:ParallelGCThreads=4（设置并发线程）</td>
+</tr>
+<tr>
+<td>CMS回收器</td>
+<td>标记 - 清除算法</td>
+<td>老年代回收器，高并发、低停顿，追求最短GC回收停顿时间，CPU占用比较高，响应时间快，停顿时间短</td>
+<td>-XX:+UseConcMarkSweepGC（年轻代、老年代回收器分别为：ParNew New、CMS（Serial Old作为备用））</td>
+</tr>
+<tr>
+<td>G1回收器</td>
+<td>标记 - 整理 &amp; 复制算法</td>
+<td>高并发、低停顿，可预测停顿时间</td>
+<td>-XX:+UseG1GC（年轻代、老年代回收器分别为：G1、G1）                                   -XX:MaxGCPauseMillis=200（设置最大暂停时间）</td>
+</tr>
+</tbody></table>
+<p>注：在JVM规范中并没有明确GC的运作方式，各个厂商可以采用不同的方式实际垃圾回收器。</p>
+<p>我们可以通过JVM工具查询当前JVM使用的垃圾回收器类型，首先通过ps命令查询出进程ID，再通过<code>jmap -heap 进程ID</code>查询出JVM的配置信息，其中就包括垃圾回收器的设置类型。</p>
+<pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> jmap -heap 11200</span>
+Attaching to process ID 11200, please wait...
+Debugger attached successfully.
+Server compiler detected.
+JVM version is 25.281-b09
+
+using thread-local object allocation.
+Garbage-First (G1) GC with 13 thread(s)
+
+Heap Configuration:
+   MinHeapFreeRatio         = 40
+   MaxHeapFreeRatio         = 70
+   MaxHeapSize              = 1073741824 (1024.0MB)
+   NewSize                  = 1363144 (1.2999954223632812MB)
+   MaxNewSize               = 643825664 (614.0MB)
+   OldSize                  = 5452592 (5.1999969482421875MB)
+   NewRatio                 = 2
+   SurvivorRatio            = 8
+   MetaspaceSize            = 21807104 (20.796875MB)
+   CompressedClassSpaceSize = 260046848 (248.0MB)
+   MaxMetaspaceSize         = 268435456 (256.0MB)
+   G1HeapRegionSize         = 1048576 (1.0MB)
+
+Heap Usage:
+G1 Heap:
+   regions  = 1024
+   capacity = 1073741824 (1024.0MB)
+   used     = 16329768 (15.573280334472656MB)
+   free     = 1057412056 (1008.4267196655273MB)
+   1.5208281576633453% used
+G1 Young Generation:
+Eden Space:
+   regions  = 9
+   capacity = 49283072 (47.0MB)
+   used     = 9437184 (9.0MB)
+   free     = 39845888 (38.0MB)
+   19.148936170212767% used
+Survivor Space:
+   regions  = 7
+   capacity = 7340032 (7.0MB)
+   used     = 7340032 (7.0MB)
+   free     = 0 (0.0MB)
+   100.0% used
+G1 Old Generation:
+   regions  = 0
+   capacity = 1017118720 (970.0MB)
+   used     = 0 (0.0MB)
+   free     = 1017118720 (970.0MB)
+   0.0% used
+
+
+6273 interned Strings occupying 451720 bytes.</code></pre>
+
 <h2 id="四、小结"><a href="#四、小结" class="headerlink" title="四、小结"></a>四、小结</h2><p>在这篇文章中，我们主要提到了如下概念：</p>
 <ul>
-<li>GC发生在堆和方法区中。当一个对象没有被引用时，该对象就可以被回收。而在回收时，JVM会遵循自动性和不可预取的特性。</li>
+<li>GC一般发生在堆和方法区中。当一个对象没有被引用时，该对象就可以被回收。而在回收时，JVM会遵循自动性和不可预测性的原则。</li>
 <li>常用的GC算法有四种，分别是标记-清除算法、复制算法、标记-整理算法和分代收集算法。</li>
-<li>垃圾回收器是GC算法的具体实现。HotSpot虚拟机支持的回收器有SeriaGC、ParNewGC、ParallelGC、CMSGC和G1GC。</li>
+<li>垃圾回收器是GC算法的具体实现。HotSpot虚拟机支持的回收器有Seria回收器、ParNew回收器、Parallel回收器、CMS回收器和G1回收器。</li>
 </ul>
 
             </div>
@@ -303,9 +413,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/09/26/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E8%B0%83%E4%BC%98%E7%AD%96%E7%95%A5/">
+                      <a href="/2020/09/26/JVM%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">JVM垃圾回收调优策略</span>
+                        <span class="hidden-mobile">JVM内存分配</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -313,8 +423,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/09/26/JVM%E5%A0%86%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%9A%84%E8%B0%83%E4%BC%98%E8%BF%87%E7%A8%8B/">
-                        <span class="hidden-mobile">JVM堆内存分配的调优过程</span>
+                      <a href="/2020/09/20/JVM%E5%8D%B3%E6%97%B6%E7%BC%96%E8%AF%91/">
+                        <span class="hidden-mobile">JVM即时编译</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
