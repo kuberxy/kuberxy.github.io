@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="kubxy">
   <meta name="keywords" content="">
-  <title>class文件结构 - Kubxy</title>
+  <title>定语从句 - Kubxy</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -165,8 +165,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-09-26 11:03" pubdate>
-        2020年9月26日 上午
+      <time datetime="2022-07-17 11:43" pubdate>
+        2022年7月17日 中午
       </time>
     </span>
   
@@ -177,7 +177,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      624 字
+      1.5k 字
     </span>
   
 
@@ -187,7 +187,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      6
+      20
        分钟
     </span>
   
@@ -217,24 +217,121 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">class文件结构</h1>
+            <h1 style="display: none">定语从句</h1>
             
             <div class="markdown-body" id="post-body">
-              <p>前面讨论JVM内存模型和JVM运行原理时，我们多次提及到了class文件，当时为了行为内容的简洁，并没有展开描述，今天我们就来认识一下这个文件。</p>
-<p>我们知道，JVM在执行某个类的时候，必须经过加载、连接、初始化，而连接又包括验证、准备、解析三个阶段。</p>
-<p>在加载类的时候，JVM会先加载class文件，而在class文件有类的版本、字段、方法和常量池（Constant Pool Table）等信息。通过javap反编译一个class文件，就能查看到class文件的内容，其结构如下：</p>
-<p><img src="/img/image-20220428175158549.png" srcset="/img/loading.gif" alt="image-20220428175158549"></p>
-<p>在这里，我们要知道的是，前期编译的过程其实是非常复杂的，包括词法分析、符号表填充、注解处理，语义分析以及生成class文件，但这个过程我们并不用过多关注。只要知道，编译后的字节码文件主要包括常量池和方法表集合就够了。</p>
+              <p>todo</p>
+<h2 id="一、定语从句"><a href="#一、定语从句" class="headerlink" title="一、定语从句"></a>一、定语从句</h2><h2 id="二、关系代词"><a href="#二、关系代词" class="headerlink" title="二、关系代词"></a>二、关系代词</h2><p>关系代词，就是代替前面的先行词（定语从句要修饰的词），在定语从句中作主语、宾语、表语。</p>
 <ul>
-<li><p>常量池，用于存放编译期间生成的各种字面量和符号引用。字面量包括字符串常量（例如 String str=”abc”，其中“abc”就是常量）、声明为final的属性以及一些基本类型（例如，范围在-127 ~ 128之间的整型）的属性。符号引用则包括类和接口的全限定名、类引用、方法引用以及成员变量引用（例如 String str=”abc”，其中str就是成员变量引用）等。</p>
+<li><p>代替人时，作主语用主格who，作宾语用宾格whom</p>
 </li>
-<li><p>方法表集合中主要包含方法字节码、方法访问权限（public、protect、private等）、方法名索引（与常量池中的方法引用对应）、描述符索引、JVM执行指令以及属性集合等。</p>
+<li><p>代替物，或代替整个句子，无论作主语还是宾语，均用which</p>
 </li>
 </ul>
-<p>当类加载到内存后，JVM就会将class文件常量池中的内容放到运行时常量池中；在解析阶段，JVM会把符号引用替换为直接引用（对象的索引值）。</p>
-<p>例如，类中的一个字符串常量在class文件中时，存放在class文件的常用池中，而在JVM加载完类之后，这个字符串常量就被放到了运行时常量池中，并在解析阶段，指定该字符串对象的索引值。</p>
-<p>注：运行时常量池是全局共享的，多个类共用一个运行时常量池，class文件常量池中多个相同的字符串在运行时常量池只会存在一份。</p>
-
+<h3 id="2-1、限定性定语从句"><a href="#2-1、限定性定语从句" class="headerlink" title="2.1、限定性定语从句"></a>2.1、限定性定语从句</h3><p>当先行词为一般名词时，关系代词引导的定语从句，称为限定性定语从句。</p>
+<ul>
+<li>Captain Fawcett’s first passenger was a doctor who flew from Birmingham to a lonely village in the Welsh mountains.（who作主语，代替doctor）</li>
+<li>He is a man whom we should respect.（whom作宾语，代替man；在美语中，whom作宾语时，也可用who）</li>
+<li>In a few years the small workshop had become a large factory which employed 728 people.（which作主语，代替factory）</li>
+<li>Forest fires are often caused by cigarette ends which people carelessly throw away.（which作宾语，代替cigarette ends）</li>
+<li>In 1948, he went to Lake Kivu to observe a new volcano which he later named Kituro.（which作宾语，代替volcano）</li>
+</ul>
+<p>关系代词，作介词的宾语时，可以将介词移动到关系词之前。</p>
+<ul>
+<li>Peter is a man whom I enjoy working with.</li>
+<li>Peter is a man with whom I enjoy working. </li>
+<li>The city which I live in is very large.</li>
+<li>The city in which I live is very large.</li>
+</ul>
+<p>注：一般正式的书面语，是把介词放在关系代词前面。</p>
+<p>在限定性定语从句中，若关系代词作及物动词的宾语，则该关系代词可省略。若作介词的宾语，则将介词放在句尾，再省略关系代词。</p>
+<ul>
+<li>It is one of the ugliest faces I have ever seen.</li>
+<li>That was all she remembered.</li>
+<li>The pictures is sent us were every disppointing because its main mirror was faulty!</li>
+<li>Peter is a man I enjoy working with.</li>
+</ul>
+<h3 id="2-2、非限定性定语从句"><a href="#2-2、非限定性定语从句" class="headerlink" title="2.2、非限定性定语从句"></a>2.2、非限定性定语从句</h3><p>如果定语从句只是对先行词进行补充说明（而不是限定修饰），称为非限定性定语从句，关系词前面可加上逗号。</p>
+<ul>
+<li>He waved desperately to his companion, who had been water-skiing for the last fifteen minutes.</li>
+</ul>
+<p>注：先行词为一般名词，但其前面已经有限定词或形容词修饰时，其后既可用限定性定语从句，也可用非限定性定语从句。</p>
+<p>当先行词为专有名词（人名或地名）或独一性名词（如father、mother…）时，因为本身就具有特殊性，其后关系代词引导的定语从句，必须是非限定性定语从句。</p>
+<ul>
+<li>Einstein, who was a great scientist, created the theory of relativity.</li>
+<li>Beijing, which is the capital of China, has developed into an international city.</li>
+<li>Among them will be Debbie’s mother, who swam the Channel herself when she was a girl.</li>
+</ul>
+<p>当先行词为整个主句时，定语从句也多是非限定性定语从句。</p>
+<ul>
+<li>Jimmy is a naughty boy, which everyone knows.</li>
+</ul>
+<h3 id="2-3、that引导的定语从句"><a href="#2-3、that引导的定语从句" class="headerlink" title="2.3、that引导的定语从句"></a>2.3、that引导的定语从句</h3><p>that也可以作关系代词，取代who、whom、which，但that前不能有逗号，也不能有介词。</p>
+<ul>
+<li>This is the sort of thing that Jeremy loves.</li>
+<li>A game that is very popular with these young swimmers is the underwater tricycle race.</li>
+</ul>
+<p>以下情况只能用that：</p>
+<ul>
+<li>先行词（通常是一个复合型名词）同时出现“人”和“物”时。</li>
+<li>先行词是不定代词（something、anything、nothing、everything）时。</li>
+<li>先行词被绝对性形容词修饰时。如，序数词、形容词的最高级、the very、the only、all、every、no等修饰时。</li>
+<li>句中有两个相同关系代词引导的定语从句时，为避免重复，其中一个用that。</li>
+</ul>
+<p>例句：</p>
+<ul>
+<li>The scientist and his inventions that the article deals with are quite familiar to us.</li>
+<li>I would much rather receive something that made me laugh.</li>
+<li>A variable is something that can be changed and controlled.</li>
+<li>Of course, the Hubble is above the earth’s atmosphere, so it will soon be sending us th clearest pictures that we have ever seen.</li>
+<li>All the students that are studying in our class is hardworking.</li>
+<li>He works hard, which is a fact that is known to us.</li>
+<li>My best friend was devastated by the letter which she received that rejected her application to university.</li>
+<li>There was no trace of fingerprints, but the inspector found a dirty red bundle that contained jewellery which the old lady said was not hers.</li>
+</ul>
+<h3 id="2-4、翻译练习"><a href="#2-4、翻译练习" class="headerlink" title="2.4、翻译练习"></a>2.4、翻译练习</h3><p>双语人士（bilingual）就是能说两种语言一样好的人。</p>
+<p>不要和自己了解不充分的人交朋友。</p>
+<p>要参加比赛的人必须在本周五之前报名（sign up）。</p>
+<p>Lulu买了那件她想要的价值不菲的裙子。</p>
+<p>我把我银行账户里边的最后一美元花掉了。</p>
+<p>我喜欢我的学校，它以优良的设施闻名。</p>
+<p>我在聚会上遇到很多小学同学，其中一些我都认不出来了。</p>
+<p>彼得是个非常优秀的工程师，这点我们都知道。</p>
+<p>这位是我的女朋友，她英语说得非常流利。</p>
+<h2 id="三、关系代词所有格"><a href="#三、关系代词所有格" class="headerlink" title="三、关系代词所有格"></a>三、关系代词所有格</h2><p>关系代词所有格，是由代词所有格his、her、their、my、your、its变化而来的。关系代词所有格和后面的名词，共同作定语从句的主语、宾语。</p>
+<ul>
+<li>无论是代替人还是代替物，关系代词所有格均可用whose</li>
+<li>修饰物，也可用of which</li>
+<li>of前面是代词的时候，不能用whose，用of whom</li>
+</ul>
+<p>例句：</p>
+<ul>
+<li><p>Many people whose homes are in town want to live in the country.（whose代替人）</p>
+</li>
+<li><p>Be a man whose word is as good as your bond.（whose代替物）</p>
+</li>
+<li><p>Success is a journey whose initial step is paved with an inner stirring.（whose代替物）</p>
+<p>Success is a journey of which the initial step is paved with an inner stirring.</p>
+<p>Success is a journey, the initial step of which is paved with an inner sirring.</p>
+</li>
+</ul>
+<p>名词/代词 + of + whom/which这种结构，属于非限定性定语从句，表示从属关系。</p>
+<ul>
+<li>Light is the fastest thing in the world, the speed of which is 300.000 kilometers per second.</li>
+<li>The old man has three sons, one of whom is a doctor.</li>
+<li>There are 300 college students in the small hall, most of whom are freshmen.</li>
+</ul>
+<p>在第一句话中，先行词speed是名词，所以可以改成whose speed；在第二句话中，先行词one是代词，所以不能改成whose one；在第三句话中，先行词most是代词，所以也不能改成whose most。</p>
+<p>翻译练习：</p>
+<ul>
+<li><p>这是玛丽，她的爸爸是我们学校的校长。</p>
+</li>
+<li><p>我们住在一栋老房子里，它的屋顶可能随时会崩塌（collapse）。</p>
+</li>
+<li><p>这就是那台硬盘中病毒的电脑。</p>
+</li>
+</ul>
+<h2 id="四、复合关系代词"><a href="#四、复合关系代词" class="headerlink" title="四、复合关系代词"></a>四、复合关系代词</h2><h2 id="五、关系副词"><a href="#五、关系副词" class="headerlink" title="五、关系副词"></a>五、关系副词</h2>
             </div>
             <hr>
             <div>
@@ -243,7 +340,7 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/Java/">Java</a>
+                      <a class="hover-with-bg" href="/categories/%E8%8B%B1%E8%AF%AD/">英语</a>
                     
                   </div>
                 
@@ -251,7 +348,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/JVM/">JVM</a>
+                      <a class="hover-with-bg" href="/tags/%E8%8B%B1%E8%AF%AD%E8%AF%AD%E6%B3%95/">英语语法</a>
                     
                   </div>
                 
@@ -264,18 +361,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/09/26/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E8%B0%83%E4%BC%98%E7%AD%96%E7%95%A5/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">JVM垃圾回收调优策略</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/09/26/JVM%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/">
-                        <span class="hidden-mobile">JVM内存分配</span>
+                      <a href="/2022/07/16/%E7%8A%B6%E8%AF%AD%E4%BB%8E%E5%8F%A5/">
+                        <span class="hidden-mobile">状语从句</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -418,7 +509,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "class文件结构&nbsp;",
+        "定语从句&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
