@@ -176,6 +176,54 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2020/10/03/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%923%EF%BC%9A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3StatefulSet%E4%B9%8B%E6%8B%93%E6%89%91%E7%8A%B6%E6%80%81/">容器编排3：深入理解StatefulSet之拓扑状态</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/10/03/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%923%EF%BC%9A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3StatefulSet%E4%B9%8B%E6%8B%93%E6%89%91%E7%8A%B6%E6%80%81/">
+          
+          
+            
+          
+          在前面的文章中，我们讨论了Deployment控制器的工作原理，但Deployment控制器并不足以覆盖所有的应用编排问题。接下来，我们重点讨论Kubernetes提供的另一种重要的编排能力：StatefulSet。
+一、从有状态应用说起Deployment 对应用做了一个简单化假设：一个应用的所有 Pod，是完全一样的。所以，它们互相之间没有顺序，也无所谓运行在哪台宿主机上。需要的时候，Depl
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-03 08:05" pubdate>
+              2020-10-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2020/10/02/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%922%EF%BC%9A%E5%89%AF%E6%9C%AC%E4%B8%8E%E6%B0%B4%E5%B9%B3%E6%89%A9%E5%B1%95/">容器编排2：副本与水平扩展</a>
       </h1>
 
@@ -579,54 +627,6 @@ $ pstree -gt
             <i class="iconfont icon-date"></i>
             <time datetime="2020-10-01 09:20" pubdate>
               2020-10-01
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Docker/">Docker</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/09/28/%E5%AE%B9%E5%99%A8%E5%9F%BA%E7%A1%801%EF%BC%9A%E6%88%91%E4%BB%AC%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3%E5%AE%B9%E5%99%A8%E5%90%97%EF%BC%9F/">容器基础1：我们真的了解容器吗？</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/09/28/%E5%AE%B9%E5%99%A8%E5%9F%BA%E7%A1%801%EF%BC%9A%E6%88%91%E4%BB%AC%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3%E5%AE%B9%E5%99%A8%E5%90%97%EF%BC%9F/">
-          
-          
-            
-          
-          我相信但凡接触过Docker的同学，一定看到过下面这张虚拟机和容器的对比图：
-在这幅图的左边，画出了虚拟机的工作原理。其中，名为Hypervisor的软件是虚拟机最主要的部分。它通过硬件虚拟化功能，模拟出运行一个操作系统所需的各种硬件，比如，CPU、内存、I/O设备等；然后，它在这些虚拟的硬件上安装一个新的操作系统，即Guest OS。这样，我们的应用程序就可以运行在这个虚拟的机器中，而它所能看到
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-28 07:55" pubdate>
-              2020-09-28
             </time>
           </div>
         

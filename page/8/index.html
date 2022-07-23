@@ -176,6 +176,55 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C6%EF%BC%9AService%E3%80%81DNS%E4%B8%8E%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0/">容器网络6：Service、DNS与服务发现</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C6%EF%BC%9AService%E3%80%81DNS%E4%B8%8E%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0/">
+          
+          
+            
+          
+          在前面的文章中，我们讨论了kubernetes的“连通性”和“隔离性”。接下来，我们重点讨论一下一个Pod是如何被访问到的？
+一、理解Service ClusterIP模式Kubernetes 之所以需要 Service 对象，一方面是因为 Pod 的 IP 不是固定的，另一方面则是因为一组 Pod 实例之间总会有负载均衡的需求。
+1.1、创建Service一个最典型的 Service 定义，如下
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-07 10:48" pubdate>
+              2020-10-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C5%EF%BC%9ANetworkPolicy/">容器网络5：NetworkPolicy</a>
       </h1>
 
@@ -549,54 +598,6 @@ Kubernetes 里的 Pod 默认都是“允许所有”（Accept Al
           
           在前面的文章中，我们都是基于一个外部的存储服务来提供PV。此时，我们可能有这样的疑问：能否直接使用宿主机上的目录或磁盘作为PV呢？答案是肯定的。这就是我们今天就要讨论的主题：Local Persistent Volume。
 1.1、Local PVKubernetes 支持直接使用宿主机上目录或磁盘，而不依赖于远程存储服务来提供“持久化”的 Volume。这样做的好处显而易见：由于这个 Volum
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-05 10:21" pubdate>
-              2020-10-05
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Kubernetes/">Kubernetes</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A82%EF%BC%9APV%E3%80%81PVC%E4%BD%93%E7%B3%BB%E6%98%AF%E5%90%A6%E5%A4%9A%E6%AC%A1%E4%B8%80%E4%B8%BE/">持久化存储2：PV、PVC体系是否多次一举</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A82%EF%BC%9APV%E3%80%81PVC%E4%BD%93%E7%B3%BB%E6%98%AF%E5%90%A6%E5%A4%9A%E6%AC%A1%E4%B8%80%E4%B8%BE/">
-          
-          
-            
-          
-          在前面的文章中，我们讨论了PV、PVC体系以及StorageClass相关的概念。接下来，我们讨论这样一个话题：像PV、PVC这样的用法，是否有“过度设计”之嫌？
-一、从本地持久化存储说起我们知道，一家公司的运维人员完全可以像往常一样维护一套 NFS 或者 Ceph 服务器，根本不必学习 Kubernetes。而开发人员，则完全可以靠“复制粘贴”的方式，在 Pod 的 YAML 文件里填上 Vol
         </a>
       </p>
 
