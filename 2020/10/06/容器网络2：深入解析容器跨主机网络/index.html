@@ -247,7 +247,7 @@ default via 10.168.0.1 dev eth0
 10.168.0.0/24 dev eth0  proto kernel  scope link  src 10.168.0.2</code></pre>
 
 <p>可以看到，由于我们的 IP 包的目的地址是 100.96.2.3，它匹配不到本机 docker0 网桥对应的 100.96.1.0/24 网段，只能匹配到第二条、也就是 100.96.0.0/16 对应的这条路由规则，从而进入到一个叫作 flannel0 的设备中。而这个 flannel0 设备的类型就比较有意思了：它是一个 TUN 设备（Tunnel 设备）。</p>
-<p>在 Linux 中，TUN 设备是一种工作在三层（Network Layer）的虚拟网络设备。TUN 设备的功能非常简单，即：在操作系统内核和用户应用程序之间传递 IP 包。以flannel0设备为例：像上面提到的情况，当操作系统将一个IP包发送给flannel0设备之后，flannerl0就会把这个IP包，交给创建这个设备的应用程序，也就是Flannel进程。而这是一个从内核态（Linux内核）向用户态（Flannel进程）的流动方向。反之，如果Flannel进程向flannel0设备发送了一个IP包，那么这个IP包就会出现在宿主机网络栈中，然后根据宿主机的路由表进行下一步处理。而这是一个从用户态向内核态的流动方向。</p>
+<p>在 Linux 中，TUN 设备是一种工作在三层（Network Layer）的虚拟网络设备。TUN 设备的功能非常简单，就是在操作系统内核和用户应用程序之间传递 IP 包。以flannel0设备为例，像上面提到的情况，当操作系统将一个IP包发送给flannel0设备之后，flannerl0就会把这个IP包，交给创建这个设备的应用程序，也就是Flannel进程。而这是一个从内核态（Linux内核）向用户态（Flannel进程）的流动方向。反之，如果Flannel进程向flannel0设备发送了一个IP包，那么这个IP包就会出现在宿主机网络栈中，然后根据宿主机的路由表进行下一步处理。而这是一个从用户态向内核态的流动方向。</p>
 <h3 id="2-3、发送数据包"><a href="#2-3、发送数据包" class="headerlink" title="2.3、发送数据包"></a>2.3、发送数据包</h3><p>当 IP 包从容器经过 docker0 出现在宿主机，然后又根据路由表进入 flannel0 设备后，宿主机上的 flanneld 进程（Flannel 项目在每个宿主机上的主进程），就会收到这个 IP 包。然后，flanneld 看到了这个 IP 包的目的地址，是 100.96.2.3，就把它发送给了宿主机 Node 2 。</p>
 <blockquote>
 <p>可是，flanneld 又是如何知道这个 IP 地址对应的容器，是运行在 Node 2 上的呢？</p>
@@ -275,7 +275,7 @@ default via 10.168.0.1 dev eth0
 100.96.2.0/24 dev docker0  proto kernel  scope link  src 100.96.2.1
 10.168.0.0/24 dev eth0  proto kernel  scope link  src 10.168.0.3</code></pre>
 
-<p>由于这个 IP 包的目的地址是 100.96.2.3，它跟第三条、也就是 100.96.2.0/24 网段对应的路由规则匹配更加精确。所以，Linux 内核就会按照这条路由规则，把这个 IP 包转发给 docker0 网桥。</p>
+<p>由于这个 IP 包的目的地址是 100.96.2.3，它跟第三条也就是 100.96.2.0/24 网段对应的路由规则匹配更加精确。所以，Linux 内核就会按照这条路由规则，把这个 IP 包转发给 docker0 网桥。</p>
 <p>接下来，docker0 网桥会扮演二层交换机的角色，将数据包发送给正确的端口，进而通过 Veth Pair 设备进入到 container-2 的 Network Namespace 里。</p>
 <p>而 container-2 返回给 container-1 的数据包，则会经过与上述过程完全相反的路径回到 container-1 中。</p>
 <h3 id="3-4、小结"><a href="#3-4、小结" class="headerlink" title="3.4、小结"></a>3.4、小结</h3><p>需要注意的是，上述流程要正确工作还有一个重要的前提，那就是 docker0 网桥的地址范围必须是 Flannel 为宿主机分配的子网。这个很容易实现，以 Node 1 为例，我们只需要给它上面的 Docker Daemon 启动时配置如下所示的 bip 参数即可：</p>
@@ -304,7 +304,7 @@ default via 10.168.0.1 dev eth0
 <p>基于 VTEP 设备进行“隧道”通信的流程，我们也可以总结成一幅图，如下所示：</p>
 <p><img src="/img/image-20201006111549970.png" srcset="/img/loading.gif" alt="image-20201006111549970"></p>
 <p>可以看到，图中每台宿主机上名叫 flannel.1 的设备，就是 VXLAN 所需的 VTEP 设备，它既有 IP 地址，也有 MAC 地址。</p>
-<h3 id="3-1、路由"><a href="#3-1、路由" class="headerlink" title="3.1、路由"></a>3.1、路由</h3><p>现在，我们的 container-1 的 IP 地址是 10.1.15.2，要访问的 container-2 的 IP 地址是 10.1.16.3。那么，与前面 UDP 模式的流程类似，当 container-1 发出请求之后，这个目的地址是 10.1.16.3 的 IP 包，会先出现在 docker0 网桥，然后会被路由到本机的 flannel.1 设备进行处理。也就是说，它来到了“隧道”的入口。为了方便叙述，我们接下来会把这个 IP 包称为“原始 IP 包”。</p>
+<h3 id="3-1、路由"><a href="#3-1、路由" class="headerlink" title="3.1、路由"></a>3.1、路由</h3><p>现在假设，我们的 container-1 的 IP 地址是 10.1.15.2，要访问的 container-2 的 IP 地址是 10.1.16.3。与前面 UDP 模式的流程类似，当 container-1 发出请求之后，这个目的地址是 10.1.16.3 的 IP 包，会先出现在 docker0 网桥，然后会被路由到本机的 flannel.1 设备进行处理。也就是说，它来到了“隧道”的入口。为了方便叙述，我们接下来会把这个 IP 包称为“原始 IP 包”。</p>
 <h3 id="3-2、内部封包"><a href="#3-2、内部封包" class="headerlink" title="3.2、内部封包"></a>3.2、内部封包</h3><h4 id="3-2-1、确定目的VTEP设备"><a href="#3-2-1、确定目的VTEP设备" class="headerlink" title="3.2.1、确定目的VTEP设备"></a>3.2.1、确定目的VTEP设备</h4><p>为了能够将“原始 IP 包”封装并且发送到正确的宿主机，VXLAN 就需要找到这条“隧道”的出口，即：目的宿主机的 VTEP 设备。而这个设备的信息，正是每台宿主机上的 flanneld 进程负责维护的。比如，当 Node 2 启动并加入 Flannel 网络之后，在 Node 1（以及所有其他节点）上，flanneld 就会添加一条如下所示的路由规则：</p>
 <pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> route -n</span>
 Kernel IP routing table
@@ -313,8 +313,10 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 10.1.16.0       10.1.16.0       255.255.255.0   UG    0      0        0 flannel.1</code></pre>
 
 <p>这条规则的意思是：凡是发往 10.1.16.0/24 网段的 IP 包，都需要经过 flannel.1 设备发出，并且，它最后被发往的网关地址是：10.1.16.0。从Flannel VXLAN 模式的流程图中我们可以看到，10.1.16.0 正是 Node 2 上的 VTEP 设备（也就是 flannel.1 设备）的 IP 地址。为了方便叙述，接下来我们把 Node 1 和 Node 2 上的 flannel.1 设备分别称为“源 VTEP 设备”和“目的 VTEP 设备”。</p>
-<h4 id="3-2-2、确定目的VTEP设备的MAC地址"><a href="#3-2-2、确定目的VTEP设备的MAC地址" class="headerlink" title="3.2.2、确定目的VTEP设备的MAC地址"></a>3.2.2、确定目的VTEP设备的MAC地址</h4><p>在这些 VTEP 设备之间，需要想办法组成一个虚拟的二层网络，即：通过二层数据帧进行通信。所以在我们的例子中，“源 VTEP 设备”收到“原始 IP 包”后，就要想办法把“原始 IP 包”加上一个目的 MAC 地址，封装成一个二层数据帧，然后发送给“目的 VTEP 设备”（当然，这么做还是因为这个 IP 包的目的地址不是本机）。</p>
-<p>这里需要解决的问题就是：“目的 VTEP 设备”的 MAC 地址是什么？</p>
+<h4 id="3-2-2、确定目的VTEP设备的MAC地址"><a href="#3-2-2、确定目的VTEP设备的MAC地址" class="headerlink" title="3.2.2、确定目的VTEP设备的MAC地址"></a>3.2.2、确定目的VTEP设备的MAC地址</h4><p>在这些 VTEP 设备之间，需要想办法组成一个虚拟的二层网络，即：通过二层数据帧进行通信。所以在我们的例子中，“源 VTEP 设备”收到“原始 IP 包”后，就要想办法把“原始 IP 包”加上一个目的 MAC 地址，封装成一个二层数据帧，然后发送给“目的 VTEP 设备”（当然，要这么做还是因为这个 IP 包的目的地址不是本机）。</p>
+<blockquote>
+<p>这里还需要解决的问题是：“目的 VTEP 设备”的 MAC 地址是什么？</p>
+</blockquote>
 <p>此时，根据前面的路由记录，我们已经知道了“目的 VTEP 设备”的 IP 地址。而要根据三层 IP 地址查询对应的二层 MAC 地址，这正是 ARP（Address Resolution Protocol ）表的功能。而这里要用到的 ARP 记录，也是 flanneld 进程在 Node 2 节点启动时，自动添加在 Node 1 上的。我们可以通过 ip 命令看到它，如下所示：</p>
 <pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 在Node 1上</span>
 <span class="hljs-meta">$</span><span class="bash"> ip neigh show dev flannel.1</span>
@@ -325,11 +327,13 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 <p><img src="/img/image-20201006113008762.png" srcset="/img/loading.gif" alt="image-20201006113008762"></p>
 <p>可以看到，Linux 内核会把“目的 VTEP 设备”的 MAC 地址，填写在图中的 Inner Ethernet Header 字段，得到一个二层数据帧。需要注意的是，上述封包过程只是加一个二层头，不会改变“原始 IP 包”的内容。所以图中的 Inner IP Header 字段，依然是 container-2 的 IP 地址，即 10.1.16.3。</p>
 <p>但是，上面提到的这些 VTEP 设备的 MAC 地址，对于宿主机网络来说并没有什么实际意义。所以上面封装出来的这个数据帧，并不能在我们的宿主机二层网络里传输。为了方便叙述，我们把它称为“内部数据帧”（Inner Ethernet Frame）。</p>
-<p>所以在最后，Linux 内核还需要再把“内部数据帧”进一步封装成为宿主机网络里的一个普通的数据帧，好让它“载着”“内部数据帧”，通过宿主机的 eth0 网卡进行传输。我们把这次要封装出来的、宿主机对应的数据帧称为“外部数据帧”（Outer Ethernet Frame）。</p>
-<h4 id="3-2-4、VXLAN封装"><a href="#3-2-4、VXLAN封装" class="headerlink" title="3.2.4、VXLAN封装"></a>3.2.4、VXLAN封装</h4><p>为了实现“搭便车”的机制，Linux 内核会在“内部数据帧”的前面，加上一个特殊的 VXLAN 头，用来表示这个“乘客”实际上是一个 VXLAN 要使用的数据帧。这个 VXLAN 头里有一个重要的标志叫作 VNI，它是 VTEP 设备识别某个数据帧是不是应该归自己处理的重要标识。而在 Flannel 中，VNI 的默认值是 1，这也是为何，宿主机上的 VTEP 设备都叫作 flannel.1 的原因，这里的“1”，其实就是 VNI 的值。</p>
-<h3 id="3-3、外部封包"><a href="#3-3、外部封包" class="headerlink" title="3.3、外部封包"></a>3.3、外部封包</h3><p>然后，Linux 内核会把这个数据帧封装进一个 UDP 包里发出去。</p>
-<p>所以，跟 UDP 模式类似，在宿主机看来，它会以为自己的 flannel.1 设备只是在向另外一台宿主机的 flannel.1 设备，发起了一次普通的 UDP 链接。它哪里会知道，这个 UDP 包里面，其实是一个完整的二层数据帧。这是不是跟特洛伊木马的故事非常像呢？</p>
-<h4 id="3-3-1、确定UDP包的目的宿主机"><a href="#3-3-1、确定UDP包的目的宿主机" class="headerlink" title="3.3.1、确定UDP包的目的宿主机"></a>3.3.1、确定UDP包的目的宿主机</h4><p>不过，不要忘了，一个 flannel.1 设备只知道另一端的 flannel.1 设备的 MAC 地址，却不知道对应的宿主机地址是什么。也就是说，这个 UDP 包该发给哪台宿主机呢？</p>
+<h4 id="3-2-4、VXLAN封装"><a href="#3-2-4、VXLAN封装" class="headerlink" title="3.2.4、VXLAN封装"></a>3.2.4、VXLAN封装</h4><p>然后，Linux 内核还需要再把“内部数据帧”进一步封装成为宿主机网络里的一个普通的数据帧，好让它“载着”“内部数据帧”，通过宿主机的 eth0 网卡进行传输。我们把这次要封装出来的、宿主机对应的数据帧称为“外部数据帧”（Outer Ethernet Frame）。</p>
+<p>为了实现“搭便车”的机制，Linux 内核会在“内部数据帧”的前面，加上一个特殊的 VXLAN 头（VXLAN Header），用来表示这个“乘客（内部数据帧）”实际上是一个 VXLAN 要使用的数据帧。这个 VXLAN 头里有一个重要的标志叫作 VNI，它是 VTEP 设备识别某个数据帧是不是应该归自己处理的重要标识。而在 Flannel 中，VNI 的默认值是 1，这也是为何，宿主机上的 VTEP 设备都叫作 flannel.1 的原因，这里的“1”，其实就是 VNI 的值。</p>
+<h3 id="3-3、外部封包"><a href="#3-3、外部封包" class="headerlink" title="3.3、外部封包"></a>3.3、外部封包</h3><p>最后，Linux 内核会把这个数据帧封装进一个 UDP 包里发出去。跟 UDP 模式类似，在宿主机看来，它会以为自己的 flannel.1 设备只是在向另外一台宿主机的 flannel.1 设备，发起了一次普通的 UDP 链接。它哪里会知道，这个 UDP 包里面，其实是一个完整的二层数据帧。这是不是跟特洛伊木马的故事非常像呢？</p>
+<h4 id="3-3-1、确定UDP包的目的宿主机"><a href="#3-3-1、确定UDP包的目的宿主机" class="headerlink" title="3.3.1、确定UDP包的目的宿主机"></a>3.3.1、确定UDP包的目的宿主机</h4><p>不过，不要忘了，一个 flannel.1 设备只知道另一端的 flannel.1 设备的 MAC 地址，却不知道对应的宿主机地址是什么。</p>
+<blockquote>
+<p>也就是说，这个 UDP 包该发给哪台宿主机呢？</p>
+</blockquote>
 <p>在这种场景下，flannel.1 设备实际上还要扮演一个“网桥”的角色，在二层网络进行 UDP 包的转发。而在 Linux 内核里面，“网桥”设备进行转发的依据，来自于一个叫作 FDB（Forwarding Database）的转发数据库。不难想到，这个 flannel.1“网桥”对应的 FDB 信息，也是 flanneld 进程负责维护的。它的内容可以通过 bridge fdb 命令查看到，如下所示：</p>
 <pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 在Node 1上，使用“目的VTEP设备”的MAC地址进行查询</span>
 <span class="hljs-meta">$</span><span class="bash"> bridge fdb show flannel.1 | grep 5e:f8:4f:00:e3:37</span>
@@ -342,17 +346,17 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 <p><img src="/img/image-20201006114011219.png" srcset="/img/loading.gif" alt="image-20201006114011219"></p>
 <p>这样，封包工作就宣告完成了。</p>
 <h3 id="3-4、发送数据包"><a href="#3-4、发送数据包" class="headerlink" title="3.4、发送数据包"></a>3.4、发送数据包</h3><p>接下来，Node 1 上的 flannel.1 设备就可以把这个数据帧从 Node 1 的 eth0 网卡发出去。显然，这个帧会经过宿主机网络来到 Node 2 的 eth0 网卡。</p>
-<p>这时候，Node 2 的内核网络栈会发现这个数据帧里有 VXLAN Header，并且 VNI=1。所以 Linux 内核会对它进行拆包，拿到里面的内部数据帧，然后根据 VNI 的值，把它交给 Node 2 上的 flannel.1 设备。</p>
-<p>而 flannel.1 设备则会进一步拆包，取出“原始 IP 包”。接下来，就是单机容器网络的处理流程了。最终，IP 包就进入到了 container-2 容器的 Network Namespace 里。</p>
+<p>这时候，Node 2 的内核网络栈会发现这个数据帧里有 VXLAN Header，并且 VNI=1。所以 Linux 内核会对它进行拆包，拿到里面的内部数据帧，然后根据 VNI 的值，把它交给 flannel.1 设备。而 flannel.1 设备则会进一步拆包，取出“原始 IP 包”。</p>
+<p>接下来，就是单机容器网络的处理流程了。最终，IP 包就进入到了 container-2 容器的 Network Namespace 里。</p>
 <h2 id="四、小结"><a href="#四、小结" class="headerlink" title="四、小结"></a>四、小结</h2><p>在这篇文章中，我们主要讨论了如下概念：</p>
 <ul>
-<li>在Flannel UDP模式中，不同主机上的容器通过内核态设备flannel0（一个TUN设备）和用户态进程flanneld实现三层通信；</li>
-<li>在Flannel VXLAN模式中，不同主机上的容器借助Linux VLAN机制直接通过内核态创建设备 flannel.1（一VTEP设备）实现三层通信。</li>
+<li>UDP模式，通过用户态进程（比如flanneld），对容器的IP包进行UDP再封装，从而构建起一个三层的虚拟网络。</li>
+<li>VXLAN模式，借助Linux内核的VXLAN机制，对容器的数据帧进行UDP再封装，从而构建起一个二层的虚拟网络。</li>
 </ul>
 <p>UDP模式和VXLAN模式的最大区别在于：</p>
 <ul>
-<li>flanneld进程位于用户态，封装和解封工作都在用户态完成，并且还存在多次用户态与内核态的切换；</li>
-<li>Lnux VLAN位于内核态，封装和解封工作直接内核态完成。</li>
+<li>在UDP模式下，封装和解封工作需要在用户态完成，存在多次用户态与内核态的切换；</li>
+<li>在VXLAN模式下，封装和解封工作都在内核态完成，不存在用户态到内核态的切换。</li>
 </ul>
 
             </div>
