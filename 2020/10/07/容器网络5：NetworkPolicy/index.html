@@ -221,10 +221,10 @@
             
             <div class="markdown-body" id="post-body">
               <p>在前面的文章中，我们讨论了Kubernetes的网络“连通性”。接下来，我们重点讨论Kubernetes网络的“隔离性”。</p>
-<h2 id="一、NetworkPolicy对象"><a href="#一、NetworkPolicy对象" class="headerlink" title="一、NetworkPolicy对象"></a>一、NetworkPolicy对象</h2><h3 id="1-1、NetworkPolicy的作用"><a href="#1-1、NetworkPolicy的作用" class="headerlink" title="1.1、NetworkPolicy的作用"></a>1.1、NetworkPolicy的作用</h3><p>在 Kubernetes 里，对网络隔离能力的定义，是依靠一种专门的 API 对象来描述的，即：NetworkPolicy。</p>
+<h2 id="一、NetworkPolicy对象"><a href="#一、NetworkPolicy对象" class="headerlink" title="一、NetworkPolicy对象"></a>一、NetworkPolicy对象</h2><h3 id="1-1、认识NetworkPolicy"><a href="#1-1、认识NetworkPolicy" class="headerlink" title="1.1、认识NetworkPolicy"></a>1.1、认识NetworkPolicy</h3><p>在 Kubernetes 中，对网络隔离能力的定义，是依靠一种专门的 API 对象来描述的，即：NetworkPolicy。</p>
 <p>Kubernetes 里的 Pod 默认都是“允许所有”（Accept All）的，即：Pod 可以接收来自任何发送方的请求；或者，向任何接收方发送请求。而如果我们要对这个情况作出限制，就必须通过 NetworkPolicy 对象来指定。</p>
-<p>一旦 Pod 被 NetworkPolicy 选中，那么这个 Pod 就会进入“拒绝所有”（Deny All）的状态，即：这个 Pod 既不允许被外界访问，也不允许对外界发起访问。而 NetworkPolicy 定义的规则，其实就是“白名单”。</p>
-<h3 id="1-2、NetworkPolicy的作用范围"><a href="#1-2、NetworkPolicy的作用范围" class="headerlink" title="1.2、NetworkPolicy的作用范围"></a>1.2、NetworkPolicy的作用范围</h3><p>一个完整的 NetworkPolicy 对象的示例，如下所示：</p>
+<p>一旦 Pod 被某个 NetworkPolicy 选中，那么这个 Pod 就会进入“拒绝所有（Deny All）”的状态，即：这个 Pod 既不允许被外界随意访问，也不允许随意对外界发起访问，只能按“规则”行动。NetworkPolicy 定义的规则，其实就是“白名单”。</p>
+<h3 id="1-2、定义NetworkPolicy"><a href="#1-2、定义NetworkPolicy" class="headerlink" title="1.2、定义NetworkPolicy"></a>1.2、定义NetworkPolicy</h3><p>一个完整的 NetworkPolicy 对象的示例，如下所示：</p>
 <pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">networking.k8s.io/v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">NetworkPolicy</span>
 <span class="hljs-attr">metadata:</span>
@@ -265,21 +265,19 @@
  <span class="hljs-attr">podSelector:</span> &#123;&#125;</code></pre>
 
 <p>那么这个 NetworkPolicy 就会作用于当前 Namespace 下的所有 Pod。</p>
-<h3 id="1-3、理解NetworkPolicy的定义"><a href="#1-3、理解NetworkPolicy的定义" class="headerlink" title="1.3、理解NetworkPolicy的定义"></a>1.3、理解NetworkPolicy的定义</h3><p>在上面这个例子里，我们在 policyTypes 字段，定义了这个 NetworkPolicy 的类型是 ingress 和 egress，即：它既会影响流入（ingress）请求，也会影响流出（egress）请求。</p>
+<h3 id="1-3、理解NetworkPolicy的定义"><a href="#1-3、理解NetworkPolicy的定义" class="headerlink" title="1.3、理解NetworkPolicy的定义"></a>1.3、理解NetworkPolicy的定义</h3><p>在上面的例子中，我们在 policyTypes 字段，定义了这个 NetworkPolicy 的类型是 ingress 和 egress，即：它既会影响流入（ingress）请求，也会影响流出（egress）请求。</p>
 <p>然后，在 ingress 字段里，我们定义了 from 和 ports，即：允许流入的“白名单”和端口。其中，在这个允许流入的“白名单”里，我们指定了三种并列的情况，分别是：ipBlock、namespaceSelector 和 podSelector。</p>
 <p>而在 egress 字段里，我们则定义了 to 和 ports，即：允许流出的“白名单”和端口。这里允许流出的“白名单”的定义方法与 ingress 类似。只不过，这一次 ipblock 字段指定的，是目的地址的网段。</p>
-<p>综上所述，这个 NetworkPolicy 对象，指定的隔离规则如下所示：</p>
+<p>而这个 NetworkPolicy 对象，指定的隔离规则是这样的：</p>
 <ul>
-<li><p>该隔离规则只对 default Namespace 下的，携带了 role=db 标签的 Pod 有效。限制的请求类型包括 ingress（流入）和 egress（流出）。</p>
-</li>
-<li><p>Kubernetes 会拒绝任何访问被隔离 Pod 的请求，除非这个请求来自于以下“白名单”里的对象，并且访问的是被隔离 Pod 的 6379 端口。这些“白名单”对象包括：</p>
-<ul>
+<li>该隔离规则只对 default Namespace 下的，携带了 role=db 标签的 Pod 有效。限制的请求类型包括 ingress（流入）和 egress（流出）。</li>
+<li>Kubernetes 会拒绝任何访问被隔离 Pod 的请求，除非这个请求是来自于以下“白名单”里的对象，并且访问的是被隔离 Pod 的 6379 端口。这些“白名单”对象包括：<ul>
 <li>default Namespace 里的，携带了 role=fronted 标签的 Pod；</li>
-<li>任何 Namespace 里的，携带了 project=myproject 标签的 Pod；</li>
+<li>携带了 project=myproject 标签的 Namespace 里的任何 Pod；</li>
 <li>任何源地址属于 172.17.0.0/16 网段，且不属于 172.17.1.0/24 网段的请求。</li>
-<li>Kubernetes 会拒绝被隔离 Pod 对外发起任何请求，除非请求的目的地址属于 10.0.0.0/24 网段，并且访问的是该网段地址的 5978 端口。</li>
 </ul>
 </li>
+<li>Kubernetes 会拒绝被隔离 Pod 对外发起任何请求，除非请求的目的地址属于 10.0.0.0/24 网段，并且访问的是该网段地址的 5978 端口。</li>
 </ul>
 <h3 id="1-4、编写NetworkPolicy时的注意点"><a href="#1-4、编写NetworkPolicy时的注意点" class="headerlink" title="1.4、编写NetworkPolicy时的注意点"></a>1.4、编写NetworkPolicy时的注意点</h3><p>需要注意的是，定义一个 NetworkPolicy 对象的过程，容易犯错的是“白名单”部分（from 和 to 字段）。举个例子：</p>
 <pre><code class="hljs yaml"><span class="hljs-string">...</span>
@@ -314,7 +312,7 @@
 <h2 id="二、NetworkPolicy的工作原理"><a href="#二、NetworkPolicy的工作原理" class="headerlink" title="二、NetworkPolicy的工作原理"></a>二、NetworkPolicy的工作原理</h2><blockquote>
 <p>这些网络插件，是如何根据 NetworkPolicy 对 Pod 进行隔离的？</p>
 </blockquote>
-<p>接下来，我们就以三层网络插件为例（比如 Calico 和 kube-router），来分析一下这部分的原理。</p>
+<p>接下来，我们就以三层网络插件为例（比如 Calico），来分析一下这部分的原理。</p>
 <h3 id="2-1、编写NetworkPolicy-对象"><a href="#2-1、编写NetworkPolicy-对象" class="headerlink" title="2.1、编写NetworkPolicy 对象"></a>2.1、编写NetworkPolicy 对象</h3><p>为了方便讲解，这一次我们编写了一个比较简单的 NetworkPolicy 对象，如下所示：</p>
 <pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">extensions/v1beta1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">NetworkPolicy</span>
