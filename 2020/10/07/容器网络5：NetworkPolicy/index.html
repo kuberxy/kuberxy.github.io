@@ -177,7 +177,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3.7k 字
+      3.6k 字
     </span>
   
 
@@ -187,7 +187,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      42
+      41
        分钟
     </span>
   
@@ -221,7 +221,7 @@
             
             <div class="markdown-body" id="post-body">
               <p>在前面的文章中，我们讨论了Kubernetes的网络“连通性”。接下来，我们重点讨论Kubernetes网络的“隔离性”。</p>
-<h2 id="一、NetworkPolicy对象"><a href="#一、NetworkPolicy对象" class="headerlink" title="一、NetworkPolicy对象"></a>一、NetworkPolicy对象</h2><h3 id="1-1、认识NetworkPolicy"><a href="#1-1、认识NetworkPolicy" class="headerlink" title="1.1、认识NetworkPolicy"></a>1.1、认识NetworkPolicy</h3><p>在 Kubernetes 中，对网络隔离能力的定义，是依靠一种专门的 API 对象来描述的，即：NetworkPolicy。</p>
+<h2 id="一、NetworkPolicy对象"><a href="#一、NetworkPolicy对象" class="headerlink" title="一、NetworkPolicy对象"></a>一、NetworkPolicy对象</h2><h3 id="1-1、什么是NetworkPolicy"><a href="#1-1、什么是NetworkPolicy" class="headerlink" title="1.1、什么是NetworkPolicy"></a>1.1、什么是NetworkPolicy</h3><p>在 Kubernetes 中，对网络隔离能力的定义，是依靠一种专门的 API 对象来描述的，即：NetworkPolicy。</p>
 <p>Kubernetes 里的 Pod 默认都是“允许所有”（Accept All）的，即：Pod 可以接收来自任何发送方的请求；或者，向任何接收方发送请求。而如果我们要对这个情况作出限制，就必须通过 NetworkPolicy 对象来指定。</p>
 <p>一旦 Pod 被某个 NetworkPolicy 选中，那么这个 Pod 就会进入“拒绝所有（Deny All）”的状态，即：这个 Pod 既不允许被外界随意访问，也不允许随意对外界发起访问，只能按“规则”行动。NetworkPolicy 定义的规则，其实就是“白名单”。</p>
 <h3 id="1-2、定义NetworkPolicy"><a href="#1-2、定义NetworkPolicy" class="headerlink" title="1.2、定义NetworkPolicy"></a>1.2、定义NetworkPolicy</h3><p>一个完整的 NetworkPolicy 对象的示例，如下所示：</p>
@@ -273,7 +273,7 @@
 <li>该隔离规则只对 default Namespace 下的，携带了 role=db 标签的 Pod 有效。限制的请求类型包括 ingress（流入）和 egress（流出）。</li>
 <li>Kubernetes 会拒绝任何访问被隔离 Pod 的请求，除非这个请求是来自于以下“白名单”里的对象，并且访问的是被隔离 Pod 的 6379 端口。这些“白名单”对象包括：<ul>
 <li>default Namespace 里的，携带了 role=fronted 标签的 Pod；</li>
-<li>携带了 project=myproject 标签的 Namespace 里的任何 Pod；</li>
+<li>携带project=myproject 标签的 Namespace 里的任何 Pod；</li>
 <li>任何源地址属于 172.17.0.0/16 网段，且不属于 172.17.1.0/24 网段的请求。</li>
 </ul>
 </li>
@@ -309,11 +309,42 @@
 <h3 id="1-5、NetworkPolicy的依赖"><a href="#1-5、NetworkPolicy的依赖" class="headerlink" title="1.5、NetworkPolicy的依赖"></a>1.5、NetworkPolicy的依赖</h3><p>此外，如果要使上面定义的 NetworkPolicy 在 Kubernetes 集群里真正产生作用，我们的 CNI 网络插件就必须是支持 Kubernetes 的 NetworkPolicy 的。</p>
 <p>在具体实现上，凡是支持 NetworkPolicy 的 CNI 网络插件，都维护着一个 NetworkPolicy Controller，通过控制循环的方式对 NetworkPolicy 对象的增删改查做出响应，然后在宿主机上完成 iptables 规则的配置工作。</p>
 <p>在 Kubernetes 生态里，目前已经实现了 NetworkPolicy 的网络插件包括 Calico、Weave 和 kube-router 等多个项目，但是并不包括 Flannel 项目。所以说，如果想要在使用 Flannel 的同时还使用 NetworkPolicy 的话，我们就需要再额外安装一个网络插件，比如 Calico 项目，来负责执行 NetworkPolicy。</p>
-<h2 id="二、NetworkPolicy的工作原理"><a href="#二、NetworkPolicy的工作原理" class="headerlink" title="二、NetworkPolicy的工作原理"></a>二、NetworkPolicy的工作原理</h2><blockquote>
-<p>这些网络插件，是如何根据 NetworkPolicy 对 Pod 进行隔离的？</p>
+<h2 id="二、理解Iptables"><a href="#二、理解Iptables" class="headerlink" title="二、理解Iptables"></a>二、理解Iptables</h2><blockquote>
+<p>此时，我们可能会好奇，网络插件是如何根据 NetworkPolicy 对 Pod 进行隔离的？</p>
 </blockquote>
-<p>接下来，我们就以三层网络插件为例（比如 Calico），来分析一下这部分的原理。</p>
-<h3 id="2-1、编写NetworkPolicy-对象"><a href="#2-1、编写NetworkPolicy-对象" class="headerlink" title="2.1、编写NetworkPolicy 对象"></a>2.1、编写NetworkPolicy 对象</h3><p>为了方便讲解，这一次我们编写了一个比较简单的 NetworkPolicy 对象，如下所示：</p>
+<p>在回答这个问题之前，我们先来理解一下iptables的工作原理。</p>
+<h3 id="2-1、Netfilter是什么"><a href="#2-1、Netfilter是什么" class="headerlink" title="2.1、Netfilter是什么"></a>2.1、Netfilter是什么</h3><p>实际上，iptables 只是一个操作 Linux 内核 Netfilter 子系统的“界面”。顾名思义，Netfilter 子系统的作用，就是 Linux 内核里挡在“网卡”和“用户态进程”之间的一道“防火墙”。它们的关系，可以用如下的示意图来表示：</p>
+<p><img src="/img/image-20201007114257452.png" srcset="/img/loading.gif" alt="image-20201007114257452"></p>
+<p>可以看到，这幅示意图中，IP 包“一进一出”的两条路径上，有几个关键的“检查点”，它们正是 Netfilter 设置“防火墙”的地方。在 iptables 中，这些“检查点”被称为：链（Chain）。这是因为这些“检查点”对应的 iptables 规则，是按照定义顺序依次进行匹配的。</p>
+<h3 id="2-2、Netfilter的工作原理"><a href="#2-2、Netfilter的工作原理" class="headerlink" title="2.2、Netfilter的工作原理"></a>2.2、Netfilter的工作原理</h3><p>Netfilter的具体工作原理，可以用如下所示的示意图来描述：</p>
+<p><img src="/img/image-20201007114403525.png" srcset="/img/loading.gif" alt="image-20201007114403525"></p>
+<p>当一个 IP 包通过网卡进入主机之后，它就进入了 Netfilter 定义的流入路径（Input Path）里。</p>
+<p>在这个路径中，IP 包要经过路由表路由来决定下一步的去向。而在路由之前，Netfilter 设置了一个名叫 PREROUTING 的“检查点”。经过路由之后，IP 包的去向可以分为两种：</p>
+<ul>
+<li><p>第一种，继续在本机处理；</p>
+</li>
+<li><p>第二种，被转发到其他目的地。</p>
+</li>
+</ul>
+<p>注：在 Linux 内核的实现里，所谓“检查点”实际上就是内核网络协议栈代码里的 Hook（比如，在执行路由判断的代码之前，内核会先调用 PREROUTING 的 Hook）。</p>
+<h4 id="2-2-1、第一种去向"><a href="#2-2-1、第一种去向" class="headerlink" title="2.2.1、第一种去向"></a>2.2.1、第一种去向</h4><p>我们先说一下 IP 包的第一种去向。这时候，IP 包将继续向上层协议栈流动。在进入传输层之前，Netfilter 会设置一个名叫 INPUT 的“检查点”。到这里，IP 包流入路径（Input Path）结束。</p>
+<p>接下来，这个 IP 包通过传输层进入用户空间，交给用户进程处理。而处理完成后，用户进程会通过本机发出返回的 IP 包。这时候，这个 IP 包就进入了流出路径（Output Path）。</p>
+<p>此时，IP 包首先还是会经过主机的路由表进行路由。路由结束后，Netfilter 就会设置一个名叫 OUTPUT 的“检查点”。然后，在 OUTPUT 之后，再设置一个名叫 POSTROUTING“检查点”。</p>
+<blockquote>
+<p>这里，我们可能会奇怪，为什么在流出路径结束后，Netfilter 会连着设置两个“检查点”呢？</p>
+</blockquote>
+<p>这就要说到在流入路径里，路由判断后的第二种去向了。</p>
+<h4 id="2-2-2、第二种去向"><a href="#2-2-2、第二种去向" class="headerlink" title="2.2.2、第二种去向"></a>2.2.2、第二种去向</h4><p>在这种情况下，这个 IP 包不会进入传输层，而是会继续在网络层流动，从而进入到转发路径（Forward Path）。在转发路径中，Netfilter 会设置一个名叫 FORWARD 的“检查点”。</p>
+<p>而在 FORWARD“检查点”完成后，IP 包就会来到流出路径。而转发的 IP 包由于目的地已经确定，它就不会再经过路由，也自然不会经过 OUTPUT，而是会直接来到 POSTROUTING“检查点”。</p>
+<p>所以说，POSTROUTING 的作用，其实就是上述两条路径，最终汇聚在一起的“最终检查点”。</p>
+<h3 id="2-3、Netfilter完整的流程图"><a href="#2-3、Netfilter完整的流程图" class="headerlink" title="2.3、Netfilter完整的流程图"></a>2.3、Netfilter完整的流程图</h3><p>需要注意的是，在有网桥参与的情况下，上述 Netfilter 设置“检查点”的流程，实际上也会出现在链路层（二层），并且会跟网络层（三层）的流程有交互。而这些链路层的“检查点”对应的操作界面叫作 ebtables。</p>
+<p>所以，准确地说，数据包在 Linux Netfilter 子系统里完整的流动过程，其实应该如下所示（这是一幅来自Netfilter 官方的原理图）：</p>
+<p><img src="/img/image-20201007115517875.png" srcset="/img/loading.gif" alt="image-20201007115517875"></p>
+<p>可以看到，我们前面讲述的，正是上图中绿色部分，也就是网络层的 iptables 链的工作流程。</p>
+<p>另外，我们应该还能看到，每一个白色的“检查点”上，还有一个绿色的“标签”，比如：raw、nat、filter 等等。在 iptables 里，这些标签叫作：表。比如，同样是 OUTPUT 这个“检查点”，filter Output 和 nat Output 在 iptables 里的语法和参数，就完全不一样，实现的功能也完全不同。</p>
+<p>所以说，iptables 表的作用，就是在某个具体的“检查点”（比如 Output）上，按顺序执行几个不同的检查动作（比如，先执行 nat，再执行 filter）。</p>
+<h2 id="三、NetworkPolicy的工作原理"><a href="#三、NetworkPolicy的工作原理" class="headerlink" title="三、NetworkPolicy的工作原理"></a>三、NetworkPolicy的工作原理</h2><p>在理解了iptables的工作原理后，接下来，我们就以三层网络插件为例（比如 Calico），来分析一下NetworkPolicy 的原理。</p>
+<h3 id="3-1、编写NetworkPolicy-对象"><a href="#3-1、编写NetworkPolicy-对象" class="headerlink" title="3.1、编写NetworkPolicy 对象"></a>3.1、编写NetworkPolicy 对象</h3><p>为了方便讲解，这一次我们编写了一个比较简单的 NetworkPolicy 对象，如下所示：</p>
 <pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">extensions/v1beta1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">NetworkPolicy</span>
 <span class="hljs-attr">metadata:</span>
@@ -335,8 +366,8 @@
        <span class="hljs-bullet">-</span> <span class="hljs-attr">protocol:</span> <span class="hljs-string">tcp</span>
          <span class="hljs-attr">port:</span> <span class="hljs-number">6379</span></code></pre>
 
-<p>可以看到，我们指定的 ingress“白名单”，是任何 Namespace 里，携带 project=myproject 标签的 Pod；以及 default Namespace 里，携带了 role=frontend 标签的 Pod。允许被访问的端口是：6379。而被隔离的对象，是所有携带了 role=db 标签的 Pod。</p>
-<h3 id="2-2、生成对应的iptables规则"><a href="#2-2、生成对应的iptables规则" class="headerlink" title="2.2、生成对应的iptables规则"></a>2.2、生成对应的iptables规则</h3><p>在创建NetworkPolicy对象口，Kubernetes 的网络插件就会使用这个 NetworkPolicy 的定义，在宿主机上生成 iptables 规则。这个过程，我可以通过如下所示的一段 Go 语言风格的伪代码来描述：</p>
+<p>可以看到，我们指定的 ingress“白名单”，是携带 project=myproject 标签的Namespace 里的任意Pod；以及 default Namespace 里，携带了 role=frontend 标签的 Pod。允许被访问的端口是6379，协议为TCP。而被隔离的对象，是default Namespace 里所有携带了 role=db 标签的 Pod。</p>
+<h3 id="3-2、生成对应的iptables规则"><a href="#3-2、生成对应的iptables规则" class="headerlink" title="3.2、生成对应的iptables规则"></a>3.2、生成对应的iptables规则</h3><p>创建NetworkPolicy对象后，Kubernetes 的网络插件就会使用这个 NetworkPolicy 的定义，在宿主机上生成 iptables 规则。这个过程，我们可以通过如下所示的一段 Go 语言风格的伪代码来描述：</p>
 <pre><code class="hljs go"><span class="hljs-keyword">for</span> dstIP := <span class="hljs-keyword">range</span> 所有被networkpolicy.spec.podSelector选中的Pod的IP地址
   <span class="hljs-keyword">for</span> srcIP := <span class="hljs-keyword">range</span> 所有被ingress.from.podSelector选中的Pod的IP地址
     <span class="hljs-keyword">for</span> port, protocol := <span class="hljs-keyword">range</span> ingress.ports &#123;
@@ -347,9 +378,8 @@
 
 <p>可以看到，这是一条最基本的、通过匹配条件决定下一步动作的 iptables 规则。</p>
 <p>这条规则的名字是 KUBE-NWPLCY-CHAIN，其含义是：当 IP 包的源地址是 srcIP、目的地址是 dstIP、协议是 protocol、目的端口是 port 的时候，就允许它通过（ACCEPT）。而正如这段伪代码所示，匹配这条规则所需的这四个参数，都是从 NetworkPolicy 对象里读取出来的。</p>
-<p>可以看到，Kubernetes 网络插件对 Pod 进行隔离，其实是靠在宿主机上生成 NetworkPolicy 对应的 iptable 规则来实现的。</p>
-<h3 id="2-3、转发对被隔离Pod的请求"><a href="#2-3、转发对被隔离Pod的请求" class="headerlink" title="2.3、转发对被隔离Pod的请求"></a>2.3、转发对被隔离Pod的请求</h3><p>在设置好上述“隔离”规则之后，网络插件还需要想办法，将所有对被隔离 Pod 的访问请求，都转发到上述 KUBE-NWPLCY-CHAIN 规则上去进行匹配。并且，如果匹配不通过，这个请求应该被“拒绝”。</p>
-<p>在CNI 网络插件中，上述需求可以通过设置两组 iptables 规则来实现。</p>
+<p>由此可以看出，Kubernetes 网络插件对 Pod 进行隔离，其实是靠在宿主机上生成 NetworkPolicy 对应的 iptable 规则来实现的。</p>
+<h3 id="3-3、转发对被隔离Pod的请求"><a href="#3-3、转发对被隔离Pod的请求" class="headerlink" title="3.3、转发对被隔离Pod的请求"></a>3.3、转发对被隔离Pod的请求</h3><p>在设置好上述“隔离”规则之后，网络插件还需要想办法，将所有对被隔离 Pod 的访问请求，都转发到上述 KUBE-NWPLCY-CHAIN 规则上去进行匹配。并且，如果匹配不通过，这个请求应该被“拒绝”。而在CNI 网络插件中，这个需求可以通过设置两组 iptables 规则来实现。</p>
 <p>第一组规则，负责“拦截”对被隔离 Pod 的访问请求。生成这一组规则的伪代码，如下所示：</p>
 <pre><code class="hljs go"><span class="hljs-keyword">for</span> pod := <span class="hljs-keyword">range</span> 该Node上的所有Pod &#123;
     <span class="hljs-keyword">if</span> pod是networkpolicy.spec.podSelector选中的 &#123;
@@ -359,52 +389,23 @@
     &#125;
 &#125;</code></pre>
 
-<p>可以看到，这里的的 iptables 规则使用到了内置链：FORWARD。它是什么意思呢？说到这里，我们就得稍微普及一下 iptables 的知识了。</p>
-<h2 id="三、理解Iptables"><a href="#三、理解Iptables" class="headerlink" title="三、理解Iptables"></a>三、理解Iptables</h2><h3 id="3-1、Netfilter是什么"><a href="#3-1、Netfilter是什么" class="headerlink" title="3.1、Netfilter是什么"></a>3.1、Netfilter是什么</h3><p>实际上，iptables 只是一个操作 Linux 内核 Netfilter 子系统的“界面”。顾名思义，Netfilter 子系统的作用，就是 Linux 内核里挡在“网卡”和“用户态进程”之间的一道“防火墙”。它们的关系，可以用如下的示意图来表示：</p>
-<p><img src="/img/image-20201007114257452.png" srcset="/img/loading.gif" alt="image-20201007114257452"></p>
-<p>可以看到，这幅示意图中，IP 包“一进一出”的两条路径上，有几个关键的“检查点”，它们正是 Netfilter 设置“防火墙”的地方。</p>
-<h3 id="3-2、Netfilter的工作原理"><a href="#3-2、Netfilter的工作原理" class="headerlink" title="3.2、Netfilter的工作原理"></a>3.2、Netfilter的工作原理</h3><p>在 iptables 中，这些“检查点”被称为：链（Chain）。这是因为这些“检查点”对应的 iptables 规则，是按照定义顺序依次进行匹配的。这些“检查点”的具体工作原理，可以用如下所示的示意图进行描述：</p>
-<p><img src="/img/image-20201007114403525.png" srcset="/img/loading.gif" alt="image-20201007114403525"></p>
-<p>可以看到，当一个 IP 包通过网卡进入主机之后，它就进入了 Netfilter 定义的流入路径（Input Path）里。</p>
-<p>在这个路径中，IP 包要经过路由表路由来决定下一步的去向。而在这次路由之前，Netfilter 设置了一个名叫 PREROUTING 的“检查点”。在 Linux 内核的实现里，所谓“检查点”实际上就是内核网络协议栈代码里的 Hook（比如，在执行路由判断的代码之前，内核会先调用 PREROUTING 的 Hook）。</p>
-<p>而在经过路由之后，IP 包的去向就分为了两种：</p>
+<p>可以看到，这里的的 iptables 规则使用到了内置链：FORWARD。它是什么意思呢？</p>
 <ul>
-<li><p>第一种，继续在本机处理；</p>
+<li><p>第一条 FORWARD 链“拦截”的是一种特殊情况：它对应的是同一台宿主机上容器之间经过 CNI 网桥进行通信的流入数据包。其中，–physdev-is-bridged 的意思就是，这个 FORWARD 链匹配的是，通过本机上的网桥设备，发往目的地址是 podIP 的 IP 包。当然，如果是像 Calico 这样的非网桥模式的 CNI 插件，就不存在这个情况了。而kube-router 其实是一个简化版的 Calico，它也使用 BGP 来维护路由信息，但是使用 CNI bridge 插件负责跟 Kubernetes 进行交互。</p>
 </li>
-<li><p>第二种，被转发到其他目的地。</p>
+<li><p>第二条 FORWARD 链“拦截”的则是最普遍的情况，即：容器跨主机通信。这时候，流入容器的数据包都是经过路由转发（FORWARD 检查点）来的。不难看到，这些规则最后都跳转（即：-j）到了名叫 KUBE-POD-SPECIFIC-FW-CHAIN 的规则上。它正是网络插件为 NetworkPolicy 设置的第二组规则。</p>
 </li>
 </ul>
-<h4 id="3-2-1、第一种去向"><a href="#3-2-1、第一种去向" class="headerlink" title="3.2.1、第一种去向"></a>3.2.1、第一种去向</h4><p>我们先说一下 IP 包的第一种去向。这时候，IP 包将继续向上层协议栈流动。在它进入传输层之前，Netfilter 会设置一个名叫 INPUT 的“检查点”。到这里，IP 包流入路径（Input Path）结束。</p>
-<p>接下来，这个 IP 包通过传输层进入用户空间，交给用户进程处理。而处理完成后，用户进程会通过本机发出返回的 IP 包。这时候，这个 IP 包就进入了流出路径（Output Path）。</p>
-<p>此时，IP 包首先还是会经过主机的路由表进行路由。路由结束后，Netfilter 就会设置一个名叫 OUTPUT 的“检查点”。然后，在 OUTPUT 之后，再设置一个名叫 POSTROUTING“检查点”。</p>
-<p>我们可能会觉得奇怪，为什么在流出路径结束后，Netfilter 会连着设置两个“检查点”呢？</p>
-<p>这就要说到在流入路径里，路由判断后的第二种去向了。</p>
-<h4 id="3-2-2、第二种去向"><a href="#3-2-2、第二种去向" class="headerlink" title="3.2.2、第二种去向"></a>3.2.2、第二种去向</h4><p>在这种情况下，这个 IP 包不会进入传输层，而是会继续在网络层流动，从而进入到转发路径（Forward Path）。在转发路径中，Netfilter 会设置一个名叫 FORWARD 的“检查点”。</p>
-<p>而在 FORWARD“检查点”完成后，IP 包就会来到流出路径。而转发的 IP 包由于目的地已经确定，它就不会再经过路由，也自然不会经过 OUTPUT，而是会直接来到 POSTROUTING“检查点”。</p>
-<p>所以说，POSTROUTING 的作用，其实就是上述两条路径，最终汇聚在一起的“最终检查点”。</p>
-<h3 id="3-3、Netfilter完整的流程图"><a href="#3-3、Netfilter完整的流程图" class="headerlink" title="3.3、Netfilter完整的流程图"></a>3.3、Netfilter完整的流程图</h3><p>需要注意的是，在有网桥参与的情况下，上述 Netfilter 设置“检查点”的流程，实际上也会出现在链路层（二层），并且会跟网络层（三层）的流程有交互。</p>
-<p>这些链路层的“检查点”对应的操作界面叫作 ebtables。所以，准确地说，数据包在 Linux Netfilter 子系统里完整的流动过程，其实应该如下所示（这是一幅来自Netfilter 官方的原理图）：</p>
-<p><img src="/img/image-20201007115517875.png" srcset="/img/loading.gif" alt="image-20201007115517875"></p>
-<p>可以看到，我们前面讲述的，正是上图中绿色部分，也就是网络层的 iptables 链的工作流程。</p>
-<p>另外，我们应该还能看到，每一个白色的“检查点”上，还有一个绿色的“标签”，比如：raw、nat、filter 等等。在 iptables 里，这些标签叫作：表。比如，同样是 OUTPUT 这个“检查点”，filter Output 和 nat Output 在 iptables 里的语法和参数，就完全不一样，实现的功能也完全不同。</p>
-<p>所以说，iptables 表的作用，就是在某个具体的“检查点”（比如 Output）上，按顺序执行几个不同的检查动作（比如，先执行 nat，再执行 filter）。</p>
-<h2 id="四、再看转发对被隔离Pod的请求"><a href="#四、再看转发对被隔离Pod的请求" class="headerlink" title="四、再看转发对被隔离Pod的请求"></a>四、再看转发对被隔离Pod的请求</h2><p>在理解了 iptables 的工作原理之后，我们再回到 NetworkPolicy 上来。这时候，前面由网络插件设置的、负责“拦截”进入 Pod 的请求的iptables 规则，就很容易读懂了：</p>
-<pre><code class="hljs shell">iptables -A FORWARD -d $podIP -m physdev --physdev-is-bridged -j KUBE-POD-SPECIFIC-FW-CHAIN
-iptables -A FORWARD -d $podIP -j KUBE-POD-SPECIFIC-FW-CHAIN
-...</code></pre>
-
-<p>其中，第一条 FORWARD 链“拦截”的是一种特殊情况：它对应的是同一台宿主机上容器之间经过 CNI 网桥进行通信的流入数据包。其中，–physdev-is-bridged 的意思就是，这个 FORWARD 链匹配的是，通过本机上的网桥设备，发往目的地址是 podIP 的 IP 包。当然，如果是像 Calico 这样的非网桥模式的 CNI 插件，就不存在这个情况了。而kube-router 其实是一个简化版的 Calico，它也使用 BGP 来维护路由信息，但是使用 CNI bridge 插件负责跟 Kubernetes 进行交互。</p>
-<p>而第二条 FORWARD 链“拦截”的则是最普遍的情况，即：容器跨主机通信。这时候，流入容器的数据包都是经过路由转发（FORWARD 检查点）来的。不难看到，这些规则最后都跳转（即：-j）到了名叫 KUBE-POD-SPECIFIC-FW-CHAIN 的规则上。它正是网络插件为 NetworkPolicy 设置的第二组规则。</p>
-<p>而这个 KUBE-POD-SPECIFIC-FW-CHAIN 的作用，就是做出“允许”或者“拒绝”的判断。这部分功能的实现，可以简单描述为下面这样的 iptables 规则：</p>
+<p>第二组规则，也就是这个 KUBE-POD-SPECIFIC-FW-CHAIN ，它的作用就是做出“允许”或者“拒绝”的判断。这部分功能的实现，可以简单描述为下面这样的 iptables 规则：</p>
 <pre><code class="hljs shell">iptables -A KUBE-POD-SPECIFIC-FW-CHAIN -j KUBE-NWPLCY-CHAIN
 iptables -A KUBE-POD-SPECIFIC-FW-CHAIN -j REJECT --reject-with icmp-port-unreachable</code></pre>
 
 <p>可以看到，首先在第一条规则里，我们会把 IP 包转交给前面定义的 KUBE-NWPLCY-CHAIN 规则去进行匹配。按照我们之前的讲述，如果匹配成功，那么 IP 包就会被“允许通过”。</p>
 <p>而如果匹配失败，IP 包就会来到第二条规则上。可以看到，它是一条 REJECT 规则。通过这条规则，不满足 NetworkPolicy 定义的请求就会被拒绝掉，从而实现了对该容器的“隔离”。</p>
 <p>以上，就是 CNI 网络插件实现 NetworkPolicy 的基本方法了。当然，对于不同的插件来说，上述实现过程可能有不同的手段，但根本原理是不变的。</p>
-<h2 id="五、小结"><a href="#五、小结" class="headerlink" title="五、小结"></a>五、小结</h2><p>在这篇文章中，我们主要讨论了如下概念：</p>
+<h2 id="五、小结"><a href="#五、小结" class="headerlink" title="五、小结"></a>五、小结</h2><p>在这篇文章中，我们主要讨论了以下几个概念：</p>
 <ul>
-<li>Kubernetes的隔离机制是通过NetworkPolicy对象的；</li>
+<li>Kubernetes的隔离机制是通过NetworkPolicy对象实现的；</li>
 <li>NetworkPolicy其实就是宿主机上的一系列Iptables规则；</li>
 <li>NetworkPolicy的工作原理是：首先，生成NetworkPolicy相应的动作规则；然后，生成“将对被隔离Pod的请求”转发到这些规则上的转发规则。</li>
 </ul>
