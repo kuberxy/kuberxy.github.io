@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="kubxy">
   <meta name="keywords" content="">
-  <title>深入解析Pod对象3：Projected Volume - Kubxy</title>
+  <title>：存储管理6：Projected Volume - Kubxy</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -177,7 +177,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3.1k 字
+      3k 字
     </span>
   
 
@@ -187,7 +187,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      38
+      37
        分钟
     </span>
   
@@ -217,14 +217,14 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">深入解析Pod对象3：Projected Volume</h1>
+            <h1 style="display: none">：存储管理6：Projected Volume</h1>
             
             <div class="markdown-body" id="post-body">
-              <p>在 Kubernetes 中，有几种特殊的 Volume，它们存在的意义不是为了存放容器里的数据，也不是用来进行容器和宿主机之间的数据交换。这些特殊 Volume 的作用，是为容器提供预先定义好的数据。所以，从容器的角度来看，这些 Volume 中的信息仿佛就是被 Kubernetes“投射”（Project）进入容器当中的。这正是 Projected Volume 的含义。到目前为止，Kubernetes 支持的 Projected Volume 一共有四种：</p>
+              <p>在 Kubernetes 中，有几种特殊的 Volume，它们存在的意义不是为了存放容器里的数据，也不是用来进行容器和宿主机之间的数据交换。而是为容器提供预先定义好的数据。从容器的角度来看，这些 Volume 中的信息仿佛是被 Kubernetes“投射”（Project）到容器当中的。这正是 Projected Volume 的含义。到目前为止，Kubernetes 支持的 Projected Volume 一共有四种：</p>
 <ul>
-<li>Secret，存放Pod中容器要访问的加密数据。比如，数据库连接用户的用户名和密码</li>
-<li>ConfigMap，存放Pod中容器要访问的配置信息。比如，一个 Java 应用所需的配置文件（.properties 文件）</li>
-<li>Downward API，让Pod中的容器能够直接获取到当前Pod对象本身的信息。</li>
+<li>Secret，存放容器要访问的加密数据。比如，数据库连接用户的用户名和密码</li>
+<li>ConfigMap，存放容器要访问的配置信息。比如，一个 Java 应用所需的配置文件（.properties 文件）</li>
+<li>Downward API，让容器能够直接获取到当前Pod对象本身的信息。</li>
 <li>ServiceAccountToken，保存ServiceAccount对象的授权信息。</li>
 </ul>
 <h2 id="一、Secret"><a href="#一、Secret" class="headerlink" title="一、Secret"></a>一、Secret</h2><p>Secret的作用是，帮我们把 Pod 想要访问的加密数据，存放到 Etcd 中。然后，我们就可以在 Pod 的容器里以挂载 Volume 的方式，访问到这些 Secret 里保存的信息。</p>
@@ -254,8 +254,8 @@
           <span class="hljs-attr">name:</span> <span class="hljs-string">pass</span></code></pre>
 
 <p>我们可以看到，这个Pod挂载了一个projected类型的Volume。而这个Volume的数据来源，是名为user和pass的两个Secret对象，它们分别对应的是数据库的用户名和密码。</p>
-<h3 id="1-2、直接在命令行创建Secret对象"><a href="#1-2、直接在命令行创建Secret对象" class="headerlink" title="1.2、直接在命令行创建Secret对象"></a>1.2、直接在命令行创建Secret对象</h3><p>前面的Pod所用到的数据库用户名、密码，正是以 Secret 对象的方式提交给 Kubernetes 保存的。完成这个操作的指令，如下所示：</p>
-<pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 在文件中，以明文的形式写入用户名和密码</span>
+<h3 id="1-2、创建Secret对象"><a href="#1-2、创建Secret对象" class="headerlink" title="1.2、创建Secret对象"></a>1.2、创建Secret对象</h3><p>创建secret对象有两种方式，命令行和yaml文件，下面我们分别来看。</p>
+<h4 id="1-2-1、方式一：命令行"><a href="#1-2-1、方式一：命令行" class="headerlink" title="1.2.1、方式一：命令行"></a>1.2.1、方式一：命令行</h4><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 在文件中，以明文的形式写入用户名和密码</span>
 <span class="hljs-meta">$</span><span class="bash"> cat &gt; ./username.txt &lt;&lt;<span class="hljs-string">EOF</span></span>
 admin
 EOF
@@ -268,14 +268,13 @@ EOF
 <span class="hljs-meta">$</span><span class="bash"> kubectl create secret generic user --from-file=./username.txt</span>
 <span class="hljs-meta">$</span><span class="bash"> kubectl create secret generic pass --from-file=./password.txt</span></code></pre>
 
-<p>在这里，username.txt 和 password.txt 文件里，存放的就是用户名和密码；而kubectl命令中的 user 和 pass，则是我们为 Secret 对象指定的名字。</p>
-<h3 id="1-3、查看Secret对象"><a href="#1-3、查看Secret对象" class="headerlink" title="1.3、查看Secret对象"></a>1.3、查看Secret对象</h3><p>如果我们要查看这些 Secret 对象的话，只要执行一条 kubectl get 命令就可以了：</p>
+<p>在这里，username.txt 和 password.txt 文件里，存放的就是用户名和密码；而kubectl命令中的 user 和 pass，则是我们为 Secret 对象指定的名字。如果我们要查看这些 Secret 对象的话，只要执行一条 kubectl get 命令就可以了：</p>
 <pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl get secrets</span>
 NAME           TYPE                                DATA      AGE
 user          Opaque                                1         51s
 pass          Opaque                                1         51s</code></pre>
 
-<h3 id="1-4、通过yaml文件创建Secret对象"><a href="#1-4、通过yaml文件创建Secret对象" class="headerlink" title="1.4、通过yaml文件创建Secret对象"></a>1.4、通过yaml文件创建Secret对象</h3><p>当然，除了使用 kubectl create secret 指令外，我们也可以直接通过编写 YAML 文件的方式来创建这个 Secret 对象，比如：</p>
+<h4 id="1-2-2、方式二：yaml文件"><a href="#1-2-2、方式二：yaml文件" class="headerlink" title="1.2.2、方式二：yaml文件"></a>1.2.2、方式二：yaml文件</h4><p>当然，除了使用 kubectl create secret 指令外，我们也可以直接通过编写 YAML 文件的方式来创建这个 Secret 对象，比如：</p>
 <pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Secret</span>
 <span class="hljs-attr">metadata:</span>
@@ -293,7 +292,7 @@ YWRtaW4=
 MWYyZDFlMmU2N2Rm</code></pre>
 
 <p>这里需要注意的是，像这样创建的 Secret 对象，它里面的内容仅仅是经过了转码，而并没有被加密。在真正的生产环境中，我们需要在 Kubernetes 中开启 Secret 的加密插件，增强数据的安全性。</p>
-<h3 id="1-5、创建Pod对象"><a href="#1-5、创建Pod对象" class="headerlink" title="1.5、创建Pod对象"></a>1.5、创建Pod对象</h3><p>接下来，我们尝试一下创建这个 Pod：</p>
+<h3 id="1-3、创建Pod对象"><a href="#1-3、创建Pod对象" class="headerlink" title="1.3、创建Pod对象"></a>1.3、创建Pod对象</h3><p>接下来，我们尝试一下创建这个 Pod：</p>
 <pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl create -f test-projected-volume.yaml</span></code></pre>
 
 <p>当 Pod 变成 Running 状态之后，我们再验证一下这些 Secret 对象是不是已经在容器里了：</p>
@@ -307,9 +306,9 @@ admin
 1f2d1e2e67df</code></pre>
 
 <p>从返回结果中，我们可以看到，保存在 Etcd 里的用户名和密码信息，已经以文件的形式出现在了容器的 Volume 目录里。而这个文件的名字，就是 kubectl create secret 指定的 Key，或者说是 Secret 对象的 data 字段指定的 Key。</p>
-<h3 id="1-6、小结"><a href="#1-6、小结" class="headerlink" title="1.6、小结"></a>1.6、小结</h3><p>Secret对象，不仅可以为我们保存加密数据，但更重要的是，以挂载方式进入到容器里的 Secret，一旦其对应的 Etcd 里的数据被更新，这些 Volume 里的文件内容，同样也会被更新（ kubelet 组件在定时维护这些 Volume）。</p>
+<h3 id="1-4、小结"><a href="#1-4、小结" class="headerlink" title="1.4、小结"></a>1.4、小结</h3><p>Secret对象，可以为我们保存加密数据，更重要的是，它以挂载方式进入到容器里的 Secret，一旦其对应的 Etcd 里的数据被更新，这些 Volume 里的文件内容，同样也会被更新（ kubelet 组件在定时维护这些 Volume）。</p>
 <p>需要注意的是，这个更新可能会有一定的延时。所以在编写应用程序时，在发起数据库连接的代码处写好重试和超时的逻辑，绝对是个好习惯。</p>
-<h2 id="二、ConfigMap"><a href="#二、ConfigMap" class="headerlink" title="二、ConfigMap"></a>二、ConfigMap</h2><p>与 Secret 类似，ConfigMap 保存的是不需要加密的、应用所需的配置信息。ConfigMap 的用法几乎与 Secret 完全相同，我们可以使用 kubectl create configmap 从文件或者目录创建 ConfigMap 对象，也可以直接编写 ConfigMap 对象的 YAML 文件。</p>
+<h2 id="二、ConfigMap"><a href="#二、ConfigMap" class="headerlink" title="二、ConfigMap"></a>二、ConfigMap</h2><p>ConfigMap 保存的是不需要加密的、应用所需的配置信息。ConfigMap 的用法几乎与 Secret 完全相同，我们可以使用 kubectl create configmap 从文件或者目录创建 ConfigMap 对象，也可以直接编写 ConfigMap 对象的 YAML 文件。</p>
 <p>比如，一个 Java 应用所需的配置文件（.properties 文件），就可以通过下面这样的方式保存在 ConfigMap 里：</p>
 <pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> .properties文件的内容</span>
 <span class="hljs-meta">$</span><span class="bash"> cat &gt; ./ui.properties &lt;&lt;<span class="hljs-string">EOF</span></span>
@@ -350,7 +349,7 @@ metadata:
 <span class="hljs-attr">spec:</span>
   <span class="hljs-attr">containers:</span>
     <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">client-container</span>
-      <span class="hljs-attr">image:</span> <span class="hljs-string">k8s.gcr.io/busybox</span>
+      <span class="hljs-attr">image:</span> <span class="hljs-string">busybox</span>
       <span class="hljs-attr">command:</span> [<span class="hljs-string">&quot;sh&quot;</span>, <span class="hljs-string">&quot;-c&quot;</span>]
       <span class="hljs-attr">args:</span>
       <span class="hljs-bullet">-</span> <span class="hljs-string">while</span> <span class="hljs-literal">true</span><span class="hljs-string">;</span> <span class="hljs-string">do</span>
@@ -413,7 +412,7 @@ zone=&quot;us-est-coast&quot;</code></pre>
 <h3 id="4-1、一个特殊的Secret对象"><a href="#4-1、一个特殊的Secret对象" class="headerlink" title="4.1、一个特殊的Secret对象"></a>4.1、一个特殊的Secret对象</h3><p>我们需要知道的是，Service Account对象，是Kubernetes系统内置的一种“服务账户”，它是Kubernetes进行权限分配的对象。比如，Service Account A，可以只被允许对Kubernetes API进行GET操作，而Service Account B，则可以有Kubernetes API的所有操作权限。而Service Account 对象的授权信息和文件，则保存在它所绑定的一个特殊的 Secret 对象里。而这个特殊的 Secret 对象，就叫作 ServiceAccountToken。</p>
 <p>任何运行在 Kubernetes 集群上的应用，都必须使用 ServiceAccountToken 里保存的授权信息，也就是 Token，才可以合法地访问 API Server。</p>
 <p>所以说，Kubernetes 项目的 Projected Volume 其实只有三种，因为第四种 ServiceAccountToken，只是一种特殊的 Secret 而已。</p>
-<h3 id="4-2、Pod如何使用默认Service-Account"><a href="#4-2、Pod如何使用默认Service-Account" class="headerlink" title="4.2、Pod如何使用默认Service Account"></a>4.2、Pod如何使用默认Service Account</h3><p>为了方便使用，Kubernetes 已经为我们提供了一个默认“服务账户”（default Service Account）。并且，任何一个运行在 Kubernetes 里的 Pod，都可以直接使用这个默认的 Service Account，而无需显示地声明挂载它。这是如何做到的呢？</p>
+<h3 id="4-2、默认Service-Account"><a href="#4-2、默认Service-Account" class="headerlink" title="4.2、默认Service Account"></a>4.2、默认Service Account</h3><p>为了方便使用，Kubernetes 已经为我们提供了一个默认“服务账户”（default Service Account）。并且，任何一个运行在 Kubernetes 里的 Pod，都可以直接使用这个默认的 Service Account，而无需显示地声明挂载它。而这又是如何做到的呢？</p>
 <p>当然还是靠 Projected Volume 机制。如果查看一下任意一个运行在 Kubernetes 集群里的 Pod，就会发现，每一个 Pod，都已经自动声明了一个类型是 Secret、名为 default-token-xxx 的 Volume，然后 自动挂载在每个容器的一个固定目录上。比如：</p>
 <pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> kubectl describe pod nginx-deployment-5c678cfb6d-lg9lw</span>
 Containers:
@@ -628,7 +627,7 @@ ca.crt namespace  token</code></pre>
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "深入解析Pod对象3：Projected Volume&nbsp;",
+        "：存储管理6：Projected Volume&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

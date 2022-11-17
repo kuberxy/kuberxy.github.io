@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="kubxy">
   <meta name="keywords" content="">
-  <title>持久化存储3：编写自己的存储插件 - Kubxy</title>
+  <title>存储管理1：理解PV、PVC对象 - Kubxy</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -165,7 +165,7 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-10-05 10:23" pubdate>
+      <time datetime="2020-10-05 10:20" pubdate>
         2020年10月5日 上午
       </time>
     </span>
@@ -177,7 +177,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1 字
+      906 字
     </span>
   
 
@@ -187,7 +187,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      10
        分钟
     </span>
   
@@ -217,16 +217,93 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">持久化存储3：编写自己的存储插件</h1>
+            <h1 style="display: none">存储管理1：理解PV、PVC对象</h1>
             
             <div class="markdown-body" id="post-body">
-              <p>todo</p>
+              <p>一个优秀的云计算项目自然少不了存储资源的管理。在kubernetes中，为了简化用户使用持久化存储的门槛，引入了一组叫作  Persistent Volume（PV）和Persistent Volume Claim（PVC）的 API 对象。</p>
+<h3 id="1-1、PV对象"><a href="#1-1、PV对象" class="headerlink" title="1.1、PV对象"></a>1.1、PV对象</h3><p>PV对象用于描述集群中的存储资源。它主要定义了存储服务的访问信息（或实现细节），比如一个NFS服务的共享信息。通常情况下，PV对象是由集群管理员事先创建的，以供集群用户使用。比如，运维人员可以定义一个这样的NFS类型的PV，如下所示：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">kind:</span> <span class="hljs-string">PersistentVolume</span>
+<span class="hljs-attr">apiVerson:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">meatdata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">nfs</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">nfs:</span>
+    <span class="hljs-attr">server:</span> <span class="hljs-number">10.244</span><span class="hljs-number">.1</span><span class="hljs-number">.4</span>
+    <span class="hljs-attr">path:</span> <span class="hljs-string">&quot;/&quot;</span>
+  <span class="hljs-attr">capacity:</span>
+    <span class="hljs-attr">storage:</span> <span class="hljs-string">1Gi</span>
+  <span class="hljs-attr">accessModes:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">ReadWriteMany</span>
+  <span class="hljs-attr">storageClassName:</span> <span class="hljs-string">manual</span></code></pre>
+
+<p>有关PV对象更多的属性以及其它类型PV的定义方式可参考kubernetes<a target="_blank" rel="noopener" href="https://kubernetes.io/zh/docs/concepts/storage/persistent-volumes/#types-of-persistent-volumes">官方文档</a>。</p>
+<h3 id="1-2、PVC对象"><a href="#1-2、PVC对象" class="headerlink" title="1.2、PVC对象"></a>1.2、PVC对象</h3><p>PVC对象用于描述Pod所需要的持久化存储信息。比如，存储大小、访问权限等。PVC通常由要使用存储资源的用户创建，或者以PVC模板的形式出现在StatefulSet对象中，然后由StatefulSet控制器创建带编号的PVC。比如，开发人员可以声明一个1GB大小的PVC，如下：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">kind:</span> <span class="hljs-string">PersistentVolumeClaim</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">nfs</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">resources:</span>
+    <span class="hljs-attr">requests:</span>
+      <span class="hljs-attr">storage:</span> <span class="hljs-string">1Gi</span>
+  <span class="hljs-attr">accessModes:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">ReadWriteMany</span>
+  <span class="hljs-attr">storageClassName:</span> <span class="hljs-string">manual</span></code></pre>
+
+<p>有关PVC对象更多的属性可参考kubernetes<a target="_blank" rel="noopener" href="https://kubernetes.io/zh/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims">官方文档</a>。</p>
+<h3 id="1-3、Pod使用PVC"><a href="#1-3、Pod使用PVC" class="headerlink" title="1.3、Pod使用PVC"></a>1.3、Pod使用PVC</h3><p>PVC资源只有在和某个符合条件的PV绑定后，才能被Pod使用。这里的条件包括：</p>
+<ul>
+<li>它们有相同的storageClassName；</li>
+<li>PV能满足PVC对存储资源的要求。比如，PV的存储大小能满足PVC的需要。</li>
+</ul>
+<p>一旦PVC和PV绑定后，Pod就能像使用hostPath等常规类型的Volume一样，在自己的对象文件里声明它要使用的PVC，如下：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">labels:</span>
+    <span class="hljs-attr">role:</span> <span class="hljs-string">web-frontend</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">web</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">nginx</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">web</span>
+        <span class="hljs-attr">containerPort:</span> <span class="hljs-number">80</span>
+    <span class="hljs-attr">volumeMounts:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">nfs</span>
+          <span class="hljs-attr">mountPath:</span> <span class="hljs-string">&quot;/usr/share/nginx/html&quot;</span>
+  <span class="hljs-attr">volumes:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">nfs</span>
+    <span class="hljs-attr">persistentVolumeClaim:</span>
+      <span class="hljs-attr">claimName:</span> <span class="hljs-string">nfs</span></code></pre>
+
+<p>可以看到，我们只需要在Pod对象的volumes字段中声明要使用的PVC的名字。当创建这个Pod时，kubelet就会把这个PVC所对应的PV，也就是一个NFS类型的Volume，挂载到Pod容器内的目录上。</p>
+<h3 id="1-4、PersistentVolumeController"><a href="#1-4、PersistentVolumeController" class="headerlink" title="1.4、PersistentVolumeController"></a>1.4、PersistentVolumeController</h3><p>在 Kubernetes 中，实际上存在着一个专门处理持久化存储的控制器，叫作 Volume Controller。这个 Volume Controller 维护着多个控制循环，其中有一个循环，其作用就是将PVC与某个符合条件的PV进行绑定。它的名字叫作 PersistentVolumeController。</p>
+<p>PersistentVolumeController 会不断地查看当前每一个 PVC是不是已经处于 Bound（已绑定）状态。如果不是，那它就会遍历所有的、可用的 PV，并尝试将其与这个“单身”的 PVC 进行绑定。这样，Kubernetes 就可以保证用户提交的每一个 PVC，只要有合适的 PV 出现，它就能够很快进入绑定状态，从而结束“单身”之旅。</p>
+<p>将一个 PV 与 PVC 进行“绑定”，其实就是将这个 PV 对象的名字，填在了 PVC 对象的 spec.volumeName 字段上。所以， Kubernetes 只要获取到这个 PVC 对象，就一定能够找到它所绑定的 PV。</p>
+<h3 id="1-5、小结"><a href="#1-5、小结" class="headerlink" title="1.5、小结"></a>1.5、小结</h3><p>在Kubernetes中PVC和PV的设计，仍然符合“面向对象”的思想。其中，PVC是接口，用于描述用户所需要的存储（存储大小、读写权限等）；PV是实现，用于定义存储服务的访问信息（或实现细节）。PVC和PV之间相互独立，通过PersistentVolumeContronller就能将PVC和符合条件的PV进行绑定。</p>
+<h3 id="1-6、参考"><a href="#1-6、参考" class="headerlink" title="1.6、参考"></a>1.6、参考</h3><p><a target="_blank" rel="noopener" href="https://time.geekbang.org/column/intro/100015201">https://time.geekbang.org/column/intro/100015201</a></p>
+<p><a target="_blank" rel="noopener" href="https://kubernetes.io/zh/docs/concepts/storage/persistent-volumes/">https://kubernetes.io/zh/docs/concepts/storage/persistent-volumes/</a></p>
 
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Kubernetes/">Kubernetes</a>
+                    
+                  </div>
                 
               </div>
               
@@ -237,9 +314,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A84%EF%BC%9A%E5%AE%9E%E8%B7%B5%E5%AE%B9%E5%99%A8%E5%AD%98%E5%82%A8/">
+                      <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%865%EF%BC%9A%E5%AE%9E%E8%B7%B5Local%20PV/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">持久化存储4：实践容器存储</span>
+                        <span class="hidden-mobile">存储管理5：实践Local PV</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -247,8 +324,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/10/05/%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A82%EF%BC%9A%E5%AE%9E%E8%B7%B5Local%20PV/">
-                        <span class="hidden-mobile">持久化存储2：实践Local PV</span>
+                      <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%862%EF%BC%9AKubernetes%E6%98%AF%E5%A6%82%E4%BD%95%E5%87%86%E5%A4%87%E6%8C%81%E4%B9%85%E5%8C%96%E7%9B%AE%E5%BD%95%E7%9A%84/">
+                        <span class="hidden-mobile">存储管理2：Kubernetes是如何准备持久化目录的</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -391,7 +468,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "持久化存储3：编写自己的存储插件&nbsp;",
+        "存储管理1：理解PV、PVC对象&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
