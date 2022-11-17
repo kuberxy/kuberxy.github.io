@@ -197,7 +197,7 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-05 10:21" pubdate>
+            <time datetime="2020-10-05 10:40" pubdate>
               2020-10-05
             </time>
           </div>
@@ -227,17 +227,17 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%861%EF%BC%9A%E7%90%86%E8%A7%A3PV%E3%80%81PVC%E4%BD%93%E7%B3%BB/">存储管理1：理解PV、PVC对象</a>
+        <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%864%EF%BC%9A%E7%90%86%E8%A7%A3Local%20PV/">存储管理4：理解Local PV</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%861%EF%BC%9A%E7%90%86%E8%A7%A3PV%E3%80%81PVC%E4%BD%93%E7%B3%BB/">
+        <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%864%EF%BC%9A%E7%90%86%E8%A7%A3Local%20PV/">
           
           
             
           
-          一个优秀的云计算项目自然少不了存储资源的管理。在kubernetes中，为了简化用户使用持久化存储的门槛，引入了一组叫作  Persistent Volume（PV）和Persistent Volume Claim（PVC）的 API 对象。
-1.1、PV对象PV对象用于描述集群中的存储资源。它主要定义了存储服务的访问信息（或实现细节），比如一个NFS服务的共享信息。通常情况下，PV对象是由集群管
+          在前面的文章中，我们都是基于一个外部的存储服务来提供PV。此时，我们可能有这样的疑问：能否直接使用宿主机上的目录或磁盘作为PV呢？答案是肯定的。这就是我们今天就要讨论的主题：Local Persistent Volume。
+1.1、什么是Local PVKubernetes 支持直接使用宿主机上目录或磁盘，而不依赖于远程存储服务来提供“持久化”的 Volume。这样做的好处显而易见：由于这个 Vo
         </a>
       </p>
 
@@ -245,7 +245,55 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-05 10:20" pubdate>
+            <time datetime="2020-10-05 10:35" pubdate>
+              2020-10-05
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%863%EF%BC%9A%E7%90%86%E8%A7%A3StorageClass/">存储管理3：理解StorageClass</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%863%EF%BC%9A%E7%90%86%E8%A7%A3StorageClass/">
+          
+          
+            
+          
+          在前面的文章中，我们通过手动方式创建出了所需要的PV。接下来，我们来看一种自动创建PV的方式。
+1.1、Static Provisioning &amp; Dynamic Provisioning在一个大规模的Kubernetes集群中，集群用户可能会创建出成千上万个PVC，这时，集群管理员就需要不停地创建出满足一定条件的PV，否则新Pod就会因为PVC无法绑定PV而运行失败。显然，在实际操作中，
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-05 10:30" pubdate>
               2020-10-05
             </time>
           </div>
@@ -293,7 +341,7 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-05 10:20" pubdate>
+            <time datetime="2020-10-05 10:25" pubdate>
               2020-10-05
             </time>
           </div>
@@ -323,17 +371,17 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%863%EF%BC%9A%E7%90%86%E8%A7%A3StorageClass/">存储管理3：理解StorageClass</a>
+        <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%861%EF%BC%9A%E7%90%86%E8%A7%A3PV%E3%80%81PVC%E4%BD%93%E7%B3%BB/">存储管理1：理解PV、PVC对象</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%863%EF%BC%9A%E7%90%86%E8%A7%A3StorageClass/">
+        <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%861%EF%BC%9A%E7%90%86%E8%A7%A3PV%E3%80%81PVC%E4%BD%93%E7%B3%BB/">
           
           
             
           
-          在前面的文章中，我们通过手动方式创建出了所需要的PV。接下来，我们来看一种自动创建PV的方式。
-1.1、Static Provisioning &amp; Dynamic Provisioning在一个大规模的Kubernetes集群中，集群用户可能会创建出成千上万个PVC，这时，集群管理员就需要不停地创建出满足一定条件的PV，否则新Pod就会因为PVC无法绑定PV而运行失败。显然，在实际操作中，
+          一个优秀的云计算项目自然少不了存储资源的管理。在kubernetes中，为了简化用户使用持久化存储的门槛，引入了一组叫作  Persistent Volume（PV）和Persistent Volume Claim（PVC）的 API 对象。
+1.1、PV对象PV对象用于描述集群中的存储资源。它主要定义了存储服务的访问信息（或实现细节），比如一个NFS服务的共享信息。通常情况下，PV对象是由集群管
         </a>
       </p>
 
@@ -575,54 +623,6 @@
           在前面的文章中，我们讨论了StatefulSet如何保证应用实例的拓扑状态。接下来，我们重点讨论StatefulSet如何保证应用的存储状态。
 一、从PVC和PV说起StatefulSet 对存储状态的管理，主要依赖于一个叫作 Persistent Volume Claim 的功能。
 1.1、没有PVC和PV之前我们知道，在一个 Pod 里声明 Volume，只要在 Pod 里加上 spec.vo
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-03 08:05" pubdate>
-              2020-10-03
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Kubernetes/">Kubernetes</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/03/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%923%EF%BC%9A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3StatefulSet%E4%B9%8B%E6%8B%93%E6%89%91%E7%8A%B6%E6%80%81/">容器编排3：深入理解StatefulSet之拓扑状态</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/03/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%923%EF%BC%9A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3StatefulSet%E4%B9%8B%E6%8B%93%E6%89%91%E7%8A%B6%E6%80%81/">
-          
-          
-            
-          
-          在前面的文章中，我们讨论了Deployment控制器的工作原理，但Deployment控制器并不足以覆盖所有的应用编排问题。接下来，我们重点讨论Kubernetes提供的另一种重要的编排能力：StatefulSet。
-一、从有状态应用说起Deployment 对应用做了一个简单化假设：一个应用的所有 Pod，是完全一样的。所以，它们互相之间没有顺序，也无所谓运行在哪台宿主机上。需要的时候，Depl
         </a>
       </p>
 

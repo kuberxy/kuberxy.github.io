@@ -614,17 +614,16 @@ Kubernetes 里的 Pod 默认都是“允许所有”（Accept Al
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%864%EF%BC%9A%E7%90%86%E8%A7%A3Local%20PV/">存储管理4：理解Local PV</a>
+        <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%866%EF%BC%9AProjected%20Volume/">：存储管理6：Projected Volume</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%864%EF%BC%9A%E7%90%86%E8%A7%A3Local%20PV/">
+        <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%866%EF%BC%9AProjected%20Volume/">
           
           
             
           
-          在前面的文章中，我们都是基于一个外部的存储服务来提供PV。此时，我们可能有这样的疑问：能否直接使用宿主机上的目录或磁盘作为PV呢？答案是肯定的。这就是我们今天就要讨论的主题：Local Persistent Volume。
-1.1、什么是Local PVKubernetes 支持直接使用宿主机上目录或磁盘，而不依赖于远程存储服务来提供“持久化”的 Volume。这样做的好处显而易见：由于这个 Vo
+          在 Kubernetes 中，有几种特殊的 Volume，它们存在的意义不是为了存放容器里的数据，也不是用来进行容器和宿主机之间的数据交换。而是为容器提供预先定义好的数据。从容器的角度来看，这些 Volume 中的信息仿佛是被 Kubernetes“投射”（Project）到容器当中的。这正是 Projected Volume 的含义。到目前为止，Kubernetes 支持的 Projected 
         </a>
       </p>
 
@@ -632,7 +631,7 @@ Kubernetes 里的 Pod 默认都是“允许所有”（Accept Al
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-05 10:21" pubdate>
+            <time datetime="2020-10-05 10:45" pubdate>
               2020-10-05
             </time>
           </div>
