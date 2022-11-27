@@ -187,7 +187,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      16
+      15
        分钟
     </span>
   
@@ -220,8 +220,8 @@
             <h1 style="display: none">容器编排1：理解控制器模型</h1>
             
             <div class="markdown-body" id="post-body">
-              <p>在前面的文章中，我们已经对Pod对象进行了深入地讨论。接下来，我们就一起来看一看“编排”这个Kubernetes项目最核心的功能。</p>
-<h2 id="一、从一个例子说起"><a href="#一、从一个例子说起" class="headerlink" title="一、从一个例子说起"></a>一、从一个例子说起</h2><p>在前面讨论Pod对象时，我们做出了一个这样的总结：“容器，是进程；Pod，是操作系统”。由于容器在描述应用时过于简单，因此kubernetes将容器进一步抽象、封装成了Pod。在kubernetes的世界中，通常不会直接操作Pod对象，而是由控制器完成。比如，下面这个名叫nginx-deployment 的例子：</p>
+              <p>在前面的文章中，我们已经对Pod对象进行了深入地讨论。接下来，我们一起来看Kubernetes项目最核心的功能，编排。</p>
+<h2 id="一、从一个例子说起"><a href="#一、从一个例子说起" class="headerlink" title="一、从一个例子说起"></a>一、从一个例子说起</h2><p>在前面讨论Pod对象时，我们做出了一个这样的总结：“容器，是进程；Pod，是操作系统”。由于容器描述应用时过于简单，因此kubernetes将容器进一步抽象、封装成了Pod。在kubernetes的世界中，通常不会直接操作Pod对象，而是由控制器完成。比如，下面这个名叫nginx-deployment 的例子：</p>
 <pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Deployment</span>
 <span class="hljs-attr">metadata:</span>
@@ -265,7 +265,7 @@ cronjob/                garbagecollector/       nodelifecycle/          replicat
 &#125;</code></pre>
 
 <p>在具体的实现中，实际状态往往来自于 Kubernetes 集群本身。比如，kubelet 通过心跳汇报的容器状态和节点状态，或者监控系统中保存的应用监控数据，再或者控制器主动收集的它自己感兴趣的信息，这些都是常见的实际状态的来源。而期望状态，一般来自于用户提交的 YAML 文件。比如，Deployment 对象中 Replicas 字段的值。很明显，这些信息往往都保存在 Etcd 中。</p>
-<h3 id="2-2、控制器模型"><a href="#2-2、控制器模型" class="headerlink" title="2.2、控制器模型"></a>2.2、控制器模型</h3><p>我们可以以上面的 Deployment 对象为例，简单描述一下控制器模型的实现：</p>
+<h3 id="2-2、调谐循环"><a href="#2-2、调谐循环" class="headerlink" title="2.2、调谐循环"></a>2.2、调谐循环</h3><p>我们可以以上面的 Deployment 对象为例，简单描述一下控制器模型的实现：</p>
 <ul>
 <li>Deployment控制器从Etcd中获取到所有携带了“app:ningx”标签的Pod，然后统计它们的数量，这就是实际状态；</li>
 <li>YAML文件中Deployment对象的Replicas字段的值就是期望状态；</li>
@@ -280,9 +280,9 @@ cronjob/                garbagecollector/       nodelifecycle/          replicat
 <h2 id="三、小结"><a href="#三、小结" class="headerlink" title="三、小结"></a>三、小结</h2><p>在这篇文章中，我们以Deployment为例，讨论了Kubernetes如何通过“控制器”，实现对各种不同对象或资源的编排：</p>
 <ul>
 <li>Kubernetes支持多种容器编排功能，比如ReplicaSet、Deployment、StatefulSet、DaemonSet、CronJob等</li>
-<li>每一种编排功能都是由一个或多个控制器实现的，并都遵循控制循环的流程，完成各自的编排逻辑。</li>
-<li>在控制循环的作用下，最后的执行结果都和Deployment类似，要么就是创建、更新一些Pod，要么就是删除一些已经存在的Pod（或者其他的API对象、资源）。</li>
-<li>当我们描述一个应用时，主要会涉及到两个核心内容：控制器定义（应用所使用的控制器类型）和被控制对象（即应用本身）。</li>
+<li>每一种编排功能都是由一个或多个控制器实现的，每个控制器通过控制循环完成各自的编排逻辑。</li>
+<li>在控制循环的作用下，最后的执行结果都和Deployment类似，即要么创建、更新一些Pod，要么删除一些已经存在的Pod（或者其他的API对象、资源）。</li>
+<li>当我们描述一个对象时，主要会涉及到两个核心内容：控制器定义（对象所使用的控制器）和被控制对象（即对象本身）。</li>
 </ul>
 
             </div>
