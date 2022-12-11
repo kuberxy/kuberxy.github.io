@@ -272,9 +272,10 @@
 <p>更确切地说，当我们指定了 requests.cpu=250m 之后，相当于将 Cgroups 的 cpu.shares 的值设置为 (250/1000)*1024。而当我们没有设置 requests.cpu 的时候，cpu.shares 默认则是 1024。这样，Kubernetes 就通过 cpu.shares 完成了对 CPU 时间的按比例分配。</p>
 <p>而如果我们指定了 limits.cpu=500m 之后，则相当于将 Cgroups 的 cpu.cfs_quota_us 的值设置为 (500/1000)*100ms，而 cpu.cfs_period_us 的值始终是 100ms。这样，Kubernetes 就为我们设置了这个容器只能用到宿主机CPU 的 50%。</p>
 <p>对于内存来说，当我们指定了 limits.memory=128Mi 之后，相当于将 Cgroups 的 memory.limit_in_bytes 设置为 128 * 1024 * 1024。而在调度的时候，调度器只会使用 requests.memory=64Mi 来进行判断。</p>
+<p>综上所述，requests是Pod能接受的资源下限（供调度时使用），而于limits则是Pod能使用的资源上限。</p>
 <h3 id="1-5、小结"><a href="#1-5、小结" class="headerlink" title="1.5、小结"></a>1.5、小结</h3><p>Kubernetes 这种对 CPU 和内存资源限额的设计，实际上参考了 Borg 论文中对“动态资源边界”的定义，即：容器化作业在提交时所设置的资源边界，并不一定是调度系统所必须严格遵守的，这是因为在实际场景中，大多数作业使用到的资源其实远小于它所请求的资源限额。基于这种假设，Borg 在作业被提交后，会主动减小它的资源限额配置，以便容纳更多的作业、提升资源利用率。而当作业资源使用量增加到一定阈值时，Borg 会通过“快速恢复”过程，还原作业原始的资源限额，防止出现异常情况。</p>
 <p>Kubernetes 的 requests+limits 的做法，其实就是上述思路的一个简化版：用户在提交 Pod 时，可以声明一个相对较小的 requests 值供调度器使用，而 Kubernetes 真正设置给容器 Cgroups 的，则是相对较大的 limits 值。不难看到，这跟 Borg 的思路是相通的。</p>
-<h2 id="二、Kubernetes中的QoS模型"><a href="#二、Kubernetes中的QoS模型" class="headerlink" title="二、Kubernetes中的QoS模型"></a>二、Kubernetes中的QoS模型</h2><p>在理解了 Kubernetes 资源模型的设计之后，我们再来讨论一下 Kubernetes 里的 QoS 模型。在 Kubernetes 中，不同的 requests 和 limits 设置，其实会将这个 Pod 划分到不同的 QoS 级别当中。</p>
+<h2 id="二、Kubernetes中的QoS模型"><a href="#二、Kubernetes中的QoS模型" class="headerlink" title="二、Kubernetes中的QoS模型"></a>二、Kubernetes中的QoS模型</h2><p>在理解了 Kubernetes 资源模型设计之后，我们再来讨论一下 Kubernetes 里的 QoS 模型。在 Kubernetes 中，不同的 requests 和 limits 设置，其实会将这个 Pod 划分到不同的 QoS 级别当中。</p>
 <h3 id="2-1、三种QoS级别"><a href="#2-1、三种QoS级别" class="headerlink" title="2.1、三种QoS级别"></a>2.1、三种QoS级别</h3><h4 id="2-1-1、Guaranteed"><a href="#2-1-1、Guaranteed" class="headerlink" title="2.1.1、Guaranteed"></a>2.1.1、Guaranteed</h4><p>当 Pod 里的每一个 Container 都同时设置了 requests 和 limits，并且 requests 和 limits 值相等的时候，这个 Pod 就属于 Guaranteed 类别，如下所示：</p>
 <pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
@@ -322,7 +323,7 @@
     <span class="hljs-attr">image:</span> <span class="hljs-string">nginx</span></code></pre>
 
 <h3 id="2-2、划分QoS级别的目的"><a href="#2-2、划分QoS级别的目的" class="headerlink" title="2.2、划分QoS级别的目的"></a>2.2、划分QoS级别的目的</h3><blockquote>
-<p>那么，Kubernetes 为 Pod 设置这样三种 QoS 类别，具体有什么作用呢？</p>
+<p>那么，Kubernetes 为 Pod 设置这三种 QoS 类别，具体有什么作用呢？</p>
 </blockquote>
 <p>实际上， 划分QoS级别的主要应用场景，是当宿主机资源紧张的时候，kubelet 对 Pod 进行 Eviction（即资源回收）时会用到。</p>
 <p>具体来说，当 Kubernetes 所管理的宿主机上的不可压缩资源短缺时，就有可能触发 Eviction。比如，可用内存（memory.available）、可用的宿主机磁盘空间（nodefs.available），以及容器运行时镜像存储空间（imagefs.available）等等。</p>
@@ -339,7 +340,7 @@ imagefs.available&lt;15%</code></pre>
 --eviction-soft-grace-period=imagefs.available=2m,nodefs.available=2m \
 --eviction-max-pod-grace-period=600</code></pre>
 
-<p>在这个配置中，我们可以看到 Eviction 在 Kubernetes 里其实分为 Soft 和 Hard 两种模式。其中，Soft Eviction 允许我们为 Eviction 过程设置一段“优雅时间”，比如上面例子里的 imagefs.available=2m，就意味着当 imagefs 不足的阈值达到 2 分钟之后，kubelet 才会开始 Eviction 的过程。而 Hard Eviction 模式下，Eviction 过程就会在阈值达到之后立刻开始。</p>
+<p>在这个配置中，我们可以看到 Eviction 在 Kubernetes 里其实分为 Soft 和 Hard 两种模式。其中，Soft Eviction 允许我们为 Eviction 过程设置一段“优雅时间”，比如上面例子里的 imagefs.available=2m，就意味着当 imagefs 不足的阈值达到 2 分钟之后，kubelet 才会开始 Eviction 的过程。而在 Hard Eviction 模式下，Eviction 过程会在阈值达到之后立刻开始。</p>
 <h3 id="2-4、Eviction的执行策略"><a href="#2-4、Eviction的执行策略" class="headerlink" title="2.4、Eviction的执行策略"></a>2.4、Eviction的执行策略</h3><p>Kubernetes 计算 Eviction 阈值的数据来源，主要依赖于从 Cgroups 读取到的值，以及使用 cAdvisor 监控到的数据。当宿主机的 Eviction 阈值达到后，就会进入 MemoryPressure 或者 DiskPressure 状态，从而避免新的 Pod 被调度到这台宿主机上。而当 Eviction 发生的时候，kubelet 具体会挑选哪些 Pod 进行删除操作，就需要参考这些 Pod 的 QoS 类别了：</p>
 <ul>
 <li><p>首当其冲的，自然是 BestEffort 类别的 Pod。</p>
@@ -355,7 +356,7 @@ imagefs.available&lt;15%</code></pre>
 <blockquote>
 <p>可是，这样的需求在 Kubernetes 里又该如何实现呢？</p>
 </blockquote>
-<p>其实非常简单。首先，我们的 Pod 必须是 Guaranteed 的 QoS 类型；然后，我们只需要将 Pod 的 CPU 资源的 requests 和 limits 设置为同一个相等的整数值即可。比如下面这个例子：</p>
+<p>其实非常简单。首先，我们的 Pod 的QoS 类型必须为 Guaranteed；然后，我们只需要将 Pod 的 CPU 资源的 requests 和 limits 设置为同一个相等的整数值即可。比如下面这个例子：</p>
 <pre><code class="hljs yaml"><span class="hljs-attr">spec:</span>
   <span class="hljs-attr">containers:</span>
   <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">nginx</span>
@@ -371,16 +372,16 @@ imagefs.available&lt;15%</code></pre>
 <p>这时候，该 Pod 就会被绑定在 2 个独占的 CPU 核上。当然，具体是哪两个 CPU 核，则是由 kubelet 为我们分配的。</p>
 <h2 id="四、小结"><a href="#四、小结" class="headerlink" title="四、小结"></a>四、小结</h2><p>在这篇文章中，我们主要讨论了如下概念：</p>
 <ul>
-<li>在Kubernetes中资源被分为可压缩资源（比如，CPU）和不可压缩资源（比如，内存和磁盘）。当可压缩资源不足时，Pod会饥饿但不会退出；当不可压缩资源不足时，Pod就会退出</li>
+<li>在Kubernetes中资源被分为可压缩资源（比如，CPU）和不可压缩资源（比如，内存和磁盘）。当可压缩资源不足时，Pod会饥饿但不会退出；当不可压缩资源不足时，Pod就会退出。</li>
 <li>Kubernetes支持requests和limits两种限额设置。其中，requests值是调度器进行Pod调度时的参考，limits值则是Cgroups为Pod设置的可用资源上限。</li>
 <li>Kubernetes根据requests和limits的设置情况划分出了三种QoS级别，它们分别是：Guaranteed、Burstable、BestEffort。<ul>
-<li>当Pod中的每个Container同时设置requests和limits（或者仅设置了limits），并且它们的值相等时，该Pod就属于Guaranteed级别；</li>
-<li>当Pod中至少有一个Container设置了requests，且不满足Guaranteed条件时，该Pod就属于Burstable级别；</li>
-<li>当Pod即没有设置requests，又没有设置limits时，该Pod就属于BestEffort级别</li>
+<li>当Pod中的所有Container即没有设置requests，又没有设置limits时，该Pod就属于BestEffort级别；</li>
+<li>当Pod中的每个Container同时设置requests和limits（或者仅设置了limits），并且requests和limits的值相等时，该Pod就属于Guaranteed级别；</li>
+<li>当Pod中至少有一个Container设置了requests，且不满足Guaranteed条件时，该Pod就属于Burstable级别。</li>
 </ul>
 </li>
 <li>QoS是kubelet进行Eviction的重要参考。当不可压缩资源出现不足时，就会发生Eviction。而kubelet在进行Eviction时，会遵循先BestEffort、再Burstable、后Guaranteed的策略</li>
-<li>在kubernetes中存在着一个非常有用的特性：cpuset。通过它可以将容器绑定当某个CPU上。这样可以减少上下文切换，提高容器的性能</li>
+<li>cpuset是kubernetes中一个非常有用的特性。通过它可以将容器绑定当某个CPU上。这样可以减少上下文切换，提高容器的性能。</li>
 </ul>
 
             </div>
@@ -391,7 +392,7 @@ imagefs.available&lt;15%</code></pre>
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/Kubernetes/">Kubernetes</a>
+                      <a class="hover-with-bg" href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
                     
                   </div>
                 

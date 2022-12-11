@@ -262,7 +262,7 @@
 <li>Kubernetes默认调度器的主要职责是：将Pod调度到最合适的节点上。在具体的流程上，默认调度器首先会通过Predicate算法挑选出所有可以运行该Pod的节点，然后再通过Priority算法给这些节点打分，而得分最高的节点就是最合适的节点。</li>
 <li>默认调度器在具体的实现上就是两个独立的控制循环：Informer Path和Scheduling Path。其中：<ul>
 <li>Informer Path的主要作用是监听各种API对象的变化，及时将待调度资源入队，以及更新调度器缓存；</li>
-<li>Scheduling Path的主要作用是从调度队列中出队带调度资源，然后调用Predicate算法和Priority算法得出最合适的节点，最后执行bind操作（即设置nodeName 字段的值）。</li>
+<li>Scheduling Path的主要作用是从调度队列中将待调度资源出队，然后调用Predicate算法和Priority算法得出最合适的节点，最后执行bind操作（即设置nodeName 字段的值）。</li>
 </ul>
 </li>
 <li>Cache化、乐观绑定、无锁化是Kubernetes默认调度器中的几个重要设计思想，这些设计大大提高了Kubernetes的调度效率。</li>
@@ -276,7 +276,7 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/Kubernetes/">Kubernetes</a>
+                      <a class="hover-with-bg" href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
                     
                   </div>
                 
