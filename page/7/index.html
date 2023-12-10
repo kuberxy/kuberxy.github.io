@@ -176,6 +176,159 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2020/12/14/%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B21%EF%BC%9A%E7%90%86%E8%A7%A3kubeadm/">集群部署1：理解kubeadm</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/12/14/%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B21%EF%BC%9A%E7%90%86%E8%A7%A3kubeadm/">
+          
+          
+            
+          
+          todo
+一、容器化Kubernetes的难点在哪？我们知道，Kubernetes的每一个组件都是一个需要被执行的、单独的二进制文件。像Ansible这样的运维工具或者由社区维护的部署脚本，就是把这些二进制文件传输到指定的机器当中，然后编写控制脚本来启停这些组件。
+在学习了容器技术之后，我们可能会萌生这样的想法：是否使用容器部署Kubernetes？这样，我们只要为每个组件做一个容器镜像，然后在每
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-14 08:20" pubdate>
+              2020-12-14
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes%E3%80%81kubeadm/">Kubernetes、kubeadm</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/12/09/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95API-Server%E6%A1%86%E6%9E%B6/">一个简单API Server框架</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/12/09/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95API-Server%E6%A1%86%E6%9E%B6/">
+          
+          
+            
+          
+          在前面的文章中，我们讨论REST相关的概念，以及REST在OpenResty中的应用。接下来，我们尝试使用OpenResty中搭建一个简单的API Server。
+一、需求实现一个能计算加减乘除的数学计算器
+二、实现我们先来看看一个最简陋的实现版本：
+worker_processes  1;
+error_log logs/error.log;
+events &#123;
+    worker_co
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-09 11:21" pubdate>
+              2020-12-09
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/OpenResty/">OpenResty</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/API-Server%E6%A1%86%E6%9E%B6/">API Server框架</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/12/09/API%E7%9A%84%E8%AE%BE%E8%AE%A1/">API的设计</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/12/09/API%E7%9A%84%E8%AE%BE%E8%AE%A1/">
+          
+          
+            
+          
+          OpenResty最擅长的应用场景之一就是API Server。一提到API Server我们的脑海里一定会冒出许多与REST相关的概念，下面我们来看看在OpenResty中如何实现REST风格的API Server。
+一、为什么要使用REST首先，我们先来看看不采用REST的API Server长什么样，如下示例：
+server &#123;
+    listen       80;
+    s
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-09 09:46" pubdate>
+              2020-12-09
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/OpenResty/">OpenResty</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Web%E6%9C%8D%E5%8A%A1%E3%80%81REST/">Web服务、REST</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2020/12/06/%E9%99%90%E6%B5%81%E8%AF%A5%E6%80%8E%E4%B9%88%E5%81%9A/">限流该怎么做</a>
       </h1>
 
@@ -518,152 +671,6 @@ Predicates 在调度过程中的作用，可以理解为 Filter，即：它按�
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A6/">作业调度</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/10/GoReplay%E5%85%A5%E9%97%A8/">GoReplay入门</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/10/GoReplay%E5%85%A5%E9%97%A8/">
-          
-          
-            
-          
-          随着应用功能的不断增加，测试它所需的工作量也会成倍增加。GoReplay则为我们提供了一个简单而快速的测试方法，即重用现有流量进行测试。它能够记录和分析应用程序的流量，且不会对应用程序造成影响。
-一、简介GoReplay，又称Gor，是一个采用Golang编写的、开源的HTTP实时流量捕获和重放工具。通过它可以完成流量复制、负载测试、流量监控和流量分析等工作。它以守护进程（而不是Proxy）的形式
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-10 16:05" pubdate>
-              2020-10-10
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E6%B5%81%E9%87%8F%E5%A4%8D%E5%88%B6/">流量复制</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Gor/">Gor</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/08/%E6%80%8E%E6%A0%B7%E5%88%B6%E5%AE%9A%E4%B8%80%E4%BB%BD%E7%A7%91%E5%AD%A6%E7%9A%84%E8%B7%91%E6%AD%A5%E6%96%B9%E6%A1%88%EF%BC%9F/">怎样制定一份科学的跑步方案？</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/08/%E6%80%8E%E6%A0%B7%E5%88%B6%E5%AE%9A%E4%B8%80%E4%BB%BD%E7%A7%91%E5%AD%A6%E7%9A%84%E8%B7%91%E6%AD%A5%E6%96%B9%E6%A1%88%EF%BC%9F/">
-          
-          
-            
-          
-          todo
-一、体脂率（跑步训练的启动指标）1.1、什么是体脂率体脂率是指体内的脂肪占体重总数的百分比。
-比如，男性的体脂率高于26%就属于肥胖，如果能维持在14%左右就可以在腹部看到肌肉。女性的体脂率高于32%就属于肥胖，如果能维持在23%左右就能看到肌肉线条。
-1.2、体脂率的作用体脂率不仅是判断身体是否肥胖的参考指标，而且还是能否开始跑步的参考指标。当男性的体脂率低于26%、女性的体脂率低于3
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-08 16:55" pubdate>
-              2020-10-08
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E7%B2%BE%E5%8A%9B%E7%AE%A1%E7%90%86/">精力管理</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E8%B7%91%E6%AD%A5/">跑步</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C8%EF%BC%9AService%E4%B8%8EIngress/">容器网络8：Service与Ingress</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C8%EF%BC%9AService%E4%B8%8EIngress/">
-          
-          
-            
-          
-          在前面的文章中，我们讨论了将Service 暴露给外界的三种方法。接下来，我们重点讨论另外一种方法：Ingreess。
-一、什么是Ingress在将 Service 暴露给外界的三种方法。其中有一个叫作 LoadBalancer 类型的 Service，它会为我们在 Cloud Provider（比如：Google Cloud 或者 OpenStack）里创建一个与该 Service 对应的负载均
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-07 10:50" pubdate>
-              2020-10-07
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Kubernetes/">Kubernetes</a>
             
           </div>
         

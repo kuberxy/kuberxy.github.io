@@ -1,0 +1,630 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="kubxy">
+  <meta name="keywords" content="">
+  <title>数据结构：栈 - Kubxy</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Kubxy</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-11-10 13:47" pubdate>
+        2023年11月10日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      20
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">数据结构：栈</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <p>在</p>
+<h2 id="一、定义与特点"><a href="#一、定义与特点" class="headerlink" title="一、定义与特点"></a>一、定义与特点</h2><p>栈（Stack）是限定仅在表尾进行插入或删除操作的线性表。它是一种操作受限的线性表，只能在表的一端进行插入或删除操作。对于栈来说，插入、删除的一端（即表尾）称为栈顶（top），另一端称为栈底（bottom）。</p>
+<p>栈的操作是按后进先出的原则进行的，因此，栈又被称为后进先出（Last in First Out, LIFO）的线性表。假设栈S=($a_1$, $a_2$, …, $a_n$)，若栈中元素是按$a_1$, $a_2$, …, $a_n$的顺序依次进栈的，则称$a_1$为栈底元素，$a_n$为栈顶元素，而其退栈的次序则是$a_n$, …, $a_2$, $a_1$。栈的这个特点可用铁路调度站形象地表示。</p>
+<p><img src="/img/ad42e3b50a98b4f1aa9dd2955f1acf49.jpg" srcset="/img/loading.gif" alt="img"></p>
+<p>在日常生活中，有很多类似栈的例子。例如，洗盘子时，总是将已经洗好的盘子逐个往上叠放，而用盘子时则是从上往下逐个取用。栈正是对上述应用场景的抽象。在程序设计中，如果需要按照保存数据时相反的顺序来使用数据，则可以利用栈来实现。</p>
+<h2 id="二、顺序栈"><a href="#二、顺序栈" class="headerlink" title="二、顺序栈"></a>二、顺序栈</h2><p>顺序栈，是指利用顺序存储结构实现的栈，即使用一组地址连续的存储单元依次存放自栈底到栈顶的数据元素。</p>
+<p>顺序栈也是用数组实现的。因为栈顶位置是随着进栈和出栈操作而变化的，所以需要用一个指针top指示栈顶元素在顺序栈中的位置，这里的top通常被称为栈顶指针。又因为栈底位置是固定不变的，故可以将栈底位置设置在数组的最低端。鉴于C语言中数组的下标约定从0开始，则当以C语言作描述语言时，上述设定会带来很大不便，因此另设指针base指示栈底元素在顺序栈中的位置。当top和base的值相等时，表示空栈。</p>
+<p><img src="/img/926046e8b6db1fc65468c075ea4b9eec.jpg" srcset="/img/loading.gif" alt="img"></p>
+<p>在C语言中，顺序栈的类型描述如下：</p>
+<pre><code class="hljs c"><span class="hljs-comment">// 栈空间的大小应根据实际需要来定义，这里假设为100</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> MAXSIZE 100</span>
+
+<span class="hljs-comment">// SElemType的类型可根据实际情况而定，这里假设为char</span>
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">char</span> SElemType;
+
+<span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span>
+    <span class="hljs-comment">// 栈顶指针</span>
+    SElemType *top;
+    <span class="hljs-comment">// 栈底指针</span>
+    SElemType *base;
+    <span class="hljs-comment">// 栈可用的最大容量</span>
+    <span class="hljs-keyword">int</span> stacksize;
+&#125;SqStack;</code></pre>
+
+<p>说明：</p>
+<ul>
+<li>base为栈底指针，初始化完成后，栈底指针base始终指向栈底的位置，若base的值为NULL，则表明栈结构不存在。</li>
+<li>top为栈顶指针，其初值指向栈底。每当插入新的栈顶元素时，指针top增1；删除栈顶元素时，指针top减1。因此，栈空时，top和base的值相等，都指向栈底；栈非空时，top始终指向栈顶元素的上一个位置。</li>
+<li>stacksize指示栈可使用的最大容量，初始化操作会为顺序栈动态分配MAXSIZE大小的数组空间，将stacksize置为MAXSIZE。</li>
+</ul>
+<h3 id="2-1、初始化"><a href="#2-1、初始化" class="headerlink" title="2.1、初始化"></a>2.1、初始化</h3><p>初始化，就是为顺序栈动态分配一个预定义大小的数组空间。该算法的步骤为：</p>
+<ul>
+<li>为顺序栈动态分配一个最大容量为MAXSIZE的数组空间，使base指向这段空间的基地址，即栈底。</li>
+<li>栈顶指针top初始为base，表示栈为空。</li>
+<li>stacksize置为栈的最大容量MAXSIZE。</li>
+</ul>
+<p>相应的算法描述为：</p>
+<pre><code class="hljs c"><span class="hljs-comment">// 构造一个空栈S</span>
+<span class="hljs-function">Status <span class="hljs-title">InitStack</span><span class="hljs-params">(SqStack &amp;S)</span> </span>&#123;
+    <span class="hljs-comment">// 为顺序栈动态分配一个最大容量为MAXSIZE的数组空间</span>
+    S.base=<span class="hljs-keyword">new</span> SElemType[MAXSIZE];
+    <span class="hljs-comment">// 存储分配失败</span>
+    <span class="hljs-keyword">if</span>(!S.base) <span class="hljs-built_in">exit</span>(OVERFLOW);
+    <span class="hljs-comment">// top初始为base</span>
+    S.top=S.base;
+    <span class="hljs-comment">// stacksize置为栈的最大容量MAXSIZE</span>
+    S.stacksize=MAXSIZE;
+    
+    <span class="hljs-keyword">return</span> OK;
+&#125;</code></pre>
+
+<h3 id="2-2、入栈"><a href="#2-2、入栈" class="headerlink" title="2.2、入栈"></a>2.2、入栈</h3><p>入栈，是指在栈顶插入一个新的元素。该算法的步骤为：</p>
+<ul>
+<li>判断栈是否满，若满则返回ERROR。</li>
+<li>将新元素压入栈顶，栈顶指针加1。</li>
+</ul>
+<p>相应的算法描述为：</p>
+<pre><code class="hljs c"><span class="hljs-function">Status <span class="hljs-title">Push</span><span class="hljs-params">(SqStack &amp;S, SElemType e)</span> </span>&#123;
+    <span class="hljs-comment">// 栈满</span>
+    <span class="hljs-keyword">if</span>(S.top-S.base==S.stacksize) <span class="hljs-keyword">return</span> ERROR;
+    <span class="hljs-comment">// 元素e压入栈顶，栈顶指针加1</span>
+    *S.top++=e;
+    
+    <span class="hljs-keyword">return</span> OK;
+&#125;</code></pre>
+
+<h3 id="2-3、出栈"><a href="#2-3、出栈" class="headerlink" title="2.3、出栈"></a>2.3、出栈</h3><p>出栈，是将栈顶元素删除。该算法的步骤为：</p>
+<ul>
+<li>判断栈是否空，若空则返回ERROR。</li>
+<li>栈顶指针减1，栈顶元素出栈。</li>
+</ul>
+<p>相应的算法描述为：</p>
+<pre><code class="hljs c"><span class="hljs-function">Status <span class="hljs-title">Pop</span><span class="hljs-params">(SqStack &amp;S, SElemType &amp;e)</span> </span>&#123;
+    <span class="hljs-comment">// 栈空</span>
+    <span class="hljs-keyword">if</span>(S.top==S.base) <span class="hljs-keyword">return</span> ERROR;
+    <span class="hljs-comment">// 栈顶指针减1，将栈顶元素赋给e</span>
+    e=*--S.top;
+    
+    <span class="hljs-keyword">return</span> OK;
+&#125;</code></pre>
+
+<h3 id="2-4、取栈顶元素"><a href="#2-4、取栈顶元素" class="headerlink" title="2.4、取栈顶元素"></a>2.4、取栈顶元素</h3><p>当栈非空时，返回当前栈顶元素的值，栈顶指针保持不变。相应的算法描述为：</p>
+<pre><code class="hljs c"><span class="hljs-function">SElemType <span class="hljs-title">GetTop</span><span class="hljs-params">(SqStack s)</span> </span>&#123;
+    <span class="hljs-keyword">if</span>(S.top!=S.base)
+        <span class="hljs-keyword">return</span> *(S.top<span class="hljs-number">-1</span>);
+&#125;</code></pre>
+
+<h3 id="2-5、溢出问题"><a href="#2-5、溢出问题" class="headerlink" title="2.5、溢出问题"></a>2.5、溢出问题</h3><p>在顺序栈中，常常会发生溢出问题。当栈满时，再做进栈操作，就会溢出，简称“上溢”；当栈空时，再做出栈操作，也会溢出，简称“下溢”。</p>
+<p>在实际应用中，可能同时使用多个栈。为了防止溢出，需要为每个栈分配一个较大的空间，而这往往会产生空间上的浪费。因为当某一个栈发生溢出的同时，其余的栈还可能有很多的未用空间。如果将多个栈分配在同一个顺序存储空间内，即让多个栈共享存储空间，则可以相互进行调节，即节约了空间，又可降低发生溢出的频率。</p>
+<p>当程序中同时使用两个栈时，可以将两个栈的栈底分别设在顺序存储空间的两端，让两个栈顶各自向中间延伸。当一个栈中的元素较多而栈使用的空间超过共享空间的一半时，只要另一个栈中的元素不多，就可以让第一个栈占用第二个栈的部分存储空间。只有当整个存储空间被两个栈占满时（即两栈顶相遇），才会产生溢出。</p>
+<p>为了克服顺序栈存在的溢出和空间浪费问题，可以采用链式存储结构来存储栈。</p>
+<h2 id="三、链栈"><a href="#三、链栈" class="headerlink" title="三、链栈"></a>三、链栈</h2><p>链栈，是指利用链式存储结构实现的栈。</p>
+<p>链栈，是运算受限的单链表，其插入和删除操作仅限制在表头位置上（栈顶）进行，因此不必设置头结点，将单链表的头指针head改为栈顶指针top即可。</p>
+<p>在C语言中，链栈的类型描述如下：</p>
+<pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">stacknode</span> &#123;</span>
+  DataType Data;
+  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">stacknode</span> *<span class="hljs-title">next</span>;</span>
+&#125;StackNode;
+
+<span class="hljs-keyword">typedef</span> StackNode * LinkStack;</code></pre>
+
+<h3 id="3-1、判栈空"><a href="#3-1、判栈空" class="headerlink" title="3.1、判栈空"></a>3.1、判栈空</h3><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">StackEmpty</span><span class="hljs-params">(LinkStack top)</span> </span>&#123;
+    <span class="hljs-keyword">return</span> top==<span class="hljs-literal">NULL</span>;
+&#125;</code></pre>
+
+<h3 id="3-2、进栈"><a href="#3-2、进栈" class="headerlink" title="3.2、进栈"></a>3.2、进栈</h3><pre><code class="hljs c"><span class="hljs-function">LinkStack <span class="hljs-title">Push</span><span class="hljs-params">(LinkStack top, DataType x)</span> </span>&#123;
+    StackNode *p;
+    
+    <span class="hljs-comment">// 申请新结点</span>
+    p=(StackNode *)<span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(StackNode));
+    p-&gt;data=x;
+    <span class="hljs-comment">// 在栈顶的前面插入新结点</span>
+    p-&gt;next=top;
+    <span class="hljs-comment">// top始终指向栈顶</span>
+    top=p;
+    
+    <span class="hljs-keyword">return</span> top;
+&#125;</code></pre>
+
+<h3 id="3-3、出栈"><a href="#3-3、出栈" class="headerlink" title="3.3、出栈"></a>3.3、出栈</h3><pre><code class="hljs c"><span class="hljs-function">LinkStack <span class="hljs-title">Pop</span><span class="hljs-params">(LinkStack top, DataType *x)</span> </span>&#123;
+    StackNode *p=top;
+    
+    <span class="hljs-keyword">if</span>(StackEmpty(top)) &#123;
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;stack empty&quot;</span>);
+        <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);
+    &#125;
+    
+    <span class="hljs-comment">// 保存栈顶元素</span>
+    *x=p-&gt;data;
+    <span class="hljs-comment">// 栈顶指针指向下一个结点</span>
+    top=p-&gt;next;
+    <span class="hljs-built_in">free</span>(p);
+    
+    <span class="hljs-keyword">return</span> top;
+&#125;</code></pre>
+
+<h3 id="3-4、取栈顶元素"><a href="#3-4、取栈顶元素" class="headerlink" title="3.4、取栈顶元素"></a>3.4、取栈顶元素</h3><pre><code class="hljs c"><span class="hljs-function">DataType <span class="hljs-title">GetTop</span><span class="hljs-params">(LinkStack top)</span> </span>&#123;
+    <span class="hljs-keyword">if</span>(StackEmpty(top)) &#123;
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;stack empty&quot;</span>);
+        <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);
+    &#125;
+    
+    <span class="hljs-keyword">return</span> top-&gt;data;
+&#125;</code></pre>
+
+<h2 id="四、栈与递归"><a href="#四、栈与递归" class="headerlink" title="四、栈与递归"></a>四、栈与递归</h2><h2 id="五、小结"><a href="#五、小结" class="headerlink" title="五、小结"></a>五、小结</h2>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/11/26/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9A%E7%AE%97%E6%B3%95%E7%9A%84%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构：算法的分析方法</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/07/31/%E6%9D%A1%E4%BB%B6%E7%8A%B6%E8%AF%AD%E4%BB%8E%E5%8F%A5%E5%92%8C%E8%99%9A%E6%8B%9F%E8%AF%AD%E6%B0%94/">
+                        <span class="hidden-mobile">条件状语从句和虚拟语气</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "数据结构：栈&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
