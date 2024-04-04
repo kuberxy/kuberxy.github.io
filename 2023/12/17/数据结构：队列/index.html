@@ -1,0 +1,769 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="和栈类似，队列也是一个特殊的线性表。队列在计算机系统中也有着广泛的应用。例如，在操作系统中，队列可以用于进程调度，确保按照先来先服务的原则进行任务分配。在网络通信中，队列可以用于缓存数据包，以平衡发送和接收之间的速度差异。在计算机算法中，队列可以用于广度优先搜索等算法的实现。 队列是一个很基础的数据结构，因此也需掌握。 一、定义和特点 队列（Queue）是限定在表头删除、表尾插入的线性表。对于队列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构：队列">
+<meta property="og:url" content="https://kuberxy.github.io/2023/12/17/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9A%E9%98%9F%E5%88%97/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="和栈类似，队列也是一个特殊的线性表。队列在计算机系统中也有着广泛的应用。例如，在操作系统中，队列可以用于进程调度，确保按照先来先服务的原则进行任务分配。在网络通信中，队列可以用于缓存数据包，以平衡发送和接收之间的速度差异。在计算机算法中，队列可以用于广度优先搜索等算法的实现。 队列是一个很基础的数据结构，因此也需掌握。 一、定义和特点 队列（Queue）是限定在表头删除、表尾插入的线性表。对于队列">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://kuberxy.github.io/img/43f90e5e7bf767520fb277962235718c.jpg">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20231223175506541.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/edf37fb6e05c4b266011746af5060a08.jpg">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20231223180634481.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20231223171616439.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20231230153915116.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20231230160822345.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20231230162124519.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20231231102950568.png">
+<meta property="article:published_time" content="2023-12-17T05:47:11.000Z">
+<meta property="article:modified_time" content="2024-01-01T12:43:47.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="数据结构">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://kuberxy.github.io/img/43f90e5e7bf767520fb277962235718c.jpg">
+  
+  
+  
+  <title>数据结构：队列 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据结构：队列"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-12-17 13:47" pubdate>
+          2023年12月17日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          23 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据结构：队列</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>和栈类似，队列也是一个特殊的线性表。队列在计算机系统中也有着广泛的应用。例如，在操作系统中，队列可以用于进程调度，确保按照先来先服务的原则进行任务分配。在网络通信中，队列可以用于缓存数据包，以平衡发送和接收之间的速度差异。在计算机算法中，队列可以用于广度优先搜索等算法的实现。</p>
+<p>队列是一个很基础的数据结构，因此也需掌握。</p>
+<h2 id="一、定义和特点">一、定义和特点</h2>
+<p>队列（Queue）是限定在表头删除、表尾插入的线性表。对于队列来说，允许删除的一端称为队头（front），允许插入的一端称为队尾（rear）。</p>
+<p>队列的操作具有先进先出的特点。因此，队列又被称作FIFO（First In First Out）表。假设队列Q=(<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">a_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">a_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, …, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">a_n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>)，若队列中元素是按<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">a_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">a_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, …, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">a_n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>的顺序依次入队的，则称<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">a_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>为队头元素，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">a_n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>为队尾元素。其出队次序也只能<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">a_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">a_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, …, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">a_n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>的次序进行，也就是说，只有在<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">a_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">a_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, …, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">a_{n-1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6389em;vertical-align:-0.2083em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span></span></span></span>都离开队列之后，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">a_n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>才能出队。队列的这个特点，和日常生活中的排队场景是一致的，最早进入队的最先离开。</p>
+<p><img src="/img/43f90e5e7bf767520fb277962235718c.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>同样地，队列也有两种存储结构，分别是顺序队列和链式队列。</p>
+<h2 id="二、顺序队列">二、顺序队列</h2>
+<p>顺序队列，是指采用顺序存储结构实现的队列。</p>
+<p>在队列的顺序存储结构中，除了用一组地址连续的存储单元依次存放从队头到队尾的元素之外，还需附设两个整型变量front和rear分别指示队头元素及队尾元素的位置。通常，front被称为头指针，rear被称为尾指针。</p>
+<p>在C语言中，顺序队列的类型描述如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 队列可能达到的最大长度</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAXQSIZE</span><br><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>    <span class="hljs-comment">// 存储空间的基地址</span><br>    QElemType *base;<br>    <span class="hljs-comment">// 头指针</span><br>    <span class="hljs-type">int</span> front;<br>    <span class="hljs-comment">// 尾指针</span><br>    <span class="hljs-type">int</span> rear;<br>&#125;SqQueue;<br></code></pre></td></tr></table></figure>
+<p>为了描述方便起见，在此约定：初始化创建空队列时，令front=rear=0，每当插入新的队尾元素时，尾指针rear增1；每当删除队头元素时，头指针front增1。因此，在非空队列中，头指针始终指向队头元素，而尾指针始终指向队尾元素的下一个位置，其结构如下图所示：</p>
+<p><img src="/img/image-20231223175506541.png" srcset="/img/loading.gif" lazyload alt="image-20231223175506541"></p>
+<p>假设当前队列分配的最大空间为6，则当队列处于上图（d）所示的状态时，就不可再继续插入新的队尾元素，否则会出现溢出现象，即因数组越界而导致程序的非法操作错误。事实上，此时队列的实际可用空间并未占满，所以这种现象称为“假溢出”。这是由“队尾入队，队头出队”这种受限制的操作造成的。</p>
+<p>那么，如何解决这种“假溢出”问题呢？一个较巧妙的办法是将顺序队列变为一个环状的空间，使之成为一个循环队列。</p>
+<p><img src="/img/edf37fb6e05c4b266011746af5060a08.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>和顺序队列一样，在循环队列中，头、尾指针以及队列元素之间的关系不变。只是，头、尾指针增1的操作用“模”运算来实现。通过取模，头指针和尾指针就可以在顺序表空间内以头尾衔接的方式“循环”移动。</p>
+<p><img src="/img/image-20231223180634481.png" srcset="/img/loading.gif" lazyload alt="image-20231223180634481"></p>
+<p>在上图（a）中，队头元素是J5，在元素J6入队之前，Q.rear的值为5，而当元素J6入队之后，通过“模”运算<code>Q.rear=(Q.rear+1)%6</code>，得到Q.rear的值为0。这样就不会出现“假溢出”现象。</p>
+<p>上图（b）是J7、J8、J9、J10相继进入图（a）所示队列后的状态：队列空间被占满，此时头、尾指针相同。上图（c）是J5、J6相继从图（a）所示的队列中出队后的状态：队列为空，头、尾指针的值也是相同的。由此可见，对于循环队列不能以头、尾指针的值是否相同来判别队列空间是“满”还是“空”。在这种情况下，如何区别队满还是队空呢？通常有以下两种处理方法：</p>
+<ul>
+<li>少用一个元素空间。当队列空间大小为m时，有m-1个元素就认为是队满。这样判断队空的条件不变，即当头、尾指针的值相同时，则认为队空；而当尾指针在循环意义上加1后是等于头指针，则认为队满。因此，在循环队列中队空和队满的条件是：
+<ul>
+<li>队空的条件：<code>Q.rear==Q.front</code></li>
+<li>队满的条件：<code>(Q.rear+1)%MAXQSIZE==Q.front</code>。如上图（d）是J7、J8、J9进入图（a）所示的队列后d的状态，<code>(Q.rear+1)%MAXQSIZE</code>的值等于Q.front，此时认为队满。</li>
+</ul>
+</li>
+<li>另设一个标志位。就是单独设置一个区别队列是“空”还是“满”的标志位。</li>
+</ul>
+<p>一般情况下，真正使用的顺序队列是循环队列。循环队列的类型定义和顺序队列的类型定义是相同的。下面，以“少用一个元素空间”的方法为例，实现循环队列的一些操作。</p>
+<h3 id="2-1、初始化">2.1、初始化</h3>
+<p>循环队列的初始化操作就是动态分配一个预定义大小为MAXQSIZE的数组空间。该算法步骤为：</p>
+<ul>
+<li>为队列分配一个最大容量为MAXQSIZE的数组空间，base指向数组空间的首地址。</li>
+<li>头指针和尾指针置为零，表示队列为空。</li>
+</ul>
+<p>相应的算法描述为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c">Status <span class="hljs-title function_">InitQueue</span><span class="hljs-params">(SqQueue &amp;Q)</span> &#123;<br>    Q.base=new QElemType[MAXQSIZE];<br>    <span class="hljs-keyword">if</span>(!Q.base) <span class="hljs-built_in">exit</span>(OVERFLOW);<br>    Q.front=Q.rear=<span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">return</span> OK;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="2-2、求队列长度">2.2、求队列长度</h3>
+<p>对于非循环队列，尾指针和头指针的差值便是队列长度，而对于循环队列，差值可能为负数，所以需要将差值加上MAXQSIZE，然后与MAXQSIZE求余。相应的算法描述为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">QueueLength</span><span class="hljs-params">(SqQueue Q)</span> &#123;<br>    <span class="hljs-keyword">return</span> (Q.rear-Q.front+MAXQSIZE)%MAXQSIZE;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="2-3、入队">2.3、入队</h3>
+<p>入队操作是指在队尾插入一个新的元素。该算法步骤为：</p>
+<ul>
+<li>判断队列是否满，若满则返回ERROR。</li>
+<li>将新元素插入队尾。</li>
+<li>队尾指针加1。</li>
+</ul>
+<p>相应的算法描述为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 插入元素e为Q的新的队尾元素</span><br>Status <span class="hljs-title function_">EnQueue</span><span class="hljs-params">(SqQueue &amp;Q, QElemType e)</span> &#123;<br>    <span class="hljs-comment">// 尾指针在循环意义上加1后等于头指针，表明队满</span><br>    <span class="hljs-keyword">if</span>((Q.rear+<span class="hljs-number">1</span>)%MAXQSIZE==Q.front)<br>        <span class="hljs-keyword">return</span> ERROR;<br>    <span class="hljs-comment">// 新元素插入队尾</span><br>    Q.base[Q.rear]=e;<br>    <span class="hljs-comment">// 队尾指针加1</span><br>    Q.rear=(Q.rear+<span class="hljs-number">1</span>)%MAXQSIZE;<br>    <span class="hljs-keyword">return</span> OK;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="2-4、出队">2.4、出队</h3>
+<p>出队操作是将队头元素删除。该算法步骤为：</p>
+<ul>
+<li>判断队列是否为空，若空则返回ERROR。</li>
+<li>保存队头元素。</li>
+<li>队头指针加1。</li>
+</ul>
+<p>相应的算法描述为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c">Status <span class="hljs-title function_">DeQueue</span><span class="hljs-params">(SqQueue &amp;Q, QElemType &amp;e)</span> &#123;<br>    <span class="hljs-comment">// 队空</span><br>    <span class="hljs-keyword">if</span>(Q.front==Q.rear) <span class="hljs-keyword">return</span> ERROR;<br>    <br>    <span class="hljs-comment">// 保存队头元素</span><br>    e=Q.base[Q.front];<br>    <span class="hljs-comment">// 队头指针加1</span><br>    Q.front=(Q.front+<span class="hljs-number">1</span>)%MAXQSIZE;<br>    <br>    <span class="hljs-keyword">return</span> OK;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="2-5、取队头元素">2.5、取队头元素</h3>
+<p>当队列非空时，返回当前队头元素的值，队头指针保持不变。相应的算法描述为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c">SElemType <span class="hljs-title function_">GetHead</span><span class="hljs-params">(SqQueue Q)</span> &#123;<br>    <span class="hljs-keyword">if</span>(Q.front!=Q.rear)<br>        <span class="hljs-keyword">return</span> Q.base[Q.front]<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="三、链式队列">三、链式队列</h2>
+<p>链式队列，是指采用链式存储结构实现的队列。</p>
+<p>通常链队用单链表来表示。一个链队需要两个分别指示队头和队尾的指针（分别称为头指针和尾指针）才能唯一确定。和单链表类似，为了简化边界条件的处理，给链队添加一个头结点，并使头指针指向此结点。</p>
+<p><img src="/img/image-20231223171616439.png" srcset="/img/loading.gif" lazyload alt="image-20231223171616439"></p>
+<p>在C语言中，链式队列的类型描述如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 链式队列的结点</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Qnode</span> &#123;</span><br>    QElemType data;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Qnode</span> *<span class="hljs-title">next</span>;</span><br>&#125;QNode, *QueuePtr;<br><br><span class="hljs-comment">// 链式队列</span><br>typdef <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>    <span class="hljs-comment">// 队头指针</span><br>    QueuePtr front;<br>    <span class="hljs-comment">// 队尾指针</span><br>    QueuePtr rear;<br>&#125;LinkQueue;<br></code></pre></td></tr></table></figure>
+<p>链式队列的操作是单链表插入和删除操作的特殊情况。下面给出链队初始化、入队、出队操作的实现。</p>
+<h3 id="3-1、初始化">3.1、初始化</h3>
+<p>链队的初始化操作就是构造一个只有头结点的空队列。</p>
+<p><img src="/img/image-20231230153915116.png" srcset="/img/loading.gif" lazyload alt="image-20231230153915116"></p>
+<p>该算法步骤为：</p>
+<ul>
+<li>生成新结点作为头结点，队头和队尾指针指向此结点。</li>
+<li>头结点的指针域置空。</li>
+</ul>
+<p>相应的算法描述为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c">Status <span class="hljs-title function_">InitQueue</span><span class="hljs-params">(LinkQueue &amp;Q)</span> &#123;<br>    Q.front=Q.rear=new QNode;<br>    Q.front-&gt;next=<span class="hljs-literal">NULL</span>;<br>    <span class="hljs-keyword">return</span> OK;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="3-2、入队">3.2、入队</h3>
+<p>和循环队列的入队操作不同，链队在入队前不需要判断队是否满，仅需为入队元素动态分配一个结点空间。</p>
+<p><img src="/img/image-20231230160822345.png" srcset="/img/loading.gif" lazyload alt="image-20231230160822345"></p>
+<p>该算法步骤为：</p>
+<ul>
+<li>为入队元素分配结点空间，用指针p指向。</li>
+<li>将新结点数据域置为e。</li>
+<li>将新结点插入到队尾。</li>
+<li>修改队尾指针为p。</li>
+</ul>
+<p>相应的算法描述为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c">Status <span class="hljs-title function_">EnQueue</span><span class="hljs-params">(LinkQueue &amp;Q, QElemType e)</span> &#123;<br>    p=new QNode;<br>    p-&gt;data=e;<br>    p-&gt;next=<span class="hljs-literal">NULL</span>;<br>    Q.rear-&gt;next=p;<br>    Q.rear=p;<br>    <span class="hljs-keyword">return</span> OK;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="3-3、出队">3.3、出队</h3>
+<p>和循环队列一样，链队在出队前也需要判断队列是否为空，不同的是，链队在出队后需要释放队头元素的所占空间。</p>
+<p><img src="/img/image-20231230162124519.png" srcset="/img/loading.gif" lazyload alt="image-20231230162124519"></p>
+<p>该算法步骤为：</p>
+<ul>
+<li>判断队列是否为空，若空则返回ERROR。</li>
+<li>临时保存队头元素的空间，以备释放。</li>
+<li>修改头结点的指针域，使其指向下一个结点。</li>
+<li>判断出队元素是否为最后一个元素，若是，则将队尾指针指向头结点。</li>
+<li>释放原队头元素的空间。</li>
+</ul>
+<p>相应的算法描述为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c">Status <span class="hljs-title function_">DeQueue</span><span class="hljs-params">(LinkQueue &amp;Q, QElemType &amp;e)</span> &#123;<br>    <span class="hljs-keyword">if</span>(Q.front==Q.rear) <span class="hljs-keyword">return</span> ERROR;<br>    <br>    p=Q.front-&gt;next;<br>    e=p-&gt;data;<br>    <br>    Q.front-&gt;next=p-&gt;next;<br>    <span class="hljs-keyword">if</span>(Q.rear==p) Q.rear=Q.front;<br>    <br>    <span class="hljs-built_in">free</span>(p);<br>    <br>    <span class="hljs-keyword">return</span> OK;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="3-4、取队头元素">3.4、取队头元素</h3>
+<p>与循环队列一样，当队列非空时，此操作返回当前队头元素的值，队头指针保持不变。相应的算法描述为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c">SElemType <span class="hljs-title function_">GetHead</span><span class="hljs-params">(LinkQueue Q)</span> &#123;<br>    <span class="hljs-keyword">if</span>(Q.front!=Q.rear)<br>        <span class="hljs-keyword">return</span> Q.front-&gt;next-&gt;data;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="四、小结">四、小结</h2>
+<p>队列也是一种操作受限的线性表，它只允许在表头进行删除操作、在表尾进行插入操作。队列最大的特点是先进先出，因此也被称为FIFO表。队列也有两种存储结构，分别是顺序队列和链式队列。队列的主要操作是进队和出队，对于顺序队列（更准确地来说是循环队列）的进队和出队操作要注意判断队满或队空。凡是涉及队头或队尾指针的修改都要将其对MAXQSIZE求模。</p>
+<p><img src="/img/image-20231231102950568.png" srcset="/img/loading.gif" lazyload alt="image-20231231102950568"></p>
+<h2 id="五、参考">五、参考</h2>
+<p><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26713328/">《数据结构（C语言版 第2版）》</a></p>
+<p><a target="_blank" rel="noopener" href="https://book.douban.com/subject/10732022/">《数据结构 自考02331》</a></p>
+<p><a target="_blank" rel="noopener" href="https://book.douban.com/subject/35474931/">《数据结构与算法之美》</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">数据结构</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="print-no-link">#数据结构</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据结构：队列</div>
+      <div>https://kuberxy.github.io/2023/12/17/数据结构：队列/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年12月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/12/24/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2/" title="数据结构：字符串">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构：字符串</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/12/10/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%A0%88/" title="数据结构：栈">
+                        <span class="hidden-mobile">数据结构：栈</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

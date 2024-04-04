@@ -1,0 +1,668 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="在前面的文章中，我们讨论REST相关的概念，以及REST在OpenResty中的应用。接下来，我们尝试使用OpenResty中搭建一个简单的API Server。 一、需求 实现一个能计算加减乘除的数学计算器 二、实现 我们先来看看一个最简陋的实现版本： 123456789101112131415161718192021222324252627282930313233343536373839404">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一个简单API Server框架">
+<meta property="og:url" content="https://kuberxy.github.io/2020/12/09/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95API-Server%E6%A1%86%E6%9E%B6/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在前面的文章中，我们讨论REST相关的概念，以及REST在OpenResty中的应用。接下来，我们尝试使用OpenResty中搭建一个简单的API Server。 一、需求 实现一个能计算加减乘除的数学计算器 二、实现 我们先来看看一个最简陋的实现版本： 123456789101112131415161718192021222324252627282930313233343536373839404">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-09T03:21:02.000Z">
+<meta property="article:modified_time" content="2020-12-17T01:04:14.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="API Server框架">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>一个简单API Server框架 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="一个简单API Server框架"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-12-09 11:21" pubdate>
+          2020年12月9日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          798 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          7 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">一个简单API Server框架</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>在前面的文章中，我们讨论REST相关的概念，以及REST在OpenResty中的应用。接下来，我们尝试使用OpenResty中搭建一个简单的API Server。</p>
+<h2 id="一、需求">一、需求</h2>
+<p>实现一个能计算加减乘除的数学计算器</p>
+<h2 id="二、实现">二、实现</h2>
+<p>我们先来看看一个最简陋的实现版本：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">worker_processes</span>  <span class="hljs-number">1</span>;<br><span class="hljs-attribute">error_log</span> logs/<span class="hljs-literal">error</span>.log;<br><span class="hljs-section">events</span> &#123;<br>    <span class="hljs-attribute">worker_connections</span> <span class="hljs-number">1024</span>;<br>&#125;<br><span class="hljs-section">http</span> &#123;<br>    <span class="hljs-section">server</span> &#123;<br>        <span class="hljs-attribute">listen</span> <span class="hljs-number">80</span>;<br><br>        <span class="hljs-comment"># 加法</span><br>        <span class="hljs-section">location</span> /addition &#123;<br>           <span class="hljs-section">content_by_lua_block</span> &#123;<br>                <span class="hljs-attribute">local</span> args = ngx.req.get_uri_args()<br>                ngx.say(args.x + args.y)<br>            &#125;<br>        &#125;<br><br>        <span class="hljs-comment"># 减法</span><br>        location /subtraction &#123;<br>            <span class="hljs-section">content_by_lua_block</span> &#123;<br>                <span class="hljs-attribute">local</span> args = ngx.req.get_uri_args()<br>                ngx.say(args.x - args.y)<br>            &#125;<br>        &#125;<br><br>        <span class="hljs-comment"># 乘法</span><br>        location /multiplication &#123;<br>            <span class="hljs-section">content_by_lua_block</span> &#123;<br>                <span class="hljs-attribute">local</span> args = ngx.req.get_uri_args()<br>                ngx.say(args.x * args.y)<br>            &#125;<br>        &#125;<br><br>        <span class="hljs-comment"># 除法</span><br>        location /division &#123;<br>            <span class="hljs-section">content_by_lua_block</span> &#123;<br>                <span class="hljs-attribute">local</span> args = ngx.req.get_uri_args()<br>                ngx.say(args.x / args.y)<br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>可以看到，整个配置文件看起来非常复杂，下面我们来优化一下</p>
+<h2 id="三、优化">三、优化</h2>
+<p>首先，入口要统一，接口的实现要独立，保持简洁：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">worker_processes</span>  <span class="hljs-number">1</span>;<br><span class="hljs-attribute">error_log</span> logs/<span class="hljs-literal">error</span>.log;<br><span class="hljs-section">events</span> &#123;<br>    <span class="hljs-attribute">worker_connections</span> <span class="hljs-number">1024</span>;<br>&#125;<br><br><span class="hljs-section">http</span> &#123;<br>    <span class="hljs-comment"># 设置默认 lua 搜索路径</span><br>    <span class="hljs-comment"># 此处写相对路径时，需要注意启动 nginx 的路径，因为它会影响自定义模块的导入</span><br>    <span class="hljs-comment"># 绝对路径当然也没问题，但是不可移植，因此应使用变量 $prefix 或 $&#123;prefix&#125;</span><br>    <span class="hljs-attribute">lua_package_path</span> <span class="hljs-string">&#x27;<span class="hljs-variable">$prefix</span>/lua/?.lua;/blah/?.lua;;&#x27;</span>;<br><br>    <span class="hljs-comment"># 这里设置为 off，是为了避免每次修改之后都要重新 reload 的麻烦。</span><br>    <span class="hljs-comment"># 在生产环境上务必确保 lua_code_cache 设置成 on。</span><br>    <span class="hljs-attribute">lua_code_cache</span> <span class="hljs-literal">off</span>;<br><br>    <span class="hljs-section">server</span> &#123;<br>        <span class="hljs-attribute">listen</span> <span class="hljs-number">80</span>;<br><br>        <span class="hljs-comment"># 在代码路径中使用nginx变量</span><br>        <span class="hljs-comment"># 注意： nginx var 的变量一定要谨慎，否则将会带来非常大的风险</span><br>        <span class="hljs-section">location</span> <span class="hljs-regexp">~ ^/api/([-_a-zA-Z0-9/]+)</span> &#123;<br>            <span class="hljs-attribute">content_by_lua_file</span> lua/<span class="hljs-variable">$1</span>.lua;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>${prefix}/lua目录下的文件分别如下：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-comment">-- ========== &#123;$prefix&#125;/lua/addition.lua</span><br><span class="hljs-keyword">local</span> args = ngx.req.get_uri_args()<br>ngx.say(args.x + args.y)<br><br><span class="hljs-comment">-- ========== &#123;$prefix&#125;/lua/subtraction.lua</span><br><span class="hljs-keyword">local</span> args = ngx.req.get_uri_args()<br>ngx.say(args.x - args.y)<br><br><span class="hljs-comment">-- ========== &#123;$prefix&#125;/lua/multiplication.lua</span><br><span class="hljs-keyword">local</span> args = ngx.req.get_uri_args()<br>ngx.say(args.x * args.y)<br><br><span class="hljs-comment">-- ========== &#123;$prefix&#125;/lua/division.lua</span><br><span class="hljs-keyword">local</span> args = ngx.req.get_uri_args()<br>ngx.say(args.x / args.y)<br></code></pre></td></tr></table></figure>
+<h2 id="四、迭代">四、迭代</h2>
+<p>对于一个后端程序来说，怎么可以容忍输入参数不检查呢？万一客户端传入的不是数字或者为空怎么办？所以这些都要过滤掉。我们会发现，这些接口的参数检查过滤方法应该是统一的，那么如何在这几个 API 中如何共享这个方法呢？这时候就需要 Lua 模块来完成了：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">worker_processes</span>  <span class="hljs-number">1</span>;<br><span class="hljs-attribute">error_log</span> logs/<span class="hljs-literal">error</span>.log;<br><span class="hljs-section">events</span> &#123;<br>    <span class="hljs-attribute">worker_connections</span> <span class="hljs-number">1024</span>;<br>&#125;<br><span class="hljs-section">http</span> &#123;<br>    <span class="hljs-section">server</span> &#123;<br>        <span class="hljs-attribute">listen</span> <span class="hljs-number">80</span>;<br><br>        <span class="hljs-section">location</span> <span class="hljs-regexp">~ ^/api/([-_a-zA-Z0-9/]+)</span> &#123;<br>            <span class="hljs-comment"># 准入阶段完成参数验证</span><br>            <span class="hljs-attribute">access_by_lua_file</span>  lua/access_check.lua;<br><br>            <span class="hljs-attribute">content_by_lua_file</span> lua/<span class="hljs-variable">$1</span>.lua;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>此处，我们将验证逻辑的执行时机放到了准入阶段，${prefix}/lua/access_check.lua的内容如下：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-keyword">local</span> param= <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;comm.param&quot;</span>)<br><span class="hljs-keyword">local</span> args = ngx.req.get_uri_args()<br><br><span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> args.x <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> args.y <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> param.is_number(args.x, args.y) <span class="hljs-keyword">then</span><br>    ngx.<span class="hljs-built_in">exit</span>(ngx.HTTP_BAD_REQUEST)<br>    <span class="hljs-keyword">return</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>模块comm.param的路径为{$prefix}/lua/comm/param.lua，其内如下：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-keyword">local</span> _M = &#123;&#125;<br><br><span class="hljs-comment">-- 对输入参数逐个进行校验，只要有一个不是数字类型，则返回 false</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_M.is_number</span><span class="hljs-params">(...)</span></span><br>    <span class="hljs-keyword">local</span> <span class="hljs-built_in">arg</span> = &#123;...&#125;<br><br>    <span class="hljs-keyword">local</span> num<br>    <span class="hljs-keyword">for</span> _,v <span class="hljs-keyword">in</span> <span class="hljs-built_in">ipairs</span>(<span class="hljs-built_in">arg</span>) <span class="hljs-keyword">do</span><br>        num = <span class="hljs-built_in">tonumber</span>(v)<br>        <span class="hljs-keyword">if</span> <span class="hljs-literal">nil</span> == num <span class="hljs-keyword">then</span><br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>        <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">end</span><br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-keyword">return</span> _M<br></code></pre></td></tr></table></figure>
+<h2 id="五、小结">五、小结</h2>
+<p>通过如上几个步骤，一个简单的API Server就搭建完成了，最终整体的目录结构如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs shell">.<br>├── conf<br>│   ├── nginx.conf<br>├── logs<br>│   ├── error.log<br>│   └── nginx.pid<br>├── lua<br>│   ├── access_check.lua<br>│   ├── addition.lua<br>│   ├── subtraction.lua<br>│   ├── multiplication.lua<br>│   ├── division.lua<br>│   └── comm<br>│       └── param.lua<br>└── sbin<br>    └── nginx<br></code></pre></td></tr></table></figure>
+<h2 id="六、参考">六、参考</h2>
+<p><a target="_blank" rel="noopener" href="https://moonbingbing.gitbooks.io/openresty-best-practices/content/">简单API Server框架</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/OpenResty/" class="category-chain-item">OpenResty</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/API-Server%E6%A1%86%E6%9E%B6/" class="print-no-link">#API Server框架</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>一个简单API Server框架</div>
+      <div>https://kuberxy.github.io/2020/12/09/一个简单API-Server框架/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年12月9日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/12/14/%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B21%EF%BC%9A%E7%90%86%E8%A7%A3kubeadm/" title="集群部署1：理解kubeadm">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">集群部署1：理解kubeadm</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/09/API%E7%9A%84%E8%AE%BE%E8%AE%A1/" title="API的设计">
+                        <span class="hidden-mobile">API的设计</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

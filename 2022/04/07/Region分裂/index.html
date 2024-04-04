@@ -1,0 +1,829 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Region分裂是HBase的核心功能之一，它是HBase实现分布式可扩展性的基础。在HBase中，Region分裂有多种触发策略可以配置，一旦触发分裂，HBase就会寻找分裂点，然后执行真正的分裂操作。 一、What HBase支持好几种分裂触发策略。每种触发策略都有其各自的适用场景，我们可以根据业务在表级别选择不同的分裂触发策略。以下是几种常用的分裂触发策略：    ConstantSizeR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Region分裂">
+<meta property="og:url" content="https://kuberxy.github.io/2022/04/07/Region%E5%88%86%E8%A3%82/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Region分裂是HBase的核心功能之一，它是HBase实现分布式可扩展性的基础。在HBase中，Region分裂有多种触发策略可以配置，一旦触发分裂，HBase就会寻找分裂点，然后执行真正的分裂操作。 一、What HBase支持好几种分裂触发策略。每种触发策略都有其各自的适用场景，我们可以根据业务在表级别选择不同的分裂触发策略。以下是几种常用的分裂触发策略：    ConstantSizeR">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="g:%5CMy%5Csource%5Cimg%5C2022-04-07-17-15-34-image.png">
+<meta property="og:image" content="g:%5CMy%5Csource%5Cimg%5C2022-04-08-10-02-45-72a84cee8ea60db68c52b405fb08519f.jpg">
+<meta property="og:image" content="g:%5CMy%5Csource%5Cimg%5C2022-04-08-09-23-42-2b1c890056f256388500354035040222.jpg">
+<meta property="og:image" content="g:%5CMy%5Csource%5Cimg%5C2022-04-08-10-01-26-2972674a92db3bbd4a87dd4c4fe5b058.jpg">
+<meta property="og:image" content="g:%5CMy%5Csource%5Cimg%5C2022-04-08-10-02-22-8f5a42021031860a911e363911e84cf2.jpg">
+<meta property="og:image" content="g:%5CMy%5Csource%5Cimg%5C2022-04-08-15-38-23-a6bc692664fe1c9fe438bb06fc5c2e20.jpg">
+<meta property="article:published_time" content="2022-04-07T09:03:36.000Z">
+<meta property="article:modified_time" content="2022-04-08T08:33:14.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="HBase">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="g:%5CMy%5Csource%5Cimg%5C2022-04-07-17-15-34-image.png">
+  
+  
+  
+  <title>Region分裂 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Region分裂"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-04-07 17:03" pubdate>
+          2022年4月7日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          27 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Region分裂</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Region分裂是HBase的核心功能之一，它是HBase实现分布式可扩展性的基础。在HBase中，Region分裂有多种触发策略可以配置，一旦触发分裂，HBase就会寻找分裂点，然后执行真正的分裂操作。</p>
+<h2 id="一、What">一、What</h2>
+<p>HBase支持好几种分裂触发策略。每种触发策略都有其各自的适用场景，我们可以根据业务在表级别选择不同的分裂触发策略。以下是几种常用的分裂触发策略：</p>
+<p><img src="G:%5CMy%5Csource%5Cimg%5C2022-04-07-17-15-34-image.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p>ConstantSizeRegionSplitPolicy：0.94版本之前默认分裂策略——当某个Region中最大的Store的大小超过阈值（hbase.hregion.max.filesize）后触发分裂。相比于其他策略，该策略最简单，但是在生产环境这种分裂策略却有很大弊端——对于大表和小表没有明显的区分。如果阈值设置较大对大表比较友好，但是小表有可能不会触发分裂，极端情况下可能就只有1个Region，这对业务来说并不是什么好事。如果阈值设置较小则对小表友好，但一个大表就会在整个集群中产生大量的Region，这对于集群的管理、资源使用来说都不是一件好事。</p>
+</li>
+<li>
+<p>IncreasingToUpperBoundRegionSplitPolicy：0.94版本~2.0版本默认分裂策略。该策略总体来看和ConstantSizeRegionSplitPolicy思路相同，某个Region中最大Store大小超过设置阈值就会触发分裂。但是这个阈值并不是一个固定的值，而是在一定条件下不断调整，调整后的阈值大小和Region所属表在当前RegionServer上的Region个数有关系，调整后的阈值等于（#regions） * （#regions） * （#regions） * flush size * 2，当然阈值并不会无限增大，最大值为用户设置的MaxRegionFileSize。该策略很好地弥补了ConstantSizeRegionSplitPolicy的短板，能够自适应大表和小表，而且在集群规模较大的场景下，对很多大表来说表现很优秀。然而，这种策略并不完美，比如在大集群场景下，很多小表就会产生大量小Region，分散在整个集群中。</p>
+</li>
+<li>
+<p>SteppingSplitPolicy：2.0版本的默认分裂策略。这种分裂策略的分裂阈值也发生了变化，相比IncreasingToUpperBoundRegionSplitPolicy简单了一些，分裂阈值大小和待分裂Region所属表在当前RegionServer上的Region个数有关，如果Region个数等于1，分裂阈值为flush size * 2，否则为MaxRegionFileSize。这种分裂策略对于大集群中的大表、小表会比IncreasingToUpperBoundRegionSplitPolicy更加友好，小表不会再产生大量的小Region。</p>
+</li>
+</ul>
+<p>此外，还有一些其他分裂策略。比如，使用DisableSplitPolicy策略可以禁止Region分裂；而KeyPrefixRegionSplitPolicy和DelimitedKeyPrefixRegionSplitPolicy依然依据默认的分裂策略，但对于分裂点有自己的规定，比如KeyPrefixRegionSplitPolicy要求必须让相同的PrefixKey处于同一个Region中。</p>
+<p>在实际的选择中，使用默认的分裂策略即可，当然我们也可以根据需要在CF级别设置Region分裂策略，如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">create &#x27;table&#x27;, &#123;NAME =&gt; &#x27;cf&#x27;, SPLIT_POLICY =&gt; &#x27;org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy&#x27;&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="二、How">二、How</h2>
+<h3 id="2-1、寻找分裂点">2.1、寻找分裂点</h3>
+<p>在满足Region分裂条件后就会触发Region分裂，而触发分裂后的第一步就是：寻找分裂点。所有的分裂策略，不论是ConstantSizeRegionSplitPolicy、IncreasingToUpperBoundRegionSplitPolicy还是SteppingSplitPolicy，对于分裂点的定义都是一致的。当然，我们手动执行分裂时指定分裂点的情况除外。</p>
+<p>HBase对于分裂点的定义是：Region中最大Store中的最大文件中最中心的一个Block的首个rowkey。另外，HBase还规定，如果定位到的rowkey是整个文件的首个rowkey或者最后一个rowkey，则认为没有分裂点。</p>
+<blockquote>
+<p>此时，我们可能会问什么情况下会出现没有分裂点的场景？</p>
+</blockquote>
+<p>最典型的场景就是在待分裂的region中只有一个block，此时执行split就无法分裂。比如，新建一张测试表，然后往表中插入几条数据并执行flush，最后在执行split，就会发现数据表并没有真正执行分裂。原因就在于测试表中只有一个Block，此时如果查看debug日志会有如下内容：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs routeros">2017-08-19 11:26:17,404 <span class="hljs-built_in">INFO</span> [PriorityRpcServer.<span class="hljs-attribute">handler</span>=1,queue=1,port=60020] regionserver.RSRpcServices: Splitting split,,1503112775843.6adfcc49ba04f307d6c6a604572d1bb2.<br>2017-08-19 11:26:17,499 <span class="hljs-built_in">DEBUG</span> [PriorityRpcServer.<span class="hljs-attribute">handler</span>=1,queue=1,port=60020] regionserver.StoreFile: cannot split because midkey is the same as first <span class="hljs-keyword">or</span> last row<br>2017-08-19 11:26:17,499 <span class="hljs-built_in">DEBUG</span> [PriorityRpcServer.<span class="hljs-attribute">handler</span>=1,queue=1,port=60020] regionserver.CompactSplitThread: Region split,,1503112775843.6adfcc49ba04f307d6c6a604572d1bb2. <span class="hljs-keyword">not</span> splittable because <span class="hljs-attribute">midkey</span>=<span class="hljs-literal">null</span><br></code></pre></td></tr></table></figure>
+<h3 id="2-2、执行分裂">2.2、执行分裂</h3>
+<p>HBase将整个分裂过程包装成了一个事务，目的是保证分裂过程的原子性。这个事务的整个过程分为三个阶段：prepare、execute和rollback。我们可以通过如下伪代码来理解这个过程：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (!st.prepare()) <span class="hljs-keyword">return</span>;<br><br><span class="hljs-keyword">try</span> &#123;<br>    st.execute(<span class="hljs-built_in">this</span>.server, <span class="hljs-built_in">this</span>.server, user);<br>    status = <span class="hljs-literal">true</span>;<br>&#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>    <span class="hljs-keyword">try</span> &#123;<br>        st.rollback(<span class="hljs-built_in">this</span>.server, <span class="hljs-built_in">this</span>.server);<br>    &#125; <span class="hljs-keyword">catch</span> (IOException re) &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">msg</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;Failed rollback of failed split parent.getRegionNameAsSring() -- aborting server&quot;</span>;<br>        LOG.info(msg, re);<br>    &#125;<br>&#125; <br></code></pre></td></tr></table></figure>
+<h4 id="2-2-1、prepare阶段">2.2.1、prepare阶段</h4>
+<p>在内存中初始化两个子region，具体会生成两个HRegionInfo对象，包括tableName、regionName、startKey和endKey等。同时还会生成一个transaction journal对象，用来记录分裂的进展。</p>
+<h4 id="2-2-2、execute阶段">2.2.2、execute阶段</h4>
+<p>分裂的核心操作，如下所示：</p>
+<p><img src="G:%5CMy%5Csource%5Cimg%5C2022-04-08-10-02-45-72a84cee8ea60db68c52b405fb08519f.jpg" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>这个阶段的步骤如下：</p>
+<ul>
+<li>
+<p>1）RegionServer将ZooKeeper节点/region-in-transition中该Region的状态更改为SPLITING。</p>
+</li>
+<li>
+<p>2）Master通过watch节点/region-in-transition检测到Region状态改变，并修改内存中Region的状态。此时，在Master页面RIT模块可以看到Region执行split的状态信息。</p>
+</li>
+<li>
+<p>3）在父存储目录下新建临时文件夹.split，保存split后的daughter region信息。</p>
+</li>
+<li>
+<p>4）关闭父Region。父Region关闭数据写入并触发flush操作，将写入Region的数据全部持久化到磁盘。此后短时间内客户端落在父Region上的请求都会抛出异常NotServingRegionException。</p>
+</li>
+<li>
+<p>5）在.split文件夹下新建两个文件夹，称为daughter A、daughter B，并在文件夹中生成reference文件，分别指向父Region中对应文件。这个步骤是所有步骤中最核心的一个环节，会生成如下reference文件日志</p>
+</li>
+</ul>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs llvm"><span class="hljs-number">2017</span><span class="hljs-number">-08</span><span class="hljs-number">-12</span> <span class="hljs-number">11</span>:<span class="hljs-number">53</span>:<span class="hljs-number">38</span><span class="hljs-punctuation">,</span><span class="hljs-number">158</span> DEBUG [StoreOpener<span class="hljs-number">-0155388346</span><span class="hljs-keyword">c</span><span class="hljs-number">3</span><span class="hljs-keyword">c</span><span class="hljs-number">919</span>d<span class="hljs-number">3</span>f<span class="hljs-number">05</span>d<span class="hljs-number">7188e885</span>e<span class="hljs-number">0</span><span class="hljs-number">-1</span>] regionserver.StoreFileInfo: reference &#x27;hdfs:// hdfscluster/hbase-rsgroup/data/<span class="hljs-keyword">default</span>/music/<span class="hljs-number">0155388346</span><span class="hljs-keyword">c</span><span class="hljs-number">3</span><span class="hljs-keyword">c</span><span class="hljs-number">919</span>d<span class="hljs-number">3</span>f<span class="hljs-number">05</span>d<span class="hljs-number">7188e885</span>e<span class="hljs-number">0</span>/cf/d<span class="hljs-number">24415</span><span class="hljs-keyword">c</span><span class="hljs-number">4</span>fb<span class="hljs-number">44427</span>b<span class="hljs-number">8</span>f<span class="hljs-number">698143e5</span><span class="hljs-keyword">c</span><span class="hljs-number">4</span>d<span class="hljs-number">9</span>dc.<span class="hljs-number">00</span>bb<span class="hljs-number">6239169411e4</span>d<span class="hljs-number">0</span>ecb<span class="hljs-number">6</span>ddfdbacf<span class="hljs-number">66</span>&#x27; <span class="hljs-keyword">to</span> region<span class="hljs-operator">=</span><span class="hljs-number">00</span>bb<span class="hljs-number">6239169411e4</span>d<span class="hljs-number">0</span>ecb<span class="hljs-number">6</span>ddfdbacf<span class="hljs-number">66</span> hfile<span class="hljs-operator">=</span>d<span class="hljs-number">24415</span><span class="hljs-keyword">c</span><span class="hljs-number">4</span>fb<span class="hljs-number">44427</span>b<span class="hljs-number">8</span>f<span class="hljs-number">698143e5</span><span class="hljs-keyword">c</span><span class="hljs-number">4</span>d<span class="hljs-number">9</span>dc。<br></code></pre></td></tr></table></figure>
+<p>其中，reference文件名为d24415c4fb44427b8f698143e5c4d9dc.00bb6239169411e4d0ecb6ddfdbacf66，格式比较特殊，该文件名具体含义如下：根据日志可以看到，分裂的父Region是00bb6239169411e4d0ecb6ddfdbacf66，对应的HFile文件是d24415c4fb44427b8f698143e5c4d9dc，可见通过reference文件名就可以知道referene文件指向哪个父Region中的哪个HFile文件，如下所示：</p>
+<p><img src="G:%5CMy%5Csource%5Cimg%5C2022-04-08-09-23-42-2b1c890056f256388500354035040222.jpg" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>除此之外，reference文件的文件内容也非常重要。reference文件是一个引用文件（并非Linux链接文件），文件内容并不是用户数据，而是由两部分构成：其一是分裂点splitkey，其二是一个boolean类型的变量（true或者false），true表示该reference文件引用的是父文件的上半部分（top），false表示引用的是下半部分（bottom）。用户可以使用hadoop命令查看reference文件的具体内容：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">hadoop dfs -cat /hbase-rsgroup/data/default/music/0155388346c3c919d3f05d7188e885e0/cf/d24415c4fb44427b8f698143e5c4d9dc.00bb6239169411e4d0ecb6ddfdbacf66<br></code></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>6）父Region分裂为两个子Region后，将daughter A、daughter B拷贝到HBase根目录下，形成两个新的Region。</p>
+</li>
+<li>
+<p>7）父Region通知修改hbase:meta表后下线，不再提供服务。下线后父Region在meta表中的信息并不会马上删除，而是将split列、offline列标注为true，并记录两个子Region，如下：</p>
+</li>
+</ul>
+<p><img src="G:%5CMy%5Csource%5Cimg%5C2022-04-08-10-01-26-2972674a92db3bbd4a87dd4c4fe5b058.jpg" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>8）开启daughter A、daughter B两个子Region。通知修改hbase:meta表，正式对外提供服务，如下：</li>
+</ul>
+<p><img src="G:%5CMy%5Csource%5Cimg%5C2022-04-08-10-02-22-8f5a42021031860a911e363911e84cf2.jpg" srcset="/img/loading.gif" lazyload alt=""></p>
+<h4 id="2-2-3、rollback阶段">2.2.3、rollback阶段</h4>
+<p>如果execute阶段出现异常，则执行rollback操作。为了实现回滚，整个分裂过程分为很多子阶段，回滚程序会根据当前进展到哪个子阶段清理对应的垃圾数据。代码中使用JournalEntryType来表示各个子阶段，如下：</p>
+<table>
+<thead>
+<tr>
+<th>Jounal Entey Type</th>
+<th>拆分进度</th>
+<th>回滚（清理垃圾数据）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>STARTED</td>
+<td>拆分逻辑被触发</td>
+<td>NONE</td>
+</tr>
+<tr>
+<td>PREPARED</td>
+<td>执行拆分前的准备工作</td>
+<td>NONE</td>
+</tr>
+<tr>
+<td>SET_SPLITING_IN_ZK</td>
+<td>Zookeeper中创建出拆分节点</td>
+<td>删除Zookeeper中的拆分节点</td>
+</tr>
+<tr>
+<td>CREATE_SPLIT_DIR</td>
+<td>拆分目录.split被生成</td>
+<td>清理父Region下的拆分目录</td>
+</tr>
+<tr>
+<td>CLOSED_PARENT_REGION</td>
+<td>父Region被关闭</td>
+<td>重新对父Region执行初始化操作</td>
+</tr>
+<tr>
+<td>OFFLINE_PARENT</td>
+<td>父Region被下线，不再提供上线服务</td>
+<td>重新将父Region上线</td>
+</tr>
+<tr>
+<td>STARTED_REGION_A_CREATED</td>
+<td>第一个子Region被成功创建</td>
+<td>清理第一个子Region的存储目录</td>
+</tr>
+<tr>
+<td>STARTED_REGION_B_CREATED</td>
+<td>第二个子Region被成功创建</td>
+<td>清理第二个子Region的存储目录</td>
+</tr>
+<tr>
+<td>OPENED_REGION_A</td>
+<td>第一个子Region被开启</td>
+<td>关闭第一个子Region</td>
+</tr>
+<tr>
+<td>OPENED_REGION_B</td>
+<td>第二个子Region被开启</td>
+<td>关闭第二个子Region</td>
+</tr>
+</tbody>
+</table>
+<h2 id="三、How-Good">三、How Good</h2>
+<h3 id="3-1-、原子性保证">3.1 、原子性保证</h3>
+<p>Region分裂是一个比较复杂的过程，涉及父Region中HFile文件分裂、两个子Region生成、系统meta元数据更改等很多子步骤，因此必须保证整个分裂过程的原子性，即要么分裂成功，要么分裂失败，在任何情况下不能出现分裂完成一半的情况。</p>
+<p>为了实现原子性，HBase使用状态机的方式保存分裂过程中每个子步骤状态，这样一旦出现异常，系统可以根据当前所处的状态决定是否回滚，以及如何回滚。遗憾的是，目前实现中这些中间状态都只存储在内存中，一旦在分裂过程中出现RegionServer宕机的情况，有可能会出现分裂处于中间状态的情况，也就是RIT状态。这种情况下需要使用HBCK工具具体查看并分析解决方案。</p>
+<p>在2.0版本之后，HBase将实现新的分布式事务框架Procedure V2（HBASE-12459），新框架使用类似HLog的日志文件存储这种单机事务（DDL操作、split操作、move操作等）的中间状态，因此可以保证即使在事务执行过程中参与者发生了宕机，依然可以使用对应日志文件为协调者，对事务进行回滚操作或者重试提交，从而大大减少甚至杜绝RIT现象。这也是HBase 2.0在可用性方面最值得期待的一个亮点功能。</p>
+<p>在执行split的过程中一旦发生RegionServer宕机等异常可能会导致region-in-transition。通常情况下建议使用HBCK查看报错信息，然后再根据HBCK提供的一些工具进行修复，HBCK提供了部分命令对处于split状态的rit region进行修复，主要的命令如下：</p>
+<ul>
+<li>
+<p>-fixSplitParents  Try to force offline split parents to be online.</p>
+</li>
+<li>
+<p>-removeParents    Try to offline and sideline lingering parents an<br>
+d keep daughter regions.</p>
+</li>
+<li>
+<p>-fixReferenceFiles  Try to offline lingering reference store files</p>
+</li>
+</ul>
+<h3 id="3-2、对其他模块的影响">3.2、对其他模块的影响</h3>
+<p>Region分裂过程因为没有涉及数据的移动，所以分裂成本本身并不是很高，可以很快完成。分裂后子Region的文件实际没有任何用户数据，文件中存储的仅是一些元数据信息——分裂点rowkey等。此时我们可能会有一些疑问：</p>
+<blockquote>
+<p>通过reference文件如何查找数据呢？</p>
+<p>子Region的数据实际在什么时候完成真正迁移？</p>
+<p>数据迁移完成之后父Region什么时候会被删掉？</p>
+</blockquote>
+<h4 id="3-2-1、通过reference文件查找数据">3.2.1、通过reference文件查找数据</h4>
+<p>通过reference文件查找数据的整个流程如下：</p>
+<p><img src="G:%5CMy%5Csource%5Cimg%5C2022-04-08-15-38-23-a6bc692664fe1c9fe438bb06fc5c2e20.jpg" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p>根据reference文件名（父Region名 + HFile文件名）定位到真实数据所在文件路径。</p>
+</li>
+<li>
+<p>根据reference文件内容中记录的两个重要字段确定实际扫描范围。top字段表示扫描范围是HFile的上半部分还是下半部分。如果top为true，表示扫描的是上半部分，结合splitkey字段可以明确扫描范围为[firstkey，splitkey)；如果top为false，表示扫描的是下半部分，结合splitkey字段可以明确扫描范围为[splitkey，endkey)。</p>
+</li>
+</ul>
+<h4 id="3-2-2、父Region的数据迁移到子Region目录的时间">3.2.2、父Region的数据迁移到子Region目录的时间</h4>
+<p>迁移发生在子Region执行Major Compaction时。根据Compaction原理，从一系列小文件中依次由小到大读出所有数据并写入一个大文件，完成之后再将所有小文件删掉，因此Compaction本身就是一次数据迁移。分裂后的数据迁移完全可以借助Compaction实现，子Region执行Major Compaction后会将父目录中属于该子Region的所有数据读出来，并写入子Region目录数据文件中。</p>
+<h4 id="3-3-3、父Region被删除的时间">3.3.3、父Region被删除的时间</h4>
+<p>Master会启动一个线程定期遍历检查所有处于splittig状态的父Region，确定父Region是否可以被清理。检查过程分为两步：</p>
+<p>1）检测线程首先会在meta表中读出所有split列为true的Region，并加载出其分裂后生成的两个子Region（meta表中splitA列和splitB列）。</p>
+<p>2）检查两个子Region是否还存在引用文件，如果都不存在引用文件就可以认为该父Region对应的文件可以被删除。</p>
+<h2 id="四、参考">四、参考</h2>
+<p>[HBase原理与实践](<a target="_blank" rel="noopener" href="https://book.douban.com/subject/34819650/">HBase原理与实践 (豆瓣)</a>)</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="category-chain-item">数据库</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/HBase/" class="print-no-link">#HBase</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Region分裂</div>
+      <div>https://kuberxy.github.io/2022/04/07/Region分裂/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年4月7日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/04/08/Region%E5%90%88%E5%B9%B6/" title="Region合并">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Region合并</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/04/07/Region%E8%BF%81%E7%A7%BB/" title="Region迁移">
+                        <span class="hidden-mobile">Region迁移</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

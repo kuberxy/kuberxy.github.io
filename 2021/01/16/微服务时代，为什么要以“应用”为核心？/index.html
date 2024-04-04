@@ -1,0 +1,679 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="todo 一、应用的起源 微服务架构一般都是从单体架构或分层架构演化过来的。软件架构微服务化的过程，就是一个根据业务模型不断进行细化的过程，在这个过程中切分出一个个具备不同职责的业务逻辑模块（即微服务模块），然后每个微服务模块都会提供相应业务逻辑的服务化接口。 简单来说，微服务化的核心就是一个字：拆。从一个单体工程，拆分出N个独立的模块。这些模块都可以独立部署和运行，并提供对应的业务能力。拆分后的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微服务时代，为什么要以“应用”为核心？">
+<meta property="og:url" content="https://kuberxy.github.io/2021/01/16/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%97%B6%E4%BB%A3%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BB%A5%E2%80%9C%E5%BA%94%E7%94%A8%E2%80%9D%E4%B8%BA%E6%A0%B8%E5%BF%83%EF%BC%9F/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="todo 一、应用的起源 微服务架构一般都是从单体架构或分层架构演化过来的。软件架构微服务化的过程，就是一个根据业务模型不断进行细化的过程，在这个过程中切分出一个个具备不同职责的业务逻辑模块（即微服务模块），然后每个微服务模块都会提供相应业务逻辑的服务化接口。 简单来说，微服务化的核心就是一个字：拆。从一个单体工程，拆分出N个独立的模块。这些模块都可以独立部署和运行，并提供对应的业务能力。拆分后的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20210117120118502.png">
+<meta property="article:published_time" content="2021-01-16T02:07:23.000Z">
+<meta property="article:modified_time" content="2021-01-22T00:46:56.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="运维观">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://kuberxy.github.io/img/image-20210117120118502.png">
+  
+  
+  
+  <title>微服务时代，为什么要以“应用”为核心？ - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="微服务时代，为什么要以“应用”为核心？"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-01-16 10:07" pubdate>
+          2021年1月16日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          11 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">微服务时代，为什么要以“应用”为核心？</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>todo</p>
+<h3 id="一、应用的起源">一、应用的起源</h3>
+<p>微服务架构一般都是从单体架构或分层架构演化过来的。软件架构微服务化的过程，就是一个根据业务模型不断进行细化的过程，在这个过程中切分出一个个具备不同职责的业务逻辑模块（即微服务模块），然后每个微服务模块都会提供相应业务逻辑的服务化接口。</p>
+<p>简单来说，微服务化的核心就是一个字：拆。从一个单体工程，拆分出N个独立的模块。这些模块都可以独立部署和运行，并提供对应的业务能力。拆分后的模块数量与业务体量和复杂度相关，少则几个、十几个，多则几十、几百个，所以为了统一概念，我们通常称这些模块为应用。</p>
+<p>为了确保每个应用的唯一性，我们会给每个应用定义一个唯一的标识符，比如app1、app2等，而这个唯一的标识符，就是我们常说的应用名。</p>
+<h3 id="二、应用的模型">二、应用的模型</h3>
+<p>需要知道的是，我们在上面定义出来的一个个应用，都是从业务角度入手进行细化拆分出来的一个个业务逻辑单元。这些应用虽然可以独立部署和运行，但是每个应用都只具备相对单一的业务功能。如果要完成整体的业务流程和目标，就需要和周边其它的微服务化应用交互。此外，它们还会依赖各种与业务无直接关系、相对独立的基础设施和组件，比如机器资源、域名、缓存、消息队列、DB等。</p>
+<p>所以，在一个实际的运维场景中，除了应用这个实体之外，还会存在其他各类基础组件实体。应用在运行过程中，会不断地与它们产生和建立各种各样复杂的关联关系。而正是因为有了这种复杂的关联关系，才提高了我们的运维复杂度。也正因为如此，理清运维场景中的关联关系就变得尤为重要。</p>
+<p>接下来，我们先来看一看可以从哪些角度来梳理这种关联关系。</p>
+<h4 id="2-1、应用的业务模型">2.1、应用的业务模型</h4>
+<p>应用的业务模型，就是每个应用对外提供的业务服务能力，通常会以API的方式暴露给外部。</p>
+<p>该模型一般由业务架构师在进行业务需求分析和拆解时进行设计，更多的聚焦在业务逻辑上。</p>
+<h4 id="2-2、应用的管理模型">2.2、应用的管理模型</h4>
+<p>应用的管理模型，就是应用自身的各种属性，比如应用名、应用功能信息、责任人、Git地址、部署结构（代码路径、日志路径以及各类配置文件路径等）、启停方式、健康检测方式等等。其中，应用名是应用的唯一标识，我们一般用AppName来表示。</p>
+<h4 id="2-3、应用的依赖模型">2.3、应用的依赖模型</h4>
+<p>应用的依赖模型，就是应用运行时所需要的基础设施和基础组。其中：</p>
+<ul>
+<li>
+<p>基础设施：主要是指应用运行所必需的资源载体，比如物理机、虚拟机或容器等。而如果应用会对外提供HTTP服务，就需要虚IP和DNS域名；</p>
+</li>
+<li>
+<p>基础组件：主要是指我们常说的中间件体系，比如数据库、缓存、消息队列、文件存储等。</p>
+</li>
+</ul>
+<p>在这里我们需要知道的是，这些基础设施和基础组件都是为了业务应用而存在的。正是因为业务应用的需要，才开启了它们各自的生命周期。如果脱离了这些业务应用，它们就失去了存在的意义。</p>
+<h3 id="三、应用关系建模">三、应用关系建模</h3>
+<p>在理解了应用的模型后，我们再去梳理应用的关联关系就会顺畅很多，这个梳理过程可以分为两步走：</p>
+<ul>
+<li>第一步，建立各个基础设施和基础组件的数据模型，同时识别出它们的唯一标识符。这一步与应用的管理模型梳理过程类似。以缓存为例，每当我们申请一个缓存空间时，通常会以NameSpace来表示唯一标识符，同时这个缓存空间会有容量大小和Partition分区等属性信息。</li>
+<li>第二步，识别出基础设施和基础组件可以与应用名AppName建立关联关系的属性，或者在基础组件的数据模型中增加所属应用这样的字段。还是以缓存为例，当应用申请缓存空间时，可以直接将NameSpace字段的值设置为AppName，也可以在增加一个所属应用这样的字段，通过外键关联模式建立起应用于缓存空间的关联关系。</li>
+</ul>
+<p>经过这样两步的梳理，我们就可以建立出类似下图这样，以应用为核心的应用模型和关联关系模型了：</p>
+<p><img src="/img/image-20210117120118502.png" srcset="/img/loading.gif" lazyload alt="image-20210117120118502"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Ops/" class="category-chain-item">Ops</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%BF%90%E7%BB%B4%E8%A7%82/" class="print-no-link">#运维观</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>微服务时代，为什么要以“应用”为核心？</div>
+      <div>https://kuberxy.github.io/2021/01/16/微服务时代，为什么要以“应用”为核心？/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年1月16日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/01/17/%E9%AB%98%E6%95%88%E7%9A%84Ops%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BB%8E%E6%A0%87%E5%87%86%E5%8C%96%E5%BC%80%E5%A7%8B%EF%BC%9F/" title="高效的Ops为什么要从标准化开始？">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">高效的Ops为什么要从标准化开始？</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/01/05/Terraform%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/" title="Terraform核心概念">
+                        <span class="hidden-mobile">Terraform核心概念</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,694 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="OpenResty最擅长的应用场景之一就是API Server。一提到API Server我们的脑海里一定会冒出许多与REST相关的概念，下面我们来看看在OpenResty中如何实现REST风格的API Server。 一、为什么要使用REST 首先，我们先来看看不采用REST的API Server长什么样，如下示例： 123456789101112131415161718192021222324">
+<meta property="og:type" content="article">
+<meta property="og:title" content="API的设计">
+<meta property="og:url" content="https://kuberxy.github.io/2020/12/09/API%E7%9A%84%E8%AE%BE%E8%AE%A1/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="OpenResty最擅长的应用场景之一就是API Server。一提到API Server我们的脑海里一定会冒出许多与REST相关的概念，下面我们来看看在OpenResty中如何实现REST风格的API Server。 一、为什么要使用REST 首先，我们先来看看不采用REST的API Server长什么样，如下示例： 123456789101112131415161718192021222324">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-09T01:46:07.000Z">
+<meta property="article:modified_time" content="2020-12-09T03:18:58.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Web服务、REST">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>API的设计 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="API的设计"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-12-09 09:46" pubdate>
+          2020年12月9日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">API的设计</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>OpenResty最擅长的应用场景之一就是API Server。一提到API Server我们的脑海里一定会冒出许多与REST相关的概念，下面我们来看看在OpenResty中如何实现REST风格的API Server。</p>
+<h2 id="一、为什么要使用REST">一、为什么要使用REST</h2>
+<p>首先，我们先来看看不采用REST的API Server长什么样，如下示例：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-section">server</span> &#123;<br>    <span class="hljs-attribute">listen</span>       <span class="hljs-number">80</span>;<br>    <span class="hljs-attribute">server_name</span>  localhost;<br><br>    <span class="hljs-section">location</span> /app/set &#123;<br>        <span class="hljs-section">content_by_lua_block</span> &#123;<br>             ngx.say(&#x27;<span class="hljs-attribute">set</span> data<span class="hljs-string">&#x27;)</span><br><span class="hljs-string">        &#125;</span><br><span class="hljs-string">    &#125;</span><br><span class="hljs-string"></span><br><span class="hljs-string">    location /app/get &#123;</span><br><span class="hljs-string">        content_by_lua_block &#123;</span><br><span class="hljs-string">            ngx.say(&#x27;</span>get data<span class="hljs-string">&#x27;)</span><br><span class="hljs-string">        &#125;</span><br><span class="hljs-string">    &#125;</span><br><span class="hljs-string"></span><br><span class="hljs-string">    location /app/del &#123;</span><br><span class="hljs-string">        content_by_lua_block &#123;</span><br><span class="hljs-string">            ngx.say(&#x27;</span>del data<span class="hljs-string">&#x27;)</span><br><span class="hljs-string">        &#125;</span><br><span class="hljs-string">    &#125;</span><br><span class="hljs-string">    </span><br><span class="hljs-string">    ...</span><br><span class="hljs-string">&#125;</span><br></code></pre></td></tr></table></figure>
+<p>可以看到，如果我们的API Server提供了很多的接口服务，那么上面的nginx配置文件就会变得非常冗杂。可读性、可维护性都会降低。因此，我们更推荐采用REST风格来开发API Server。</p>
+<h2 id="二、什么是REST">二、什么是REST</h2>
+<p>REST是Representational State Transfer的简称，即表述性状态转移，是2000年Roy Fielding博士在他的博士论文中提出来的一种<code>软件架构风格</code>。它是一种针对网络应用的设计和开发方式，可以降低开发的复杂性，提高系统的可伸缩性。</p>
+<p>从资源的角度来看整个网络，分布在各处的资源都由URI来标识的，而客户端应用则是通过URI来获取资源的表现形式。所谓表述性状态转移是指，客户端获取资源的表现形式致使其状态发生转变。随着客户端不断地获取资源的表现形式，其状态也会不断地进行转变。以上观点并不是凭空臆造的，而是通过对Web运行方式的观察而抽象出来的。Roy Fielding博士认为：</p>
+<blockquote>
+<p>设计良好的网络应用表现为一系列的网页，这些网页可以看作是虚拟的状态机。用户选择一个链接会导致下一个网页传输到用户端并展现给用户，而这正代表了状态的转变。</p>
+</blockquote>
+<p>REST是设计风格而不是标准。REST通常基于HTTP、URI，XML和HTML等这些现有的、广泛流行的协议和标准：</p>
+<ul>
+<li>资源由URI来标识</li>
+<li>对资源的操作包括获取、创建、修改和删除，这些操作正好对应HTTP协议提供GET、POST、PUT、DELETE方法</li>
+<li>通过操作资源的表现形式来操作资源。</li>
+<li>资源的表现形式是HTML还是XML，取决于获取资源的是机器还是人，是消费Web服务端的客户端软件还是Web浏览器。</li>
+</ul>
+<p>REST要求：</p>
+<ul>
+<li>客户端和服务器（C/S）结构</li>
+<li>连接协议具有无状态性</li>
+<li>能够利用Cache机制提高性能</li>
+<li>层次化的系统</li>
+</ul>
+<h2 id="三、OpenResty-REST">三、OpenResty &amp; REST</h2>
+<p>按照 REST 的风格引导，有关数据的 API Server 就可以变成这样：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-section">server</span> &#123;<br>    <span class="hljs-attribute">listen</span>       <span class="hljs-number">80</span>;<br>    <span class="hljs-attribute">server_name</span>  localhost;<br><br>    <span class="hljs-section">location</span> /app/task01 &#123;<br>        <span class="hljs-section">content_by_lua_block</span> &#123;<br>            ngx.say(ngx.req.get_method() .. &#x27; task01&#x27;)<br>        &#125;<br>    &#125;<br>    <span class="hljs-section">location</span> /app/task02 &#123;<br>        <span class="hljs-section">content_by_lua_block</span> &#123;<br>            ngx.say(ngx.req.get_method() .. &#x27; task02&#x27;)<br>        &#125;<br>    &#125;<br>    <span class="hljs-section">location</span> /app/task03 &#123;<br>        <span class="hljs-section">content_by_lua_block</span> &#123;<br>            ngx.say(ngx.req.get_method() .. &#x27; task03&#x27;)<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>对于 <code>/app/task01</code> 接口（资源），这时候我们可以用下面的方法，完成对应的方法调用（操作）：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">curl -X GET http://127.0.0.1/app/task01<br>curl -X PUT http://127.0.0.1/app/task01<br>curl -X DELETE http://127.0.0.1/app/task01<br></code></pre></td></tr></table></figure>
+<p>如果 task 类型（接口）非常多，那么后面这个配置依然会随着业务的调整而调整，随之也会引来一系列的问题。那么，能否在简洁一些呢？这里引用一下 HttpLuaModule 官方示例代码：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-comment"># use nginx var in code path</span><br><span class="hljs-comment"># WARNING: contents in nginx var must be carefully filtered,</span><br><span class="hljs-comment"># otherwise there&#x27;ll be great security risk!</span><br><span class="hljs-section">location</span> <span class="hljs-regexp">~ ^/app/([-_a-zA-Z0-9/]+)</span> &#123;<br>    <span class="hljs-attribute">set</span> <span class="hljs-variable">$path</span> <span class="hljs-variable">$1</span>;<br>    <span class="hljs-attribute">content_by_lua_file</span> /path/to/lua/app/root/<span class="hljs-variable">$path</span>.lua;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>可以看到，我们再也不用去修改 Nginx 主配置了。另外，强制了入口文件命名规则。对于后期检查维护更容易。</p>
+<h2 id="四、REST的缺点">四、REST的缺点</h2>
+<p>REST 推崇使用 HTTP 返回码来区分返回结果, 但最大的问题在于 HTTP 的错误返回码 (4xx 系列为主) 不够多，而且订得很随意。比如，用 API 创建一个用户，那么错误可能有：</p>
+<ul>
+<li>调用格式错误(一般返回 400, 405)</li>
+<li>授权错误(一般返回 403)</li>
+<li>&quot;运行期&quot;错误
+<ul>
+<li>用户名不合法</li>
+<li>用户名冲突</li>
+<li>email 不合法</li>
+<li>email 冲突</li>
+<li>…</li>
+</ul>
+</li>
+</ul>
+<p>此外，REST具有一定的学习成本。想要理解REST，必须具备HTTP、URI、HTML和XML等相关知识。</p>
+<h2 id="五、小结">五、小结</h2>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/OpenResty/" class="category-chain-item">OpenResty</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Web%E6%9C%8D%E5%8A%A1%E3%80%81REST/" class="print-no-link">#Web服务、REST</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>API的设计</div>
+      <div>https://kuberxy.github.io/2020/12/09/API的设计/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年12月9日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/12/09/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95API-Server%E6%A1%86%E6%9E%B6/" title="一个简单API Server框架">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">一个简单API Server框架</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/06/%E9%99%90%E6%B5%81%E8%AF%A5%E6%80%8E%E4%B9%88%E5%81%9A/" title="限流该怎么做">
+                        <span class="hidden-mobile">限流该怎么做</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

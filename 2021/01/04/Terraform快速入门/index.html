@@ -1,0 +1,704 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="todo 一、安装 Terraform是以二进制可执行文件发布的，只需下载terraform，然后将terraform可执行文件添加到系统环境变量PATH中即可。下面以Linux系统为例： 1234mkdir -p ~&#x2F;terraform &amp;&amp; cd $_wget https:&#x2F;&#x2F;releases.hashicorp.com&#x2F;terraform&#x2F;0.14.3&#x2F;terraform_0">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Terraform快速入门">
+<meta property="og:url" content="https://kuberxy.github.io/2021/01/04/Terraform%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="todo 一、安装 Terraform是以二进制可执行文件发布的，只需下载terraform，然后将terraform可执行文件添加到系统环境变量PATH中即可。下面以Linux系统为例： 1234mkdir -p ~&#x2F;terraform &amp;&amp; cd $_wget https:&#x2F;&#x2F;releases.hashicorp.com&#x2F;terraform&#x2F;0.14.3&#x2F;terraform_0">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-04T10:14:43.000Z">
+<meta property="article:modified_time" content="2021-01-05T10:08:42.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Terraform">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Terraform快速入门 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Terraform快速入门"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-01-04 18:14" pubdate>
+          2021年1月4日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          10 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Terraform快速入门</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>todo</p>
+<h2 id="一、安装">一、安装</h2>
+<p>Terraform是以二进制可执行文件发布的，只需下载terraform，然后将terraform可执行文件添加到系统环境变量PATH中即可。下面以Linux系统为例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">mkdir -p ~/terraform &amp;&amp; cd $_<br>wget https://releases.hashicorp.com/terraform/0.14.3/terraform_0.14.3_linux_amd64.zip<br>unzip terraform_0.14.3_linux_amd64.zip<br>sudo mv terraform /usr/local/bin/<br></code></pre></td></tr></table></figure>
+<h2 id="二、认证鉴权">二、认证鉴权</h2>
+<p>使用Terraform管理云资源前，需要获取云平台的AK/SK，并在Terraform中进行配置，从而实现认证鉴权。认证信息的配置方式是由各云厂商实现的provider决定的，详细信息可参考各云的provider文档。但常用的方式有两种：静态文件和环境变量。下面我们分别讨论。</p>
+<h3 id="2-1、静态文件">2.1、静态文件</h3>
+<p>静态文件，就是直接在配置文件中添加AK、SK信息，如下示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs hcl">provider &quot;huaweicloud&quot; &#123;<br>  region     = &quot;cn-north-1&quot;<br>  access_key = &quot;my-access-key&quot;<br>  secret_key = &quot;my-secret-key&quot;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>说明：</p>
+<ul>
+<li>region：区域，即要管理哪个区域的资源。</li>
+<li>access_key：密钥ID，即AK。</li>
+<li>secret_key：访问密钥，即SK。</li>
+</ul>
+<h3 id="2-2、环境变量">2.2、环境变量</h3>
+<p>环境变量，就是将认证信息配置成系统环境变量，下面以华为云为例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">export</span> HW_REGION_NAME=<span class="hljs-string">&quot;cn-north-1&quot;</span></span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">export</span> HW_ACCESS_KEY=<span class="hljs-string">&quot;my-access-key&quot;</span></span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">export</span> HW_SECRET_KEY=<span class="hljs-string">&quot;my-secret-key&quot;</span></span><br></code></pre></td></tr></table></figure>
+<p>说明：</p>
+<ul>
+<li>HW_REGION_NAME：区域，即要管理哪个区域的资源。</li>
+<li>HW_ACCESS_KEY：密钥ID，即AK。</li>
+<li>HW_SECRET_KEY：访问密钥，即SK。</li>
+</ul>
+<h2 id="三、使用Terraform创建云上网络">三、使用Terraform创建云上网络</h2>
+<p>下面，我们以华为云为例，使用Terraform创建一个VPC网络</p>
+<h3 id="3-1、搭建本地registry">3.1、搭建本地registry</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">wget https://releases.hashicorp.com/terraform-provider-huaweicloud/1.20.0/terraform-provider-huaweicloud_1.20.0_linux_amd64.zip<br><br>mkdir -p ~/.terraform.d/plugins/local-registry/huaweicloud/huaweicloud/1.20.0/linux_amd64<br>unzip terraform-provider-huaweicloud_1.20.0_linux_amd64.zip -d ~/.terraform.d/plugins/local-registry/huaweicloud/huaweicloud/1.20.0/linux_amd64<br></code></pre></td></tr></table></figure>
+<h3 id="3-2、配置registry">3.2、配置registry</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs shell">cat &gt; ~/terraform/versions.tf &lt;&lt; EOF<br>terraform &#123;<br>  required_providers &#123;<br>    huaweicloud = &#123;<br>      source = &quot;local-registry/huaweicloud/huaweicloud&quot;<br>      version = &quot;1.20.0&quot;<br>    &#125;<br>  &#125;<br>&#125;<br>EOF<br></code></pre></td></tr></table></figure>
+<h3 id="3-3、定义资源">3.3、定义资源</h3>
+<p>创建“<a target="_blank" rel="noopener" href="http://main.tf">main.tf</a>”文件，内容如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs hcl">cat &gt; ~/terraform/main.tf &lt;&lt; EOF<br># Configure the HuaweiCloud Provider<br>provider &quot;huaweicloud&quot; &#123;<br>  region      = &quot;cn-south-1&quot;<br>  domain_name = &quot;Kuberxy&quot;<br>  access_key  = &quot;access_key&quot;<br>  secret_key  = &quot;access_key&quot;<br>&#125;<br><br># Create a VPC<br>resource &quot;huaweicloud_vpc&quot; &quot;example&quot; &#123;<br>  name = &quot;gz_vpc&quot;<br>  cidr = &quot;192.168.0.0/16&quot;<br>&#125;<br>EOF<br></code></pre></td></tr></table></figure>
+<p>该文件：</p>
+<ul>
+<li>上半部分为HuaweiCloud Provider的配置，包含认证鉴权的内容；如果使用环境变量方式认证鉴权，可以省略该部分内容。</li>
+<li>下半部分描述一个名为example的VPC资源，该VPC在云平台上的名称为gz_vpc，cidr为192.168.0.0/16。</li>
+</ul>
+<h3 id="3-4、初始化">3.4、初始化</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">terraform init<br></code></pre></td></tr></table></figure>
+<p>如果使用的是网络registry，首次执行时会访问公网下载Provider并安装。该命令的输出结果如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs shell">Initializing the backend...<br><br>Initializing provider plugins...<br>- Finding local-registry/huaweicloud/huaweicloud versions matching &quot;1.20.0&quot;...<br>- Installing local-registry/huaweicloud/huaweicloud v1.20.0...<br>- Installed local-registry/huaweicloud/huaweicloud v1.20.0 (unauthenticated)<br><br>Terraform has created a lock file .terraform.lock.hcl to record the provider<br>selections it made above. Include this file in your version control repository<br>so that Terraform can guarantee to make the same selections by default when<br>you run &quot;terraform init&quot; in the future.<br><br>Terraform has been successfully initialized!<br><br>You may now begin working with Terraform. Try running &quot;terraform plan&quot; to see<br>any changes that are required for your infrastructure. All Terraform commands<br>should now work.<br><br>If you ever set or change modules or backend configuration for Terraform,<br>rerun this command to reinitialize your working directory. If you forget, other<br>commands will detect it and remind you to do so if necessary.<br></code></pre></td></tr></table></figure>
+<h3 id="3-5、查看要创建的资源">3.5、查看要创建的资源</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">terraform plan<br></code></pre></td></tr></table></figure>
+<p>该命令会显示要创建哪些资源，输出如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs shell">An execution plan has been generated and is shown below.<br>Resource actions are indicated with the following symbols:<br>  + create<br><br>Terraform will perform the following actions:<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">  # </span><span class="language-bash">huaweicloud_vpc.example will be created</span><br>  + resource &quot;huaweicloud_vpc&quot; &quot;example&quot; &#123;<br>      + cidr                  = &quot;192.168.0.0/16&quot;<br>      + enterprise_project_id = (known after apply)<br>      + id                    = (known after apply)<br>      + name                  = &quot;gz_vpc&quot;<br>      + region                = (known after apply)<br>      + routes                = (known after apply)<br>      + shared                = (known after apply)<br>      + status                = (known after apply)<br>    &#125;<br><br>Plan: 1 to add, 0 to change, 0 to destroy.<br><br>------------------------------------------------------------------------<br><br>Note: You didn&#x27;t specify an &quot;-out&quot; parameter to save this plan, so Terraform<br>can&#x27;t guarantee that exactly these actions will be performed if<br>&quot;terraform apply&quot; is subsequently run.<br></code></pre></td></tr></table></figure>
+<h3 id="3-6、创建资源">3.6、创建资源</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">terraform apply<br></code></pre></td></tr></table></figure>
+<p>该命令后需要我们进行确认后，才会真正的创建资源。根据提示输入“yes”即可，输出如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs shell">An execution plan has been generated and is shown below.<br>Resource actions are indicated with the following symbols:<br>  + create<br><br>Terraform will perform the following actions:<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">  # </span><span class="language-bash">huaweicloud_vpc.example will be created</span><br>  + resource &quot;huaweicloud_vpc&quot; &quot;example&quot; &#123;<br>      + cidr                  = &quot;192.168.0.0/16&quot;<br>      + enterprise_project_id = (known after apply)<br>      + id                    = (known after apply)<br>      + name                  = &quot;gz_vpc&quot;<br>      + region                = (known after apply)<br>      + routes                = (known after apply)<br>      + shared                = (known after apply)<br>      + status                = (known after apply)<br>    &#125;<br><br>Plan: 1 to add, 0 to change, 0 to destroy.<br><br>Do you want to perform these actions?<br>  Terraform will perform the actions described above.<br>  Only &#x27;yes&#x27; will be accepted to approve.<br><br>  Enter a value: yes<br><br>huaweicloud_vpc.example: Creating...<br>huaweicloud_vpc.example: Creation complete after 7s [id=420c4ed2-20e5-4dca-b4bf-3758535ccbfc]<br><br>Apply complete! Resources: 1 added, 0 changed, 0 destroyed.<br></code></pre></td></tr></table></figure>
+<h3 id="3-7、查看资源信息">3.7、查看资源信息</h3>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dart">terraform <span class="hljs-keyword">show</span><br></code></pre></td></tr></table></figure>
+<p>该命令会显示资源的详细信息，输出如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">huaweicloud_vpc.example:</span><br>resource &quot;huaweicloud_vpc&quot; &quot;example&quot; &#123;<br>    cidr                  = &quot;192.168.0.0/16&quot;<br>    enterprise_project_id = &quot;0&quot;<br>    id                    = &quot;420c4ed2-20e5-4dca-b4bf-3758535ccbfc&quot;<br>    name                  = &quot;gz_vpc&quot;<br>    region                = &quot;cn-east-2&quot;<br>    routes                = []<br>    shared                = false<br>    status                = &quot;OK&quot;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="3-8、删除资源">3.8、删除资源</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">terraform destroy<br></code></pre></td></tr></table></figure>
+<p>该命令也需要进行确认，根据提示输入“yes”即可，输出如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs shell">An execution plan has been generated and is shown below.<br>Resource actions are indicated with the following symbols:<br>  - destroy<br><br>Terraform will perform the following actions:<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">  # </span><span class="language-bash">huaweicloud_vpc.example will be destroyed</span><br>  - resource &quot;huaweicloud_vpc&quot; &quot;example&quot; &#123;<br>      - cidr                  = &quot;192.168.0.0/16&quot; -&gt; null<br>      - enterprise_project_id = &quot;0&quot; -&gt; null<br>      - id                    = &quot;420c4ed2-20e5-4dca-b4bf-3758535ccbfc&quot; -&gt; null<br>      - name                  = &quot;gz_vpc&quot; -&gt; null<br>      - region                = &quot;cn-east-2&quot; -&gt; null<br>      - routes                = [] -&gt; null<br>      - shared                = false -&gt; null<br>      - status                = &quot;OK&quot; -&gt; null<br>    &#125;<br><br>Plan: 0 to add, 0 to change, 1 to destroy.<br><br>Do you really want to destroy all resources?<br>  Terraform will destroy all your managed infrastructure, as shown above.<br>  There is no undo. Only &#x27;yes&#x27; will be accepted to confirm.<br><br>  Enter a value: yes<br><br>huaweicloud_vpc.example: Destroying... [id=420c4ed2-20e5-4dca-b4bf-3758535ccbfc]<br>huaweicloud_vpc.example: Still destroying... [id=420c4ed2-20e5-4dca-b4bf-3758535ccbfc, 10s elapsed]<br>huaweicloud_vpc.example: Destruction complete after 11s<br><br>Destroy complete! Resources: 1 destroyed.<br></code></pre></td></tr></table></figure>
+<h2 id="四、参考">四、参考</h2>
+<p><a target="_blank" rel="noopener" href="https://support.huaweicloud.com/qs-terraform/index.html">快速入门</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/DevOps/" class="category-chain-item">DevOps</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Terraform/" class="print-no-link">#Terraform</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Terraform快速入门</div>
+      <div>https://kuberxy.github.io/2021/01/04/Terraform快速入门/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年1月4日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/01/05/Terraform%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/" title="Terraform核心概念">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Terraform核心概念</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/01/04/Terraform%E7%AE%80%E4%BB%8B/" title="Terraform简介">
+                        <span class="hidden-mobile">Terraform简介</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

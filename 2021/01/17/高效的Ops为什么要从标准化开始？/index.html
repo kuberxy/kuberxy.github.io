@@ -1,0 +1,706 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="todo 一、从标准化开始谈起 1.1、什么是标准化 简单来说，标准化就是一个识别运维对象、建立对象模型的过程。 在有了统一的对象模型后，我们就能在统一的认识下开展有效的协作。进而就可以针对不同的运维对象，抽取出它们所对应的运维场景，最后就是这些运维场景的自动化实现了。 1.2、为什么要标准化 标准化的最终目的是为了自动化。在进行了标准化后，我们日常的运维工作就可以针对具体对象的具体场景进行展开。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高效的Ops为什么要从标准化开始？">
+<meta property="og:url" content="https://kuberxy.github.io/2021/01/17/%E9%AB%98%E6%95%88%E7%9A%84Ops%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BB%8E%E6%A0%87%E5%87%86%E5%8C%96%E5%BC%80%E5%A7%8B%EF%BC%9F/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="todo 一、从标准化开始谈起 1.1、什么是标准化 简单来说，标准化就是一个识别运维对象、建立对象模型的过程。 在有了统一的对象模型后，我们就能在统一的认识下开展有效的协作。进而就可以针对不同的运维对象，抽取出它们所对应的运维场景，最后就是这些运维场景的自动化实现了。 1.2、为什么要标准化 标准化的最终目的是为了自动化。在进行了标准化后，我们日常的运维工作就可以针对具体对象的具体场景进行展开。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-17T02:07:23.000Z">
+<meta property="article:modified_time" content="2021-01-24T00:57:08.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="运维观">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>高效的Ops为什么要从标准化开始？ - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="高效的Ops为什么要从标准化开始？"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-01-17 10:07" pubdate>
+          2021年1月17日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">高效的Ops为什么要从标准化开始？</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>todo</p>
+<h3 id="一、从标准化开始谈起">一、从标准化开始谈起</h3>
+<h4 id="1-1、什么是标准化">1.1、什么是标准化</h4>
+<p>简单来说，标准化就是一个识别运维对象、建立对象模型的过程。</p>
+<p>在有了统一的对象模型后，我们就能在统一的认识下开展有效的协作。进而就可以针对不同的运维对象，抽取出它们所对应的运维场景，最后就是这些运维场景的自动化实现了。</p>
+<h4 id="1-2、为什么要标准化">1.2、为什么要标准化</h4>
+<p>标准化的最终目的是为了自动化。在进行了标准化后，我们日常的运维工作就可以针对具体对象的具体场景进行展开。而如果运维操作脱离了具体对象的具体场景，那工作将变得混乱、没有章法，自动化也就无从谈起。</p>
+<p>以扩容为例，要先确定到底是服务器的扩容，还是应用的扩容，还是其它对象的扩容。我们可以发现，对象不同，扩容这个场景所实施的动作是完全不一样的。如果把服务器的扩容套用到应用的扩容上，就必然会导致流程错乱。</p>
+<h4 id="1-3、如何标准化">1.3、如何标准化</h4>
+<p>在进行标准化工作时，我们可以遵循以下几个步骤：</p>
+<ul>
+<li>第一步，识别具体对象</li>
+<li>第二步，识别对象属性</li>
+<li>第三步，识别对象关系</li>
+<li>第四步，识别对象场景</li>
+</ul>
+<p>接下来，我们按照这几个步骤，来看看如何对基础设施和应用进行标准化</p>
+<h3 id="二、基础设施的标准化">二、基础设施的标准化</h3>
+<p>基础设施层面的运维对象都是一个个物理存在的实体，应该很好识别：</p>
+<ul>
+<li>
+<p>第一步，识别出具体对象。比如，会有服务器、存储、交换机、路由器、配件、机柜、IDC等。</p>
+</li>
+<li>
+<p>第二步，识别出对象属性。比如，服务器会有SN序列号、IP地址、硬件配置（如CPU、内存、硬盘、网卡、PCIE、BIOS等）、操作系统、厂商、维保信息等；交换机会有带宽、厂商、型号等信息。</p>
+</li>
+<li>
+<p>第三步，识别出对象关系。比如，虚拟机所在的宿主机、宿主机所在的机柜、机柜所在的IDC等简单的位置关系；更复杂一点就会有核心交换机、汇聚交换机、接入交换机以及机柜和服务器之间的拓扑关系。</p>
+</li>
+<li>
+<p>第四步，识别出对象场景。比如，服务器的日常操作场景会有采购、入库、安装、配置、上线、下线、维修等等。另外，可能还会有针对这些基础设施之间拓扑关系的可视化查询场景，如交换机与服务器之间的级联关系、状态展示等。</p>
+</li>
+</ul>
+<p>在这里，如果我们通过ER建模工具对前三步梳理出的信息进行数据建模，并将这些信息固化到DB中，一个资源层面的信息管理平台就基本成型了。</p>
+<p>然而，信息固化并不是最终的目的，也没有价值，信息只有动态流转起来才有价值，因此，我们进行了第四步运维场景的识别。完成了这些准备工作后，就可以针对具体的运维场景进行自动化开发了。</p>
+<h3 id="三、应用的标准化">三、应用的标准化</h3>
+<p>应用层面的运维对象就是我们之前提到的运维核心：应用。对于这个对象的标准化，我们依然可以按照上面的逻辑来：</p>
+<ul>
+<li>第一步，识别出具体对象。比如，在微服务架构中，就是我们根据业务逻辑拆分出来的一个个业务应用。而在单体架构中，所有的业务逻辑都融合在一个应用中。</li>
+<li>第二步，识别出对象属性。一个应用所具备的基本运维属性有：
+<ul>
+<li>元数据属性，主要是一些简单直接地描述信息。比如，应用名、应用Owner、所属业务、是否为核心链路应用以及应用的功能说明等，这里的关键是应用名；</li>
+<li>代码属性，主要是编程语言及版本（决定了后续的构建方式），GitLab地址等信息；</li>
+<li>部署模式，主要涉及到一些基础软件包（如语言包Java、C++、Go等）和应用容器（如Tomcat、JBoss等）；</li>
+<li>目录信息，主要是运行应用所需的一些目录。比如，应用包目录、日志目录、运维脚本目录、临时目录等；</li>
+<li>运行脚本，如启停脚本、健康检查脚本；</li>
+<li>运行时的参数配置，如运行端口，Java的JVM参数等</li>
+</ul>
+</li>
+<li>第三步，识别出对象关系。主要是指应用与外部的关系，概括起来有三大类：
+<ul>
+<li>应用与其它应用的关系。也就是应用的依赖关系，在微服务架构中，一个应用往往只能具备某些特定的功能，想要提供一个完整的业务逻辑就需要和外部的多个应用协作。</li>
+<li>应用与基础设施的关系。运行应用需要有服务器资源来承载，访问应用需要ip、vip或dns等资源。</li>
+<li>应用与基础组件的关系。一个动态应用在运行过程中，一定会依赖消息队列、缓存、DB和存储等基础组件。</li>
+</ul>
+</li>
+<li>第四步，识别出对象场景。比如，持续交付，扩缩容，稳定性等。</li>
+</ul>
+<p>需要注意的是，应用是业务逻辑的抽象，因此应用会有业务和运维两个维度的属性。在运维工作中，更侧重于运维属性的识别，至于业务属性则往往由业务架构师识别。</p>
+<h3 id="四、小结">四、小结</h3>
+<p>在这篇文章中，我们从标准化开始谈起，进而讨论了如何对基础设施和应用进行标准化。到这里，你可能会说：还没有讨论如何对基础组件进行标准化啊。</p>
+<p>我们知道，基础组件的生命周期是因为应用的依赖而开始的。基础组件，就是一个特殊的应用，因此，我们可以参考应用标准化的逻辑，来进行基础组件的标准化。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Ops/" class="category-chain-item">Ops</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%BF%90%E7%BB%B4%E8%A7%82/" class="print-no-link">#运维观</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>高效的Ops为什么要从标准化开始？</div>
+      <div>https://kuberxy.github.io/2021/01/17/高效的Ops为什么要从标准化开始？/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年1月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/01/24/%E5%AF%B9%E4%BA%8E%E5%9F%BA%E7%A1%80%E7%BB%84%E4%BB%B6%E6%88%91%E4%BB%AC%E8%A6%81%E5%81%9A%E4%BB%80%E4%B9%88%EF%BC%9F/" title="对于基础组件我们要做什么？">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">对于基础组件我们要做什么？</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/01/16/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%97%B6%E4%BB%A3%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BB%A5%E2%80%9C%E5%BA%94%E7%94%A8%E2%80%9D%E4%B8%BA%E6%A0%B8%E5%BF%83%EF%BC%9F/" title="微服务时代，为什么要以“应用”为核心？">
+                        <span class="hidden-mobile">微服务时代，为什么要以“应用”为核心？</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

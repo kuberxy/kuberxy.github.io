@@ -1,0 +1,694 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="对于不同的业务场景，垃圾回收调优策略是不一样的。比如，在对内存要求苛刻的情况下，需要提高对象回收效率；在CPU使用率高的情况下，需要降低高并发时垃圾回收的频率。那么面对不同的场景，我们该如何进行调优呢？ 一、GC性能衡量指标 在进行实际的GC调优前，我们需要根据一些GC性能指标，确定具体的调优方向。常用的GC性能指标如下：  吞吐量，这里的吞吐量是指应用程序所花费的时间和系统总运行时间的比值。我们">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM垃圾回收调优策略">
+<meta property="og:url" content="https://kuberxy.github.io/2020/09/26/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E8%B0%83%E4%BC%98%E7%AD%96%E7%95%A5/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="对于不同的业务场景，垃圾回收调优策略是不一样的。比如，在对内存要求苛刻的情况下，需要提高对象回收效率；在CPU使用率高的情况下，需要降低高并发时垃圾回收的频率。那么面对不同的场景，我们该如何进行调优呢？ 一、GC性能衡量指标 在进行实际的GC调优前，我们需要根据一些GC性能指标，确定具体的调优方向。常用的GC性能指标如下：  吞吐量，这里的吞吐量是指应用程序所花费的时间和系统总运行时间的比值。我们">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-26T03:03:25.000Z">
+<meta property="article:modified_time" content="2022-04-27T09:23:24.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="JVM">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>JVM垃圾回收调优策略 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="JVM垃圾回收调优策略"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-09-26 11:03" pubdate>
+          2020年9月26日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">JVM垃圾回收调优策略</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>对于不同的业务场景，垃圾回收调优策略是不一样的。比如，在对内存要求苛刻的情况下，需要提高对象回收效率；在CPU使用率高的情况下，需要降低高并发时垃圾回收的频率。那么面对不同的场景，我们该如何进行调优呢？</p>
+<h2 id="一、GC性能衡量指标">一、GC性能衡量指标</h2>
+<p>在进行实际的GC调优前，我们需要根据一些GC性能指标，确定具体的调优方向。常用的GC性能指标如下：</p>
+<ul>
+<li>吞吐量，这里的吞吐量是指应用程序所花费的时间和系统总运行时间的比值。我们可以按照这个公式来计算GC的吞吐量：<code>系统总运行时间 = 应用程序耗时 + GC耗时</code>。如果系统运行了100分钟，GC耗时1分钟，则系统吞吐量为99%。系统的吞吐量一般不能低于95%。</li>
+<li>停顿时间，指垃圾回收器正在运行时，应用程序的暂停时间。对于串行回收器而言，停顿时间可能会比较长；而使用并发回收器时，由于垃圾回收器和应用程序交替运行，程序的停顿时间就会变短，但其效率很可能不如独占回收器，系统的的吞吐量也很可能会降低。</li>
+<li>GC频率，指多久发生一次垃圾回收。通常垃圾回收的频率越低越好，增大堆内存空间可以有效降低垃圾回收的频率；但同时也意味着堆积的回收对象越多，最终也会增加回收时的停顿时间。所以，我们要适当的增大堆内存空间，以保证正常的垃圾回收频率。</li>
+</ul>
+<h2 id="二、查看-分析GC日志">二、查看 &amp; 分析GC日志</h2>
+<p>在了解了性能衡量指标后，我们需要通过工具分析GC日志，统计各项指标的信息。</p>
+<p>首先，我们需要通过JVM参数预先设置GC日志，通常有以下几种JVM参数设置：</p>
+<ul>
+<li>-XX:+PrintGC，输出GC日志</li>
+<li>-XX:+PrintGCDetails，输出GC的详细日志</li>
+<li>-XX:+PrintGCTimeStamps，输出GC的时间戳（以基准时间的形式）</li>
+<li>-XX:+PrintGCDateStamps，输出GC的时间戳（以日志的形式，比如2013-05-04T21:53:59.234+0800）</li>
+<li>-XX:+PrintHeapAtGC，在进行GC的前后打印出堆的信息</li>
+<li>-Xloggc:…/logs/gc.log，日志文件的输出路径</li>
+</ul>
+<p>一般我们使用如下参数来输出日志：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">-XX:+PrintGCDateStamps -XX:+PrintGCDetails -Xloggc:./gclogs<br></code></pre></td></tr></table></figure>
+<p>对于运行很短时间的GC日志，我们可直接查看日志文件。但如果是长时间的GC日志，我们很难通过文本形式去查看整体的GC性能。</p>
+<p>此时，我们可以使用GCViewer工具打开日志文件，通过图形化界面查看整体的GC性能。通过工具，我们可以得到吞吐量、停顿时间以及GC频率等指标数据，从而可以非常直观地了解到GC的性能情况。</p>
+<p>其实，还有一个比较好用的GC日志分析工具，GCeasy是一款非常直观地GC日志分析工具，我们可以将日志文件压缩之后，上传到GCeasy官网即可看到非常清楚的GC日志分析结果。</p>
+<h2 id="三、GC调优策略">三、GC调优策略</h2>
+<h3 id="3-1、选择合适的垃圾回收器">3.1、选择合适的垃圾回收器</h3>
+<p>假设我们有这样一个需求，要求每次GC操作的响应时间必须在500ms以内。这时，我们一般会选择响应速度比较快的垃圾回收器，比如，CMS回收器和G1回收器。</p>
+<p>而当我们的需求对系统吞吐量有要求时，就可以选择Parallel Scavenge回收器来提高系统的吞吐量。</p>
+<h3 id="3-2、降低Minor-GC频率">3.2、降低Minor GC频率</h3>
+<p>通常情况下，由于新生代空间比较小，Eden区很快就会被填满，此时就会导致频率的Minor GC。因此，我们可以通过增大新生代空间来降低Minor GC的频率。此时，我们可能会有这样的疑问：</p>
+<blockquote>
+<p>扩容Eden区虽然可以减少Minor GC的次数，但不会增加单次Minor GC的时间吗？如果单次Minor GC的时间增加，那也很难达到我们期待的优化效果呀。</p>
+</blockquote>
+<p>我们需要知道的是，单次Minor GC的时间是由两部分组成的：T1（扫描新生代）和T2（复制存活对象）。假设一个对象在Eden区的存活时间为500ms，Minor GC的时间间隔是300ms，那么正常情况下，Minor GC的时间为：T1+T2。</p>
+<p>当我们增大新生代空间，Minor GC的时间间隔可能会扩大到600ms，此时一个存活500ms的对象就会在Eden区中被回收，也就不存在复制存活对象了。所以，再发生Minor GC的时间为：两次扫描新生代，即2T1。</p>
+<p>可见，扩容后，Minor GC时增加了T1，但省去T2。通常在虚拟机中，复制对象的成本要远高于扫面成本。</p>
+<p>需要注意的是，如果在堆内存中存在比较多的长期存活对象，此时增加新生代空间，反而会增加Minor GC的时间。如果堆中的短期对象很多，那么扩容新生代，单次Minor GC的时间不会显著增加。因此，单次Minor GC的时间更多取决于GC后存活对象的数量，而非Eden区的大小。</p>
+<h3 id="3-3、降低Full-GC频率">3.3、降低Full GC频率</h3>
+<p>通常情况下，在堆内存空间不足或老年代对象太多时，会触发Full GC，频繁的Full GC会带来上下文切换，增加系统的性能开销。那我们可以使用哪些方法来降低Full GC的频率呢？</p>
+<ul>
+<li>减少创建大对象。在平常的业务场景中，我们习惯一次性从数据库中查询出一个大对象用于Web端显示。例如，一次性查询出60个字段的业务操作，这种大对象如果超过新生代最大对象阈值，会被直接创建在老年代；即时被创建在了新生代，由于新生代的内存空间有限，通过Minor GC之后也会进入到老年代。这种大对象很容易产生较多的Full GC。我们可以将这种大对象拆解出来，首次只查询一些比较重要的字段，如果还需要其它字段辅助查看，则再通过第二次查询显示剩余的字段。</li>
+<li>增大堆内存空间。在堆内存不足的情况下，增大堆内存空间，且设置初始化堆内存为最大堆内存，也可以降低Full GC的频率。</li>
+</ul>
+<h2 id="四、小结">四、小结</h2>
+<p>在这篇文章中，我主要讨论了如下概念：</p>
+<ul>
+<li>吞吐量、停顿时间和GC频率是衡量GC性能的常用指标。</li>
+<li>通过分析GC日志可以获取到GC性能指标数据。而常用的GC日志分析工具有GCViewer和GCeasy。</li>
+<li>选择合适的垃圾回收器、降低Minor GC频率、降低Full GC频率是常用的GC调优策略。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/JVM/" class="print-no-link">#JVM</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>JVM垃圾回收调优策略</div>
+      <div>https://kuberxy.github.io/2020/09/26/JVM垃圾回收调优策略/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年9月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/09/28/%E5%AE%B9%E5%99%A8%E5%9F%BA%E7%A1%801%EF%BC%9A%E6%88%91%E4%BB%AC%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3%E5%AE%B9%E5%99%A8%E5%90%97%EF%BC%9F/" title="容器基础1：我们真的了解容器吗？">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">容器基础1：我们真的了解容器吗？</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/09/26/JVM%E5%A0%86%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%9A%84%E8%B0%83%E4%BC%98%E8%BF%87%E7%A8%8B/" title="JVM堆内存分配的调优过程">
+                        <span class="hidden-mobile">JVM堆内存分配的调优过程</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

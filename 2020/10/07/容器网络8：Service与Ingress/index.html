@@ -1,0 +1,722 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="在前面的文章中，我们讨论了将Service 暴露给外界的三种方法。接下来，我们重点讨论另外一种方法：Ingreess。 一、什么是Ingress 在将 Service 暴露给外界的三种方法。其中有一个叫作 LoadBalancer 类型的 Service，它会为我们在 Cloud Provider（比如：Google Cloud 或者 OpenStack）里创建一个与该 Service 对应的负载">
+<meta property="og:type" content="article">
+<meta property="og:title" content="容器网络8：Service与Ingress">
+<meta property="og:url" content="https://kuberxy.github.io/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C8%EF%BC%9AService%E4%B8%8EIngress/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在前面的文章中，我们讨论了将Service 暴露给外界的三种方法。接下来，我们重点讨论另外一种方法：Ingreess。 一、什么是Ingress 在将 Service 暴露给外界的三种方法。其中有一个叫作 LoadBalancer 类型的 Service，它会为我们在 Cloud Provider（比如：Google Cloud 或者 OpenStack）里创建一个与该 Service 对应的负载">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-07T02:50:07.000Z">
+<meta property="article:modified_time" content="2022-12-27T08:26:35.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Kubernetes">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>容器网络8：Service与Ingress - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="容器网络8：Service与Ingress"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-10-07 10:50" pubdate>
+          2020年10月7日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          24 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">容器网络8：Service与Ingress</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>在前面的文章中，我们讨论了将Service 暴露给外界的三种方法。接下来，我们重点讨论另外一种方法：Ingreess。</p>
+<h2 id="一、什么是Ingress">一、什么是Ingress</h2>
+<p>在将 Service 暴露给外界的三种方法。其中有一个叫作 LoadBalancer 类型的 Service，它会为我们在 Cloud Provider（比如：Google Cloud 或者 OpenStack）里创建一个与该 Service 对应的负载均衡服务。</p>
+<p>但是，由于每个 Service 都要有一个负载均衡服务，所以这个做法实际上既浪费成本又高。作为用户，其实更希望看到 Kubernetes 为我们内置一个全局的负载均衡器。然后，通过我们访问的 URL，把请求转发给不同的后端 Service。</p>
+<p>这种全局的、为了代理不同后端 Service 而设置的负载均衡服务，就是 Kubernetes 里的 Ingress 服务。所以，Ingress 的功能其实很容易理解：所谓 Ingress，就是 Service 的“Service”。</p>
+<h2 id="二、理解Ingress对象">二、理解Ingress对象</h2>
+<blockquote>
+<p>假如我们现在有这样一个站点：<a target="_blank" rel="noopener" href="https://cafe.example.com">https://cafe.example.com</a>。其中，<a target="_blank" rel="noopener" href="https://cafe.example.com/coffee%EF%BC%8C%E5%AF%B9%E5%BA%94%E7%9A%84%E6%98%AF%E2%80%9C%E5%92%96%E5%95%A1%E7%82%B9%E9%A4%90%E7%B3%BB%E7%BB%9F%E2%80%9D%E3%80%82%E8%80%8Chttps://cafe.example.com/tea%EF%BC%8C%E5%AF%B9%E5%BA%94%E7%9A%84%E5%88%99%E6%98%AF%E2%80%9C%E8%8C%B6%E6%B0%B4%E7%82%B9%E9%A4%90%E7%B3%BB%E7%BB%9F%E2%80%9D%E3%80%82%E8%BF%99%E4%B8%A4%E4%B8%AA%E7%B3%BB%E7%BB%9F%EF%BC%8C%E5%88%86%E5%88%AB%E7%94%B1%E5%90%8D%E5%8F%AB">https://cafe.example.com/coffee，对应的是“咖啡点餐系统”。而https://cafe.example.com/tea，对应的则是“茶水点餐系统”。这两个系统，分别由名叫</a> coffee 和 tea 这样两个 Deployment 来提供服务。那么现在，如何使用 Kubernetes 的 Ingress 来创建一个统一的负载均衡器，从而实现当用户访问不同的域名时，能够访问到不同的 Deployment 呢？</p>
+</blockquote>
+<p>要实现上述功能，就需要在 Kubernetes 里通过 Ingress 对象来描述，如下所示：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">extensions/v1beta1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">Ingress</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">cafe-ingress</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">tls:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">hosts:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">cafe.example.com</span><br>    <span class="hljs-attr">secretName:</span> <span class="hljs-string">cafe-secret</span><br>  <span class="hljs-attr">rules:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">host:</span> <span class="hljs-string">cafe.example.com</span><br>    <span class="hljs-attr">http:</span><br>      <span class="hljs-attr">paths:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">path:</span> <span class="hljs-string">/tea</span><br>        <span class="hljs-attr">backend:</span><br>          <span class="hljs-attr">serviceName:</span> <span class="hljs-string">tea-svc</span><br>          <span class="hljs-attr">servicePort:</span> <span class="hljs-number">80</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">path:</span> <span class="hljs-string">/coffee</span><br>        <span class="hljs-attr">backend:</span><br>          <span class="hljs-attr">serviceName:</span> <span class="hljs-string">coffee-svc</span><br>          <span class="hljs-attr">servicePort:</span> <span class="hljs-number">80</span><br></code></pre></td></tr></table></figure>
+<p>在上面这个yaml 文件中，最值得我们关注的，是 rules 字段。在 Kubernetes 里，这个字段叫作：IngressRule。</p>
+<p>IngressRule 的 Key，就叫做：host。它必须是一个标准的域名格式（Fully Qualified Domain Name）的字符串，而不能是 IP 地址。而 host 字段定义的值，就是这个 Ingress 的入口。这也就意味着，当用户访问 <a target="_blank" rel="noopener" href="http://cafe.example.com">cafe.example.com</a> 的时候，实际上访问到的是这个 Ingress 对象。这样，Kubernetes 就能使用 IngressRule 来对请求进行下一步转发。</p>
+<p>而接下来 IngressRule 规则的定义，则依赖于 path 字段。我们可以简单地理解为，这里的每一个 path 都对应一个后端 Service。所以在我们的例子里，定义了两个 path，它们分别对应 coffee 和 tea 这两个 Deployment 的 Service（即：coffee-svc 和 tea-svc）。</p>
+<p>通过上面的讲解，不难看到，所谓 Ingress 对象，其实就是 Kubernetes 项目对“反向代理”的一种抽象。一个 Ingress 对象的主要内容，实际上就是一个“反向代理”服务（比如：Nginx）的配置文件的描述。而这个代理服务对应的转发规则，就是 IngressRule。</p>
+<p>这就是为什么在每条 IngressRule 里，需要有一个 host 字段来作为这条 IngressRule 的入口，然后还需要有一系列 path 字段来声明具体的转发策略。这其实跟 Nginx、HAproxy 等项目的配置文件的写法是一致的。</p>
+<h2 id="三、实践Ingress">三、实践Ingress</h2>
+<p>有了 Ingress 这样一个统一的抽象，Kubernetes 的用户就无需关心 Ingress 的具体细节了。在实际的使用中，我们只需要从社区里选择一个具体的 Ingress Controller，把它部署在 Kubernetes 集群里即可。</p>
+<p>然后，这个 Ingress Controller 会根据我们定义的 Ingress 对象，提供对应的代理能力。目前，业界常用的各种反向代理项目，比如 Nginx、HAProxy、Envoy、Traefik 等，都已经为 Kubernetes 专门维护了对应的 Ingress Controller。</p>
+<p>接下来，我们就以最常用的 Nginx Ingress Controller 为例，在使用 kubeadm 部署的 Bare-metal 环境中，实践一下 Ingress 机制的使用过程。</p>
+<h3 id="3-1、部署Nginx-Ingress-Controller">3.1、部署Nginx Ingress Controller</h3>
+<p>部署 Nginx Ingress Controller 的方法非常简单，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml</span><br></code></pre></td></tr></table></figure>
+<p>其中，在mandatory.yaml这个文件里，正是 Nginx 官方为我们维护的 Ingress Controller 的定义。我们来看一下它的内容：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">kind:</span> <span class="hljs-string">ConfigMap</span><br><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">nginx-configuration</span><br>  <span class="hljs-attr">namespace:</span> <span class="hljs-string">ingress-nginx</span><br>  <span class="hljs-attr">labels:</span><br>    <span class="hljs-attr">app.kubernetes.io/name:</span> <span class="hljs-string">ingress-nginx</span><br>    <span class="hljs-attr">app.kubernetes.io/part-of:</span> <span class="hljs-string">ingress-nginx</span><br><span class="hljs-meta">---</span><br><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">extensions/v1beta1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">Deployment</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">nginx-ingress-controller</span><br>  <span class="hljs-attr">namespace:</span> <span class="hljs-string">ingress-nginx</span><br>  <span class="hljs-attr">labels:</span><br>    <span class="hljs-attr">app.kubernetes.io/name:</span> <span class="hljs-string">ingress-nginx</span><br>    <span class="hljs-attr">app.kubernetes.io/part-of:</span> <span class="hljs-string">ingress-nginx</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">replicas:</span> <span class="hljs-number">1</span><br>  <span class="hljs-attr">selector:</span><br>    <span class="hljs-attr">matchLabels:</span><br>      <span class="hljs-attr">app.kubernetes.io/name:</span> <span class="hljs-string">ingress-nginx</span><br>      <span class="hljs-attr">app.kubernetes.io/part-of:</span> <span class="hljs-string">ingress-nginx</span><br>  <span class="hljs-attr">template:</span><br>    <span class="hljs-attr">metadata:</span><br>      <span class="hljs-attr">labels:</span><br>        <span class="hljs-attr">app.kubernetes.io/name:</span> <span class="hljs-string">ingress-nginx</span><br>        <span class="hljs-attr">app.kubernetes.io/part-of:</span> <span class="hljs-string">ingress-nginx</span><br>      <span class="hljs-attr">annotations:</span><br>        <span class="hljs-string">...</span><br>    <span class="hljs-attr">spec:</span><br>      <span class="hljs-attr">serviceAccountName:</span> <span class="hljs-string">nginx-ingress-serviceaccount</span><br>      <span class="hljs-attr">containers:</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">nginx-ingress-controller</span><br>          <span class="hljs-attr">image:</span> <span class="hljs-string">quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.20.0</span><br>          <span class="hljs-attr">args:</span><br>            <span class="hljs-bullet">-</span> <span class="hljs-string">/nginx-ingress-controller</span><br>            <span class="hljs-bullet">-</span> <span class="hljs-string">--configmap=$(POD_NAMESPACE)/nginx-configuration</span><br>            <span class="hljs-bullet">-</span> <span class="hljs-string">--publish-service=$(POD_NAMESPACE)/ingress-nginx</span><br>            <span class="hljs-bullet">-</span> <span class="hljs-string">--annotations-prefix=nginx.ingress.kubernetes.io</span><br>          <span class="hljs-attr">securityContext:</span><br>            <span class="hljs-attr">capabilities:</span><br>              <span class="hljs-attr">drop:</span><br>                <span class="hljs-bullet">-</span> <span class="hljs-string">ALL</span><br>              <span class="hljs-attr">add:</span><br>                <span class="hljs-bullet">-</span> <span class="hljs-string">NET_BIND_SERVICE</span><br>            <span class="hljs-comment"># www-data -&gt; 33</span><br>            <span class="hljs-attr">runAsUser:</span> <span class="hljs-number">33</span><br>          <span class="hljs-attr">env:</span><br>            <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">POD_NAME</span><br>              <span class="hljs-attr">valueFrom:</span><br>                <span class="hljs-attr">fieldRef:</span><br>                  <span class="hljs-attr">fieldPath:</span> <span class="hljs-string">metadata.name</span><br>            <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">POD_NAMESPACE</span><br>            <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">http</span><br>              <span class="hljs-attr">valueFrom:</span><br>                <span class="hljs-attr">fieldRef:</span><br>                  <span class="hljs-attr">fieldPath:</span> <span class="hljs-string">metadata.namespace</span><br>          <span class="hljs-attr">ports:</span><br>            <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">http</span><br>              <span class="hljs-attr">containerPort:</span> <span class="hljs-number">80</span><br>            <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">https</span><br>              <span class="hljs-attr">containerPort:</span> <span class="hljs-number">443</span><br></code></pre></td></tr></table></figure>
+<p>可以看到，在上述 YAML 文件中，定义了一个使用 nginx-ingress-controller 镜像的 Pod。需要注意的是，这个 Pod 的启动命令需要使用该 Pod 所在的 Namespace 作为参数。而这个信息，当然是通过 Downward API 拿到的，即：Pod 的 env 字段里的定义（env.valueFrom.fieldRef.fieldPath）。</p>
+<h3 id="3-2、理解Nginx-Ingress-Controller">3.2、理解Nginx Ingress Controller</h3>
+<p>上述 Pod ，其实就是一个监听 Ingress 对象以及它所代理的后端 Service 变化的控制器。</p>
+<p>当一个新的 Ingress 对象由用户创建后，nginx-ingress-controller 就会根据 Ingress 对象里定义的内容，生成一份对应的 Nginx 配置文件（/etc/nginx/nginx.conf），并使用这个配置文件启动一个 Nginx 服务。</p>
+<p>而一旦 Ingress 对象被更新，nginx-ingress-controller 就会更新这个配置文件。需要注意的是，如果这里只是被代理的 Service 对象被更新，nginx-ingress-controller 所管理的 Nginx 服务是不需要重新加载（reload）的。这当然是因为 nginx-ingress-controller 通过Nginx Lua方案实现了 Nginx Upstream 的动态配置。</p>
+<p>此外，nginx-ingress-controller 还允许我们通过 Kubernetes 的 ConfigMap 对象来对上述 Nginx 配置文件进行定制。这个 ConfigMap 的名字，需要以参数的方式传递给 nginx-ingress-controller。而我们在这个 ConfigMap 里添加的字段，将会被合并到最后生成的 Nginx 配置文件当中。</p>
+<p>可以看到，一个 Nginx Ingress Controller 为我们提供的服务，其实是一个可以根据 Ingress 对象和被代理后端 Service 的变化，来自动进行更新的 Nginx 负载均衡器。</p>
+<h3 id="3-3、创建Service">3.3、创建Service</h3>
+<p>为了能够让用户访问到这个 Nginx，我们需要创建一个 Service 来把 Nginx Ingress Controller 管理的对象暴露出去，如下所示：</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/provider/baremetal/service-nodeport.yaml</span><br></code></pre></td></tr></table></figure>
+<p>由于我们使用的是 Bare-metal 环境，所以 service-nodeport.yaml 文件里的内容，就是一个 NodePort 类型的 Service，如下所示：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">Service</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">ingress-nginx</span><br>  <span class="hljs-attr">namespace:</span> <span class="hljs-string">ingress-nginx</span><br>  <span class="hljs-attr">labels:</span><br>    <span class="hljs-attr">app.kubernetes.io/name:</span> <span class="hljs-string">ingress-nginx</span><br>    <span class="hljs-attr">app.kubernetes.io/part-of:</span> <span class="hljs-string">ingress-nginx</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">type:</span> <span class="hljs-string">NodePort</span><br>  <span class="hljs-attr">ports:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">http</span><br>      <span class="hljs-attr">port:</span> <span class="hljs-number">80</span><br>      <span class="hljs-attr">targetPort:</span> <span class="hljs-number">80</span><br>      <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">https</span><br>      <span class="hljs-attr">port:</span> <span class="hljs-number">443</span><br>      <span class="hljs-attr">targetPort:</span> <span class="hljs-number">443</span><br>      <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span><br>  <span class="hljs-attr">selector:</span><br>    <span class="hljs-attr">app.kubernetes.io/name:</span> <span class="hljs-string">ingress-nginx</span><br>    <span class="hljs-attr">app.kubernetes.io/part-of:</span> <span class="hljs-string">ingress-nginx</span><br></code></pre></td></tr></table></figure>
+<p>可以看到，这个 Service 的唯一工作，就是将所有携带 ingress-nginx 标签的 Pod 的 80 和 433 端口暴露出去。</p>
+<p>而如果是公有云上的环境，需要创建的就是 LoadBalancer 类型的 Service 了。</p>
+<h3 id="3-4、查看Service-的访问入口">3.4、查看Service 的访问入口</h3>
+<p>上述操作完成后，一定要记录下这个 Service 的访问入口，即：宿主机的地址和 NodePort 的端口，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl get svc -n ingress-nginx</span><br>NAME            TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)                      AGE<br>ingress-nginx   NodePort   10.105.72.96   &lt;none&gt;        80:30044/TCP,443:31453/TCP   3h<br></code></pre></td></tr></table></figure>
+<p>为了后面方便使用，我们把上述访问入口设置为环境变量：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">IC_IP=10.168.0.2 <span class="hljs-comment"># 任意一台宿主机的地址</span></span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">IC_HTTPS_PORT=31453 <span class="hljs-comment"># NodePort端口</span></span><br></code></pre></td></tr></table></figure>
+<p>在 Ingress Controller 和它所需要的 Service 部署完成后，我们就可以使用它了。</p>
+<h3 id="3-5、使用Nginx-Ingress-Controller">3.5、使用Nginx Ingress Controller</h3>
+<p>首先，我们要在集群里部署我们的应用 Pod 和它们对应的 Service，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl create -f cafe.yaml</span><br></code></pre></td></tr></table></figure>
+<p>然后，我们需要创建 Ingress 所需的 SSL 证书（tls.crt）和密钥（tls.key），这些信息都是通过 Secret 对象定义好的，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl create -f cafe-secret.yaml</span><br></code></pre></td></tr></table></figure>
+<p>这一步完成后，我们就可以创建一开始定义的 Ingress 对象了，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl create -f cafe-ingress.yaml</span><br></code></pre></td></tr></table></figure>
+<p>这时候，我们就可以查看一下这个 Ingress 对象的信息，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl get ingress</span><br>NAME           HOSTS              ADDRESS   PORTS     AGE<br>cafe-ingress   cafe.example.com             80, 443   2h<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl describe ingress cafe-ingress</span><br>Name:             cafe-ingress<br>Namespace:        default<br>Address:          <br>Default backend:  default-http-backend:80 (&lt;none&gt;)<br>TLS:<br>  cafe-secret terminates cafe.example.com<br>Rules:<br>  Host              Path  Backends<br>  ----              ----  --------<br>  cafe.example.com  <br>                    /tea      tea-svc:80 (&lt;none&gt;)<br>                    /coffee   coffee-svc:80 (&lt;none&gt;)<br>Annotations:<br>Events:<br>  Type    Reason  Age   From                      Message<br>  ----    ------  ----  ----                      -------<br>  Normal  CREATE  4m    nginx-ingress-controller  Ingress default/cafe-ingress<br></code></pre></td></tr></table></figure>
+<p>可以看到，这个 Ingress 对象最核心的部分，正是 Rules 字段。其中，我们定义的 Host <a target="_blank" rel="noopener" href="http://xn--cafe-zi0i.example.com">是cafe.example.com</a>，它有两条转发规则（Path），分别转发给 tea-svc 和 coffee-svc。当然，在 Ingress 的 YAML 文件里，我们还可以定义多个 Host，<a target="_blank" rel="noopener" href="http://xn--restaurant-lv8rx27o.example.com">比如restaurant.example.com</a>、movie.example.com等等，来为更多的域名提供负载均衡服务。</p>
+<h3 id="3-6、访问Nginx-Ingress">3.6、访问Nginx Ingress</h3>
+<p>接下来，我们就可以通过访问这个 Ingress 的地址和端口，访问到我们前面部署的应用了，比如，当我们访问<a target="_blank" rel="noopener" href="https://cafe.example.com:443/coffee%E6%97%B6%EF%BC%8C%E5%BA%94%E8%AF%A5%E6%98%AF">https://cafe.example.com:443/coffee时，应该是</a> coffee 这个 Deployment 负责响应我的请求。我们可以来尝试一下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">curl --resolve cafe.example.com:<span class="hljs-variable">$IC_HTTPS_PORT</span>:<span class="hljs-variable">$IC_IP</span> https://cafe.example.com:<span class="hljs-variable">$IC_HTTPS_PORT</span>/coffee --insecureServer address: 10.244.1.56:80</span><br>Server name: coffee-7dbb5795f6-vglbv<br>Date: 03/Nov/2018:03:55:32 +0000<br>URI: /coffee<br>Request ID: e487e672673195c573147134167cf898<br></code></pre></td></tr></table></figure>
+<p>我们可以看到，访问这个 URL 得到的返回信息是：Server name: coffee-7dbb5795f6-vglbv。这正是 coffee 这个 Deployment 的名字。</p>
+<p>而当我们访问<a target="_blank" rel="noopener" href="https://cafe.example.com:433/tea%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E5%88%99%E5%BA%94%E8%AF%A5%E6%98%AF">https://cafe.example.com:433/tea的时候，则应该是</a> tea 这个 Deployment 负责响应我的请求（Server name: tea-7d57856c44-lwbnp），如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">curl --resolve cafe.example.com:<span class="hljs-variable">$IC_HTTPS_PORT</span>:<span class="hljs-variable">$IC_IP</span> https://cafe.example.com:<span class="hljs-variable">$IC_HTTPS_PORT</span>/tea --insecure</span><br>Server address: 10.244.1.58:80<br>Server name: tea-7d57856c44-lwbnp<br>Date: 03/Nov/2018:03:55:52 +0000<br>URI: /tea<br>Request ID: 32191f7ea07cb6bb44a1f43b8299415c<br></code></pre></td></tr></table></figure>
+<p>可以看到，Nginx Ingress Controller 为我们创建的 Nginx 负载均衡器，已经成功地将请求转发给了对应的后端 Service。</p>
+<p>以上，就是 Kubernetes 里 Ingress 的设计思想和使用方法了。</p>
+<blockquote>
+<p>不过，我们可能会有一个疑问，如果我们的请求没有匹配到任何一条 IngressRule，那么会发生什么呢？</p>
+</blockquote>
+<p>首先，既然 Nginx Ingress Controller 是用 Nginx 实现的，那么它当然会返回一个 Nginx 的 404 页面。</p>
+<p>不过，Ingress Controller 也允许我们通过 Pod 启动命令里的–default-backend-service 参数，设置一条默认规则，比如：–default-backend-service=nginx-default-backend。</p>
+<p>这样，任何匹配失败的请求，就都会被转发到这个名叫 nginx-default-backend 的 Service。所以，我们就可以通过部署一个专门的 Pod，来为用户返回自定义的 404 页面了。</p>
+<h3 id="3-7、小结">3.7、小结</h3>
+<p>Ingress 实际上就是 Kubernetes 对“反向代理”的抽象。目前，Ingress 只能工作在七层，而 Service 只能工作在四层。所以当你想要在 Kubernetes 里为应用进行 TLS 配置等 HTTP 相关的操作时，都必须通过 Ingress 来进行。当然，正如同很多负载均衡项目可以同时提供七层和四层代理一样，将来 Ingress 的进化中，也会加入四层代理的能力。这样，一个比较完善的“反向代理”机制就比较成熟了。</p>
+<h2 id="四、小结">四、小结</h2>
+<p>在这这篇文章中，我们主要谈论了如下内容：</p>
+<ul>
+<li>Ingress其实就是一个能代理多个不同Service对象的反向代理服务。</li>
+<li>一个Ingress对象可以看作是Nginx服务中一个特定域名下的Location配置。</li>
+<li>Ingress对象是由Ingress Controller来处理的。我们可以将Ingress Controller看作是一个运行中的反向代理服务，而Ingress对象就是这个反向代理的配置。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Kubernetes/" class="print-no-link">#Kubernetes</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>容器网络8：Service与Ingress</div>
+      <div>https://kuberxy.github.io/2020/10/07/容器网络8：Service与Ingress/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年10月7日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/10/08/%E6%80%8E%E6%A0%B7%E5%88%B6%E5%AE%9A%E4%B8%80%E4%BB%BD%E7%A7%91%E5%AD%A6%E7%9A%84%E8%B7%91%E6%AD%A5%E6%96%B9%E6%A1%88%EF%BC%9F/" title="怎样制定一份科学的跑步方案？">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">怎样制定一份科学的跑步方案？</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C7%EF%BC%9A%E4%BB%8E%E5%A4%96%E9%83%A8%E8%AE%BF%E9%97%AEService/" title="容器网络7：从外部访问Service">
+                        <span class="hidden-mobile">容器网络7：从外部访问Service</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

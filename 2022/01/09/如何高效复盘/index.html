@@ -1,0 +1,710 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="复盘，就是从即将结束的项目中，总结成功经验，吸取失败教训。 当我们开始做一件事情时，首先要有明确的目标，并要制定出相应的执行计划；然后在执行了一段时间后，停下来，对执行情况进行复盘；最后分析的得出：什么事情要继续做、什么事情要停止做、什么事情要开始做。 一、Why  你在某个会上，给负责产品的副总裁交代了一个任务：去德国考察。某天你问他进展如何，他说：“啊？我正忙着质量改进，还没有空想这件事，真要">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何高效复盘">
+<meta property="og:url" content="https://kuberxy.github.io/2022/01/09/%E5%A6%82%E4%BD%95%E9%AB%98%E6%95%88%E5%A4%8D%E7%9B%98/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="复盘，就是从即将结束的项目中，总结成功经验，吸取失败教训。 当我们开始做一件事情时，首先要有明确的目标，并要制定出相应的执行计划；然后在执行了一段时间后，停下来，对执行情况进行复盘；最后分析的得出：什么事情要继续做、什么事情要停止做、什么事情要开始做。 一、Why  你在某个会上，给负责产品的副总裁交代了一个任务：去德国考察。某天你问他进展如何，他说：“啊？我正忙着质量改进，还没有空想这件事，真要">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-01-09T06:46:52.000Z">
+<meta property="article:modified_time" content="2022-11-04T08:03:20.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="复盘">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>如何高效复盘 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="如何高效复盘"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-01-09 14:46" pubdate>
+          2022年1月9日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          25 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">如何高效复盘</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>复盘，就是从即将结束的项目中，总结成功经验，吸取失败教训。</p>
+<p>当我们开始做一件事情时，首先要有明确的目标，并要制定出相应的执行计划；然后在执行了一段时间后，停下来，对执行情况进行复盘；最后分析的得出：什么事情要继续做、什么事情要停止做、什么事情要开始做。</p>
+<h2 id="一、Why">一、Why</h2>
+<blockquote>
+<p>你在某个会上，给负责产品的副总裁交代了一个任务：去德国考察。某天你问他进展如何，他说：“啊？我正忙着质量改进，还没有空想这件事，真要去考察啊？”交代的事情，没有下文，怎么办？</p>
+</blockquote>
+<p>我讲过一个“方法”：PDCA循环。PDCA循环，又称戴明循环。P-D-C-A这四个字母，分别代表：Plan（计划），Do（行动），Check（检查），Act（处理）。它的本质，就是给任何事情扣上闭环，有开始就必须有结束，避免石沉大海，做到：凡事有交代，件件有着落，事事有回音。你知道了PDCA循环。但是，你做到了吗？</p>
+<blockquote>
+<p>你把目标分解成任务，把任务分配给员工。任务结束后，你对结果不满意。你说打个分吧。满分1分，你只打了0.3分，单员工给自己打了0.9分。为什么会这样？为什么大家对同一件事情的认知，差别这么大呢？这是因为，大家对任务，和完成任务的标准认识不统一。怎么办？</p>
+</blockquote>
+<p>我讲过一个“方法”：SMART原则。SMART原则，是一套指定目标的原则。S-M-A-R-T这5个字母，代表Specific（具体的），Measurable（可衡量的），Attainable（可实现的），Relevant（相关的）和Time-Based（有时间限制的）。它的本质是，砍掉模棱两可，砍掉标准争议，砍掉不切实际，砍掉无关目标，砍掉无线拖延，让目标从“一千个人心中的一千个哈姆雷特”，变成同一个。你知道了SMART原则。但是，你做到了吗？</p>
+<blockquote>
+<p>你特别想自律，也特别想借助“他律”的方法，把最后期限作为第一生产力，一段一段地冲刺马拉松，但你和你的团队，总是与自己的懒惰握手言和。怎么办？</p>
+</blockquote>
+<p>我讲过一个“方法”：Scrum方法。Scrum方法，就是由三个角色（产品负责人，Scrum专家，团队成员）、四个仪式（冲刺计划会，每日站会，冲刺评审会，冲刺回顾会）和三个物件（产品积压，冲刺积压，燃尽图）组成的一套项目管理方法。它的本质，是把一次漫长的长跑，分割成一段段全力以赴的冲刺，通过流程提高效率。你知道了Scrum方法。但是，你做到了吗？</p>
+<blockquote>
+<p>这个世界上，有那么多管理方法取之不尽、用之不竭，PDCA循环，SMART原则，Scrum方法…但是，你是不是深受触动之后，到今天都没有行动呢？为什么会这样？为什么懂了那么多道理，却依然过不好这一生？为什么会了那么多方法，一路走来，一步一个跟头，却依然做不好一件事呢？到底如何做，才能成长得更快一点呢？</p>
+</blockquote>
+<p>答案是：不断复盘。只有不断复盘，才会不断进步。要想达成任务目标，都需要不断复盘。</p>
+<h2 id="二、How">二、How</h2>
+<p>那么，怎么复盘呢？我们来看一个故事。</p>
+<blockquote>
+<p>我一直有个目标，就是徒步“穹顶1维度”，抵达北极点。</p>
+<p>什么是徒步“穹顶1维度”？就是先做直升机，降落到北纬89度北冰洋的浮冰上，然后在“流动”的浮冰上徒步整整一个维度，抵达北极点。</p>
+<p>真有意思。可是，在浮冰上，怎么徒步呢？拿出GPS，打开卫星地图，规划一条能绕开浮冰裂缝，通往北极点的路线。然后，踩着流动的浮冰，出发。坚持走，坚持走。直到晚上，搭帐篷，休息。</p>
+<p>有意思的部分来了。你猜，第二天醒来，你必须要做的一件事是什么？再次拿出GPS，打开卫星地图，看看自己在哪里。然后，重新规划一条能绕开浮冰裂缝，通往北极点的路线。再次出发。</p>
+<p>为什么要重新规划？因为脚下是浮冰啊，它一直在“流动”。早上起来一看，糟糕，睡了一觉，因为昨夜大风，浮冰居然往回流动了50公里。</p>
+</blockquote>
+<p>创业，就是在浮冰上徒步。年初的目标，可以不变，但是路线，可能一直在变。这就需要“调整”。可是，怎么进行调整呢？答案是复盘。复盘，简单来说，就是根据上周的“浮冰”动向，做三件事：继续做（Continue doing）、停止做（Stop doing）、开始做（Start to do）。</p>
+<ul>
+<li>
+<p>什么是“继续做”？上周，经过平常很少交流的几位员工的座位。问了问他们工作的情况，以及需要什么帮助。员工很受鼓舞。嗯，这件事以后要“继续做”。因为这既能帮助自己了解一线情况，也给员工鼓励。</p>
+</li>
+<li>
+<p>什么是“停止做”？上周，月度经营分析会开了4个小时。几个观点来来回回，吵作一团。以后，不按照“六定思考帽”方法开讨论会，这件事要“停止做”。因为这既浪费大家的时间，也很难得出有效结论。</p>
+</li>
+<li>
+<p>什么是“开始做”？上周，我发现几个员工很有潜力，但是没有被放在重要的岗位上锻炼。这是个严重的问题。要通知人力资源部，“开始做”高级潜力员工计划，用有挑战的工作和可以培养，留住优秀员工。</p>
+</li>
+</ul>
+<p>这就是继续做，停止做，和开始做。这就是复盘。 一年有52周。 如果能坚持每周复盘，就会有52次拿出GPS和卫星地图，面朝目标，重新调整路线的机会。 每周逼近自己想要的未来。</p>
+<h2 id="三、How-Good">三、How Good</h2>
+<p>关于复盘，在进化岛社群中，我还分享过一个例子：</p>
+<blockquote>
+<p>我和儿子小米制定了一个每天8：00到学校的目标，以及6:55起床，7:50出门的规划。</p>
+<p>第二天早上，我送他上学，出门的时间是7:48。我就跟他说：祝贺你啊，今天很好，本来我们是预计7:50出门的，你今天提前了2分钟，恭喜啊！恭喜你之后呢，咋们要做个复盘。</p>
+<p>小米在学围棋，已经是围棋的业余一段了。所以我跟他说，复盘这个概念啊，其实就是来自于围棋。一盘棋下完后，你都要再看一遍：刚才我们的每一步棋，哪些其实还可以有更好的下法，这就是复盘。复盘是提升自己的非常重要的一个步骤。如果缺少复盘，我们能学到的东西就少多了。于是我们就来复盘看看，今天出门提前了2分钟，但究竟是在哪里提前的呢？</p>
+<p>昨天我们经过计算，调整了计划，今天你也在行动上做出了改变：我们把起床时间改在了6:55，今天早上你果然在6:55，闹钟一响就起床了，特别棒！然后今天早上我们居然是7:48，提前了2分钟出门，所以要祝贺你！</p>
+<p>但是只看结果还不够，我们还要对规划和执行做一个分析，看看各个环节哪个需要保持（继续做），哪个可以做得更好（开始做），以及哪个不再需要做（停止做），这就是复盘。最大的提前发生在哪里呢？在吃饭环节。昨天我们把吃饭的时间调整为20分钟，但今天早上实际只用了10分钟，也就是吃饭时间其实是大大减少了。</p>
+<p>那为什么吃饭时间会减少了？因为今天早上吃的东西比较方便，才节省了时间。哦，原来这是一个例外情况。节省时间，并不是因为能力的提升，而是因为食物变化。它在执行层面是一个例外，是一个“奖赏”。所以我们应该把它放在一边，不需要调整规划，吃饭时间还是规划为20分钟。</p>
+<p>既然今天花在吃饭上的时间减少了10分钟，那么理论上我们应该是在7:40就能出门的呀，为什么7:48才出门呢？那一定是有地方多了8分钟。我对小米说，你看，这就是复盘的好处。我们不能最后笼统地得出一个结论，说结果是好的，今天咋们做的不错。我们的分开来看，有哪些东西做得是比原来好，又有哪些东西做得不如从前。总得结果好像是略好一些，但其实分项来看，是有好有差的。这样我们才能得出结论说，什么东西继续做，什么东西要改一种方法做，以及什么东西不要做。</p>
+<p>那什么地方多花了8分钟呢？噢！他说，是在吃饭之前。因为早饭还没有准备好，所以多等了8分钟，这样就把时间给花掉了。这样我们就又发现了一个非常重要的规划上的问题，就是等待的8分钟是无所事事的休息，还是安排别的事情。比如说，我们可以把后面收拾书包，或者上厕所等等，这些事情提前。如果这些事情提前做了的话，最后出门的时间就可以早于7:48了。所以呢， 最后我们得出结论，就是：</p>
+<p>第一，吃饭的时间不需要调整（继续做）。</p>
+<p>第二，从安排设计上来说，在早饭没有准备好的情况下，可以把收拾书包等等这些动作提前，统筹使用时间，总体效率会更高（开始做）。</p>
+<p>这就是我们说的复盘。</p>
+</blockquote>
+<h2 id="四、最后的话">四、最后的话</h2>
+<blockquote>
+<p>苏格拉底说：未经审视的人生不值得过。</p>
+</blockquote>
+<p>当我们立下一个目标之后，可以每周六（或周五离开办公室前），给自己留30分钟，做个复盘。复盘，就是给自己一个检视自己的机会。每周检视一次，一年52次。</p>
+<p>那怎么检视呢？可以用自己最自然、最喜欢的方式。格式不重要，检视很重要。但如果实在没有格式，就可以用我们在前面建议的：继续做（Continue doing）、停止做（Stop doing）、开始做（Start to do）。</p>
+<p>检视完之后呢？计划。计划，不用长篇大论。只需要写下一周，觉得一定要做的事情。每周日（或周一早点到办公室），给自己留30分钟，列个计划。每走一段路，看看离目标是越来越近，还是渐行渐远？所有计划，都不会自动变为现实。只有行动可以改变结果。除了周计划，在每个季度结束的时候，还可以进行“季度复盘”。这就和上市公司的季报一样，慎重回顾，不断进步。</p>
+<p>要想达成任何目标，都需要不断复盘。人最大的进步，来自于日常工作的复盘总结、计划、开放的心态。没有复盘，人就会在一个错误的地方，重复的犯错，没有经验积累。只有不断复盘，我们才能不断进步。</p>
+<h2 id="五、参考">五、参考</h2>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/bIQFgGYQ7ia3T6efEP95uQ">刘润</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/" class="category-chain-item">个人成长</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%A4%8D%E7%9B%98/" class="print-no-link">#复盘</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>如何高效复盘</div>
+      <div>https://kuberxy.github.io/2022/01/09/如何高效复盘/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年1月9日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/01/10/MySQL%E5%85%A8%E5%B1%80%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%EF%BC%9Amysqlreport/" title="MySQL全局分析工具：mysqlreport">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MySQL全局分析工具：mysqlreport</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/01/08/%E6%84%9A%E4%BA%BA%E8%88%B9%E9%97%AE%E9%A2%98/" title="愚人船问题">
+                        <span class="hidden-mobile">愚人船问题</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

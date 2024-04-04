@@ -1,0 +1,732 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="todo 一、理解Mount Namespace 如下，是一个小程序，它的作用是在创建子进程时开启指定的Namespace。 12345678910111213141516171819202122232425262728293031#define _GNU_SOURCE#include &lt;sys&#x2F;mount.h&gt; #include &lt;sys&#x2F;types.h&gt;#include">
+<meta property="og:type" content="article">
+<meta property="og:title" content="容器基础3：理解容器镜像">
+<meta property="og:url" content="https://kuberxy.github.io/2020/10/01/%E5%AE%B9%E5%99%A8%E5%9F%BA%E7%A1%803%EF%BC%9A%E7%90%86%E8%A7%A3%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="todo 一、理解Mount Namespace 如下，是一个小程序，它的作用是在创建子进程时开启指定的Namespace。 12345678910111213141516171819202122232425262728293031#define _GNU_SOURCE#include &lt;sys&#x2F;mount.h&gt; #include &lt;sys&#x2F;types.h&gt;#include">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-01T05:51:00.000Z">
+<meta property="article:modified_time" content="2020-10-01T23:27:30.000Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>容器基础3：理解容器镜像 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="容器基础3：理解容器镜像"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-10-01 13:51" pubdate>
+          2020年10月1日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          40 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">容器基础3：理解容器镜像</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>todo</p>
+<h2 id="一、理解Mount-Namespace">一、理解Mount Namespace</h2>
+<p>如下，是一个小程序，它的作用是在创建子进程时开启指定的Namespace。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> _GNU_SOURCE</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/mount.h&gt;</span> </span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/types.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/wait.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sched.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;signal.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unistd.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> STACK_SIZE (1024 * 1024)</span><br><span class="hljs-type">static</span> <span class="hljs-type">char</span> container_stack[STACK_SIZE];<br><span class="hljs-type">char</span>* <span class="hljs-type">const</span> container_args[] = &#123;<br>  <span class="hljs-string">&quot;/bin/bash&quot;</span>,<br>  <span class="hljs-literal">NULL</span><br>&#125;;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">container_main</span><span class="hljs-params">(<span class="hljs-type">void</span>* arg)</span><br>&#123;  <br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Container - inside the container!\n&quot;</span>);<br>  execv(container_args[<span class="hljs-number">0</span>], container_args);<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Something&#x27;s wrong!\n&quot;</span>);<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Parent - start a container!\n&quot;</span>);<br>  <span class="hljs-type">int</span> container_pid = clone(container_main, container_stack+STACK_SIZE, CLONE_NEWNS | SIGCHLD , <span class="hljs-literal">NULL</span>);<br>  waitpid(container_pid, <span class="hljs-literal">NULL</span>, <span class="hljs-number">0</span>);<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Parent - container stopped!\n&quot;</span>);<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这段代码的功能非常简单：在main函数里，我们通过clone()系统调用创建了一个新的子进程container_main，并且声明要为它启用Mount Namespace（即：CLONE_NEWNS标志）。而子进程container_main是一个“/bin/bash”程序，也就是一个shell。所以，这个shell就运行在Mount Namespace的隔离环境中。下面，我们编译一下这个程序：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">gcc -o ns ns.c</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">./ns</span><br>Parent - start a container!<br>Container - inside the container!<br></code></pre></td></tr></table></figure>
+<p>这样，我们就进入到了这个“容器”当中。此时，如果我们执行ls命令的话，会发现这个容器中的内容跟宿主机是一样的。也就是说，即时开启了Mount Namespace，容器进程看到的文件系统也跟宿主机完全一样。而这又是为什么呢？</p>
+<p>其实，Mount Namespace修改的是容器进程对文件系统“挂载点”的认知。这也就意味着，只有在“挂载”这个操作发生之后，进程的视图才会被改变。而在此之前，新创建的容器会直接继承宿主机的各个挂载点。</p>
+<p>因此，在创建新进程时，除了声明要启用Mount Namespace之外，我们还可以告诉容器进程，有哪些目录需要重新挂载，比如/tmp目录。于是，我们可以在容器进程执行前添加一步重新挂载/tmp目录的操作：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">container_main</span><span class="hljs-params">(<span class="hljs-type">void</span>* arg)</span><br>&#123;<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Container - inside the container!\n&quot;</span>);<br>  <span class="hljs-comment">// 如果你的机器的根目录的挂载类型是shared，那必须先重新挂载根目录</span><br>  <span class="hljs-comment">// mount(&quot;&quot;, &quot;/&quot;, NULL, MS_PRIVATE, &quot;&quot;);</span><br>  mount(<span class="hljs-string">&quot;none&quot;</span>, <span class="hljs-string">&quot;/tmp&quot;</span>, <span class="hljs-string">&quot;tmpfs&quot;</span>, <span class="hljs-number">0</span>, <span class="hljs-string">&quot;&quot;</span>);<br>  execv(container_args[<span class="hljs-number">0</span>], container_args);<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Something&#x27;s wrong!\n&quot;</span>);<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>可以看到，在修改后的代码里，在启动容器进程之前，加上了一句mount(“none”, “/tmp”, “tmpfs”, 0, “”)语句。它的作用就是，告诉容器以tmpfs（内存盘）格式，重新挂载/tmp目录。再次编译后程序的执行结果如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">gcc -o ns ns.c</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">./ns</span><br>Parent - start a container!<br>Container - inside the container!<br><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">ls</span> /tmp</span><br></code></pre></td></tr></table></figure>
+<p>可以看到，这次/tmp变成了一个空目录，这就意味着重新挂载生效了。我们可以用mount -l检查一下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">mount -l | grep tmpfs</span><br>none on /tmp type tmpfs (rw,relatime)<br></code></pre></td></tr></table></figure>
+<p>这就是Mount Namespace跟其他Namespace在使用时的不同：它对容器进程视图的改变，一定要伴随着挂载操作（mount）才能生效。</p>
+<p>但是，作为一个普通用户，我们希望的是一个更友好的情况：每当创建一个新容器时，容器进程看到的文件系统就是一个独立的隔离环境，而不是继承自宿主机的文件系统。可是要怎样才能做到这一点呢？</p>
+<p>其实，我们可以在容器进程启动之前重新挂载它的整个根目录“/”。而由于Mount Namespace的存在，这个挂载对宿主机是不可见的，所以容器进程就可以在里面随便折腾了。</p>
+<h2 id="二、理解chroot机制">二、理解chroot机制</h2>
+<p>在Linux操作系统中，有一个名为chroot的命令可以帮助我们完成对整个根目录的挂载。顾名思义，它的作用就是帮助我们“change root file system”，即改变进程的根目录。现假设，有一个$HOME/test目录，我们想把它作为一个/bin/bash进程的根目录。操作如下：</p>
+<p>首先，创建test目录和几个lib目录，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">mkdir -p $HOME/test<br>mkdir -p $HOME/test/&#123;bin,lib64,lib&#125;<br></code></pre></td></tr></table></figure>
+<p>然后，把bash命令拷贝到test目录对应的bin目录下，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">cp -v /bin/&#123;bash,ls&#125; $HOME/test/bin<br></code></pre></td></tr></table></figure>
+<p>接下来，把运行bash和ls所需的so文件也拷贝到test目录对应的lib目录下，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">T=$HOME/test<br>mkdir -p $T/lib/x86_64-linux-gnu<br>list=&quot;$(ldd /bin/bash | egrep -o &#x27;/lib.*\.[0-9]&#x27;)&quot;<br>for i in $list; do cp -v &quot;$i&quot; &quot;$&#123;T&#125;$&#123;i&#125;&quot;; done<br>list=&quot;$(ldd /bin/ls | egrep -o &#x27;/lib.*\.[0-9]&#x27;)&quot;<br>for i in $list; do cp -v &quot;$i&quot; &quot;$&#123;T&#125;$&#123;i&#125;&quot;; done<br></code></pre></td></tr></table></figure>
+<p>最后，执行chroot命令，告诉操作系统，我们将使用$HOME/test目录作为/bin/bash进程的根目录，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">chroot $HOME/test /bin/bash<br></code></pre></td></tr></table></figure>
+<p>这时，如果执行<code>ls /</code>，就会看到，它返回的都是<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mi>O</mi><mi>M</mi><mi>E</mi><mi mathvariant="normal">/</mi><mi>t</mi><mi>e</mi><mi>s</mi><mi>t</mi><mtext>目录下的内容，而不是宿主机的内容。更重要的是，对于被</mtext><mi>c</mi><mi>h</mi><mi>r</mi><mi>o</mi><mi>o</mi><mi>t</mi><mtext>的进程来说，它并不会感受到自己的根目录已经被“修改”成了</mtext></mrow><annotation encoding="application/x-tex">HOME/test目录下的内容，而不是宿主机的内容。更重要的是，对于被chroot的进程来说，它并不会感受到自己的根目录已经被“修改”成了</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mord mathnormal" style="margin-right:0.05764em;">OME</span><span class="mord">/</span><span class="mord mathnormal">t</span><span class="mord mathnormal">es</span><span class="mord mathnormal">t</span><span class="mord cjk_fallback">目录下的内容，而不是宿主机的内容。更重要的是，对于被</span><span class="mord mathnormal">c</span><span class="mord mathnormal">h</span><span class="mord mathnormal">roo</span><span class="mord mathnormal">t</span><span class="mord cjk_fallback">的进程来说，它并不会感受到自己的根目录已经被</span><span class="mord">“</span><span class="mord cjk_fallback">修改</span><span class="mord">”</span><span class="mord cjk_fallback">成了</span></span></span></span>HOME/test。</p>
+<p>可以看到，这种视图被修改的原理和Linux Namespace很类似。实际上，Mount Namespace正是基于对chroot的不断改良才被发明出来的，它也是Linux操作系统中的第一个Namespace。</p>
+<h2 id="三、容器镜像">三、容器镜像</h2>
+<h3 id="3-1、什么是容器镜像">3.1、什么是容器镜像</h3>
+<p>为了能够让容器的根目录看起来更“真实”，我们一般会在这个容器的根目录下挂载一个操作系统完整的文件系统，比如，Ubuntu 16.04的ISO。这样，在容器启动之后，我们在容器中通过执行<code>ls /</code>查看根目录的下的内容，就是Ubuntu 16.04的所有目录和文件。</p>
+<p>这个挂载在容器根目录上、用来为容器进程提供隔离后的执行环境的文件系统，就是所谓的“容器镜像”。它还有一个更为专业的名字，叫作rootfs（即根文件系统）。</p>
+<p>通常，一个最常见的rootfs，或者说容器镜像，会包括如下所示的一些目录和文件，比如/bin，/etc，/proc等：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">ls</span> /</span><br>bin dev etc home lib lib64 mnt opt proc root run sbin sys tmp usr var<br></code></pre></td></tr></table></figure>
+<p>而当我们进入容器之后执行的<code>/bin/bash</code>，就是容器进项的/bin目录下的可执行文件，它与宿主机的/bin/bash完全不同。</p>
+<p>现在，我们应该可以理解，对Docker项目来说，它最核心的原理实际上就是为待创建的用户进程：</p>
+<ul>
+<li>启用Linux Namespace配置；</li>
+<li>设置指定的Cgroups参数；</li>
+<li>切换进程的根目录。</li>
+</ul>
+<p>这样，一个完成的容器就诞生了。不过，Docker项目在最后一步的切换上会优先使用pivot_root系统调用，如果系统不支持，才会使用chroot。这两个系统调用虽然功能类似，但是也有细微的区别。</p>
+<p>此外，我们需要知道的是，rootfs只是一个操作系统所包含的文件、目录和配置，并不包括操作系统内核。在Linux操作系统中，这两部分是分开存放的，操作系统只有在开机启动时才会加载指定版本的内核镜像。所以说，rootfs只包括了操作系统的”躯壳“，并没有包括操作系统的”灵魂“。那么，对于容器来说，这个操作系统的”灵魂“又在哪里呢？</p>
+<p>实际上，同一台机器上的所有容器，都共享宿主机操作系统的内核。这就意味着，如果我们的应用程序需要配置内核参数、加载额外的内核模块以及跟内核进行直接的交互，那么此时就需要特别注意了：这些操作和依赖的对象，就是宿主机操作系统的内核，它对于该机器上的所有容器来说是一个“全局变量”，牵一发而动全身。</p>
+<p>这也是容器相比于虚拟机的主要缺陷之一：毕竟后者不仅有模拟出来的硬件机器充当沙盒，而且每个沙盒里还运行着一个完整的 Guest OS 给应用随便折腾。</p>
+<h3 id="3-2、理解容器镜像的一致性">3.2、理解容器镜像的一致性</h3>
+<p>我们知道，容器有一个被反复宣传的重要特性：一致性。由于rootfs里打包的不仅仅是应用，而且包括整个操作系统的文件和目录，也就意味着，应用以及它运行所需要的所有依赖，都被封装在了一起。</p>
+<p>事实上，对于大多数开发者而言，他们对应用依赖的理解，一直局限在编程语言层面。比如Golang的Godeps.jsonm。但实际上，一个一直以来很容易被忽视的事实是，对一个应用来说，操作系统本身才是它运行所需要的最完整的“依赖库”。</p>
+<p>有了容器镜像“打包操作系统”的能力，这个最基础的依赖环境也终于变成了应用沙盒的一部分。这就赋予了容器所谓的一致性：无论在本地、云端，还是在一台任何地方的机器上，用户只需要解压打包好的容器镜像，那么这个应用运行所需要的完整的执行环境就会被重现出现。</p>
+<p>而正是这种深入到操作系统级别的运行环境一致性，才打通了应用在本地开发和远端执行环境之间难以逾越的鸿沟。</p>
+<h2 id="四、联合文件系统">四、联合文件系统</h2>
+<h3 id="4-1、早期rootfs存在的问题">4.1、早期rootfs存在的问题</h3>
+<p>这时我们可能已经发现了另一个棘手的问题：难道每次开发一个应用，或升级一下现用的应用，都要重复制作一次rootfs吗？比如，我们现在用Ubuntu操作系统的ISO做了一个rootfs，然后又在里面安装了Java环境，用来部署我的Java应用。那么，其他人在发布他的Java应用时，显然是可以直接使用我们已经安装过Java环境的rootfs，而不用重复这个流程。</p>
+<p>一种比较直观地解决办法就是，我们在制作rootfs的时候，每做一步“有意义”的操作，就保存一个rootfs出来，这样其他人就可以按需求去用他需要的rootfs了。但是，这个解决方法并不具备推广性。原因在于，一旦其他人修改了这个rootfs，新旧两个rootfs之间就没有任何关系了。这样做的结果就是极度的碎片化。</p>
+<p>那么，既然这些修改都是基于一个旧的rootfs，我们能不能以增量的方式去做这些修改呢？这样做的好处就是，所有人都只需要维护相对于base rootfs修改的增量内容，而不是每次修改都制造一个“fork”。</p>
+<p>答案当然是肯定的。Docker公司在实现Docker镜像时并没有沿用以前制作rootfs的流程，而是做了一个小小的创新：Docker在镜像的设计中，引入了层（layer）的概念。也就是说，用户制作镜像的每一步操作，都会生成一个层，也就是一个增量rootfs。而这种创新的想法用到了一种叫作联合文件系统（Union File System）的能力。</p>
+<h3 id="4-2、什么是联合文件系统">4.2、什么是联合文件系统</h3>
+<p>Union File System也叫UnionFS，它最主要的功能就是将多个不同位置的目录联合挂载（union mount）到同一个目录下。比如，我们现在有两个目录A和B，它们分别有两个文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">mkdir &#123;A,B&#125;<br>touch A/a<br>touch B/b<br>echo a &gt; A/x<br>echo b &gt; B/x<br>tree<br></code></pre></td></tr></table></figure>
+<p>输出如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shell">.<br>├── A<br>│  ├── a<br>│  └── x<br>└── B<br>  ├── b<br>  └── x<br></code></pre></td></tr></table></figure>
+<p>然后，我们使用联合挂载的方式，将这两个目录挂载到一个公共的目录C上：</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">mkdir C<br>mount -t aufs -o dirs=<span class="hljs-string">./A</span><span class="hljs-function">:.</span><span class="hljs-string">/B</span> none <span class="hljs-string">./C</span><br></code></pre></td></tr></table></figure>
+<p>这时，我们再查看目录C的内容，就能看到目录A和B下的文件被合并到了一起：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">tree ./C</span><br>./C<br>├── a<br>├── b<br>└── x<br></code></pre></td></tr></table></figure>
+<p>可以看到，在这个合并后的目录C中，有a、b、x三个文件，并且x文件只有一份。这就是“合并”的含义。此外，如果我们在目录C里对a、b、x文件做修改，这些修改也会在对应的目录A、B中生效。</p>
+<h3 id="4-3、AuFS联合文件系统">4.3、AuFS联合文件系统</h3>
+<blockquote>
+<p>那么，在Docker项目中，又是如何使用这种Union File System的呢？</p>
+</blockquote>
+<p>在Ubuntu 16.04和Docker CE 18.05中，默认使用的是AuFS这个联合文件系统的实现。我们可以通过docker info命令，查看到这个信息。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">docker info | grep Storage</span><br>Storage Driver: aufs<br></code></pre></td></tr></table></figure>
+<p>AuFS 的全称是 Another UnionFS，后改名为 Alternative UnionFS，再后来干脆改名叫作 Advance UnionFS。对于 AuFS 来说，它最关键的目录结构在 /var/lib/docker 路径下的 diff 目录中：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/var/</span>lib<span class="hljs-regexp">/docker/</span>aufs<span class="hljs-regexp">/diff/</span>&lt;layer_id&gt;<br></code></pre></td></tr></table></figure>
+<p>下面，我们通过一个具体的例子来理解这个目录的作用。</p>
+<p>首先，我们启动一个容器，比如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker run -d ubuntu:latest sleep 3600<br></code></pre></td></tr></table></figure>
+<p>这时，Docker就会从Docker Hub上拉取一个Ubuntu镜像到本地。而这个所谓的“镜像”，实际上就是一个Ubuntu操作系统的rootfs，它的内容是Ubuntu操作系统的所有文件和目录。不过，与之前我们讨论的rootfs不同的是，Docker镜像使用的rootfs，往往也是多个“层”组成：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">docker image inspect ubuntu:latest</span><br>...<br>     &quot;RootFS&quot;: &#123;<br>      &quot;Type&quot;: &quot;layers&quot;,<br>      &quot;Layers&quot;: [<br>        &quot;sha256:f49017d4d5ce9c0f544c...&quot;,<br>        &quot;sha256:8f2b771487e9d6354080...&quot;,<br>        &quot;sha256:ccd4d61916aaa2159429...&quot;,<br>        &quot;sha256:c01d74f99de40e097c73...&quot;,<br>        &quot;sha256:268a067217b5fe78e000...&quot;<br>      ]<br>    &#125;<br></code></pre></td></tr></table></figure>
+<p>可以看到，这个Ubuntu镜像，实际上由五个层组成。这五个层就是五个增量rootfs，每一层都是Ubuntu操作系统文件与目录的一部分；而在使用镜像时，Docker会把这些增量联合挂载在一个统一的挂载点上（等价于前面例子中的<code>/C</code>目录）。这个挂载点就是/var/lib/docker/aufs/mnt/，比如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">/var/lib/docker/aufs/mnt/6e3be5d2ecccae7cc0fcfa2a2f5c89dc21ee30e166be823ceaeba15dce645b3e<br></code></pre></td></tr></table></figure>
+<p>不出意外，这个目录里面就是一个完成的Ubuntu操作系统：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">ls</span> /var/lib/docker/aufs/mnt/6e3be5d2ecccae7cc0fcfa2a2f5c89dc21ee30e166be823ceaeba15dce645b3e</span><br>bin boot dev etc home lib lib64 media mnt opt proc root run sbin srv sys tmp usr var<br></code></pre></td></tr></table></figure>
+<p>那么，前面提到的五个镜像层，又是如何被联合挂载成这样一个完整的Ubuntu文件系统的呢？</p>
+<p>这个信息就记录在AuFS的系统目录/sys/fs/aufs下面。首先，通过查看AuFS的挂载信息，我们可以找到这个目录对应的AuFS的内部ID（也叫：si）：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">cat</span> /proc/mounts| grep aufs</span><br>none /var/lib/docker/aufs/mnt/6e3be5d2ecccae7cc0fc... aufs rw,relatime,si=972c6d361e6b32ba,dio,dirperm1 0 0<br></code></pre></td></tr></table></figure>
+<p>即，si=972c6d361e6b32ba。然后，使用这个ID，就可以在/sys/fs/aufs下查看被联合挂载在一起的各个层的信息：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">cat</span> /sys/fs/aufs/si_972c6d361e6b32ba/br[0-9]*</span><br>/var/lib/docker/aufs/diff/6e3be5d2ecccae7cc...=rw<br>/var/lib/docker/aufs/diff/6e3be5d2ecccae7cc...-init=ro+wh<br>/var/lib/docker/aufs/diff/32e8e20064858c0f2...=ro+wh<br>/var/lib/docker/aufs/diff/2b8858809bce62e62...=ro+wh<br>/var/lib/docker/aufs/diff/20707dce8efc0d267...=ro+wh<br>/var/lib/docker/aufs/diff/72b0744e06247c7d0...=ro+wh<br>/var/lib/docker/aufs/diff/a524a729adadedb90...=ro+wh<br></code></pre></td></tr></table></figure>
+<p>从这些信息里，我们可以看到，镜像的层都放置在/var/lib/docker/aufs/diff目录下，然后被联合挂载在/var/lib/docker/aufs/mnt下。</p>
+<h3 id="4-4、理解镜像分层">4.4、理解镜像分层</h3>
+<p>从上面的结构中，我们可以看出，这个容器的rootfs由如下所示的三部分组成：</p>
+<h4 id="4-4-1、只读层">4.4.1、只读层</h4>
+<p>第一部分，只读层。它是这个容器的rootfs最下面的五层，对应的正是ubuntu:latest镜像的五层。可以看到，它们的挂载方式都是只读的（ro+wh，即readonly+witeout）。这时，我们可以分别查看一下这些层的内容：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">ls</span> /var/lib/docker/aufs/diff/72b0744e06247c7d0...</span><br>etc sbin usr var<br><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">ls</span> /var/lib/docker/aufs/diff/32e8e20064858c0f2...</span><br>run<br><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">ls</span> /var/lib/docker/aufs/diff/a524a729adadedb900...</span><br>bin boot dev etc home lib lib64 media mnt opt proc root run sbin srv sys tmp usr var<br></code></pre></td></tr></table></figure>
+<p>可以看到，这些层都以增量的方式分别包含了Ubuntu操作系统的一部分。</p>
+<h4 id="4-4-2、可读写层">4.4.2、可读写层</h4>
+<p>第二部分，可读写层。它是这个容器的roots最上面的一层，它的挂载方式为读写（rw，即read write）。在没有写入文件之前，这个目录是空的。而一旦在容器里做了写操作，修改产生的内容就会以增量的方式出现在这个层中。</p>
+<blockquote>
+<p>如果我们要做的是，删除只读层中的一个文件，这时会发生什么呢？</p>
+</blockquote>
+<p>为了实现删除操作，AuFS会在可读写层创建一个whieout文件，把只读层里的文件“遮挡”起来。比如，我们要删除只读层里一个名为foo的文件，那么这个删除操作实际上是在可读写层创建了一个名叫.wh.foo的文件。这样，当着两个层被联合挂载只有，foo文件就会被.wh.foo文件“遮挡”起来，从而就“消失”了。这个功能，就是“ro+wh”的挂载方式，即read only+whiteout的含义。</p>
+<p>所以，最上面的这个可读写层的作用，就是专门用来存放我们修改rootfs后产生的增量，增、删、改操作都发生在这里。而当我们使用完了这个被修改过的容器之后，还可以使用docker commit和push指令，保存这个被修改过的可读写层，并上传到Docker Hub上，供其他人使用；与此同时，原先的只读层里的内容则不会有任何变化。而这就是增量rootfs的好处。</p>
+<h4 id="4-4-3、init层">4.4.3、init层</h4>
+<p>第三部分，init层。它是一个以“-init”结尾的层，夹在只读层和读写层之间。init层是Docker项目单独生成的一个内部层，专门用来存放/etc/hosts、/etc/resolv.conf等信息。</p>
+<p>之所以需要这样的一层，是因为这些文件本属于只读的ubuntu镜像的一部分，但是用户往往需要在启动容器时，写入一些指定的值比如hostname，所以就需要在可读写层对它们进行修改。可是，这些修改往往只对当前的容器有效，我们并不希望执行docker commit时，把这些信息连同可读写层一起提交。</p>
+<p>所以，Docker的做法是，在修改了这些文件之后，以一个单独的层挂载出来。而用户执行docker commit只会提交可读写层，所以是不包含这些内容的。</p>
+<p>最终，这7个层都被联合挂载到/var/lib/docker/aufs/mnt目录下，表现为一个完成的Ubuntu操作系统供容器使用。</p>
+<h2 id="五、小结">五、小结</h2>
+<p>在这篇文章中，我们主要讨论了如下内容：</p>
+<ul>
+<li>mount namespace不同与其它namespace，它只有在挂载操作发生后才会生效。</li>
+<li>现行的Mount Namespace是对chroot的改良。</li>
+<li>容器镜像就是挂载在容器根目录上、用来为容器进程提供隔离后的执行环境的文件系统。</li>
+<li>容器镜像的一致性是指容器不仅打包了应用运行所需的依赖程序，而且打包了整个文件系统。这样就实现了“一处构建，到处运行”。</li>
+<li>联合文件系统就是将多个不同位置的目录联合挂载到同一个目录下。而容器镜像的分层特性就是借助联合文件系统实现的。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>容器基础3：理解容器镜像</div>
+      <div>https://kuberxy.github.io/2020/10/01/容器基础3：理解容器镜像/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年10月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/10/02/%E5%AE%B9%E5%99%A8%E5%9F%BA%E7%A1%804%EF%BC%9A%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86Docker/" title="容器基础4：重新认识Docker">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">容器基础4：重新认识Docker</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/10/01/%E5%AE%B9%E5%99%A8%E5%9F%BA%E7%A1%802%EF%BC%9A%E9%9A%94%E7%A6%BB%E4%B8%8E%E9%99%90%E5%88%B6/" title="容器基础2：隔离与限制">
+                        <span class="hidden-mobile">容器基础2：隔离与限制</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

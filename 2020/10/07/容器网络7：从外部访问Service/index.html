@@ -1,0 +1,744 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="在前面的文章中，我们讨论了Kubernetes内部的Pod之间如何互相访问。接下来，我们重点讨论如何从外部访问Kubernetes内部的Pod。 一、NodePort 通过前面的讲解，我们应该能够明白这样一个事实：Service 的访问信息在 Kubernetes 集群之外，其实是无效的。这其实也容易理解：所谓 Service 的访问入口，其实就是每台宿主机上由 kube-proxy 生成的 ip">
+<meta property="og:type" content="article">
+<meta property="og:title" content="容器网络7：从外部访问Service">
+<meta property="og:url" content="https://kuberxy.github.io/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C7%EF%BC%9A%E4%BB%8E%E5%A4%96%E9%83%A8%E8%AE%BF%E9%97%AEService/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在前面的文章中，我们讨论了Kubernetes内部的Pod之间如何互相访问。接下来，我们重点讨论如何从外部访问Kubernetes内部的Pod。 一、NodePort 通过前面的讲解，我们应该能够明白这样一个事实：Service 的访问信息在 Kubernetes 集群之外，其实是无效的。这其实也容易理解：所谓 Service 的访问入口，其实就是每台宿主机上由 kube-proxy 生成的 ip">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-07T02:49:35.000Z">
+<meta property="article:modified_time" content="2021-10-17T02:17:54.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Kubernetes">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>容器网络7：从外部访问Service - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="容器网络7：从外部访问Service"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-10-07 10:49" pubdate>
+          2020年10月7日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          24 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">容器网络7：从外部访问Service</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>在前面的文章中，我们讨论了Kubernetes内部的Pod之间如何互相访问。接下来，我们重点讨论如何从外部访问Kubernetes内部的Pod。</p>
+<h2 id="一、NodePort">一、NodePort</h2>
+<p>通过前面的讲解，我们应该能够明白这样一个事实：Service 的访问信息在 Kubernetes 集群之外，其实是无效的。这其实也容易理解：所谓 Service 的访问入口，其实就是每台宿主机上由 kube-proxy 生成的 iptables 规则，以及 kube-dns 生成的 DNS 记录。而一旦离开了这个集群，这些信息对用户来说，也就没有作用了。</p>
+<p>所以，在使用 Kubernetes 的 Service 时，一个必须要面对和解决的问题就是：如何从外部（Kubernetes 集群之外），访问到 Kubernetes 里创建的 Service？</p>
+<p>这里最常用的一种方式就是：NodePort。我们先来看这个例子。</p>
+<h3 id="1-1、创建NodePort-Service">1.1、创建NodePort Service</h3>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">Service</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">my-nginx</span><br>  <span class="hljs-attr">labels:</span><br>    <span class="hljs-attr">run:</span> <span class="hljs-string">my-nginx</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">type:</span> <span class="hljs-string">NodePort</span><br>  <span class="hljs-attr">ports:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">nodePort:</span> <span class="hljs-number">8080</span><br>    <span class="hljs-attr">targetPort:</span> <span class="hljs-number">80</span><br>    <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span><br>    <span class="hljs-attr">name:</span> <span class="hljs-string">http</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">nodePort:</span> <span class="hljs-number">443</span><br>    <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span><br>    <span class="hljs-attr">name:</span> <span class="hljs-string">https</span><br>  <span class="hljs-attr">selector:</span><br>    <span class="hljs-attr">run:</span> <span class="hljs-string">my-nginx</span><br></code></pre></td></tr></table></figure>
+<p>在这个 Service 的定义里，我们声明它的类型是，type=NodePort。然后，在 ports 字段里声明了 Service 的 8080 端口代理 Pod 的 80 端口，Service 的 443 端口代理 Pod 的 443 端口。</p>
+<p>当然，如果我们不显式地声明 nodePort 字段，Kubernetes 就会为我们分配随机的可用端口来设置代理。这个端口的范围默认是 30000-32767，我们可以通过 kube-apiserver 的–service-node-port-range 参数来修改它。</p>
+<h3 id="1-2、访问Service">1.2、访问Service</h3>
+<p>要访问这个 Service，我们只需要访问：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">&lt;任何一台宿主机的IP地址&gt;:8080<br></code></pre></td></tr></table></figure>
+<p>就可以访问到某一个被代理的 Pod 的 80 端口了。</p>
+<h3 id="1-3、理解NodePort模式">1.3、理解NodePort模式</h3>
+<p>在理解了Service 的工作原理之后，NodePort 模式也就非常容易理解了。显然，kube-proxy 要做的，就是在每台宿主机上生成这样一条 iptables 规则：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">-A KUBE-NODEPORTS -p tcp -m comment --comment &quot;default/my-nginx: nodePort&quot; -m tcp --dport 8080 -j KUBE-SVC-67RL4FN6JRUPOJYM<br></code></pre></td></tr></table></figure>
+<p>而我们在前面已经讲到，KUBE-SVC-67RL4FN6JRUPOJYM 其实就是一组随机模式的 iptables 规则。所以接下来的流程，就跟 ClusterIP 模式完全一样了。</p>
+<h3 id="1-4、理解SNAT操作的作用">1.4、理解SNAT操作的作用</h3>
+<p>需要注意的是，在 NodePort 方式下，Kubernetes 会在 IP 包离开宿主机发往目的 Pod 时，对这个 IP 包做一次 SNAT 操作，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">-A KUBE-POSTROUTING -m comment --comment &quot;kubernetes service traffic requiring SNAT&quot; -m mark --mark 0x4000/0x4000 -j MASQUERADE<br></code></pre></td></tr></table></figure>
+<p>可以看到，这条规则设置在 POSTROUTING 检查点，也就是说，它给即将离开这台主机的 IP 包，进行了一次 SNAT 操作，将这个 IP 包的源地址替换成了这台宿主机上的 CNI 网桥地址，或者宿主机本身的 IP 地址（如果 CNI 网桥不存在的话）。</p>
+<p>当然，这个 SNAT 操作只需要对 Service 转发出来的 IP 包进行（否则普通的 IP 包就被影响了）。而 iptables 做这个判断的依据，就是查看该 IP 包是否有一个“0x4000”的“标志”。这个标志正是在 IP 包被执行 DNAT 操作之前被打上去的。</p>
+<blockquote>
+<p>可是，为什么一定要对流出的包做 SNAT操作呢？</p>
+</blockquote>
+<p>这里的原理其实很简单，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs shell">          client<br>            \ ^<br>             \ \<br>              v \<br>  node 1 &lt;--- node 2<br>   | ^   SNAT<br>   | |   ---&gt;<br>   v |<br>endpoint<br></code></pre></td></tr></table></figure>
+<p>当一个外部的 client 通过 node 2 的地址访问一个 Service 的时候，node 2 上的负载均衡规则，有可能把这个 IP 包转发给一个在 node 1 上的 Pod。这里没有任何问题。</p>
+<p>而当 node 1 上的这个 Pod 处理完请求之后，它就会按照这个 IP 包的源地址发出回复。</p>
+<p>可是，如果没有做 SNAT 操作的话，这时候，被转发来的 IP 包的源地址就是 client 的 IP 地址。所以此时，Pod 就会直接将回复发给client。对于 client 来说，它的请求明明发给了 node 2，收到的回复却来自 node 1，这个 client 很可能会报错。</p>
+<p>所以，在上图中，当 IP 包离开 node 2 之后，它的源 IP 地址就会被 SNAT 改成 node 2 的 CNI 网桥地址或者 node 2 自己的地址。这样，Pod 在处理完成之后就会先回复给 node 2（而不是 client），然后再由 node 2 发送给 client。</p>
+<p>当然，这也就意味着这个 Pod 只知道该 IP 包来自于 node 2，而不是外部的 client。对于 Pod 需要明确知道所有请求来源的场景来说，这是不可以的。</p>
+<h3 id="1-5、externalTrafficPolicy字段的作用">1.5、externalTrafficPolicy字段的作用</h3>
+<p>我们可以将 Service 的 spec.externalTrafficPolicy 字段设置为 local，这就保证了所有 Pod 通过 Service 收到请求之后，一定可以看到真正的、外部 client 的源地址。</p>
+<p>而这个机制的实现原理也非常简单：这时候，一台宿主机上的 iptables 规则，会设置为只将 IP 包转发给运行在这台宿主机上的 Pod。所以这时候，Pod 就可以直接使用源地址将回复包发出，不需要事先进行 SNAT 了。这个流程，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs shell">      client<br>      ^ /   \<br>     / /     \<br>    / v       X<br>  node 1     node 2<br>   ^ |<br>   | |<br>   | v<br>endpoint<br></code></pre></td></tr></table></figure>
+<p>当然，这也就意味着如果在一台宿主机上，没有任何一个被代理的 Pod 存在，比如上图中的 node 2，那么我们使用 node 2 的 IP 地址访问这个 Service，就是无效的。此时，请求会直接被 DROP 掉。</p>
+<h2 id="二、LoadBalancer">二、LoadBalancer</h2>
+<p>从外部访问 Service 的第二种方式，适用于公有云上的 Kubernetes 服务。这时候，我们可以指定一个 LoadBalancer 类型的 Service，如下所示：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-meta">---</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">Service</span><br><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">example-service</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">ports:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">port:</span> <span class="hljs-number">8765</span><br>    <span class="hljs-attr">targetPort:</span> <span class="hljs-number">9376</span><br>  <span class="hljs-attr">selector:</span><br>    <span class="hljs-attr">app:</span> <span class="hljs-string">example</span><br>  <span class="hljs-attr">type:</span> <span class="hljs-string">LoadBalancer</span><br></code></pre></td></tr></table></figure>
+<p>在公有云提供的 Kubernetes 服务里，都使用了一个叫作 CloudProvider 的转接层，来跟公有云本身的 API 进行对接。所以，在上述 LoadBalancer 类型的 Service 被提交后，Kubernetes 就会调用 CloudProvider 在公有云上为我们创建一个负载均衡服务，并且把被代理的 Pod 的 IP 地址配置给负载均衡服务做后端。</p>
+<h2 id="三、ExternalName">三、ExternalName</h2>
+<p>第三种方式，是 Kubernetes 在 1.7 之后支持的一个新特性，叫作 ExternalName。举个例子：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">kind:</span> <span class="hljs-string">Service</span><br><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">my-service</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">type:</span> <span class="hljs-string">ExternalName</span><br>  <span class="hljs-attr">externalName:</span> <span class="hljs-string">my.database.example.com</span><br></code></pre></td></tr></table></figure>
+<p>在上述 Service 的 YAML 文件中，指定了一个 <a target="_blank" rel="noopener" href="http://externalName=my.database.example.com">externalName=my.database.example.com</a> 的字段。而且我们应该会注意到，这个 YAML 文件里不需要指定 selector。</p>
+<p>这时候，当我们通过 Service 的 DNS 名字访问它的时候，比如访问：my-service.default.svc.cluster.local。那么，Kubernetes <a target="_blank" rel="noopener" href="http://xn--my-ff8cz5rppoy0x7i3b.database.example.com">返回的就是my.database.example.com</a>。所以说，ExternalName 类型的 Service，其实是在 kube-dns 里添加了一条 CNAME 记录。这时，访问 my-service.default.svc.cluster.local 就和访问 <a target="_blank" rel="noopener" href="http://my.database.example.com">my.database.example.com</a> 这个域名是一个效果了。</p>
+<h2 id="四、ExternalIP">四、ExternalIP</h2>
+<p>此外，Kubernetes 的 Service 还允许我们为 Service 分配公有 IP 地址，比如下面这个例子：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">kind:</span> <span class="hljs-string">Service</span><br><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">my-service</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">selector:</span><br>    <span class="hljs-attr">app:</span> <span class="hljs-string">MyApp</span><br>  <span class="hljs-attr">ports:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">http</span><br>    <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span><br>    <span class="hljs-attr">port:</span> <span class="hljs-number">80</span><br>    <span class="hljs-attr">targetPort:</span> <span class="hljs-number">9376</span><br>  <span class="hljs-attr">externalIPs:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-number">80.11</span><span class="hljs-number">.12</span><span class="hljs-number">.10</span><br></code></pre></td></tr></table></figure>
+<p>在上述 Service 中，我们为它指定的 externalIPs=80.11.12.10，那么此时，就可以通过访问 80.11.12.10:80 访问到被代理的 Pod 了。不过，在这里 Kubernetes 要求 externalIPs 必须是至少能够路由到一个 Kubernetes 的节点。</p>
+<h2 id="五、Service故障定位">五、Service故障定位</h2>
+<p>在理解了 Kubernetes Service 机制的工作原理之后，很多与 Service 相关的问题，其实都可以通过分析 Service 在宿主机上对应的 iptables 规则（或者 IPVS 配置）得到解决。</p>
+<h3 id="5-1、确认-kube-dns运行正常">5.1、确认 kube-dns运行正常</h3>
+<p>比如，当我们的 Service 没办法通过 DNS 访问到的时候。我们就需要区分到底是 Service 本身的配置问题，还是集群的 DNS 出了问题。一个行之有效的方法，就是检查 Kubernetes 自己的 Master 节点的 Service DNS 是否正常：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">在一个Pod里执行</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">nslookup kubernetes.default</span><br>Server:    10.0.0.10<br>Address 1: 10.0.0.10 kube-dns.kube-system.svc.cluster.local<br><br>Name:      kubernetes.default<br>Address 1: 10.0.0.1 kubernetes.default.svc.cluster.local<br></code></pre></td></tr></table></figure>
+<p>如果上面访问 kubernetes.default 返回的值都有问题，那就需要检查 kube-dns 的运行状态和日志了。否则的话，应该去检查自己的 Service 定义是不是有问题。</p>
+<h3 id="5-2、检查Service的Endpoints">5.2、检查Service的Endpoints</h3>
+<p>而如果 Service 没办法通过 ClusterIP 访问到的时候，首先应该检查的是这个 Service 是否有 Endpoints：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl get endpoints hostnames</span><br>NAME        ENDPOINTS<br>hostnames   10.244.0.5:9376,10.244.0.6:9376,10.244.0.7:9376<br></code></pre></td></tr></table></figure>
+<p>需要注意的是，如果Pod 的 readniessProbe 没通过，它也不会出现在 Endpoints 列表里。</p>
+<h3 id="5-3、确认kube-proxy正常运行">5.3、确认kube-proxy正常运行</h3>
+<p>而如果 Endpoints 正常，那么就需要确认 kube-proxy 是否在正确运行。在通过 kubeadm 部署的集群里，应该看到 kube-proxy 输出的日志如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs shell">I1027 22:14:53.995134    5063 server.go:200] Running in resource-only container &quot;/kube-proxy&quot;<br>I1027 22:14:53.998163    5063 server.go:247] Using iptables Proxier.<br>I1027 22:14:53.999055    5063 server.go:255] Tearing down userspace rules. Errors here are acceptable.<br>I1027 22:14:54.038140    5063 proxier.go:352] Setting endpoints for &quot;kube-system/kube-dns:dns-tcp&quot; to [10.244.1.3:53]<br>I1027 22:14:54.038164    5063 proxier.go:352] Setting endpoints for &quot;kube-system/kube-dns:dns&quot; to [10.244.1.3:53]<br>I1027 22:14:54.038209    5063 proxier.go:352] Setting endpoints for &quot;default/kubernetes:https&quot; to [10.240.0.2:443]<br>I1027 22:14:54.038238    5063 proxier.go:429] Not syncing iptables until Services and Endpoints have been received from master<br>I1027 22:14:54.040048    5063 proxier.go:294] Adding new service &quot;default/kubernetes:https&quot; at 10.0.0.1:443/TCP<br>I1027 22:14:54.040154    5063 proxier.go:294] Adding new service &quot;kube-system/kube-dns:dns&quot; at 10.0.0.10:53/UDP<br>I1027 22:14:54.040223    5063 proxier.go:294] Adding new service &quot;kube-system/kube-dns:dns-tcp&quot; at 10.0.0.10:53/TCP<br></code></pre></td></tr></table></figure>
+<h3 id="5-4、检查宿主机iptables规则">5.4、检查宿主机iptables规则</h3>
+<p>如果 kube-proxy 一切正常，就应该仔细查看宿主机上的 iptables 了。而一个 iptables 模式的 Service 对应的规则包括：</p>
+<ul>
+<li>KUBE-SERVICES 或者 KUBE-NODEPORTS 规则对应的 Service 的入口链，这个规则应该与 VIP 和 Service 端口一一对应；</li>
+<li>KUBE-SEP-(hash) 规则对应的是 DNAT 链，这些规则应该与 Endpoints 一一对应；</li>
+<li>KUBE-SVC-(hash) 规则对应的是负载均衡链，这些规则的数目应该与 Endpoints 数目一致；</li>
+<li>如果是 NodePort 模式的话，还有 POSTROUTING 处的 SNAT 链。</li>
+</ul>
+<p>通过查看这些链的数量、转发目的地址、端口、过滤条件等信息，就能很容易发现一些异常的蛛丝马迹。</p>
+<h3 id="5-5、检查hairpin-mode">5.5、检查hairpin-mode</h3>
+<p>当然，还有一种典型问题，就是 Pod 没办法通过 Service 访问到自己。这往往就是因为 kubelet 的 hairpin-mode 没有被正确设置。此时，只需要确保将 kubelet 的 hairpin-mode 设置为 hairpin-veth 或者 promiscuous-bridge 即可。</p>
+<p>在 hairpin-veth 模式下，我们应该能看到 CNI 网桥对应的各个 VETH 设备，都将 Hairpin 模式设置为了 1，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-keyword">for</span> d <span class="hljs-keyword">in</span> /sys/devices/virtual/net/cni0/brif/veth*/hairpin_mode; <span class="hljs-keyword">do</span> <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$d</span> = <span class="hljs-subst">$(cat $d)</span>&quot;</span>; <span class="hljs-keyword">done</span></span><br>/sys/devices/virtual/net/cni0/brif/veth4bfbfe74/hairpin_mode = 1<br>/sys/devices/virtual/net/cni0/brif/vethfc2a18c5/hairpin_mode = 1<br></code></pre></td></tr></table></figure>
+<p>而如果是 promiscuous-bridge 模式的话，我们应该看到 CNI 网桥的混杂模式（PROMISC）被开启，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">ifconfig cni0 |grep PROMISC</span><br>UP BROADCAST RUNNING PROMISC MULTICAST  MTU:1460  Metric:1<br></code></pre></td></tr></table></figure>
+<h2 id="六、小结">六、小结</h2>
+<p>在这篇文章中，我们主要讨论了如下内容：</p>
+<ul>
+<li>
+<p>Kubernetes提供了多种供集群外部访问的方式，包括NodePort模式、LoadBalancer模式、ExternalName模式以及ExternalIP模式。</p>
+</li>
+<li>
+<p>Service NodePort模式的工作原理与clusterIP模式类似，不同之处在于，nodePort模式会在宿主机上为Service对象分配一个端口。集群外部的用户通过访问宿主机上的这个端口就能访问到Pod。</p>
+</li>
+<li>
+<p>Service LoadBalancer模式适用于公有云提供的Kubernetes服务。当使用该类型的Service对象时，kubernetes会调用公有云的API，创建出相应的负载均衡服务。</p>
+</li>
+<li>
+<p>Service ExternalName模式会在kube-dns中为Service的域名添加一条CNAME记录。</p>
+</li>
+<li>
+<p>Service ExternalIP模式可以让我们为Service对象指定一个公有IP地址。</p>
+</li>
+<li>
+<p>Service是由kube-dns、kube-proxy和iptables共同实现的。当Service无法被访问时，应该依次对他们进行检查。</p>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Kubernetes/" class="print-no-link">#Kubernetes</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>容器网络7：从外部访问Service</div>
+      <div>https://kuberxy.github.io/2020/10/07/容器网络7：从外部访问Service/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年10月7日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C8%EF%BC%9AService%E4%B8%8EIngress/" title="容器网络8：Service与Ingress">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">容器网络8：Service与Ingress</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C6%EF%BC%9AService%E3%80%81DNS%E4%B8%8E%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0/" title="容器网络6：Service、DNS与服务发现">
+                        <span class="hidden-mobile">容器网络6：Service、DNS与服务发现</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

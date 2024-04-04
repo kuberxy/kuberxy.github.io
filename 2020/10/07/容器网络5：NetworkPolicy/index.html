@@ -1,0 +1,767 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="在前面的文章中，我们讨论了Kubernetes的网络“连通性”。接下来，我们重点讨论Kubernetes网络的“隔离性”。 一、NetworkPolicy对象 1.1、什么是NetworkPolicy 在 Kubernetes 中，对网络隔离能力的定义，是依靠一种专门的 API 对象来描述的，即：NetworkPolicy。 Kubernetes 里的 Pod 默认都是“允许所有”（Accept">
+<meta property="og:type" content="article">
+<meta property="og:title" content="容器网络5：NetworkPolicy">
+<meta property="og:url" content="https://kuberxy.github.io/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C5%EF%BC%9ANetworkPolicy/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在前面的文章中，我们讨论了Kubernetes的网络“连通性”。接下来，我们重点讨论Kubernetes网络的“隔离性”。 一、NetworkPolicy对象 1.1、什么是NetworkPolicy 在 Kubernetes 中，对网络隔离能力的定义，是依靠一种专门的 API 对象来描述的，即：NetworkPolicy。 Kubernetes 里的 Pod 默认都是“允许所有”（Accept">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20201007114257452.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20201007114403525.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20201007115517875.png">
+<meta property="article:published_time" content="2020-10-07T02:47:34.000Z">
+<meta property="article:modified_time" content="2022-11-01T09:43:17.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Kubernetes">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://kuberxy.github.io/img/image-20201007114257452.png">
+  
+  
+  
+  <title>容器网络5：NetworkPolicy - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="容器网络5：NetworkPolicy"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-10-07 10:47" pubdate>
+          2020年10月7日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          30 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">容器网络5：NetworkPolicy</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>在前面的文章中，我们讨论了Kubernetes的网络“连通性”。接下来，我们重点讨论Kubernetes网络的“隔离性”。</p>
+<h2 id="一、NetworkPolicy对象">一、NetworkPolicy对象</h2>
+<h3 id="1-1、什么是NetworkPolicy">1.1、什么是NetworkPolicy</h3>
+<p>在 Kubernetes 中，对网络隔离能力的定义，是依靠一种专门的 API 对象来描述的，即：NetworkPolicy。</p>
+<p>Kubernetes 里的 Pod 默认都是“允许所有”（Accept All）的，即：Pod 可以接收来自任何发送方的请求；或者，向任何接收方发送请求。而如果我们要对这个情况作出限制，就必须通过 NetworkPolicy 对象来指定。</p>
+<p>一旦 Pod 被某个 NetworkPolicy 选中，那么这个 Pod 就会进入“拒绝所有（Deny All）”的状态，即：这个 Pod 既不允许被外界随意访问，也不允许随意对外界发起访问，只能按“规则”行动。NetworkPolicy 定义的规则，其实就是“白名单”。</p>
+<h3 id="1-2、定义NetworkPolicy">1.2、定义NetworkPolicy</h3>
+<p>一个完整的 NetworkPolicy 对象的示例，如下所示：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">networking.k8s.io/v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">NetworkPolicy</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">test-network-policy</span><br>  <span class="hljs-attr">namespace:</span> <span class="hljs-string">default</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">podSelector:</span><br>    <span class="hljs-attr">matchLabels:</span><br>      <span class="hljs-attr">role:</span> <span class="hljs-string">db</span><br>  <span class="hljs-attr">policyTypes:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">Ingress</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">Egress</span><br>  <span class="hljs-attr">ingress:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">from:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">ipBlock:</span><br>        <span class="hljs-attr">cidr:</span> <span class="hljs-number">172.17</span><span class="hljs-number">.0</span><span class="hljs-number">.0</span><span class="hljs-string">/16</span><br>        <span class="hljs-attr">except:</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-number">172.17</span><span class="hljs-number">.1</span><span class="hljs-number">.0</span><span class="hljs-string">/24</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">namespaceSelector:</span><br>        <span class="hljs-attr">matchLabels:</span><br>          <span class="hljs-attr">project:</span> <span class="hljs-string">myproject</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">podSelector:</span><br>        <span class="hljs-attr">matchLabels:</span><br>          <span class="hljs-attr">role:</span> <span class="hljs-string">frontend</span><br>    <span class="hljs-attr">ports:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span><br>      <span class="hljs-attr">port:</span> <span class="hljs-number">6379</span><br>  <span class="hljs-attr">egress:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">to:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">ipBlock:</span><br>        <span class="hljs-attr">cidr:</span> <span class="hljs-number">10.0</span><span class="hljs-number">.0</span><span class="hljs-number">.0</span><span class="hljs-string">/24</span><br>    <span class="hljs-attr">ports:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span><br>      <span class="hljs-attr">port:</span> <span class="hljs-number">5978</span><br></code></pre></td></tr></table></figure>
+<p>在上面这个例子里，我们首先会看到 podSelector 字段。它的作用，就是定义这个 NetworkPolicy 的限制范围，比如：当前 Namespace 里携带了 role=db 标签的 Pod。而如果我们把 podSelector 字段留空：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spec:</span><br> <span class="hljs-attr">podSelector:</span> &#123;&#125;<br></code></pre></td></tr></table></figure>
+<p>那么这个 NetworkPolicy 就会作用于当前 Namespace 下的所有 Pod。</p>
+<h3 id="1-3、理解NetworkPolicy的定义">1.3、理解NetworkPolicy的定义</h3>
+<p>在上面的例子中，我们在 policyTypes 字段，定义了这个 NetworkPolicy 的类型是 ingress 和 egress，即：它既会影响流入（ingress）请求，也会影响流出（egress）请求。</p>
+<p>然后，在 ingress 字段里，我们定义了 from 和 ports，即：允许流入的“白名单”和端口。其中，在这个允许流入的“白名单”里，我们指定了三种并列的情况，分别是：ipBlock、namespaceSelector 和 podSelector。</p>
+<p>而在 egress 字段里，我们则定义了 to 和 ports，即：允许流出的“白名单”和端口。这里允许流出的“白名单”的定义方法与 ingress 类似。只不过，这一次 ipblock 字段指定的，是目的地址的网段。</p>
+<p>而这个 NetworkPolicy 对象，指定的隔离规则是这样的：</p>
+<ul>
+<li>该隔离规则只对 default Namespace 下的，携带了 role=db 标签的 Pod 有效。限制的请求类型包括 ingress（流入）和 egress（流出）。</li>
+<li>Kubernetes 会拒绝任何访问被隔离 Pod 的请求，除非这个请求是来自于以下“白名单”里的对象，并且访问的是被隔离 Pod 的 6379 端口。这些“白名单”对象包括：
+<ul>
+<li>default Namespace 里的，携带了 role=fronted 标签的 Pod；</li>
+<li>携带project=myproject 标签的 Namespace 里的任何 Pod；</li>
+<li>任何源地址属于 172.17.0.0/16 网段，且不属于 172.17.1.0/24 网段的请求。</li>
+</ul>
+</li>
+<li>Kubernetes 会拒绝被隔离 Pod 对外发起任何请求，除非请求的目的地址属于 10.0.0.0/24 网段，并且访问的是该网段地址的 5978 端口。</li>
+</ul>
+<h3 id="1-4、编写NetworkPolicy时的注意点">1.4、编写NetworkPolicy时的注意点</h3>
+<p>需要注意的是，定义一个 NetworkPolicy 对象的过程，容易犯错的是“白名单”部分（from 和 to 字段）。举个例子：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-string">...</span><br><span class="hljs-attr">ingress:</span><br><span class="hljs-bullet">-</span> <span class="hljs-attr">from:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">namespaceSelector:</span><br>      <span class="hljs-attr">matchLabels:</span><br>        <span class="hljs-attr">user:</span> <span class="hljs-string">alice</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">podSelector:</span><br>      <span class="hljs-attr">matchLabels:</span><br>        <span class="hljs-attr">role:</span> <span class="hljs-string">client</span><br><span class="hljs-string">...</span><br></code></pre></td></tr></table></figure>
+<p>像上面这样定义的 namespaceSelector 和 podSelector，是“或”（OR）的关系。所以说，这个 from 字段定义了两种情况，无论是 Namespace 满足条件，还是 Pod 满足条件，这个 NetworkPolicy 都会生效。</p>
+<p>而下面这个例子，虽然看起来类似，但是它定义的规则却完全不同：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-string">...</span><br>  <span class="hljs-attr">ingress:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">from:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">namespaceSelector:</span><br>        <span class="hljs-attr">matchLabels:</span><br>          <span class="hljs-attr">user:</span> <span class="hljs-string">alice</span><br>      <span class="hljs-attr">podSelector:</span><br>        <span class="hljs-attr">matchLabels:</span><br>          <span class="hljs-attr">role:</span> <span class="hljs-string">client</span><br>  <span class="hljs-string">...</span><br></code></pre></td></tr></table></figure>
+<p>注意看，这样定义的 namespaceSelector 和 podSelector，其实是“与”（AND）的关系。所以说，这个 from 字段只定义了一种情况，只有 Namespace 和 Pod 同时满足条件，这个 NetworkPolicy 才会生效。</p>
+<p>这两种定义方式的区别，一定要分清楚。</p>
+<h3 id="1-5、NetworkPolicy的依赖">1.5、NetworkPolicy的依赖</h3>
+<p>此外，如果要使上面定义的 NetworkPolicy 在 Kubernetes 集群里真正产生作用，我们的 CNI 网络插件就必须是支持 Kubernetes 的 NetworkPolicy 的。</p>
+<p>在具体实现上，凡是支持 NetworkPolicy 的 CNI 网络插件，都维护着一个 NetworkPolicy Controller，通过控制循环的方式对 NetworkPolicy 对象的增删改查做出响应，然后在宿主机上完成 iptables 规则的配置工作。</p>
+<p>在 Kubernetes 生态里，目前已经实现了 NetworkPolicy 的网络插件包括 Calico、Weave 和 kube-router 等多个项目，但是并不包括 Flannel 项目。所以说，如果想要在使用 Flannel 的同时还使用 NetworkPolicy 的话，我们就需要再额外安装一个网络插件，比如 Calico 项目，来负责执行 NetworkPolicy。</p>
+<h2 id="二、理解Iptables">二、理解Iptables</h2>
+<blockquote>
+<p>此时，我们可能会好奇，网络插件是如何根据 NetworkPolicy 对 Pod 进行隔离的？</p>
+</blockquote>
+<p>在回答这个问题之前，我们先来理解一下iptables的工作原理。</p>
+<h3 id="2-1、Netfilter是什么">2.1、Netfilter是什么</h3>
+<p>实际上，iptables 只是一个操作 Linux 内核 Netfilter 子系统的“界面”。顾名思义，Netfilter 子系统的作用，就是 Linux 内核里挡在“网卡”和“用户态进程”之间的一道“防火墙”。它们的关系，可以用如下的示意图来表示：</p>
+<p><img src="/img/image-20201007114257452.png" srcset="/img/loading.gif" lazyload alt="image-20201007114257452"></p>
+<p>可以看到，这幅示意图中，IP 包“一进一出”的两条路径上，有几个关键的“检查点”，它们正是 Netfilter 设置“防火墙”的地方。在 iptables 中，这些“检查点”被称为：链（Chain）。这是因为这些“检查点”对应的 iptables 规则，是按照定义顺序依次进行匹配的。</p>
+<h3 id="2-2、Netfilter的工作原理">2.2、Netfilter的工作原理</h3>
+<p>Netfilter的具体工作原理，可以用如下所示的示意图来描述：</p>
+<p><img src="/img/image-20201007114403525.png" srcset="/img/loading.gif" lazyload alt="image-20201007114403525"></p>
+<p>当一个 IP 包通过网卡进入主机之后，它就进入了 Netfilter 定义的流入路径（Input Path）里。</p>
+<p>在这个路径中，IP 包要经过路由表路由来决定下一步的去向。而在路由之前，Netfilter 设置了一个名叫 PREROUTING 的“检查点”。经过路由之后，IP 包的去向可以分为两种：</p>
+<ul>
+<li>
+<p>第一种，继续在本机处理；</p>
+</li>
+<li>
+<p>第二种，被转发到其他目的地。</p>
+</li>
+</ul>
+<p>注：在 Linux 内核的实现里，所谓“检查点”实际上就是内核网络协议栈代码里的 Hook（比如，在执行路由判断的代码之前，内核会先调用 PREROUTING 的 Hook）。</p>
+<h4 id="2-2-1、第一种去向">2.2.1、第一种去向</h4>
+<p>我们先说一下 IP 包的第一种去向。这时候，IP 包将继续向上层协议栈流动。在进入传输层之前，Netfilter 会设置一个名叫 INPUT 的“检查点”。到这里，IP 包流入路径（Input Path）结束。</p>
+<p>接下来，这个 IP 包通过传输层进入用户空间，交给用户进程处理。而处理完成后，用户进程会通过本机发出返回的 IP 包。这时候，这个 IP 包就进入了流出路径（Output Path）。</p>
+<p>此时，IP 包首先还是会经过主机的路由表进行路由。路由结束后，Netfilter 就会设置一个名叫 OUTPUT 的“检查点”。然后，在 OUTPUT 之后，再设置一个名叫 POSTROUTING“检查点”。</p>
+<blockquote>
+<p>这里，我们可能会奇怪，为什么在流出路径结束后，Netfilter 会连着设置两个“检查点”呢？</p>
+</blockquote>
+<p>这就要说到在流入路径里，路由判断后的第二种去向了。</p>
+<h4 id="2-2-2、第二种去向">2.2.2、第二种去向</h4>
+<p>在这种情况下，这个 IP 包不会进入传输层，而是会继续在网络层流动，从而进入到转发路径（Forward Path）。在转发路径中，Netfilter 会设置一个名叫 FORWARD 的“检查点”。</p>
+<p>而在 FORWARD“检查点”完成后，IP 包就会来到流出路径。而转发的 IP 包由于目的地已经确定，它就不会再经过路由，也自然不会经过 OUTPUT，而是会直接来到 POSTROUTING“检查点”。</p>
+<p>所以说，POSTROUTING 的作用，其实就是上述两条路径，最终汇聚在一起的“最终检查点”。</p>
+<h3 id="2-3、Netfilter完整的流程图">2.3、Netfilter完整的流程图</h3>
+<p>需要注意的是，在有网桥参与的情况下，上述 Netfilter 设置“检查点”的流程，实际上也会出现在链路层（二层），并且会跟网络层（三层）的流程有交互。而这些链路层的“检查点”对应的操作界面叫作 ebtables。</p>
+<p>所以，准确地说，数据包在 Linux Netfilter 子系统里完整的流动过程，其实应该如下所示（这是一幅来自Netfilter 官方的原理图）：</p>
+<p><img src="/img/image-20201007115517875.png" srcset="/img/loading.gif" lazyload alt="image-20201007115517875"></p>
+<p>可以看到，我们前面讲述的，正是上图中绿色部分，也就是网络层的 iptables 链的工作流程。</p>
+<p>另外，我们应该还能看到，每一个白色的“检查点”上，还有一个绿色的“标签”，比如：raw、nat、filter 等等。在 iptables 里，这些标签叫作：表。比如，同样是 OUTPUT 这个“检查点”，filter Output 和 nat Output 在 iptables 里的语法和参数，就完全不一样，实现的功能也完全不同。</p>
+<p>所以说，iptables 表的作用，就是在某个具体的“检查点”（比如 Output）上，按顺序执行几个不同的检查动作（比如，先执行 nat，再执行 filter）。</p>
+<h2 id="三、NetworkPolicy的工作原理">三、NetworkPolicy的工作原理</h2>
+<p>在理解了iptables的工作原理后，接下来，我们就以三层网络插件为例（比如 Calico），来分析一下NetworkPolicy 的原理。</p>
+<h3 id="3-1、编写NetworkPolicy-对象">3.1、编写NetworkPolicy 对象</h3>
+<p>为了方便讲解，这一次我们编写了一个比较简单的 NetworkPolicy 对象，如下所示：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">extensions/v1beta1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">NetworkPolicy</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">test-network-policy</span><br>  <span class="hljs-attr">namespace:</span> <span class="hljs-string">default</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">podSelector:</span><br>    <span class="hljs-attr">matchLabels:</span><br>      <span class="hljs-attr">role:</span> <span class="hljs-string">db</span><br>  <span class="hljs-attr">ingress:</span><br>   <span class="hljs-bullet">-</span> <span class="hljs-attr">from:</span><br>     <span class="hljs-bullet">-</span> <span class="hljs-attr">namespaceSelector:</span><br>         <span class="hljs-attr">matchLabels:</span><br>           <span class="hljs-attr">project:</span> <span class="hljs-string">myproject</span><br>     <span class="hljs-bullet">-</span> <span class="hljs-attr">podSelector:</span><br>         <span class="hljs-attr">matchLabels:</span><br>           <span class="hljs-attr">role:</span> <span class="hljs-string">frontend</span><br>     <span class="hljs-attr">ports:</span><br>       <span class="hljs-bullet">-</span> <span class="hljs-attr">protocol:</span> <span class="hljs-string">tcp</span><br>         <span class="hljs-attr">port:</span> <span class="hljs-number">6379</span><br></code></pre></td></tr></table></figure>
+<p>可以看到，我们指定的 ingress“白名单”，是携带 project=myproject 标签的Namespace 里的任意Pod；以及 default Namespace 里，携带了 role=frontend 标签的 Pod。允许被访问的端口是6379，协议为TCP。而被隔离的对象，是default Namespace 里所有携带了 role=db 标签的 Pod。</p>
+<h3 id="3-2、生成对应的iptables规则">3.2、生成对应的iptables规则</h3>
+<p>创建NetworkPolicy对象后，Kubernetes 的网络插件就会使用这个 NetworkPolicy 的定义，在宿主机上生成 iptables 规则。这个过程，我们可以通过如下所示的一段 Go 语言风格的伪代码来描述：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">for</span> dstIP := <span class="hljs-keyword">range</span> 所有被networkpolicy.spec.podSelector选中的Pod的IP地址<br>  <span class="hljs-keyword">for</span> srcIP := <span class="hljs-keyword">range</span> 所有被ingress.from.podSelector选中的Pod的IP地址<br>    <span class="hljs-keyword">for</span> port, protocol := <span class="hljs-keyword">range</span> ingress.ports &#123;<br>      iptables -A KUBE-NWPLCY-CHAIN -s $srcIP -d $dstIP -p $protocol -m $protocol --dport $port -j ACCEPT <br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>可以看到，这是一条最基本的、通过匹配条件决定下一步动作的 iptables 规则。</p>
+<p>这条规则的名字是 KUBE-NWPLCY-CHAIN，其含义是：当 IP 包的源地址是 srcIP、目的地址是 dstIP、协议是 protocol、目的端口是 port 的时候，就允许它通过（ACCEPT）。而正如这段伪代码所示，匹配这条规则所需的这四个参数，都是从 NetworkPolicy 对象里读取出来的。</p>
+<p>由此可以看出，Kubernetes 网络插件对 Pod 进行隔离，其实是靠在宿主机上生成 NetworkPolicy 对应的 iptable 规则来实现的。</p>
+<h3 id="3-3、转发对被隔离Pod的请求">3.3、转发对被隔离Pod的请求</h3>
+<p>在设置好上述“隔离”规则之后，网络插件还需要想办法，将所有对被隔离 Pod 的访问请求，都转发到上述 KUBE-NWPLCY-CHAIN 规则上去进行匹配。并且，如果匹配不通过，这个请求应该被“拒绝”。而在CNI 网络插件中，这个需求可以通过设置两组 iptables 规则来实现。</p>
+<p>第一组规则，负责“拦截”对被隔离 Pod 的访问请求。生成这一组规则的伪代码，如下所示：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">for</span> pod := <span class="hljs-keyword">range</span> 该Node上的所有Pod &#123;<br>    <span class="hljs-keyword">if</span> pod是networkpolicy.spec.podSelector选中的 &#123;<br>        iptables -A FORWARD -d $podIP -m physdev --physdev-is-bridged -j KUBE-POD-SPECIFIC-FW-CHAIN<br>        iptables -A FORWARD -d $podIP -j KUBE-POD-SPECIFIC-FW-CHAIN<br>        ...<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>可以看到，这里的的 iptables 规则使用到了内置链：FORWARD。它是什么意思呢？</p>
+<ul>
+<li>
+<p>第一条 FORWARD 链“拦截”的是一种特殊情况：它对应的是同一台宿主机上容器之间经过 CNI 网桥进行通信的流入数据包。其中，–physdev-is-bridged 的意思就是，这个 FORWARD 链匹配的是，通过本机上的网桥设备，发往目的地址是 podIP 的 IP 包。当然，如果是像 Calico 这样的非网桥模式的 CNI 插件，就不存在这个情况了。而kube-router 其实是一个简化版的 Calico，它也使用 BGP 来维护路由信息，但是使用 CNI bridge 插件负责跟 Kubernetes 进行交互。</p>
+</li>
+<li>
+<p>第二条 FORWARD 链“拦截”的则是最普遍的情况，即：容器跨主机通信。这时候，流入容器的数据包都是经过路由转发（FORWARD 检查点）来的。不难看到，这些规则最后都跳转（即：-j）到了名叫 KUBE-POD-SPECIFIC-FW-CHAIN 的规则上。它正是网络插件为 NetworkPolicy 设置的第二组规则。</p>
+</li>
+</ul>
+<p>第二组规则，也就是这个 KUBE-POD-SPECIFIC-FW-CHAIN ，它的作用就是做出“允许”或者“拒绝”的判断。这部分功能的实现，可以简单描述为下面这样的 iptables 规则：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">iptables -A KUBE-POD-SPECIFIC-FW-CHAIN -j KUBE-NWPLCY-CHAIN<br>iptables -A KUBE-POD-SPECIFIC-FW-CHAIN -j REJECT --reject-with icmp-port-unreachable<br></code></pre></td></tr></table></figure>
+<p>可以看到，首先在第一条规则里，我们会把 IP 包转交给前面定义的 KUBE-NWPLCY-CHAIN 规则去进行匹配。按照我们之前的讲述，如果匹配成功，那么 IP 包就会被“允许通过”。</p>
+<p>而如果匹配失败，IP 包就会来到第二条规则上。可以看到，它是一条 REJECT 规则。通过这条规则，不满足 NetworkPolicy 定义的请求就会被拒绝掉，从而实现了对该容器的“隔离”。</p>
+<p>以上，就是 CNI 网络插件实现 NetworkPolicy 的基本方法了。当然，对于不同的插件来说，上述实现过程可能有不同的手段，但根本原理是不变的。</p>
+<h2 id="五、小结">五、小结</h2>
+<p>在这篇文章中，我们主要讨论了以下几个概念：</p>
+<ul>
+<li>Kubernetes的隔离机制是通过NetworkPolicy对象实现的；</li>
+<li>NetworkPolicy其实就是宿主机上的一系列Iptables规则；</li>
+<li>NetworkPolicy的工作原理是：首先，生成NetworkPolicy相应的动作规则；然后，生成“将对被隔离Pod的请求”转发到这些规则上的转发规则。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Kubernetes/" class="print-no-link">#Kubernetes</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>容器网络5：NetworkPolicy</div>
+      <div>https://kuberxy.github.io/2020/10/07/容器网络5：NetworkPolicy/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年10月7日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C6%EF%BC%9AService%E3%80%81DNS%E4%B8%8E%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0/" title="容器网络6：Service、DNS与服务发现">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">容器网络6：Service、DNS与服务发现</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/10/06/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C4%EF%BC%9A%E8%A7%A3%E8%AF%BBKubernetes%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%96%B9%E6%A1%88/" title="容器网络4：解读Kubernetes三层网络方案">
+                        <span class="hidden-mobile">容器网络4：解读Kubernetes三层网络方案</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

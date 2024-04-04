@@ -1,0 +1,723 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="todo 一、Provider：基础设施管理驱动 Provider是Terraform中一个非常重要的组件，它是一个用来管理基础设施的后端驱动，可以理解为Terraform的插件。每个云服务厂商会实现面向各家云服务的Provider，其中会包含资源元数据的定义，上层请求的处理和后端OpenAPI的调用以及响应处理。 Terraform调用不同的Provider完成不同类型资源的统一管理，目前大多数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Terraform核心概念">
+<meta property="og:url" content="https://kuberxy.github.io/2021/01/05/Terraform%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="todo 一、Provider：基础设施管理驱动 Provider是Terraform中一个非常重要的组件，它是一个用来管理基础设施的后端驱动，可以理解为Terraform的插件。每个云服务厂商会实现面向各家云服务的Provider，其中会包含资源元数据的定义，上层请求的处理和后端OpenAPI的调用以及响应处理。 Terraform调用不同的Provider完成不同类型资源的统一管理，目前大多数">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-05T10:10:20.000Z">
+<meta property="article:modified_time" content="2021-01-08T11:26:01.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Terraform">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Terraform核心概念 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Terraform核心概念"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-01-05 18:10" pubdate>
+          2021年1月5日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          33 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Terraform核心概念</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>todo</p>
+<h2 id="一、Provider：基础设施管理驱动">一、Provider：基础设施管理驱动</h2>
+<p>Provider是Terraform中一个非常重要的组件，它是一个用来管理基础设施的后端驱动，可以理解为Terraform的插件。每个云服务厂商会实现面向各家云服务的Provider，其中会包含资源元数据的定义，上层请求的处理和后端OpenAPI的调用以及响应处理。</p>
+<p>Terraform调用不同的Provider完成不同类型资源的统一管理，目前大多数云平台均实现了各自的Provider。Provider无需手动安装，Terraform会在init阶段根据模板中的定义自动加载。</p>
+<h2 id="二、Resource：资源的定义和管理">二、Resource：资源的定义和管理</h2>
+<p>Resource是Terraform中的一个重要概念，它是Provider的重要组成部分。每个Resource是对特定基础设施特定资源的实现，它通过实现Create、Update、Read和Delete方法来管理特定资源的生命周期。</p>
+<h3 id="2-1、定义资源">2.1、定义资源</h3>
+<p>每个Resource都是通过关键字<code>resource</code>来定义的，如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs HCL">resource &quot;huaweicloud_vpc&quot; &quot;main&quot; &#123;<br>  name = &quot;net1&quot;<br>  cidr = &quot;192.168.0.0/16&quot;<br>&#125;<br><br>resource &quot;huaweicloud_vpc_subnet&quot; &quot;main&quot; &#123;<br>  name              = &quot;zone1-1&quot;<br>  availability_zone = &quot;cn-east-2a&quot;<br>  vpc_id            = huaweicloud_vpc.main.id<br>  cidr              = &quot;192.168.1.0/24&quot;<br>  gateway_ip        = &quot;192.168.1.1&quot;<br>  dns_list          = [&quot;100.125.17.29&quot;,&quot;100.125.135.29&quot;]<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>对于一个Resource的定义来说，一般会包含如下几个部分：</p>
+<ul>
+<li>huaweicloud_vpc，是要操作的资源类型。它用于告诉Terraform将要操作的资源，其类型是VPC还是ECS等其他资源。需要注意的是，每个云厂商都有各自的资源类型实现。</li>
+<li>main，是我们为这个资源起的名字。它用来标识所定义的资源，在同一个模板（即当前目录下所有以.tf结尾的文件）中，对同一资源类型的标识必须唯一。</li>
+<li>{…}，大括号里的内容是资源的配置参数。它用来定义资源的属性，比如VPC的名字、网段等。</li>
+</ul>
+<p>在上述代码中，我们定义了名为net1、网段为192.168.0.0/16的VPC网络，并在这个网络下创建了一个名为zone1-1、网段为192.168.1.0/24的子网。</p>
+<h3 id="2-2、创建资源">2.2、创建资源</h3>
+<p>在完成资源的定义后，我们可以先通过<code>terraform plan</code>预览模板将要在云平台上创建的资源：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">terraform plan</span><br>An execution plan has been generated and is shown below.<br>Resource actions are indicated with the following symbols:<br>  + create<br><br>Terraform will perform the following actions:<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">  # </span><span class="language-bash">huaweicloud_vpc.main will be created</span><br>  + resource &quot;huaweicloud_vpc&quot; &quot;main&quot; &#123;<br>      + cidr                  = &quot;192.168.0.0/16&quot;<br>      + enterprise_project_id = (known after apply)<br>      + id                    = (known after apply)<br>      + name                  = &quot;net1&quot;<br>      + region                = (known after apply)<br>      + routes                = (known after apply)<br>      + shared                = (known after apply)<br>      + status                = (known after apply)<br>    &#125;<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">  # </span><span class="language-bash">huaweicloud_vpc_subnet.main will be created</span><br>  + resource &quot;huaweicloud_vpc_subnet&quot; &quot;main&quot; &#123;<br>      + availability_zone = &quot;cn-east-2a&quot;<br>      + cidr              = &quot;192.168.1.0/24&quot;<br>      + dhcp_enable       = true<br>      + dns_list          = [<br>          + &quot;100.125.17.29&quot;,<br>          + &quot;100.125.135.29&quot;,<br>        ]<br>      + gateway_ip        = &quot;192.168.1.1&quot;<br>      + id                = (known after apply)<br>      + name              = &quot;zone1-1&quot;<br>      + primary_dns       = (known after apply)<br>      + region            = (known after apply)<br>      + secondary_dns     = (known after apply)<br>      + subnet_id         = (known after apply)<br>      + vpc_id            = (known after apply)<br>    &#125;<br><br>Plan: 2 to add, 0 to change, 0 to destroy.<br><br>------------------------------------------------------------------------<br><br>Note: You didn&#x27;t specify an &quot;-out&quot; parameter to save this plan, so Terraform<br>can&#x27;t guarantee that exactly these actions will be performed if<br>&quot;terraform apply&quot; is subsequently run.<br></code></pre></td></tr></table></figure>
+<p>可以看到，terraform将创建两个资源huaweicloud_vpc.main和huaweicloud_vpc_subnet.main，它们的某些属性为<code>known after apply</code>，这个意思是说该参数的值需要在执行terraform apply之后才能知道，通常像这样的字段如果没有显示的设置值，云平台将会自动生成。</p>
+<p>在确认无误后，就可以执行terraform apply进行实际的创建操作了，输出如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">terraform apply</span><br>An execution plan has been generated and is shown below.<br>Resource actions are indicated with the following symbols:<br>  + create<br><br>Terraform will perform the following actions:<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">  # </span><span class="language-bash">huaweicloud_vpc.main will be created</span><br>  + resource &quot;huaweicloud_vpc&quot; &quot;main&quot; &#123;<br>      + cidr                  = &quot;192.168.0.0/16&quot;<br>      + enterprise_project_id = (known after apply)<br>      + id                    = (known after apply)<br>      + name                  = &quot;net1&quot;<br>      + region                = (known after apply)<br>      + routes                = (known after apply)<br>      + shared                = (known after apply)<br>      + status                = (known after apply)<br>    &#125;<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">  # </span><span class="language-bash">huaweicloud_vpc_subnet.main will be created</span><br>  + resource &quot;huaweicloud_vpc_subnet&quot; &quot;main&quot; &#123;<br>      + availability_zone = &quot;cn-east-2a&quot;<br>      + cidr              = &quot;192.168.1.0/24&quot;<br>      + dhcp_enable       = true<br>      + dns_list          = [<br>          + &quot;100.125.17.29&quot;,<br>          + &quot;100.125.135.29&quot;,<br>        ]<br>      + gateway_ip        = &quot;192.168.1.1&quot;<br>      + id                = (known after apply)<br>      + name              = &quot;zone1-1&quot;<br>      + primary_dns       = (known after apply)<br>      + region            = (known after apply)<br>      + secondary_dns     = (known after apply)<br>      + subnet_id         = (known after apply)<br>      + vpc_id            = (known after apply)<br>    &#125;<br><br>Plan: 2 to add, 0 to change, 0 to destroy.<br><br>Do you want to perform these actions?<br>  Terraform will perform the actions described above.<br>  Only &#x27;yes&#x27; will be accepted to approve.<br><br>  Enter a value: yes<br><br>huaweicloud_vpc.main: Creating...<br>huaweicloud_vpc.main: Creation complete after 6s [id=867655c8-7641-4fbf-b8c4-34989e560d46]<br>huaweicloud_vpc_subnet.main: Creating...<br>huaweicloud_vpc_subnet.main: Creation complete after 8s [id=a35290c9-d9c5-4ee0-a24f-1fe65c88c0b8]<br><br>Apply complete! Resources: 2 added, 0 changed, 0 destroyed.<br></code></pre></td></tr></table></figure>
+<p>为了安全起见，执行apply之后需要输入yes进行确认，当然我们可以在apply之后添加<code>-auto-approve</code>，这表示跳过确认环节直接创建。如果创建成功会输出资源的ID，此时，我们可以登录到Web控制台上查看验证这个创建操作；否则，会输出错误信息。</p>
+<h3 id="2-3、变更资源">2.3、变更资源</h3>
+<p>对于一个IaC工具来说，资源的变更非常简单，只需要修改模板中定义的属性值即可。在Terraform中对资源的变更有两种情况：</p>
+<ul>
+<li>原地变更（update in place），即在不改变资源生命周期的情况下，实现对资源属性的修改，如变更资源的名称、描述、便签等。</li>
+<li>重建变更（destroy and then create replacemnt），资源的某些属性是不支持变更的，在这种情况下，如果修改资源属性，Terraform会先删除原有资源，然后按照最新的模板定义创建新的资源，从而间接实现资源的变更操作。对于不支持变更的属性，在各云厂商的provider文档中，会将该属性显示的声明为ForceNew。</li>
+</ul>
+<p>值得注意的是，在Terraform输出的信息中，会对增删改操作进行标识：</p>
+<ul>
+<li><code>+</code>，表示创建</li>
+<li><code>~</code>，表示更新，左边的内容是旧值，右边的内容是新值</li>
+<li><code>-</code>，表示释放</li>
+</ul>
+<p>接下来，我们分别演示这两种变更情况。</p>
+<h4 id="2-3-1、原地变更">2.3.1、原地变更</h4>
+<p>首先，我们来修改VPC的名字，将net1改为net，修改后的模板文件内容如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs HCL">resource &quot;huaweicloud_vpc&quot; &quot;main&quot; &#123;<br>  name = &quot;net&quot;<br>  cidr = &quot;192.168.0.0/16&quot;<br>&#125;<br><br>resource &quot;huaweicloud_vpc_subnet&quot; &quot;main&quot; &#123;<br>  name              = &quot;zone1-1&quot;<br>  availability_zone = &quot;cn-east-2a&quot;<br>  vpc_id            = huaweicloud_vpc.main.id<br>  cidr              = &quot;192.168.1.0/24&quot;<br>  gateway_ip        = &quot;192.168.1.1&quot;<br>  dns_list          = [&quot;100.125.17.29&quot;,&quot;100.125.135.29&quot;]<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>修改完成后，执行apply操作，其结果如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">terraform apply</span><br>huaweicloud_vpc.main: Refreshing state... [id=867655c8-7641-4fbf-b8c4-34989e560d46]<br>huaweicloud_vpc_subnet.main: Refreshing state... [id=a35290c9-d9c5-4ee0-a24f-1fe65c88c0b8]<br><br>An execution plan has been generated and is shown below.<br>Resource actions are indicated with the following symbols:<br>  ~ update in-place<br><br>Terraform will perform the following actions:<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">  # </span><span class="language-bash">huaweicloud_vpc.main will be updated in-place</span><br>  ~ resource &quot;huaweicloud_vpc&quot; &quot;main&quot; &#123;<br>        id                    = &quot;867655c8-7641-4fbf-b8c4-34989e560d46&quot;<br>      ~ name                  = &quot;net1&quot; -&gt; &quot;net&quot;<br>        tags                  = &#123;&#125;<br>        # (6 unchanged attributes hidden)<br>    &#125;<br><br>Plan: 0 to add, 1 to change, 0 to destroy.<br><br>Do you want to perform these actions?<br>  Terraform will perform the actions described above.<br>  Only &#x27;yes&#x27; will be accepted to approve.<br><br>  Enter a value: yes<br><br>huaweicloud_vpc.main: Modifying... [id=867655c8-7641-4fbf-b8c4-34989e560d46]<br>huaweicloud_vpc.main: Modifications complete after 2s [id=867655c8-7641-4fbf-b8c4-34989e560d46]<br><br>Apply complete! Resources: 0 added, 1 changed, 0 destroyed.<br></code></pre></td></tr></table></figure>
+<p>可以看到，terraform只进行了原地修改（updated in-place）操作，将ne1改为了net。</p>
+<h4 id="2-3-2、重建变更">2.3.2、重建变更</h4>
+<p>接着，我们来修改子网网段，将192.168.1.0/16改为192.168.2.0/16，修改后的模板文件内容如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs HCL">resource &quot;huaweicloud_vpc&quot; &quot;main&quot; &#123;<br>  name = &quot;net&quot;<br>  cidr = &quot;192.168.0.0/16&quot;<br>&#125;<br><br>resource &quot;huaweicloud_vpc_subnet&quot; &quot;main&quot; &#123;<br>  name              = &quot;zone1-1&quot;<br>  availability_zone = &quot;cn-east-2a&quot;<br>  vpc_id            = huaweicloud_vpc.main.id<br>  cidr              = &quot;192.168.2.0/24&quot;<br>  gateway_ip        = &quot;192.168.2.1&quot;<br>  dns_list          = [&quot;100.125.17.29&quot;,&quot;100.125.135.29&quot;]<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>修改完成后，执行apply操作，其结果如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">terraform apply</span><br>huaweicloud_vpc.main: Refreshing state... [id=867655c8-7641-4fbf-b8c4-34989e560d46]<br>huaweicloud_vpc_subnet.main: Refreshing state... [id=73b58ff0-0a3c-43db-927a-a4804e600a2d]<br><br>An execution plan has been generated and is shown below.<br>Resource actions are indicated with the following symbols:<br>-/+ destroy and then create replacement<br><br>Terraform will perform the following actions:<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">  # </span><span class="language-bash">huaweicloud_vpc_subnet.main must be replaced</span><br>-/+ resource &quot;huaweicloud_vpc_subnet&quot; &quot;main&quot; &#123;<br>      ~ cidr              = &quot;192.168.1.0/24&quot; -&gt; &quot;192.168.2.0/24&quot; # forces replacement<br>      ~ gateway_ip        = &quot;192.168.1.1&quot; -&gt; &quot;192.168.2.1&quot; # forces replacement<br>      ~ id                = &quot;73b58ff0-0a3c-43db-927a-a4804e600a2d&quot; -&gt; (known after apply)<br>        name              = &quot;zone1-1&quot;<br>      ~ primary_dns       = &quot;100.125.17.29&quot; -&gt; (known after apply)<br>      ~ region            = &quot;cn-east-2&quot; -&gt; (known after apply)<br>      ~ secondary_dns     = &quot;100.125.135.29&quot; -&gt; (known after apply)<br>      ~ subnet_id         = &quot;a5870016-b575-45ec-b7a7-538f35c46b13&quot; -&gt; (known after apply)<br>      - tags              = &#123;&#125; -&gt; null<br>        # (4 unchanged attributes hidden)<br>    &#125;<br><br>Plan: 1 to add, 0 to change, 1 to destroy.<br><br>Do you want to perform these actions?<br>  Terraform will perform the actions described above.<br>  Only &#x27;yes&#x27; will be accepted to approve.<br><br>  Enter a value: yes<br><br>huaweicloud_vpc_subnet.main: Destroying... [id=73b58ff0-0a3c-43db-927a-a4804e600a2d]<br>huaweicloud_vpc_subnet.main: Destruction complete after 9s<br>huaweicloud_vpc_subnet.main: Creating...<br>huaweicloud_vpc_subnet.main: Creation complete after 9s [id=efc326dd-b911-4ce4-b6b4-11cc53bf690e]<br><br>Apply complete! Resources: 1 added, 0 changed, 1 destroyed.<br></code></pre></td></tr></table></figure>
+<p>可以看到，修改子网网段是一个forces replacement的行为，这会导致旧资源先被释放，然后再创建新资源，从而实现修改操作（destroy and then create replacement）。</p>
+<p>需要注意的是，释放的资源无法实现回滚，即数据无法恢复，因此在apply前一定要通过plan仔细查看哪些资源会被重建，以免造成不可恢复的错误。</p>
+<h3 id="2-4、查看资源">2.4、查看资源</h3>
+<h4 id="2-4-1、查看所有资源">2.4.1、查看所有资源</h4>
+<p>想要查看已经创建了哪些资源，最简单的方式是执行show命令，此时terraform会输出所有已创建资源及其属性：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">terraform show</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">huaweicloud_vpc.main:</span><br>resource &quot;huaweicloud_vpc&quot; &quot;main&quot; &#123;<br>    cidr                  = &quot;192.168.0.0/16&quot;<br>    enterprise_project_id = &quot;0&quot;<br>    id                    = &quot;867655c8-7641-4fbf-b8c4-34989e560d46&quot;<br>    name                  = &quot;net&quot;<br>    region                = &quot;cn-east-2&quot;<br>    routes                = []<br>    shared                = false<br>    status                = &quot;OK&quot;<br>    tags                  = &#123;&#125;<br>&#125;<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">huaweicloud_vpc_subnet.main:</span><br>resource &quot;huaweicloud_vpc_subnet&quot; &quot;main&quot; &#123;<br>    availability_zone = &quot;cn-east-2a&quot;<br>    cidr              = &quot;192.168.2.0/24&quot;<br>    dhcp_enable       = true<br>    dns_list          = [<br>        &quot;100.125.17.29&quot;,<br>        &quot;100.125.135.29&quot;,<br>    ]<br>    gateway_ip        = &quot;192.168.2.1&quot;<br>    id                = &quot;77bc0afc-9bf8-492d-af83-bdbe76dfbdda&quot;<br>    name              = &quot;zone1-1&quot;<br>    primary_dns       = &quot;100.125.17.29&quot;<br>    region            = &quot;cn-east-2&quot;<br>    secondary_dns     = &quot;100.125.135.29&quot;<br>    subnet_id         = &quot;6a63bd78-7fba-43f0-89ae-df25b4f19b93&quot;<br>    vpc_id            = &quot;867655c8-7641-4fbf-b8c4-34989e560d46&quot;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>该方法虽然简单，但如果资源非常多的时候，输出的信息就会让人眼花缭乱了。此时，就可以使用state命令了</p>
+<h4 id="2-4-2、查看特定资源">2.4.2、查看特定资源</h4>
+<p>首先，我们可以执行state list罗列出当前所有的资源，每个资源的显示格式为：<code>&lt;资源类型&gt;.&lt;资源名称&gt;</code>，如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">terraform state list</span><br>huaweicloud_vpc.main<br>huaweicloud_vpc_subnet.main<br></code></pre></td></tr></table></figure>
+<p>接着，在找到目标资源后，执行state show <code>&lt;资源类型&gt;.&lt;资源名称&gt;</code>，即可实现对特定资源的查看，如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">terraform state show huaweicloud_vpc_subnet.main</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">huaweicloud_vpc_subnet.main:</span><br>resource &quot;huaweicloud_vpc_subnet&quot; &quot;main&quot; &#123;<br>    availability_zone = &quot;cn-east-2a&quot;<br>    cidr              = &quot;192.168.2.0/24&quot;<br>    dhcp_enable       = true<br>    dns_list          = [<br>        &quot;100.125.17.29&quot;,<br>        &quot;100.125.135.29&quot;,<br>    ]<br>    gateway_ip        = &quot;192.168.2.1&quot;<br>    id                = &quot;77bc0afc-9bf8-492d-af83-bdbe76dfbdda&quot;<br>    name              = &quot;zone1-1&quot;<br>    primary_dns       = &quot;100.125.17.29&quot;<br>    region            = &quot;cn-east-2&quot;<br>    secondary_dns     = &quot;100.125.135.29&quot;<br>    subnet_id         = &quot;6a63bd78-7fba-43f0-89ae-df25b4f19b93&quot;<br>    vpc_id            = &quot;867655c8-7641-4fbf-b8c4-34989e560d46&quot;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="2-5、释放资源">2.5、释放资源</h3>
+<h4 id="2-5-1、释放所有资源">2.5.1、释放所有资源</h4>
+<p>想要释放资源，只需要执行destroy命令即可，但是该命令会将模板中定义的所有资源都释放掉，如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">terraform destroy</span><br><br>An execution plan has been generated and is shown below.<br>Resource actions are indicated with the following symbols:<br>  - destroy<br><br>Terraform will perform the following actions:<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">  # </span><span class="language-bash">huaweicloud_vpc.main will be destroyed</span><br>  - resource &quot;huaweicloud_vpc&quot; &quot;main&quot; &#123;<br>      - cidr                  = &quot;192.168.0.0/16&quot; -&gt; null<br>      - enterprise_project_id = &quot;0&quot; -&gt; null<br>      - id                    = &quot;867655c8-7641-4fbf-b8c4-34989e560d46&quot; -&gt; null<br>      - name                  = &quot;net&quot; -&gt; null<br>      - region                = &quot;cn-east-2&quot; -&gt; null<br>      - routes                = [] -&gt; null<br>      - shared                = false -&gt; null<br>      - status                = &quot;OK&quot; -&gt; null<br>      - tags                  = &#123;&#125; -&gt; null<br>    &#125;<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">  # </span><span class="language-bash">huaweicloud_vpc_subnet.main will be destroyed</span><br>  - resource &quot;huaweicloud_vpc_subnet&quot; &quot;main&quot; &#123;<br>      - availability_zone = &quot;cn-east-2a&quot; -&gt; null<br>      - cidr              = &quot;192.168.2.0/24&quot; -&gt; null<br>      - dhcp_enable       = true -&gt; null<br>      - dns_list          = [<br>          - &quot;100.125.17.29&quot;,<br>          - &quot;100.125.135.29&quot;,<br>        ] -&gt; null<br>      - gateway_ip        = &quot;192.168.2.1&quot; -&gt; null<br>      - id                = &quot;77bc0afc-9bf8-492d-af83-bdbe76dfbdda&quot; -&gt; null<br>      - name              = &quot;zone1-1&quot; -&gt; null<br>      - primary_dns       = &quot;100.125.17.29&quot; -&gt; null<br>      - region            = &quot;cn-east-2&quot; -&gt; null<br>      - secondary_dns     = &quot;100.125.135.29&quot; -&gt; null<br>      - subnet_id         = &quot;6a63bd78-7fba-43f0-89ae-df25b4f19b93&quot; -&gt; null<br>      - vpc_id            = &quot;867655c8-7641-4fbf-b8c4-34989e560d46&quot; -&gt; null<br>    &#125;<br><br>Plan: 0 to add, 0 to change, 2 to destroy.<br><br>Do you really want to destroy all resources?<br>  Terraform will destroy all your managed infrastructure, as shown above.<br>  There is no undo. Only &#x27;yes&#x27; will be accepted to confirm.<br><br>  Enter a value: n<br><br>Destroy cancelled.<br></code></pre></td></tr></table></figure>
+<h4 id="2-5-2、释放特定资源">2.5.2、释放特定资源</h4>
+<p>如果想要删除某个特定的资源，可以通过<code>-target=&lt;资源类型&gt;.&lt;资源名称&gt;</code>来指定要资源的资源，如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">terraform destroy -target=huaweicloud_vpc_subnet.main</span><br><br>An execution plan has been generated and is shown below.<br>Resource actions are indicated with the following symbols:<br>  - destroy<br><br>Terraform will perform the following actions:<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">  # </span><span class="language-bash">huaweicloud_vpc_subnet.main will be destroyed</span><br>  - resource &quot;huaweicloud_vpc_subnet&quot; &quot;main&quot; &#123;<br>      - availability_zone = &quot;cn-east-2a&quot; -&gt; null<br>      - cidr              = &quot;192.168.2.0/24&quot; -&gt; null<br>      - dhcp_enable       = true -&gt; null<br>      - dns_list          = [<br>          - &quot;100.125.17.29&quot;,<br>          - &quot;100.125.135.29&quot;,<br>        ] -&gt; null<br>      - gateway_ip        = &quot;192.168.2.1&quot; -&gt; null<br>      - id                = &quot;77bc0afc-9bf8-492d-af83-bdbe76dfbdda&quot; -&gt; null<br>      - name              = &quot;zone1-1&quot; -&gt; null<br>      - primary_dns       = &quot;100.125.17.29&quot; -&gt; null<br>      - region            = &quot;cn-east-2&quot; -&gt; null<br>      - secondary_dns     = &quot;100.125.135.29&quot; -&gt; null<br>      - subnet_id         = &quot;6a63bd78-7fba-43f0-89ae-df25b4f19b93&quot; -&gt; null<br>      - vpc_id            = &quot;867655c8-7641-4fbf-b8c4-34989e560d46&quot; -&gt; null<br>    &#125;<br><br>Plan: 0 to add, 0 to change, 1 to destroy.<br><br><br>Warning: Resource targeting is in effect<br><br>You are creating a plan with the -target option, which means that the result<br>of this plan may not represent all of the changes requested by the current<br>configuration.<br>		<br>The -target option is not for routine use, and is provided only for<br>exceptional situations such as recovering from errors or mistakes, or when<br>Terraform specifically suggests to use it as part of an error message.<br><br>Do you really want to destroy all resources?<br>  Terraform will destroy all your managed infrastructure, as shown above.<br>  There is no undo. Only &#x27;yes&#x27; will be accepted to confirm.<br><br>  Enter a value: yes<br><br>huaweicloud_vpc_subnet.main: Destroying... [id=77bc0afc-9bf8-492d-af83-bdbe76dfbdda]<br>huaweicloud_vpc_subnet.main: Destruction complete after 10s<br><br>Warning: Applied changes may be incomplete<br><br>The plan was created with the -target option in effect, so some changes<br>requested in the configuration may have been ignored and the output values may<br>not be fully updated. Run the following command to verify that no other<br>changes are pending:<br>    terraform plan<br>	<br>Note that the -target option is not suitable for routine use, and is provided<br>only for exceptional situations such as recovering from errors or mistakes, or<br>when Terraform specifically suggests to use it as part of an error message.<br><br><br>Destroy complete! Resources: 1 destroyed.<br></code></pre></td></tr></table></figure>
+<p>除此之外，还有一种间接删除资源的方式：归功于Terraform状态一致性的特点，当模板发生变更后，再次执行apply命令时，它会检查模板与状态文件是否一致，从而触发变更操作，因此，我们可以在模板中把要释放的资源删除，然后执行apply命令来完成资源的释放。</p>
+<h2 id="三、Data-Source：资源信息的动态查询">三、Data Source：资源信息的动态查询</h2>
+<p>对资源的查询是一个很常用的操作，比如，查看某个Region下有哪些可用区，某个可用区下有哪些实例规格，每个Region下有哪些镜像，当前账号下有多少机器等等。通过对资源及其属性的查询，可以帮助和引导我们进行下一步的操作。</p>
+<p>除此之外，在编写Terraform模板时，Resource使用的参数有些是固定的静态变量，但有些情况下参数变量不确定、可选值不清楚或者参数可能随时变化。比如，我们创建ECS实现时，通常需要指定镜像ID和实例规格，首先我们要知道某个镜像ID对应的字符串、特定CPU核数和内存对应的实例规格。</p>
+<p>以上这些信息虽然可以通过控制台或帮助文档手动查询到，但是一方面查询不方便，另一方面，我们的模板可能随时会更新。如果将这些信息硬编码在代码中，一旦我们这些信息发生变化，就需要重新修改代码，非常不灵活。</p>
+<p>在Terraform中，Data Source就是用来查询资源信息的，每个Data Source实现对一个特定资源的动态查询。在模板中定义过滤条件，执行plan或者apply即可动态返回符合条件的资源。在编写模板时，可以通过引用的方式将Data Source的结果动态呈现更Resource。</p>
+<h2 id="四、State：资源的状态存储">四、State：资源的状态存储</h2>
+<p>到这里，我们应该会发现一个现象：在执行show和state list命令时，执行速度非常快，随着命令的结束，资源的属性很快就被展示出来了，而其它命令的执行都需要等几秒甚至几分钟，这个就跟Terraform的实现机制有关了。</p>
+<p>Terraform是一个有状态的应用，在完成资源的创建和修改之后，它会将资源最新的状态和属性存储在一个称之为state的文件中，该文件的名称默认为terraform.tfstate，存储位置默认为资源模板所在的目录。state文件可以看作是Terraform存储资源属性的“数据库”，当执行show和state list命令时，Terraform直接读取的是state文件，无需调用云平台的API，而其它的命令需要与API交互后才返回。</p>
+<p>state文件非常重要，它只从属于一个特定的模板，模板变了state就会跟着变。因此，如果state文件被损坏或者被删除，Terraform就会认为其管理的资源发生了变更和移除，此时再执行apply命令将会按照模板的定义变更或重建资源，直到模板对资源的定义与state中保存的内容保持一致。</p>
+<p>state与模板的依附关系在团队协作时尤为重要，在拷贝模板代码的同时，如果想维护同一套资源，state也需要一起拷贝，而这无形中就增加了代码的维护成本。为了解决这个问题，Terraform提供了远端存储state的能力remote state，它可以将state文件存放在远端的共享存储上，以实现模板与state的管理分离。</p>
+<p>模板与state的高度一致性也是Terraform的一大亮点。Terraform虽然是面向客户端的，但它也是有状态的，这意味着Terraform所管理的资源，不能通过其他工具和服务（如Web控制台，API等）来变更，否则，在下次执行apply时，Terrafrom会因为状态的不一致而触发变更。</p>
+<h2 id="五、参考">五、参考</h2>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/DevOps/" class="category-chain-item">DevOps</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Terraform/" class="print-no-link">#Terraform</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Terraform核心概念</div>
+      <div>https://kuberxy.github.io/2021/01/05/Terraform核心概念/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年1月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/01/16/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%97%B6%E4%BB%A3%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BB%A5%E2%80%9C%E5%BA%94%E7%94%A8%E2%80%9D%E4%B8%BA%E6%A0%B8%E5%BF%83%EF%BC%9F/" title="微服务时代，为什么要以“应用”为核心？">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">微服务时代，为什么要以“应用”为核心？</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/01/04/Terraform%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" title="Terraform快速入门">
+                        <span class="hidden-mobile">Terraform快速入门</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

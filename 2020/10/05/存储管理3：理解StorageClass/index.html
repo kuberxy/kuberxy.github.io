@@ -1,0 +1,687 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="在前面的文章中，我们通过手动方式创建出了所需要的PV。接下来，我们来看一种自动创建PV的方式。 1.1、Static Provisioning &amp; Dynamic Provisioning 在一个大规模的Kubernetes集群中，集群用户可能会创建出成千上万个PVC，这时，集群管理员就需要不停地创建出满足一定条件的PV，否则新Pod就会因为PVC无法绑定PV而运行失败。显然，在实际操作中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="存储管理3：理解StorageClass">
+<meta property="og:url" content="https://kuberxy.github.io/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%863%EF%BC%9A%E7%90%86%E8%A7%A3StorageClass/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在前面的文章中，我们通过手动方式创建出了所需要的PV。接下来，我们来看一种自动创建PV的方式。 1.1、Static Provisioning &amp; Dynamic Provisioning 在一个大规模的Kubernetes集群中，集群用户可能会创建出成千上万个PVC，这时，集群管理员就需要不停地创建出满足一定条件的PV，否则新Pod就会因为PVC无法绑定PV而运行失败。显然，在实际操作中">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-05T02:30:37.000Z">
+<meta property="article:modified_time" content="2022-11-17T07:58:37.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Kubernetes">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>存储管理3：理解StorageClass - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="存储管理3：理解StorageClass"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-10-05 10:30" pubdate>
+          2020年10月5日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          13 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">存储管理3：理解StorageClass</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>在前面的文章中，我们通过手动方式创建出了所需要的PV。接下来，我们来看一种自动创建PV的方式。</p>
+<h3 id="1-1、Static-Provisioning-Dynamic-Provisioning">1.1、Static Provisioning &amp; Dynamic Provisioning</h3>
+<p>在一个大规模的Kubernetes集群中，集群用户可能会创建出成千上万个PVC，这时，集群管理员就需要不停地创建出满足一定条件的PV，否则新Pod就会因为PVC无法绑定PV而运行失败。显然，在实际操作中，完全依靠人工是不实现的。</p>
+<p>Kubernetes 为我们提供了一套可以自动创建 PV 的机制，即：Dynamic Provisioning。与之对应的，人工创建 PV 的方式就叫作 Static Provisioning。而Dynamic Provisioning的核心，就在于一个名叫StorageClass的API对象。</p>
+<h3 id="1-2、理解StorageClass对象">1.2、理解StorageClass对象</h3>
+<p>StorageClass对象是一个用来自动创建PV的模板。具体来说，一个StorageClass对象通常会定义如下两部分内容：</p>
+<ul>
+<li>
+<p>创建PV需要用到的存储插件。比如，Ceph等</p>
+</li>
+<li>
+<p>PV的属性。比如，Volume大小等</p>
+</li>
+</ul>
+<p>一旦有了这两个信息，kubernetes就能够根据用户提交的PVC，找到一个对应的StorageClass。然后，Kubernetes就会调用该StorageClass声明的存储插件，创建出所需要的PV。</p>
+<p>下面我们通过一个示例来实践StorageClass对象的使用。</p>
+<h4 id="1-2-1、创建StorageClass对象">1.2.1、创建StorageClass对象</h4>
+<p>在这里，我们通过部署在本地的Kubernetes集群以及Rook存储服务来创建StorageClass对象。定义的内容如下所示：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">ceph.rook.io/v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">CephBlockPool</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">replicapool</span><br>  <span class="hljs-attr">namespace:</span> <span class="hljs-string">rook-ceph</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">failureDomain:</span> <span class="hljs-string">host</span><br>  <span class="hljs-attr">replicated:</span><br>    <span class="hljs-attr">size:</span> <span class="hljs-number">3</span><br><span class="hljs-meta">---</span><br><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">storage.k8s.io/v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">StorageClass</span><br><span class="hljs-attr">metadata:</span><br>   <span class="hljs-attr">name:</span> <span class="hljs-string">rook-ceph-block</span><br><span class="hljs-comment"># Change &quot;rook-ceph&quot; provisioner prefix to match the operator namespace if needed</span><br><span class="hljs-attr">provisioner:</span> <span class="hljs-string">rook-ceph.rbd.csi.ceph.com</span><br><span class="hljs-attr">parameters:</span><br>    <span class="hljs-comment"># clusterID is the namespace where the rook cluster is running</span><br>    <span class="hljs-attr">clusterID:</span> <span class="hljs-string">rook-ceph</span><br>    <span class="hljs-comment"># Ceph pool into which the RBD image shall be created</span><br>    <span class="hljs-attr">pool:</span> <span class="hljs-string">replicapool</span><br><br>    <span class="hljs-comment"># (optional) mapOptions is a comma-separated list of map options.</span><br>    <span class="hljs-comment"># For krbd options refer</span><br>    <span class="hljs-comment"># https://docs.ceph.com/docs/master/man/8/rbd/#kernel-rbd-krbd-options</span><br>    <span class="hljs-comment"># For nbd options refer</span><br>    <span class="hljs-comment"># https://docs.ceph.com/docs/master/man/8/rbd-nbd/#options</span><br>    <span class="hljs-comment"># mapOptions: lock_on_read,queue_depth=1024</span><br><br>    <span class="hljs-comment"># (optional) unmapOptions is a comma-separated list of unmap options.</span><br>    <span class="hljs-comment"># For krbd options refer</span><br>    <span class="hljs-comment"># https://docs.ceph.com/docs/master/man/8/rbd/#kernel-rbd-krbd-options</span><br>    <span class="hljs-comment"># For nbd options refer</span><br>    <span class="hljs-comment"># https://docs.ceph.com/docs/master/man/8/rbd-nbd/#options</span><br>    <span class="hljs-comment"># unmapOptions: force</span><br><br>    <span class="hljs-comment"># RBD image format. Defaults to &quot;2&quot;.</span><br>    <span class="hljs-attr">imageFormat:</span> <span class="hljs-string">&quot;2&quot;</span><br><br>    <span class="hljs-comment"># RBD image features. Available for imageFormat: &quot;2&quot;. CSI RBD currently supports only `layering` feature.</span><br>    <span class="hljs-attr">imageFeatures:</span> <span class="hljs-string">layering</span><br><br>    <span class="hljs-comment"># The secrets contain Ceph admin credentials.</span><br>    <span class="hljs-attr">csi.storage.k8s.io/provisioner-secret-name:</span> <span class="hljs-string">rook-csi-rbd-provisioner</span><br>    <span class="hljs-attr">csi.storage.k8s.io/provisioner-secret-namespace:</span> <span class="hljs-string">rook-ceph</span><br>    <span class="hljs-attr">csi.storage.k8s.io/controller-expand-secret-name:</span> <span class="hljs-string">rook-csi-rbd-provisioner</span><br>    <span class="hljs-attr">csi.storage.k8s.io/controller-expand-secret-namespace:</span> <span class="hljs-string">rook-ceph</span><br>    <span class="hljs-attr">csi.storage.k8s.io/node-stage-secret-name:</span> <span class="hljs-string">rook-csi-rbd-node</span><br>    <span class="hljs-attr">csi.storage.k8s.io/node-stage-secret-namespace:</span> <span class="hljs-string">rook-ceph</span><br><br>    <span class="hljs-comment"># Specify the filesystem type of the volume. If not specified, csi-provisioner</span><br>    <span class="hljs-comment"># will set default as `ext4`. Note that `xfs` is not recommended due to potential deadlock</span><br>    <span class="hljs-comment"># in hyperconverged settings where the volume is mounted on the same node as the osds.</span><br>    <span class="hljs-attr">csi.storage.k8s.io/fstype:</span> <span class="hljs-string">ext4</span><br><br><span class="hljs-comment"># Delete the rbd volume when a PVC is deleted</span><br><span class="hljs-attr">reclaimPolicy:</span> <span class="hljs-string">Delete</span><br><br><span class="hljs-comment"># Optional, if you want to add dynamic resize for PVC. Works for Kubernetes 1.14+</span><br><span class="hljs-comment"># For now only ext3, ext4, xfs resize support provided, like in Kubernetes itself.</span><br><span class="hljs-attr">allowVolumeExpansion:</span> <span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
+<p>在这个 YAML 文件中，我们定义了一个名叫 block-service 的 StorageClass。这个 StorageClass 的 provisioner 字段的值是：<a target="_blank" rel="noopener" href="http://ceph.rook.io/block%EF%BC%8C%E5%8D%B3%E6%88%91%E4%BB%AC%E4%BD%BF%E7%94%A8%E7%9A%84%E5%AD%98%E5%82%A8%E6%8F%92%E4%BB%B6%E6%98%AFRook%E3%80%82%E6%9C%89%E5%85%B3%E5%AE%9A%E4%B9%89StorageClass%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%9B%B4%E5%A4%9A%E4%BF%A1%E6%81%AF%E5%8F%AF%E5%8F%82%E8%80%83kubernetes">ceph.rook.io/block，即我们使用的存储插件是Rook。有关定义StorageClass对象的更多信息可参考kubernetes</a><a target="_blank" rel="noopener" href="https://kubernetes.io/zh/docs/concepts/storage/storage-classes/">官方文档</a>。</p>
+<h4 id="1-2-2、创建PVC">1.2.2、创建PVC</h4>
+<p>创建好StorageClass对象之后，我们只需要在PVC中指定要使用的StorageClass的名字即可，如下所示：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">kind:</span> <span class="hljs-string">PersistentVolumeClaim</span><br><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">claim1</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">resources:</span><br>    <span class="hljs-attr">requests:</span><br>      <span class="hljs-attr">storage:</span> <span class="hljs-string">30Gi</span><br>  <span class="hljs-attr">accessModes:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">ReadWriteOnce</span><br>  <span class="hljs-attr">storageClassName:</span> <span class="hljs-string">rook-ceph-block</span><br></code></pre></td></tr></table></figure>
+<p>可以看到，在这个 PVC 对象中添加了一个叫作 storageClassName 的字段，它指定了该 PVC 所要使用的 StorageClass 是：block-service。当我们创建好这个PVC后，它就会和一个由kubernetes自动创建的PV相绑定，如下所示：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-string">$</span> <span class="hljs-string">kubectl</span> <span class="hljs-string">describe</span> <span class="hljs-string">pvc</span> <span class="hljs-string">claim1</span> <br><span class="hljs-attr">Name:</span>          <span class="hljs-string">claim1</span><br><span class="hljs-attr">Namespace:</span>     <span class="hljs-string">default</span><br><span class="hljs-attr">StorageClass:</span>  <span class="hljs-string">rook-ceph-block</span><br><span class="hljs-attr">Status:</span>        <span class="hljs-string">Bound</span><br><span class="hljs-attr">Volume:</span>        <span class="hljs-string">pvc-312466a1-ad30-4d28-9d4a-088085fc5115</span><br><span class="hljs-attr">Labels:</span>        <span class="hljs-string">&lt;none&gt;</span><br><span class="hljs-string">...</span><br></code></pre></td></tr></table></figure>
+<h4 id="1-2-3、查看PV">1.2.3、查看PV</h4>
+<p>通过查看这个自动创建出来的 PV 的属性，我们就可以看到它跟我们在 PVC 里声明的存储的属性是一致的，如下所示：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs yaml"> <span class="hljs-string">kubectl</span> <span class="hljs-string">describe</span> <span class="hljs-string">pv</span> <span class="hljs-string">pvc-312466a1-ad30-4d28-9d4a-088085fc5115</span><br><span class="hljs-attr">Name:</span>            <span class="hljs-string">pvc-312466a1-ad30-4d28-9d4a-088085fc5115</span><br><span class="hljs-attr">Labels:</span>          <span class="hljs-string">&lt;none&gt;</span><br><span class="hljs-attr">Annotations:     pv.kubernetes.io/provisioned-by:</span> <span class="hljs-string">rook-ceph.rbd.csi.ceph.com</span><br><span class="hljs-attr">Finalizers:</span>      [<span class="hljs-string">kubernetes.io/pv-protection</span>]<br><span class="hljs-attr">StorageClass:</span>    <span class="hljs-string">rook-ceph-block</span><br><span class="hljs-attr">Status:</span>          <span class="hljs-string">Bound</span><br><span class="hljs-attr">Claim:</span>           <span class="hljs-string">default/claim1</span><br><span class="hljs-attr">Reclaim Policy:</span>  <span class="hljs-string">Delete</span><br><span class="hljs-attr">Access Modes:</span>    <span class="hljs-string">RWO</span><br><span class="hljs-attr">VolumeMode:</span>      <span class="hljs-string">Filesystem</span><br><span class="hljs-attr">Capacity:</span>        <span class="hljs-string">30Gi</span><br><span class="hljs-attr">Node Affinity:</span>   <span class="hljs-string">&lt;none&gt;</span><br><span class="hljs-attr">Message:</span>         <br><span class="hljs-attr">Source:</span><br><span class="hljs-string">...</span><br></code></pre></td></tr></table></figure>
+<p>此外，我们还可以看到，这个自动创建出来的 PV 的 StorageClass 字段的值，也是 block-service。这是因为，Kubernetes 只会将 StorageClass 相同的 PVC 和 PV 绑定起来。</p>
+<h4 id="1-2-4、小结">1.2.4、小结</h4>
+<p>在有了 Dynamic Provisioning 后，集群管理员只需要在 Kubernetes 集群里创建出数量有限的 StorageClass 对象就可以了。这就好比，运维人员在 Kubernetes 集群里创建出了各种各样的 PV 模板。后续，当开发人员提交了包含 StorageClassName 字段的 PVC 之后，Kubernetes 就会根据这个 StorageClass 创建出对应的 PV。</p>
+<p>在 Kubernetes 的官方文档里已经列出了默认所支持的 Dynamic Provisioning 存储插件。对于不在文档里的插件，比如 NFS，或者其他非内置存储插件，我们其实可以通过kubernetes-incubator/external-storage这个库来自己编写一个外部插件完成这个工作。就如同 Rook一样，因为它内置了 external-storage 的实现，所以 Rook 是完全支持 Dynamic Provisioning 特性的。</p>
+<p>需要注意的是，StorageClass 对象并不是专门为了 Dynamic Provisioning 而设计的。比如，在前面的文章中，我们在 PV 和 PVC 里都声明了 storageClassName=manual。而我们的集群里，实际上并没有一个名叫 manual 的 StorageClass 对象。但这完全没有问题，此时 Kubernetes 进行的是 Static Provisioning，但在做绑定决策的时候，它依然会考虑 PV 和 PVC 的 StorageClass 定义。这么做的好处也很明显：这个 PVC 和 PV 的绑定关系，完全在我们自己的掌控之中。</p>
+<p>此外，如果集群开启了一个名叫 DefaultStorageClass 的 Admission Plugin，那么它就会为 PVC 和 PV 自动添加一个默认的 StorageClass；否则，PVC 的 storageClassName 的值就是“”，这也意味着它只能够跟 storageClassName 也是“”的 PV 进行绑定。</p>
+<h3 id="1-3、小结">1.3、小结</h3>
+<p>根据持久化存储的创建方式，Kubernetes将存储管理抽象成静态供应（Static Provisioning）和动态供应（Dynamic Provisioning）两种类型。其中：</p>
+<ul>
+<li>Static Provisioning是一种手动管理方式，创建PVC的同时需要手动创建相应的PV，适用于较小规模的集群；</li>
+<li>Dynamic Provisioning则是一种动态管理方式，其核心是Storage Class对象。一个Storage Class对象就是一个事先创建好的PV模板，后续一旦有PVC提交，kubernetes就会通过相应Storage Class对象所声明的存储插件创建出满足条件的PV，适用于大规模集群。</li>
+</ul>
+<h3 id="1-4、参考">1.4、参考</h3>
+<p><a target="_blank" rel="noopener" href="https://time.geekbang.org/column/intro/100015201">https://time.geekbang.org/column/intro/100015201</a></p>
+<p><a target="_blank" rel="noopener" href="https://kubernetes.io/zh/docs/concepts/storage/storage-classes/">https://kubernetes.io/zh/docs/concepts/storage/storage-classes/</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Kubernetes/" class="print-no-link">#Kubernetes</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>存储管理3：理解StorageClass</div>
+      <div>https://kuberxy.github.io/2020/10/05/存储管理3：理解StorageClass/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年10月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%864%EF%BC%9A%E7%90%86%E8%A7%A3Local%20PV/" title="存储管理4：理解Local PV">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">存储管理4：理解Local PV</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%862%EF%BC%9AKubernetes%E6%98%AF%E5%A6%82%E4%BD%95%E5%87%86%E5%A4%87%E6%8C%81%E4%B9%85%E5%8C%96%E7%9B%AE%E5%BD%95%E7%9A%84/" title="存储管理2：Kubernetes是如何准备持久化目录的">
+                        <span class="hidden-mobile">存储管理2：Kubernetes是如何准备持久化目录的</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

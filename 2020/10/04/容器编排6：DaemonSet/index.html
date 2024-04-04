@@ -1,0 +1,780 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="在前面的文章中，我们讨论了StatefulSet的工作原理。接下来，我们再看看容器化守护进程的意义，即：DaemonSet。 一、从滚动更新StatefulSet说起 StatefulSet 其实就是对现有典型运维业务的容器化抽象。也就是说，我们一定有方法在不使用 Kubernetes、甚至不使用容器的情况下，自己 DIY 一个类似的方案出来。但是，一旦涉及到升级、版本管理等更工程化的能力，Kub">
+<meta property="og:type" content="article">
+<meta property="og:title" content="容器编排6：DaemonSet">
+<meta property="og:url" content="https://kuberxy.github.io/2020/10/04/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%926%EF%BC%9ADaemonSet/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在前面的文章中，我们讨论了StatefulSet的工作原理。接下来，我们再看看容器化守护进程的意义，即：DaemonSet。 一、从滚动更新StatefulSet说起 StatefulSet 其实就是对现有典型运维业务的容器化抽象。也就是说，我们一定有方法在不使用 Kubernetes、甚至不使用容器的情况下，自己 DIY 一个类似的方案出来。但是，一旦涉及到升级、版本管理等更工程化的能力，Kub">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-04T01:19:32.000Z">
+<meta property="article:modified_time" content="2021-01-31T08:34:59.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Kubernetes">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>容器编排6：DaemonSet - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="容器编排6：DaemonSet"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-10-04 09:19" pubdate>
+          2020年10月4日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          35 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">容器编排6：DaemonSet</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>在前面的文章中，我们讨论了StatefulSet的工作原理。接下来，我们再看看容器化守护进程的意义，即：DaemonSet。</p>
+<h2 id="一、从滚动更新StatefulSet说起">一、从滚动更新StatefulSet说起</h2>
+<p>StatefulSet 其实就是对现有典型运维业务的容器化抽象。也就是说，我们一定有方法在不使用 Kubernetes、甚至不使用容器的情况下，自己 DIY 一个类似的方案出来。但是，一旦涉及到升级、版本管理等更工程化的能力，Kubernetes 的好处，才会更加凸现。比如，如何对 StatefulSet 进行“滚动更新”（rolling update）？</p>
+<p>很简单。我们只要修改 StatefulSet 的 Pod 模板，就会自动触发“滚动更新”:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl patch statefulset mysql --<span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;json&#x27;</span> -p=<span class="hljs-string">&#x27;[&#123;&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/template/spec/containers/0/image&quot;, &quot;value&quot;:&quot;mysql:5.7.23&quot;&#125;]&#x27;</span></span><br>statefulset.apps/mysql patched<br></code></pre></td></tr></table></figure>
+<p>在这里，我们使用了 kubectl patch 命令。它的意思是，以“补丁”的方式（JSON 格式的）修改一个 API 对象的指定字段，也就是我在后面指定的“spec/template/spec/containers/0/image”。这样，StatefulSet Controller 就会按照与 Pod 编号相反的顺序，从最后一个 Pod 开始，逐一更新这个 StatefulSet 管理的每个 Pod。而如果更新发生了错误，这次“滚动更新”就会停止。</p>
+<p>此外，StatefulSet 的“滚动更新”还允许我们进行更精细的控制，比如金丝雀发布（Canary Deploy）或者灰度发布，这意味着应用的多个实例中被指定的一部分不会被更新到最新的版本。而这个字段，正是 StatefulSet 的 spec.updateStrategy.rollingUpdate 的 partition 字段。比如，现在我将前面这个 StatefulSet 的 partition 字段设置为 2：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl patch statefulset mysql -p <span class="hljs-string">&#x27;&#123;&quot;spec&quot;:&#123;&quot;updateStrategy&quot;:&#123;&quot;type&quot;:&quot;RollingUpdate&quot;,&quot;rollingUpdate&quot;:&#123;&quot;partition&quot;:2&#125;&#125;&#125;&#125;&#x27;</span></span><br>statefulset.apps/mysql patched<br></code></pre></td></tr></table></figure>
+<p>其中，kubectl patch 命令后面的参数（JSON 格式的），就是 partition 字段在 API 对象里的路径。所以，上述操作等同于直接使用 kubectl edit 命令，打开这个对象，把 partition 字段修改为 2。这样，我们就指定了当 Pod 模板发生变化的时候，比如 MySQL 镜像更新到 5.7.23，那么只有序号大于或者等于 2 的 Pod 会被更新到这个版本。并且，如果我们删除或者重启了序号小于 2 的 Pod，等它再次启动后，也会保持原先的 5.7.2 版本，绝不会被升级到 5.7.23 版本。</p>
+<h2 id="二、DaemonSet的作用">二、DaemonSet的作用</h2>
+<p>DaemonSet 的主要作用，是让我们在 Kubernetes 集群里，运行一个 Daemon Pod。 这个 Pod 有如下三个特征：</p>
+<ul>
+<li>
+<p>这个 Pod 运行在 Kubernetes 集群里的每一个节点（Node）上；</p>
+</li>
+<li>
+<p>每个节点上只有一个这样的 Pod 实例；</p>
+</li>
+<li>
+<p>当有新的节点加入 Kubernetes 集群后，该 Pod 会自动地在新节点上被创建出来；</p>
+</li>
+<li>
+<p>当旧节点被删除后，它上面的 Pod 也相应地会被回收掉。</p>
+</li>
+</ul>
+<p>这个机制听起来很简单，但 Daemon Pod 的意义确实是非常重要的。我们随便列举几个例子：</p>
+<ul>
+<li>
+<p>各种网络插件的 Agent 组件，都必须运行在每一个节点上，用来处理这个节点上的容器网络；</p>
+</li>
+<li>
+<p>各种存储插件的 Agent 组件，也必须运行在每一个节点上，用来在这个节点上挂载远程存储目录，操作容器的 Volume 目录；</p>
+</li>
+<li>
+<p>各种监控组件和日志组件，也必须运行在每一个节点上，负责这个节点上的监控信息和日志搜集。</p>
+</li>
+</ul>
+<p>更重要的是，跟其他编排对象不一样，DaemonSet 开始运行的时机，很多时候比整个 Kubernetes 集群出现的时机都要早。这个乍一听起来可能有点儿奇怪。但其实我们来想一下：如果这个 DaemonSet 正是一个网络插件的 Agent 组件呢？</p>
+<p>这个时候，整个 Kubernetes 集群里还没有可用的容器网络，所有 Worker 节点的状态都是 NotReady（NetworkReady=false）。这种情况下，普通的 Pod 肯定不能运行在这个集群上。所以，这也就意味着 DaemonSet 的设计，必须要有某种“过人之处”才行。</p>
+<h2 id="三、DaemonSet的工作原理">三、DaemonSet的工作原理</h2>
+<h3 id="3-1、部署一个DaemonSet对象">3.1、部署一个DaemonSet对象</h3>
+<p>为了弄清楚 DaemonSet 的工作原理，我们还是按照老规矩，先从它的 API 对象的定义说起。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">DaemonSet</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">fluentd-elasticsearch</span><br>  <span class="hljs-attr">namespace:</span> <span class="hljs-string">kube-system</span><br>  <span class="hljs-attr">labels:</span><br>    <span class="hljs-attr">k8s-app:</span> <span class="hljs-string">fluentd-logging</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">selector:</span><br>    <span class="hljs-attr">matchLabels:</span><br>      <span class="hljs-attr">name:</span> <span class="hljs-string">fluentd-elasticsearch</span><br>  <span class="hljs-attr">template:</span><br>    <span class="hljs-attr">metadata:</span><br>      <span class="hljs-attr">labels:</span><br>        <span class="hljs-attr">name:</span> <span class="hljs-string">fluentd-elasticsearch</span><br>    <span class="hljs-attr">spec:</span><br>      <span class="hljs-attr">tolerations:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">key:</span> <span class="hljs-string">node-role.kubernetes.io/master</span><br>        <span class="hljs-attr">effect:</span> <span class="hljs-string">NoSchedule</span><br>      <span class="hljs-attr">containers:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">fluentd-elasticsearch</span><br>        <span class="hljs-attr">image:</span> <span class="hljs-string">k8s.gcr.io/fluentd-elasticsearch:1.20</span><br>        <span class="hljs-attr">resources:</span><br>          <span class="hljs-attr">limits:</span><br>            <span class="hljs-attr">memory:</span> <span class="hljs-string">200Mi</span><br>          <span class="hljs-attr">requests:</span><br>            <span class="hljs-attr">cpu:</span> <span class="hljs-string">100m</span><br>            <span class="hljs-attr">memory:</span> <span class="hljs-string">200Mi</span><br>        <span class="hljs-attr">volumeMounts:</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">varlog</span><br>          <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/var/log</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">varlibdockercontainers</span><br>          <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/var/lib/docker/containers</span><br>          <span class="hljs-attr">readOnly:</span> <span class="hljs-literal">true</span><br>      <span class="hljs-attr">terminationGracePeriodSeconds:</span> <span class="hljs-number">30</span><br>      <span class="hljs-attr">volumes:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">varlog</span><br>        <span class="hljs-attr">hostPath:</span><br>          <span class="hljs-attr">path:</span> <span class="hljs-string">/var/log</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">varlibdockercontainers</span><br>        <span class="hljs-attr">hostPath:</span><br>          <span class="hljs-attr">path:</span> <span class="hljs-string">/var/lib/docker/containers</span><br></code></pre></td></tr></table></figure>
+<p>这个 DaemonSet，管理的是一个 fluentd-elasticsearch 镜像的 Pod。这个镜像的功能非常实用：通过 fluentd 将 Docker 容器里的日志转发到 ElasticSearch 中。</p>
+<p>可以看到，DaemonSet 跟 Deployment 其实非常相似，只不过是没有 replicas 字段；它也使用 selector 选择管理所有携带了 name=fluentd-elasticsearch 标签的 Pod。而这些 Pod 的模板，也是用 template 字段定义的。在这个字段中，我们定义了一个使用 fluentd-elasticsearch:1.20 镜像的容器，而且这个容器挂载了两个 hostPath 类型的 Volume，分别对应宿主机的 /var/log 目录和 /var/lib/docker/containers 目录。</p>
+<p>显然，fluentd 启动之后，它会从这两个目录里搜集日志信息，并转发给 ElasticSearch 保存。这样，我们通过 ElasticSearch 就可以很方便地检索这些日志了。需要注意的是，Docker 容器里应用的日志，默认会保存在宿主机的 /var/lib/docker/containers/容器 ID/容器 ID-json.log 文件里，所以这个目录正是 fluentd 的搜集目标。</p>
+<h3 id="3-2、DaemonSet-Controller">3.2、DaemonSet Controller</h3>
+<p>那么，DaemonSet 又是如何保证每个 Node 上有且只有一个被管理的 Pod 呢？显然，这是一个典型的“控制器模型”能够处理的问题。</p>
+<p>DaemonSet Controller，首先从 Etcd 里获取所有的 Node 列表，然后遍历所有的 Node。这时，它就可以很容易地去检查，当前这个 Node 上是不是有一个携带了 name=fluentd-elasticsearch 标签的 Pod 在运行。而检查的结果，可能有这么三种情况：</p>
+<ul>
+<li>
+<p>没有这种 Pod，那么就意味着要在这个 Node 上创建这样一个 Pod；</p>
+</li>
+<li>
+<p>有这种 Pod，但是数量大于 1，那就说明要把多余的 Pod 从这个 Node 上删除掉；</p>
+</li>
+<li>
+<p>正好只有一个这种 Pod，那说明这个节点是正常的。</p>
+</li>
+</ul>
+<p>其中，删除节点（Node）上多余的 Pod 非常简单，直接调用 Kubernetes API 就可以了。但是，如何在指定的 Node 上创建新 Pod 呢？</p>
+<h3 id="3-3、nodeSelector-VS-nodeAffinity">3.3、nodeSelector VS nodeAffinity</h3>
+<p>如果我们已经熟悉了 Pod API 对象的话，那一定可以立刻说出答案：用 nodeSelector，选择 Node 的名字即可。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">nodeSelector:</span><br>    <span class="hljs-attr">name:</span> <span class="hljs-string">&lt;Node名字&gt;</span><br></code></pre></td></tr></table></figure>
+<p>没错。不过，在 Kubernetes 项目里，nodeSelector 其实已经是一个将要被废弃的字段了。因为，现在有了一个新的、功能更完善的字段可以代替它，即：nodeAffinity。举个例子：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">with-node-affinity</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">affinity:</span><br>    <span class="hljs-attr">nodeAffinity:</span><br>      <span class="hljs-attr">requiredDuringSchedulingIgnoredDuringExecution:</span><br>        <span class="hljs-attr">nodeSelectorTerms:</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-attr">matchExpressions:</span><br>          <span class="hljs-bullet">-</span> <span class="hljs-attr">key:</span> <span class="hljs-string">metadata.name</span><br>            <span class="hljs-attr">operator:</span> <span class="hljs-string">In</span><br>            <span class="hljs-attr">values:</span><br>            <span class="hljs-bullet">-</span> <span class="hljs-string">node-geektime</span><br></code></pre></td></tr></table></figure>
+<p>在这个 Pod 里，我声明了一个 spec.affinity 字段，然后定义了一个 nodeAffinity。其中，spec.affinity 字段，是 Pod 里跟调度相关的一个字段。而在这里，我们定义的 nodeAffinity 的含义是：</p>
+<ul>
+<li>requiredDuringSchedulingIgnoredDuringExecution：它的意思是说，这个 nodeAffinity 必须在每次调度的时候予以考虑。同时，这也意味着我们可以设置在某些情况下不考虑这个 nodeAffinity；</li>
+<li>这个 Pod，将来只允许运行在“<a target="_blank" rel="noopener" href="http://metadata.name">metadata.name</a>”是“node-geektime”的节点上。</li>
+</ul>
+<p>在这里，我们应该注意到 nodeAffinity 的定义，可以支持更加丰富的语法，比如 operator: In（即：部分匹配；如果你定义 operator: Equal，就是完全匹配），这也正是 nodeAffinity 会取代 nodeSelector 的原因之一。备注：其实在大多数时候，这些 Operator 语义没啥用处。所以说，在学习开源项目的时候，一定要学会抓住“主线”。不要顾此失彼。</p>
+<p>所以，我们的 DaemonSet Controller 会在创建 Pod 的时候，自动在这个 Pod 的 API 对象里，加上这样一个 nodeAffinity 定义。其中，需要绑定的节点名字，正是当前正在遍历的这个 Node。当然，DaemonSet 并不需要修改用户提交的 YAML 文件里的 Pod 模板，而是在向 Kubernetes 发起请求之前，直接修改根据模板生成的 Pod 对象。</p>
+<h3 id="3-4、tolerations">3.4、tolerations</h3>
+<p>此外，DaemonSet 还会给这个 Pod 自动加上另外一个与调度相关的字段，叫作 tolerations。这个字段意味着这个 Pod，会“容忍”（Toleration）某些 Node 的“污点”（Taint）。而 DaemonSet 自动加上的 tolerations 字段，格式如下所示：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">with-toleration</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">tolerations:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">key:</span> <span class="hljs-string">node.kubernetes.io/unschedulable</span><br>    <span class="hljs-attr">operator:</span> <span class="hljs-string">Exists</span><br>    <span class="hljs-attr">effect:</span> <span class="hljs-string">NoSchedule</span><br></code></pre></td></tr></table></figure>
+<p>这个 Toleration 的含义是：“容忍”所有被标记为 unschedulable“污点”的 Node；“容忍”的效果是允许调度。</p>
+<p>而在正常情况下，被标记了 unschedulable“污点”的 Node，是不会有任何 Pod 被调度上去的（effect: NoSchedule）。可是，DaemonSet 自动地给被管理的 Pod 加上了这个特殊的 Toleration，就使得这些 Pod 可以忽略这个限制，继而保证每个节点上都会被调度一个 Pod。当然，如果这个节点有故障的话，这个 Pod 可能会启动失败，而 DaemonSet 则会始终尝试下去，直到 Pod 启动成功。前面介绍到的 DaemonSet 的“过人之处”，其实就是依靠 Toleration 实现的。</p>
+<p>假如当前 DaemonSet 管理的，是一个网络插件的 Agent Pod，那么我们就必须在这个 DaemonSet 的 YAML 文件里，给它的 Pod 模板加上一个能够“容忍”<a target="_blank" rel="noopener" href="http://node.kubernetes.io/network-unavailable%E2%80%9C%E6%B1%A1%E7%82%B9%E2%80%9D%E7%9A%84">node.kubernetes.io/network-unavailable“污点”的</a> Toleration。正如下面这个例子所示：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-string">...</span><br><span class="hljs-attr">template:</span><br>    <span class="hljs-attr">metadata:</span><br>      <span class="hljs-attr">labels:</span><br>        <span class="hljs-attr">name:</span> <span class="hljs-string">network-plugin-agent</span><br>    <span class="hljs-attr">spec:</span><br>      <span class="hljs-attr">tolerations:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">key:</span> <span class="hljs-string">node.kubernetes.io/network-unavailable</span><br>        <span class="hljs-attr">operator:</span> <span class="hljs-string">Exists</span><br>        <span class="hljs-attr">effect:</span> <span class="hljs-string">NoSchedule</span><br></code></pre></td></tr></table></figure>
+<p>在 Kubernetes 项目中，当一个节点的网络插件尚未安装时，<a target="_blank" rel="noopener" href="http://xn--node-z94frg9d44f7vojcx1tn65ah64dqk9bb4b9x5bu21a.kubernetes.io/network-unavailable%E7%9A%84%E2%80%9C%E6%B1%A1%E7%82%B9%E2%80%9D%E3%80%82%E8%80%8C%E9%80%9A%E8%BF%87%E8%BF%99%E6%A0%B7%E4%B8%80%E4%B8%AA">这个节点就会被自动加上名为node.kubernetes.io/network-unavailable的“污点”。而通过这样一个</a> Toleration，调度器在调度这个 Pod 的时候，就会忽略当前节点上的“污点”，从而成功地将网络插件的 Agent 组件调度到这台机器上启动起来。</p>
+<p>这种机制，正是我们在部署 Kubernetes 集群的时候，能够先部署 Kubernetes 本身、再部署网络插件的根本原因：因为当时我们所创建的 Weave 的 YAML，实际上就是一个 DaemonSet。</p>
+<h3 id="3-5、小结">3.5、小结</h3>
+<p>至此，通过上面这些内容，我们应该能够明白，DaemonSet 其实是一个非常简单的控制器。在它的控制循环中，只需要遍历所有节点，然后根据节点上是否有被管理 Pod 的情况，来决定是否要创建或者删除一个 Pod。只不过，在创建每个 Pod 的时候，DaemonSet 会自动给这个 Pod 加上一个 nodeAffinity，从而保证这个 Pod 只会在指定节点上启动。同时，它还会自动给这个 Pod 加上一个 Toleration，从而忽略节点的 unschedulable“污点”。</p>
+<p>当然，我们也可以在 Pod 模板里加上更多种类的 Toleration，从而利用 DaemonSet 达到自己的目的。比如，在这个 fluentd-elasticsearch DaemonSet 里，可以给它加上了这样的 Toleration：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">tolerations:</span><br><span class="hljs-bullet">-</span> <span class="hljs-attr">key:</span> <span class="hljs-string">node-role.kubernetes.io/master</span><br>  <span class="hljs-attr">effect:</span> <span class="hljs-string">NoSchedule</span><br></code></pre></td></tr></table></figure>
+<p>这是因为在默认情况下，Kubernetes 集群不允许用户在 Master 节点部署 Pod。因为，Master <a target="_blank" rel="noopener" href="http://xn--node-role-u75noor9at9e18ylg0bklu1r2cs51dijtbej6e.kubernetes.io/master%E7%9A%84%E2%80%9C%E6%B1%A1%E7%82%B9%E2%80%9D%E3%80%82%E6%89%80%E4%BB%A5%EF%BC%8C%E4%B8%BA%E4%BA%86%E8%83%BD%E5%9C%A8">节点默认携带了一个叫作node-role.kubernetes.io/master的“污点”。所以，为了能在</a> Master 节点上部署 DaemonSet 的 Pod，我们就必须让这个 Pod“容忍”这个“污点”。</p>
+<h2 id="四、实践DeamonSet">四、实践DeamonSet</h2>
+<p>在理解了 DaemonSet 的工作原理之后，接下来我们就通过一个具体的实践来更深入地掌握 DaemonSet 的使用方法。备注：需要注意的是，在 Kubernetes v1.11 之前，由于调度器尚不完善，DaemonSet 是由 DaemonSet Controller 自行调度的，即它会直接设置 Pod 的 spec.nodename 字段，这样就可以跳过调度器了。但是，这样的做法很快就会被废除。</p>
+<h3 id="4-1、创建DaemonSet对象">4.1、创建DaemonSet对象</h3>
+<p>首先，创建这个 DaemonSet 对象：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl create -f fluentd-elasticsearch.yaml</span><br></code></pre></td></tr></table></figure>
+<p>需要注意的是，在 DaemonSet 上，我们一般都应该加上 resources 字段，来限制它的 CPU 和内存使用，防止它占用过多的宿主机资源。</p>
+<h3 id="4-2、查看Pod对象">4.2、查看Pod对象</h3>
+<p>而创建成功后，我们就能看到，如果有 N 个节点，就会有 N 个 fluentd-elasticsearch Pod 在运行。比如在我们的例子里，会有两个 Pod，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl get pod -n kube-system -l name=fluentd-elasticsearch</span><br>NAME                          READY     STATUS    RESTARTS   AGE<br>fluentd-elasticsearch-dqfv9   1/1       Running   0          53m<br>fluentd-elasticsearch-pf9z5   1/1       Running   0          53m<br></code></pre></td></tr></table></figure>
+<h3 id="4-3、查看DaemonSet对象">4.3、查看DaemonSet对象</h3>
+<p>而如果此时通过 kubectl get 查看一下 Kubernetes 集群里的 DaemonSet 对象：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl get ds -n kube-system fluentd-elasticsearch</span><br>NAME                    DESIRED   CURRENT   READY     UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE<br>fluentd-elasticsearch   2         2         2         2            2           &lt;none&gt;          1h<br></code></pre></td></tr></table></figure>
+<p>就会发现 DaemonSet 和 Deployment 一样，也有 DESIRED、CURRENT 等多个状态字段。这也就意味着，DaemonSet 可以像 Deployment 那样，进行版本管理。</p>
+<h3 id="4-4、查看DaemonSet对象的版本">4.4、查看DaemonSet对象的版本</h3>
+<p>这个版本，可以使用 kubectl rollout history 看到：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl rollout <span class="hljs-built_in">history</span> daemonset fluentd-elasticsearch -n kube-system</span><br>daemonsets &quot;fluentd-elasticsearch&quot;<br>REVISION  CHANGE-CAUSE<br>1         &lt;none&gt;<br></code></pre></td></tr></table></figure>
+<h3 id="4-5、更新DaemonSet的容器镜像">4.5、更新DaemonSet的容器镜像</h3>
+<p>接下来，我们来把这个 DaemonSet 的容器镜像版本更新到 v2.2.0：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl <span class="hljs-built_in">set</span> image ds/fluentd-elasticsearch fluentd-elasticsearch=k8s.gcr.io/fluentd-elasticsearch:v2.2.0 --record -n=kube-system</span><br></code></pre></td></tr></table></figure>
+<p>这个 kubectl set image 命令里，第一个 fluentd-elasticsearch 是 DaemonSet 的名字，第二个 fluentd-elasticsearch 是容器的名字。</p>
+<h3 id="4-6、查看滚动更新的过程">4.6、查看滚动更新的过程</h3>
+<p>这时候，我们可以使用 kubectl rollout status 命令看到这个“滚动更新”的过程，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl rollout status ds/fluentd-elasticsearch -n kube-system</span><br>Waiting for daemon set &quot;fluentd-elasticsearch&quot; rollout to finish: 0 out of 2 new pods have been updated...<br>Waiting for daemon set &quot;fluentd-elasticsearch&quot; rollout to finish: 0 out of 2 new pods have been updated...<br>Waiting for daemon set &quot;fluentd-elasticsearch&quot; rollout to finish: 1 of 2 updated pods are available...<br>daemon set &quot;fluentd-elasticsearch&quot; successfully rolled out<br></code></pre></td></tr></table></figure>
+<p>注意，由于这一次我们在升级命令后面加上了–record 参数，所以这次升级使用到的指令就会自动出现在 DaemonSet 的 rollout history 里面，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl rollout <span class="hljs-built_in">history</span> daemonset fluentd-elasticsearch -n kube-system</span><br>daemonsets &quot;fluentd-elasticsearch&quot;<br>REVISION  CHANGE-CAUSE<br>1         &lt;none&gt;<br>2         kubectl set image ds/fluentd-elasticsearch fluentd-elasticsearch=k8s.gcr.io/fluentd-elasticsearch:v2.2.0 --namespace=kube-system --record=true<br></code></pre></td></tr></table></figure>
+<p>有了版本号，我们也就可以像 Deployment 一样，将 DaemonSet 回滚到某个指定的历史版本了。</p>
+<h2 id="五、ControllerRevision">五、ControllerRevision</h2>
+<p>我们在前面的文章中讲解 Deployment 对象的时候，曾经提到过，Deployment 管理这些版本，靠的是“一个版本对应一个 ReplicaSet 对象”。可是，DaemonSet 控制器操作的直接就是 Pod，不可能有 ReplicaSet 这样的对象参与其中。那么，它的这些版本又是如何维护的呢？</p>
+<p>所谓，一切皆对象！在 Kubernetes 项目中，任何我们觉得需要记录下来的状态，都可以通过 API 对象的方式实现。当然，“版本”也不例外。Kubernetes v1.7 之后添加了一个 API 对象，名叫 ControllerRevision，专门用来记录某种 Controller 对象的版本。比如，我们可以通过如下命令查看 fluentd-elasticsearch 对应的 ControllerRevision：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl get controllerrevision -n kube-system -l name=fluentd-elasticsearch</span><br>NAME                               CONTROLLER                             REVISION   AGE<br>fluentd-elasticsearch-64dc6799c9   daemonset.apps/fluentd-elasticsearch   2          1h<br></code></pre></td></tr></table></figure>
+<p>而如果我们使用 kubectl describe 查看这个 ControllerRevision 对象：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl describe controllerrevision fluentd-elasticsearch-64dc6799c9 -n kube-system</span><br>Name:         fluentd-elasticsearch-64dc6799c9<br>Namespace:    kube-system<br>Labels:       controller-revision-hash=2087235575<br>              name=fluentd-elasticsearch<br>Annotations:  deprecated.daemonset.template.generation=2<br>              kubernetes.io/change-cause=kubectl set image ds/fluentd-elasticsearch fluentd-elasticsearch=k8s.gcr.io/fluentd-elasticsearch:v2.2.0 --record=true --namespace=kube-system<br>API Version:  apps/v1<br>Data:<br>  Spec:<br>    Template:<br>      $ Patch:  replace<br>      Metadata:<br>        Creation Timestamp:  &lt;nil&gt;<br>        Labels:<br>          Name:  fluentd-elasticsearch<br>      Spec:<br>        Containers:<br>          Image:              k8s.gcr.io/fluentd-elasticsearch:v2.2.0<br>          Image Pull Policy:  IfNotPresent<br>          Name:               fluentd-elasticsearch<br>...<br>Revision:                  2<br>Events:                    &lt;none&gt;<br></code></pre></td></tr></table></figure>
+<p>就会看到，这个 ControllerRevision 对象，实际上是在 Data 字段保存了该版本对应的完整的 DaemonSet 的 API 对象。并且，在 Annotation 字段保存了创建这个对象所使用的 kubectl 命令。接下来，我们可以尝试将这个 DaemonSet 回滚到 Revision=1 时的状态：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl rollout undo daemonset fluentd-elasticsearch --to-revision=1 -n kube-system</span><br>daemonset.extensions/fluentd-elasticsearch rolled back<br></code></pre></td></tr></table></figure>
+<p>这个 kubectl rollout undo 操作，实际上相当于读取到了 Revision=1 的 ControllerRevision 对象保存的 Data 字段。而这个 Data 字段里保存的信息，就是 Revision=1 时这个 DaemonSet 的完整 API 对象。</p>
+<p>所以，现在 DaemonSet Controller 就可以使用这个历史 API 对象，对现有的 DaemonSet 做一次 PATCH 操作（等价于执行一次 kubectl apply -f “旧的 DaemonSet 对象”），从而把这个 DaemonSet“更新”到一个旧版本。这也是为什么，在执行完这次回滚操作后，我们会发现，DaemonSet 的 Revision 并不会从 Revision=2 退回到 1，而是会增加成 Revision=3。这是因为，一个新的 ControllerRevision 被创建了出来。</p>
+<h2 id="六、小结">六、小结</h2>
+<p>在这篇文章中，我们主要讨论了如下概念：</p>
+<ul>
+<li>
+<p>DaemonSet的主要作用是，在每个节点上只运行一个Pod实例。它通常被用于部署监控组件、日志组件、网络组件和存储组件等。</p>
+</li>
+<li>
+<p>DaemonSet控制器的工作原理其实很简单：首先，它会遍历所有的节点，并根据节点的Pod情况决定要执行的调度操作，然后，通过nodeAffinity和toleration机制实现自己的编排能力。其中，nodeAffinity用于将Pod调度到指定的节点；toleration则用于忽略节点的某些“污点”。</p>
+</li>
+<li>
+<p>DaemonSet使用ControllerRevision保存和管理自己的版本。</p>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Kubernetes/" class="print-no-link">#Kubernetes</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>容器编排6：DaemonSet</div>
+      <div>https://kuberxy.github.io/2020/10/04/容器编排6：DaemonSet/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年10月4日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/10/04/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%927%EF%BC%9AJob%E4%B8%8ECronJob/" title="容器编排7：Job与CronJob">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">容器编排7：Job与CronJob</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/10/03/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%925%EF%BC%9A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3StatefulSet%E4%B9%8B%E9%83%A8%E7%BD%B2%E4%B8%80%E4%B8%AA%E6%9C%89%E7%8A%B6%E6%80%81%E5%BA%94%E7%94%A8/" title="容器编排5：深入理解StatefulSet之部署一个有状态应用">
+                        <span class="hidden-mobile">容器编排5：深入理解StatefulSet之部署一个有状态应用</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

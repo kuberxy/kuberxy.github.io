@@ -1,0 +1,750 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="在一个分布式系统中，分片迁移是最基础的核心功能。集群的负载均衡、故障恢复等功能都是建立在分片迁移基础之上的。负载均衡，可以简单理解为集群中所有节点上的分片个数保持相同，即分片在集群中不断迁移。 一、What 在HBase系统中，一个Region就是一个数据分片，所以分片迁移就是Region迁移。HBase的Region迁移是一个非常轻量级的操作。之所以说它轻量，是因为HBase的数据存储在HDFS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Region迁移">
+<meta property="og:url" content="https://kuberxy.github.io/2022/04/07/Region%E8%BF%81%E7%A7%BB/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在一个分布式系统中，分片迁移是最基础的核心功能。集群的负载均衡、故障恢复等功能都是建立在分片迁移基础之上的。负载均衡，可以简单理解为集群中所有节点上的分片个数保持相同，即分片在集群中不断迁移。 一、What 在HBase系统中，一个Region就是一个数据分片，所以分片迁移就是Region迁移。HBase的Region迁移是一个非常轻量级的操作。之所以说它轻量，是因为HBase的数据存储在HDFS">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="g:%5CMy%5Csource%5Cimg%5C2022-04-07-16-53-43-01.png">
+<meta property="og:image" content="g:%5CMy%5Csource%5Cimg%5C2022-04-07-16-52-12-02.png">
+<meta property="article:published_time" content="2022-04-07T02:36:47.000Z">
+<meta property="article:modified_time" content="2022-04-07T08:53:46.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="HBase">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="g:%5CMy%5Csource%5Cimg%5C2022-04-07-16-53-43-01.png">
+  
+  
+  
+  <title>Region迁移 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Region迁移"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-04-07 10:36" pubdate>
+          2022年4月7日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          13 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Region迁移</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>在一个分布式系统中，分片迁移是最基础的核心功能。集群的负载均衡、故障恢复等功能都是建立在分片迁移基础之上的。负载均衡，可以简单理解为集群中所有节点上的分片个数保持相同，即分片在集群中不断迁移。</p>
+<h2 id="一、What">一、What</h2>
+<p>在HBase系统中，一个Region就是一个数据分片，所以分片迁移就是Region迁移。HBase的Region迁移是一个非常轻量级的操作。之所以说它轻量，是因为HBase的数据存储在HDFS上，不需要独立管理。HBase在迁移Region时不需要迁移实际数据，只要将读写服务迁移即可。在实际执行分片迁移时主要有两个步骤：</p>
+<ul>
+<li>
+<p>第一步，根据负载均衡策略执行分片迁移计划；</p>
+</li>
+<li>
+<p>第二步，根据迁移计划执行分片的实际迁移。</p>
+</li>
+</ul>
+<p>HBase的Region迁移虽然是一个轻量级操作，但实现逻辑比较复杂。其复杂性主要表现在以下两个方面：</p>
+<ul>
+<li>
+<p>其一，迁移过程中涉及多种状态的转变；</p>
+</li>
+<li>
+<p>其二，迁移过程中涉及多个组件（Master、ZooKeeper以及RegionServer）的协调；</p>
+</li>
+</ul>
+<h2 id="二、How">二、How</h2>
+<p>Region迁移操作分为两个阶段：unassign阶段和assign阶段。从总体上来看，整个unassign/assign操作是一个比较复杂的过程，会涉及Master、RegionServer和ZooKeeper三个组件，它们的主要职责如下：</p>
+<ul>
+<li>
+<p>Master负责维护Region在整个操作过程中的状态变化，起到枢纽的作用。</p>
+</li>
+<li>
+<p>RegionServer负责执行具体的unassign/assign操作，实际上就是关闭Region或者打开Region操作。</p>
+</li>
+<li>
+<p>ZooKeeper负责存储操作过程中的事件。ZooKeeper上有一个路径为/hbase/region-in-transition的节点，一旦Region发生unssign操作，就会在这个节点下生成一个子节点（内容是“事件”经过序列化的字符串），并且Master会在这个子节点上监听，一旦发生任何事件，Master会即时更新Region的状态。</p>
+</li>
+</ul>
+<h3 id="2-1、unassign阶段">2.1、unassign阶段</h3>
+<p><img src="G:%5CMy%5Csource%5Cimg%5C2022-04-07-16-53-43-01.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>unassign表示Region从源RegionServer下线，整个过程如下：</p>
+<ul>
+<li>
+<p>Master生成M_ZK_REGION_CLOSING事件并更新到ZooKeeper，同时将本地内存中该Region的状态改为PENDING_CLOSE。</p>
+</li>
+<li>
+<p>Master通过RPC发送close命令给拥有该Region的RegionServer，令其关闭该Region。</p>
+</li>
+<li>
+<p>RegionServer接收到Master发送过来的命令后，生成一个RS_ZK_REGION_CLOSING事件并更新到ZooKeeper。</p>
+</li>
+<li>
+<p>Master监听到ZooKeeper节点变动后，更新内存中Region的状态为CLOSING。</p>
+</li>
+<li>
+<p>RegionServer执行Region关闭操作。如果该Region正在执行flush或者Compaction，就等待操作完成；否则将该Region下的所有MemStore强制flush，然后关闭Region相关的服务。</p>
+</li>
+<li>
+<p>关闭完成后，生成RS_ZK_REGION_CLOSE事件并更新到ZooKeeper。Master监听到ZooKeeper节点变动后，更新该Region的状态为CLOSED。</p>
+</li>
+</ul>
+<h3 id="2-2、assign阶段">2.2、assign阶段</h3>
+<p><img src="G:%5CMy%5Csource%5Cimg%5C2022-04-07-16-52-12-02.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>assign表示Region在目标RegionServer上线，整个过程如下：</p>
+<ul>
+<li>
+<p>Master生成M_ZK_REGION_OPENING事件并更新到ZooKeeper，同时将本地内存中该Region的状态改为PENDING_OPEN。</p>
+</li>
+<li>
+<p>Master通过RPC发送open命令给拥有该Region的RegionServer，令其打开该Region。</p>
+</li>
+<li>
+<p>RegionServer接收到Master发送过来的命令后，生成一个RS_ZK_REGION_OPENING事件并更新到ZooKeeper。</p>
+</li>
+<li>
+<p>Master监听到ZooKeeper节点变动后，更新内存中Region的状态为OPENING。</p>
+</li>
+<li>
+<p>RegionServer执行Region打开操作，初始化相应的服务。</p>
+</li>
+<li>
+<p>打开完成后，生成RS_ZK_REGION_OPENED事件并更新到ZooKeeper。Master监听到ZooKeeper节点变动后，更新该Region的状态为OPEN。</p>
+</li>
+</ul>
+<h2 id="三、How-Good">三、How Good</h2>
+<p>在Region迁移的过程中，会伴随Region状态的不断改变。此时，我们可能会有疑问：</p>
+<blockquote>
+<p>为什需要设置这些状态？</p>
+<p>这些状态是如何管理的？</p>
+</blockquote>
+<p>首先，我们需要知道的是，无论是unnassign操作还是assign操作，都是由多个子操作组成的，同时还会涉及多个组件的协调合作，只有通过记录Region状态才能知道当前unassign或者assign的进度，在发生异常后才能根据具体的状态继续执行。</p>
+<p>其次，我们需要知道的是，Region的这些状态会存储在三个区域：meta表、Master内存以及ZooKeeper的region-in-transition节点，并且它们的作用各不相同：</p>
+<ul>
+<li>
+<p>meta表存储Region所在的RegionServer（不存储迁移过程中的中间状态）。如果Region从RS1成功迁移到RS2，那么meta表中就持久化存有Region与RS2的对应关系，而如果迁移中间出现异常，那么meta表就持久化存有Region与RS1的对应关系。</p>
+</li>
+<li>
+<p>Master内存存储整个集群所有的Region信息。根据这些信息可以得出Region当前以什么状态位于哪个RegionServer上。Master存储的Region状态变更都是由RegionServer通过ZooKeeper通知给Master的，所以Master上的Region状态变更总是滞后于实际的Region状态。需要注意的是，我们在HBase Master WebUI上看到的Region状态都来自于Master内存信息。</p>
+</li>
+<li>
+<p>ZooKeeper中存储临时性的状态转变信息。作为Master和RegionServer之间反馈Region状态的中介。如果Master（或RegionServer）在某个阶段发生异常，ZooKeeper上存储的状态可以在新Master（或RegionServer）启动之后作为依据继续进行迁移操作。</p>
+</li>
+</ul>
+<p>最后，我们需要知道的是，只有上述三个存储区域内的状态保持一致时，对应的Region才处于正常的工作状态。但在很多异常情况下，Region状态在三个地方并不能保持一致，这就会出现region-in-transition（RIT）现象。</p>
+<p>举个例子，RegionServer已经将Region成功打开，但是在远程更新hbase:meta元数据时出现异常（网络异常、RegionServer宕机、hbase:meta异常等）。此时，Master维护的Region状态为OPENING，ZooKeeper维护的Region状态为RS_ZK_REGION_OPENING，hbase:meta存储的Region所在RS为null。但是，Region已经在新的RegionServer上打开了，此时在Web UI上就会看到Region处于RIT状态。</p>
+<p>了解了RIT的由来，我们就会知道Region在迁移过程中必然会出现暂时的RIT状态，这种场景并不需要任何人工干预。</p>
+<h2 id="四、参考">四、参考</h2>
+<p>[HBase原理与实践](<a target="_blank" rel="noopener" href="https://book.douban.com/subject/34819650/">HBase原理与实践 (豆瓣)</a>)</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="category-chain-item">数据库</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/HBase/" class="print-no-link">#HBase</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Region迁移</div>
+      <div>https://kuberxy.github.io/2022/04/07/Region迁移/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年4月7日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/04/07/Region%E5%88%86%E8%A3%82/" title="Region分裂">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Region分裂</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/04/06/HBase%E6%89%8B%E5%8A%A8%E7%A7%BB%E5%8A%A8Region/" title="HBase手动移动Region">
+                        <span class="hidden-mobile">HBase手动移动Region</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
