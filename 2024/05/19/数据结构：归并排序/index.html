@@ -16,15 +16,15 @@
   <meta name="author" content="Mr.x">
   <meta name="keywords" content="">
   
-    <meta name="description" content="归并排序（Merging Sort）就是将两个或两个以上的有序表合并成一个有序表的过程。将两个有序表合并成一个有序表的过程称为2-路归并，2-路归并最为简单和常用。 一、直接插入排序 二、折半插入排序 三、希尔排序 四、小结 五、参考 《数据结构（C语言版 第2版）》 《数据结构 自考02331》">
+    <meta name="description" content="归并排序（Merging Sort）就是将两个或两个以上的有序表合并成一个有序表的过程。将两个有序表合并成一个有序表的过程称为2-路归并，2-路归并最为简单和常用。 一、算法思想 归并排序算法的思想是：假设初始序列含有n个记录，则可看成是n个有序的子序列，每个子序列的长度为1，然后两两归并，得到个长度为2或1的有序子序列；再两两归并，……，如此重复，直至得到一个长度为n的有序序列为止。 2-路归并">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据结构：归并排序">
-<meta property="og:url" content="https://kuberxy.github.io/2024/05/05/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9A%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/index.html">
+<meta property="og:url" content="https://kuberxy.github.io/2024/05/19/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9A%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/index.html">
 <meta property="og:site_name" content="Kubxy">
-<meta property="og:description" content="归并排序（Merging Sort）就是将两个或两个以上的有序表合并成一个有序表的过程。将两个有序表合并成一个有序表的过程称为2-路归并，2-路归并最为简单和常用。 一、直接插入排序 二、折半插入排序 三、希尔排序 四、小结 五、参考 《数据结构（C语言版 第2版）》 《数据结构 自考02331》">
+<meta property="og:description" content="归并排序（Merging Sort）就是将两个或两个以上的有序表合并成一个有序表的过程。将两个有序表合并成一个有序表的过程称为2-路归并，2-路归并最为简单和常用。 一、算法思想 归并排序算法的思想是：假设初始序列含有n个记录，则可看成是n个有序的子序列，每个子序列的长度为1，然后两两归并，得到个长度为2或1的有序子序列；再两两归并，……，如此重复，直至得到一个长度为n的有序序列为止。 2-路归并">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-05-05T05:47:11.000Z">
-<meta property="article:modified_time" content="2024-03-24T07:22:26.000Z">
+<meta property="article:published_time" content="2024-05-19T05:47:11.000Z">
+<meta property="article:modified_time" content="2024-05-24T00:29:22.000Z">
 <meta property="article:author" content="Mr.x">
 <meta property="article:tag" content="数据结构">
 <meta name="twitter:card" content="summary_large_image">
@@ -202,8 +202,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-05-05 13:47" pubdate>
-          2024年5月5日 下午
+        <time datetime="2024-05-19 13:47" pubdate>
+          2024年5月19日 下午
         </time>
       </span>
     
@@ -214,7 +214,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          106 字
+          1k 字
         
       </span>
     
@@ -225,7 +225,7 @@
         
         
         
-          1 分钟
+          9 分钟
         
       </span>
     
@@ -281,10 +281,29 @@
               <div class="markdown-body">
                 
                 <p>归并排序（Merging Sort）就是将两个或两个以上的有序表合并成一个有序表的过程。将两个有序表合并成一个有序表的过程称为2-路归并，2-路归并最为简单和常用。</p>
-<h2 id="一、直接插入排序">一、直接插入排序</h2>
-<h2 id="二、折半插入排序">二、折半插入排序</h2>
-<h2 id="三、希尔排序">三、希尔排序</h2>
-<h2 id="四、小结">四、小结</h2>
+<h2 id="一、算法思想">一、算法思想</h2>
+<p>归并排序算法的思想是：假设初始序列含有n个记录，则可看成是n个有序的子序列，每个子序列的长度为1，然后两两归并，得到个长度为2或1的有序子序列；再两两归并，……，如此重复，直至得到一个长度为n的有序序列为止。</p>
+<p>2-路归并排序中的核心操作是，将待排序序列中前后相邻的两个有序序列归并为一个有序序列，其算法步骤为：设两个有序表存放在同一数组中相邻的位置上：R[low…mid]和R[mid+1…high]，每次分别从两个表中取出一个记录进行关键字的比较，将较小者放入T[1ow…high]中，重复此过程，直至其中一个表为空，最后将另一非空表中余下的部分直接复制到T中。相应的算法描述如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 将有序表R[low..mid]和R[mid+1..high]归并成有序表T[low..high]</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">Merge</span><span class="hljs-params">(RedType R[], RedType T[], <span class="hljs-type">int</span> low, <span class="hljs-type">int</span> mid, <span class="hljs-type">int</span> high)</span> &#123;<br>    i=low; j=mid+<span class="hljs-number">1</span>; k=low;<br><br>    <span class="hljs-comment">// 将R中记录由小到大地并入T中</span><br>    <span class="hljs-keyword">while</span>(i&lt;=mid&amp;&amp;j&lt;=high) &#123;<br>        <span class="hljs-keyword">if</span>(R[i].key&lt;=R[j].key) T[k++]=R[i++];<br>        <span class="hljs-keyword">else</span> T[k++]=R[j++];<br>    &#125;<br><br>    <span class="hljs-comment">// 将剩余的R[i..mid]复制到T中</span><br>    <span class="hljs-keyword">while</span>(i&lt;=mid) T[k++]=R[i++];<br>    <span class="hljs-comment">// 将剩余的R[j..high]复制到T中</span><br>    <span class="hljs-keyword">while</span>(j&lt;=high) T[k++]=R[j++];<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>假设每个子序列的长度为h，则一趟归并排序需调用次算法merge进行两两归并，得到前后相邻、长度为2h<br>
+的有序段，整个归并排序需进行趟。</p>
+<h2 id="一、算法步骤">一、算法步骤</h2>
+<p>与快速排序类似，2-路归并排序也可以利用划分为子序列的方法递归实现。首先把整个待排序序列划分为两个长度大致相等的子序列，对这两个子序列分别递归地进行排序，然后再把它们归并。</p>
+<p>2-路归并排序算法的步骤为：将R[low…high]中的记录归并排序后放入T[low…high]中。当序列长度等于1时，递归结束，否则：</p>
+<ul>
+<li>将当前序列一分为二，求出分裂点mid；</li>
+<li>对子序列R[low…mid]递归，进行归并排序，结果放入S[low…mid]中；</li>
+<li>对子序列R[mid+1…high]递归，进行归并排序，结果放入S[mid+1…high]中；</li>
+<li>调用算法Merge，将有序的两个子序列S[low…mid]和S[mid+1…high]归并为一个有序的序列T[low…high]。</li>
+</ul>
+<h2 id="二、算法描述">二、算法描述</h2>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// R[low..high]归并排序后放入T[low..high]中</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">MSort</span><span class="hljs-params">(RedType R[], RedType &amp;T[], <span class="hljs-type">int</span> low, <span class="hljs-type">int</span> high)</span> &#123;<br>    <span class="hljs-keyword">if</span>(low==high) T[low]=R[low];<br>    <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-comment">// 将当前序列一分为二，求出分裂点mid</span><br>        mid=(low+high)/<span class="hljs-number">2</span>;<br>        <span class="hljs-comment">//对子序列R[low..mid]递归归并排序，结果放入S[low..mid]</span><br>        MSort(R,S,low,mid);<br>        <span class="hljs-comment">//对子序列R[mid+1..high]递归归并排序，结果放入S[mid+1..high]</span><br>        MSort(R,S,mid+<span class="hljs-number">1</span>,high);<br>        <span class="hljs-comment">//将S[low..mid]和S[mid+1..high]归并到T[low..high] </span><br>        Merge(S,T,low,mid,high);<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 对顺序表L进行归并排序</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">MergeSort</span><span class="hljs-params">(SqList &amp;L)</span> &#123;<br>    MSort(L.r,L.r,<span class="hljs-number">1</span>,L.length);<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="三、算法分析">三、算法分析</h2>
+<p>当有n 个记录时，需进行趟归并排序，每一趟归并，其关键字比较次数不超过n ，元素移动次数都是n ，因此，归并排序的时间复杂度为O(n log2 n )。</p>
+<p>用顺序表实现归并排序时，需要和待排序记录个数相等的辅助存储空间，所以空间复杂度为O(n)。</p>
+<h2 id="四、算法特点">四、算法特点</h2>
+<p>是稳定排序。</p>
+<p>可用于链式结构，且不需要附加存储空间，但递归实现时仍需要开辟相应的递归工作栈。</p>
 <h2 id="五、参考">五、参考</h2>
 <p><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26713328/">《数据结构（C语言版 第2版）》</a></p>
 <p><a target="_blank" rel="noopener" href="https://book.douban.com/subject/10732022/">《数据结构 自考02331》</a></p>
@@ -334,7 +353,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>数据结构：归并排序</div>
-      <div>https://kuberxy.github.io/2024/05/05/数据结构：归并排序/</div>
+      <div>https://kuberxy.github.io/2024/05/19/数据结构：归并排序/</div>
     </div>
     <div class="license-meta">
       
@@ -346,7 +365,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年5月5日</div>
+          <div>2024年5月19日</div>
         </div>
       
       
@@ -378,9 +397,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/05/12/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9A%E5%88%86%E9%85%8D%E6%8E%92%E5%BA%8F/" title="数据结构：分配排序">
+                      <a href="/2024/05/19/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9A%E5%A4%96%E9%83%A8%E6%8E%92%E5%BA%8F/" title="数据结构：外部排序">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">数据结构：分配排序</span>
+                        <span class="hidden-mobile">数据结构：外部排序</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -388,8 +407,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/04/28/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%8E%92%E5%BA%8F%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" title="数据结构：排序的基本概念">
-                        <span class="hidden-mobile">数据结构：排序的基本概念</span>
+                      <a href="/2024/05/12/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9A%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/" title="数据结构：选择排序">
+                        <span class="hidden-mobile">数据结构：选择排序</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
