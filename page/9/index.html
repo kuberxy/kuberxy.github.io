@@ -216,6 +216,67 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2020/12/20/Lua%E5%85%83%E8%A1%A8/" target="_self">
+          Lua元表
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/12/20/Lua%E5%85%83%E8%A1%A8/" target="_self">
+        <div>
+          在Lua中，一个表可以通过key访问到对应的value，但是无法直接对两个表进行操作。因此，Lua提供了元表（metable），它允许改变表的行为，而每个行为都会有对应的元方法。 一、理解Lua元表 Lua中，元表的表现行为类似与C++中的操作符重载。比如，我们可以通过重载__add元方法，来计算两个Lua数组的并集，如下示例： 1234567891011121314151617181920212
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-20 11:21" pubdate>
+              2020-12-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Lua/" class="category-chain-item">Lua</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Lua%E5%85%83%E8%A1%A8/">#Lua元表</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2020/12/18/%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B22%EF%BC%9A%E6%90%AD%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%AE%8C%E6%95%B4%E7%9A%84Kubernetes%E9%9B%86%E7%BE%A4/" target="_self">
           集群部署2：搭建一个完整的Kubernetes集群
         </a>
@@ -752,67 +813,6 @@
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/%E9%99%90%E6%B5%81/">#限流</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2020/12/06/%E6%B5%85%E8%B0%88%E5%B8%B8%E7%94%A8%E9%99%90%E6%B5%81%E7%AD%96%E7%95%A5/" target="_self">
-          浅谈常用限流策略
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/12/06/%E6%B5%85%E8%B0%88%E5%B8%B8%E7%94%A8%E9%99%90%E6%B5%81%E7%AD%96%E7%95%A5/" target="_self">
-        <div>
-          在实际的应用场景中，常用的限流策略可以概括为一个词：两窗两桶。其中，两窗是指固定窗口和滑动窗口；两桶是指漏桶和令牌桶。 一、固定窗口 固定窗口，是指设定一个固定的统计周期（比如，30秒或1分钟），然后通过累加计数器对每个周期内的流量进行统计。在一个周期内，如果流量达到了设定的阈值，就进行流量干预，直到进入下一个统计周期，计数器清零，流量接收恢复正常。该策略可以用如下示意图来理解：  二、滑动窗口
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-12-06 10:16" pubdate>
-              2020-12-06
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E7%B3%BB%E7%BB%9F%E5%AE%B9%E9%87%8F/" class="category-chain-item">系统容量</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E9%99%90%E6%B5%81%E7%AD%96%E7%95%A5/">#限流策略</a>
             
           </div>
         

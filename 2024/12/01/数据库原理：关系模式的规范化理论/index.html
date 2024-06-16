@@ -1,0 +1,1117 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Mr.x">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="关系数据库系统设计的核心是关系型数据库设计，而关系型数据库设计的关键是设计关系型数据库的模式。关系型数据库模式的设计主要包括：数据库中应该包括多少个关系模式、每一个关系模式应该包括哪些属性、如何将这些相互关联的关系模式组建成一个完整的关系型数据库等。为构建满足业务需要、不存在异常问题的关系模式，需要在关系模式的规范化理论（简称“关系模式规范化”）的指导下进行关系型数据库的设计工作。 一、常见异常问">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库原理：关系模式的规范化理论">
+<meta property="og:url" content="https://kuberxy.github.io/2024/12/01/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%EF%BC%9A%E5%85%B3%E7%B3%BB%E6%A8%A1%E5%BC%8F%E7%9A%84%E8%A7%84%E8%8C%83%E5%8C%96%E7%90%86%E8%AE%BA/index.html">
+<meta property="og:site_name" content="Kubxy">
+<meta property="og:description" content="关系数据库系统设计的核心是关系型数据库设计，而关系型数据库设计的关键是设计关系型数据库的模式。关系型数据库模式的设计主要包括：数据库中应该包括多少个关系模式、每一个关系模式应该包括哪些属性、如何将这些相互关联的关系模式组建成一个完整的关系型数据库等。为构建满足业务需要、不存在异常问题的关系模式，需要在关系模式的规范化理论（简称“关系模式规范化”）的指导下进行关系型数据库的设计工作。 一、常见异常问">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240616093641648.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240616093742081.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240616101806520.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240616103837717.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240616111955103.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240616114357270.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240616120029007.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240616122623233.png">
+<meta property="article:published_time" content="2024-12-01T05:47:11.000Z">
+<meta property="article:modified_time" content="2024-06-16T04:58:19.000Z">
+<meta property="article:author" content="Mr.x">
+<meta property="article:tag" content="数据库原理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://kuberxy.github.io/img/image-20240616093641648.png">
+  
+  
+  
+  <title>数据库原理：关系模式的规范化理论 - Kubxy</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据库原理：关系模式的规范化理论"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-01 13:47" pubdate>
+          2024年12月1日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          10k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          86 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据库原理：关系模式的规范化理论</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>关系数据库系统设计的核心是关系型数据库设计，而关系型数据库设计的关键是设计关系型数据库的模式。关系型数据库模式的设计主要包括：数据库中应该包括多少个关系模式、每一个关系模式应该包括哪些属性、如何将这些相互关联的关系模式组建成一个完整的关系型数据库等。为构建满足业务需要、不存在异常问题的关系模式，需要在关系模式的规范化理论（简称“关系模式规范化”）的指导下进行关系型数据库的设计工作。</p>
+<h2 id="一、常见异常问题和规范化的内容">一、常见异常问题和规范化的内容</h2>
+<h3 id="1-1、常见异常问题">1.1、常见异常问题</h3>
+<blockquote>
+<p>如果不使用关系模式规范化理论，随意进行数据库设计，将导致哪些问题呢？下面以教学管理数据库为例分析这些问题。</p>
+</blockquote>
+<p>假设教学管理数据库的关系模式为SCD (SNo, SN, Age, Dept, MN, CNo, Scre)，其中，SNo表示学生学号，SN表示学生姓名，Age表示学生年龄，Dept表示学生所在的系别，MN表示系主任姓名，CNo表示课程号，Score 表示成绩。根据实际情况，SCD中的这些数据具有如下语义规定：</p>
+<ul>
+<li>一个系有若干名学生，但一名学生只属于一个系；</li>
+<li>一个系只有一名系主任，但一名系主任可以同时兼任几个系的系主任；</li>
+<li>一名学生可以选修多门课程，每门课程可被若干名学生选修；</li>
+<li>每名学生学习的课程有一个成绩，但不一定立即给出。</li>
+</ul>
+<p>在SCD中填入一部分实际数据，如下图所示。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">SNo</th>
+<th style="text-align:center">SN</th>
+<th style="text-align:center">Age</th>
+<th style="text-align:center">Dept</th>
+<th style="text-align:center">MN</th>
+<th style="text-align:center">CNo</th>
+<th style="text-align:center">Score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">S1</td>
+<td style="text-align:center">赵亦</td>
+<td style="text-align:center">17</td>
+<td style="text-align:center">计算机</td>
+<td style="text-align:center">刘伟</td>
+<td style="text-align:center">C1</td>
+<td style="text-align:center">90</td>
+</tr>
+<tr>
+<td style="text-align:center">S1</td>
+<td style="text-align:center">赵亦</td>
+<td style="text-align:center">17</td>
+<td style="text-align:center">计算机</td>
+<td style="text-align:center">刘伟</td>
+<td style="text-align:center">C2</td>
+<td style="text-align:center">85</td>
+</tr>
+<tr>
+<td style="text-align:center">S2</td>
+<td style="text-align:center">钱尔</td>
+<td style="text-align:center">18</td>
+<td style="text-align:center">信息</td>
+<td style="text-align:center">王平</td>
+<td style="text-align:center">C5</td>
+<td style="text-align:center">57</td>
+</tr>
+<tr>
+<td style="text-align:center">S2</td>
+<td style="text-align:center">钱尔</td>
+<td style="text-align:center">18</td>
+<td style="text-align:center">信息</td>
+<td style="text-align:center">王平</td>
+<td style="text-align:center">C6</td>
+<td style="text-align:center">80</td>
+</tr>
+<tr>
+<td style="text-align:center">S2</td>
+<td style="text-align:center">钱尔</td>
+<td style="text-align:center">18</td>
+<td style="text-align:center">信息</td>
+<td style="text-align:center">王平</td>
+<td style="text-align:center">C7</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">S2</td>
+<td style="text-align:center">钱尔</td>
+<td style="text-align:center">18</td>
+<td style="text-align:center">信息</td>
+<td style="text-align:center">王平</td>
+<td style="text-align:center">C4</td>
+<td style="text-align:center">70</td>
+</tr>
+<tr>
+<td style="text-align:center">S3</td>
+<td style="text-align:center">孙珊</td>
+<td style="text-align:center">20</td>
+<td style="text-align:center">信息</td>
+<td style="text-align:center">王平</td>
+<td style="text-align:center">C1</td>
+<td style="text-align:center">75</td>
+</tr>
+<tr>
+<td style="text-align:center">S3</td>
+<td style="text-align:center">孙珊</td>
+<td style="text-align:center">20</td>
+<td style="text-align:center">信息</td>
+<td style="text-align:center">王平</td>
+<td style="text-align:center">C2</td>
+<td style="text-align:center">70</td>
+</tr>
+<tr>
+<td style="text-align:center">S3</td>
+<td style="text-align:center">孙珊</td>
+<td style="text-align:center">20</td>
+<td style="text-align:center">信息</td>
+<td style="text-align:center">王平</td>
+<td style="text-align:center">C4</td>
+<td style="text-align:center">85</td>
+</tr>
+<tr>
+<td style="text-align:center">S4</td>
+<td style="text-align:center">李思</td>
+<td style="text-align:center">21</td>
+<td style="text-align:center">自动化</td>
+<td style="text-align:center">刘伟</td>
+<td style="text-align:center">C1</td>
+<td style="text-align:center">93</td>
+</tr>
+</tbody>
+</table>
+<p>在SCD中， (SNo, CNo)属性组合能唯一标识每一条记录，同时(SNo, CNo)满足属性数量最少的要求，所以(SNo, CNo)是关系模式SCD的主码。使用SCD建立教学管理数据库，会出现以下问题。</p>
+<ul>
+<li>
+<p>数据冗余。每个系名和系主任姓名的存储次数等于该系学生人数乘以每个学生选修的课程门数，同时学生的姓名、年龄也都要重复存储多次。数据的冗余度很大，浪费了存储空间。</p>
+</li>
+<li>
+<p>插入异常。在SCD中，(SNo, CNo)是主码，当某个新系尚无学生时，SNo和CNo均无值，即使现实中系别存在系名和系主任，但根据实体完整性约束，数据插入要求主码不为空，所以无法插入现实世界中存在的系别信息。</p>
+<p>同理，当新同学尚未选课时，主码(SNo, CNo)不能部分为空，也不能进行插入数据操作，出现插入异常问题。</p>
+</li>
+<li>
+<p>删除异常。当某系学生全部毕业而没有招生时，要删除全部学生的记录，这时系名、系主任也随之删除，而现实中这个系可能依然存在，但在数据库中却无法找到该系的信息。</p>
+</li>
+<li>
+<p>更新异常。如果某学生改名，则该学生的所有记录都要逐一修改SN的值；又如某系更换系主任，则属于该系的学生记录都要修改MN的内容，稍有不慎，就有可能漏改某些记录，这就会造成数据的不一致性，破坏了数据的完整性。</p>
+</li>
+</ul>
+<p>产生上述问题的原因是关系模式SCD中“包罗万象”，既包含了学生信息，又包含了学生选课和院系的信息，此时，称SCD为包含了所有数据的泛关系。泛关系的优势在于查询方便，不需要跨表连接，但在维护数据时，泛关系将描述各类内容的数据混杂在一起，导致上述异常的产生。</p>
+<p>我们可通过关系模式的分解方法，将泛关系模式按其描述实体划分为子关系模式，解决各类异常问题。例如，泛关系模式SCD包含了学生、学生选课和课程实体的信息，按照实体分解SCD为学生关系S (SNo, SN, Age, Dept)、选课关系SC (SNo, CNo, Score)和系关系D (Dept, MN) 3个子关系模式。如下图，是分解后各子关系模式。</p>
+<p><img src="/img/image-20240616093641648.png" srcset="/img/loading.gif" lazyload alt="image-20240616093641648"></p>
+<p>关系模式分解后，实现了学生信息、院系信息和学生选课信息的分离，即S中存储学生基本信息，与所选课程及系主任无关；D中存储院系的有关信息，与学生无关：SC中存储学生选课的信息，与学生及系别的有关信息无关。</p>
+<p>与SCD相比，分解后的关系模式，数据的冗余度明显降低。分解后的关系模式解决了数据插入异常的问题：当新插入一个系时，只需要在关系D中添加一条记录即可；当某个学生尚未选课时，只需要在关系S中添加一条学生记录即可，而与选课关系无关。分解后的关系模式解决了删除异常的问题：当一个系的学生全部毕业时，只需要在S中删除该系的全部学生记录，而关系D中有关该系的信息仍然保留。分解后的关系模式解决了更新异常的问题：由于数据冗余度降低，数据没有重复存储，因此，分解后的关系模式不会引起更新异常。</p>
+<p>经过上述分析，分解后的关系模式是规范的关系模式。由此可见，规范的关系模式应该具备以下4个条件：</p>
+<ul>
+<li>尽可能少的数据冗余（允许外键冗余）。</li>
+<li>没有插入异常。</li>
+<li>没有删除异常</li>
+<li>没有更新异常。</li>
+</ul>
+<p>规范的关系模式并非最适合的设计方案，有时适度的数据冗余会提高查询效率。但是，一个最为适合的数据库设计方案，仍需在关系规范化理论的指导下，减少各类异常，设计符合业务、性能等多方面需求的折中设计方案。</p>
+<h3 id="1-2、规范化的内容">1.2、规范化的内容</h3>
+<p>关系模式的规范化理论最早由关系数据库的创始人埃德加·考特于1970年在其文章《大型共享数据库数据的关系模型》中提出，后经许多专家学者的研究和发展，形成了一套关系数据库设计的理论。</p>
+<p>关系数据库的规范化理论以属性间的函数依赖关系为基础，按照范式（Normal Form,NF）级别定义了第一范式（First Normal Form, INF）、第二范式（Second Normal Form, 2NF）、第三范式（Third Normal Form, 3NF）、BC范式（BC Normal Form, BCNF）和第四范式（Fourth Normal Form, 4NF）等。数据库设计人员可根据范式级别，分析现有关系模式的规范化程度，并对不满足规范化级别的关系模式采取模式分解等方法提升关系模式的规范化程度。数据库规范化理论的主要内容如下图所示。</p>
+<p><img src="/img/image-20240616093742081.png" srcset="/img/loading.gif" lazyload alt="image-20240616093742081"></p>
+<h2 id="二、函数依赖">二、函数依赖</h2>
+<h3 id="2-1、定义">2.1、定义</h3>
+<p>关系规范化理论采用函数依赖描述数据项（属性）的依赖关系。函数依赖(FunctionalDependency, FD)是一种从语义上描述属性间依赖关系的手段。</p>
+<p>例如，在关系模式SCD中，SNo与SN、Age和Dept之间都有一种逻辑依赖关系，即一个SNo只对应一个学生，而一个学生只能属于一个系，因此，当SNo的值确定之后，该学生的SN、Age、Dept的值也随之被确定了。</p>
+<p>这类似于变量间的函数关系。设单值函数Y=F (X)，自变量X的值可以唯一决定函数值Y。同理，我们可以说SNo的值唯一决定函数(SN, Age, Dept)的值，或者说(SN, Age, Dept)函数依赖于SNo。</p>
+<p>函数依赖的形式化定义是：设关系模式R (U, F), U是属性全集，F是由U上函数依赖所构成的集合，X和Y是U的子集，如果对于R (U)的任意一个可能的关系r，对于X的每一个具体值，Y都有唯一的具体值与之对应，则称X决定函数Y，或Y函数依赖于X，记作X<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>Y。我们称X为决定因素，Y为依赖因素。当Y不函数依赖于X时，记作X<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>↛</mo></mrow><annotation encoding="application/x-tex">\nrightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel amsrm">↛</span></span></span></span>Y。当X<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>Y且Y<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>X时，记作X<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>↔</mo></mrow><annotation encoding="application/x-tex">\leftrightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">↔</span></span></span></span>Y。</p>
+<p>下面我们通过关系模式SCD的例子来理解上述定义。根据U和F定义，可以得出：</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>U</mi><mo>=</mo><mo stretchy="false">{</mo><mi>S</mi><mi>N</mi><mi>o</mi><mo separator="true">,</mo><mtext> </mtext><mi>S</mi><mi>N</mi><mo separator="true">,</mo><mtext> </mtext><mi>A</mi><mi>g</mi><mi>e</mi><mo separator="true">,</mo><mtext> </mtext><mi>D</mi><mi>e</mi><mi>p</mi><mi>t</mi><mo separator="true">,</mo><mtext> </mtext><mi>M</mi><mi>N</mi><mo separator="true">,</mo><mtext> </mtext><mi>C</mi><mi>N</mi><mi>o</mi><mo separator="true">,</mo><mtext> </mtext><mi>S</mi><mi>c</mi><mi>o</mi><mi>r</mi><mi>e</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">U=\{SNo, \: SN, \: Age, \: Dept, \: MN, \: CNo, \: Score\}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathnormal" style="margin-right:0.10903em;">SN</span><span class="mord mathnormal">o</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">SN</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">e</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">De</span><span class="mord mathnormal">pt</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">MN</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">CN</span><span class="mord mathnormal">o</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal">core</span><span class="mclose">}</span></span></span></span></span></p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>F</mi><mo>=</mo><mo stretchy="false">{</mo><mi>S</mi><mi>N</mi><mi>o</mi><mo>→</mo><mi>S</mi><mi>N</mi><mo separator="true">,</mo><mtext> </mtext><mi>S</mi><mi>N</mi><mi>o</mi><mo>→</mo><mi>A</mi><mi>g</mi><mi>e</mi><mo separator="true">,</mo><mtext> </mtext><mi>S</mi><mi>N</mi><mi>o</mi><mo>→</mo><mi>D</mi><mi>e</mi><mi>p</mi><mi>t</mi><mo separator="true">,</mo><mtext> </mtext><mo stretchy="false">(</mo><mi>S</mi><mi>N</mi><mi>o</mi><mo separator="true">,</mo><mi>C</mi><mi>N</mi><mi>o</mi><mo stretchy="false">)</mo><mo>→</mo><mi>S</mi><mi>c</mi><mi>o</mi><mi>r</mi><mi>e</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">F=\{SNo \rightarrow SN, \: SNo \rightarrow Age, \: SNo \rightarrow Dept, \: (SNo, CNo) \rightarrow Score\}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathnormal" style="margin-right:0.10903em;">SN</span><span class="mord mathnormal">o</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">SN</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">SN</span><span class="mord mathnormal">o</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">e</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">SN</span><span class="mord mathnormal">o</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">De</span><span class="mord mathnormal">pt</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">SN</span><span class="mord mathnormal">o</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">CN</span><span class="mord mathnormal">o</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal">core</span><span class="mclose">}</span></span></span></span></span></p>
+<p>以F中的最后一个函数依赖(SNo, CNo) <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>Score为例。该函数依赖可理解为：一名学生拥有多门选修课程的成绩，即一个SNo与多个Score的值对应，因此，通过SNo 不能唯一地确定Score，即Score不函数依赖于SNo，从而有SNo<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>↛</mo></mrow><annotation encoding="application/x-tex">\nrightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel amsrm">↛</span></span></span></span>Score；同理有CNo<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>↛</mo></mrow><annotation encoding="application/x-tex">\nrightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel amsrm">↛</span></span></span></span>Score。但是Score可以被(SNo, CNo)所组成的属性集唯一地确定，所以该函数依赖可表示为(SNo,CNo) <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>Score。</p>
+<p>关于函数依赖，需要注意以下3项内容。</p>
+<ul>
+<li>
+<p>函数依赖是在业务定义下的语义概念。函数依赖实际上是对现实世界中事物性质间相关性的一种断言，当业务发生变化时，会导致抽象的函数依赖也发生变化。例如，对于关系模式S，当业务表明学生不存在重名的情况时，可以得到如下函数依赖：SN<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>Age, SN<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>Dept。</p>
+</li>
+<li>
+<p>函数依赖与属性之间的联系类型有关。在一个关系模式中，如果属性X与Y有1:1联系，则存在函数依赖X<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>Y和Y<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>X，即X<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>↔</mo></mrow><annotation encoding="application/x-tex">\leftrightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">↔</span></span></span></span>Y。例如，当学生无重名时，SNo<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>↔</mo></mrow><annotation encoding="application/x-tex">\leftrightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">↔</span></span></span></span>SN。如果属性X与Y有n:1联系，则只存在函数依赖X<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>Y。例如，SNo与Age、Dept之间均为n:1联系，所以有SNo<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>Age、SNo<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>Dept。如果属性X与Y有m:n联系，则X与Y之间不存在任何函数依赖关系。例如，一个学生可以选修多门课程，一门课程又可以被多个学生选修，所以SNo与CNo之间不存在函数依赖关系。因此，属性间的联系类型可用于分析和验证函数依赖关系。</p>
+</li>
+<li>
+<p>函数依赖关系的存在与时间无关。函数依赖是指关系中的所有元组应该满足的约束条件，而不是指关系中某个或某些元组所满足的约束条件。关系中的元组增加、删除或更新后都不能破坏这种函数依赖。因此，我们必须根据语义来确定属性之间的函数依赖，而不能单凭某一时刻关系中的实际数据值来判断。例如，对于关系模式S，假设没有给出无重名的学生这种语义规定，则即使当前关系中没有重名的记录，也只能存在函数依赖SNo<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>SN，而不能存在函数依赖SN<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>SNo，因为如果新增加一个重名的学生，函数依赖SN<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>SNo必然不成立，所以函数依赖关系的存在与时间无关。</p>
+</li>
+</ul>
+<h3 id="2-2、分类">2.2、分类</h3>
+<p>函数依赖可依据决定因素与被决定因素的关系，分为完全函数依赖(Full Functional Dependency)和部分函数依赖(Partial Functional Dependency)。函数依赖也可以根据其是否是通过传递性得到的，分为传递函数依赖(Transitive Functional Dependency)和非传递函数依赖。</p>
+<blockquote>
+<p>完全函数依赖和部分函数依赖</p>
+</blockquote>
+<p>设有关系模式R (U), U是属性全集，X和Y是U的子集，如果X<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>Y，并且对于X 的任何一个真子集X’，都有X’<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>↛</mo></mrow><annotation encoding="application/x-tex">\nrightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel amsrm">↛</span></span></span></span>Y，则称Y完全函数依赖于X。如果对于X的某个真子集X’，有X’<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>Y，则称Y部分函数依赖于X。</p>
+<p>例如，在关系模式SCD中，对于函数依赖(SNo, CNo) <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>Score，因SNo<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>↛</mo></mrow><annotation encoding="application/x-tex">\nrightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel amsrm">↛</span></span></span></span>Score且CNo<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>↛</mo></mrow><annotation encoding="application/x-tex">\nrightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel amsrm">↛</span></span></span></span>Score，所以有Score完全依赖于(SNo, CNo) 。而对于函数依赖SNo<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>Age，如果在决定因素SNo中增加属性CNo，也能够唯一决定Age，所以Age部分函数依赖于(SNo, CNo) 。</p>
+<p>这里需要注意的是，只有当决定因素X是组合属性时，讨论部分函数依赖才有意义，当决定因素是单属性时，则只可能是完全函数依赖。例如，在关系模式S (SNo, SN, Age, Dept)中，决定因素为单属性SNo，不存在部分函数依赖。</p>
+<blockquote>
+<p>传递函数依赖和非传递函数依赖</p>
+</blockquote>
+<p>设有关系模式R (U), U是属性全集，X、Y、Z是U的子集，若X<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>Y，但Y<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>↛</mo></mrow><annotation encoding="application/x-tex">\nrightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel amsrm">↛</span></span></span></span>X，而Y<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>Z ($Y \notin x 且 Z \notin Y <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">)</mo><mtext>，则称</mtext><mi>Z</mi><mtext>对</mtext><mi>X</mi><mtext>传递函数依赖。如果</mtext><mi>Y</mi></mrow><annotation encoding="application/x-tex">)，则称Z对X传递函数依赖。如果Y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mclose">)</span><span class="mord cjk_fallback">，则称</span><span class="mord mathnormal" style="margin-right:0.07153em;">Z</span><span class="mord cjk_fallback">对</span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mord cjk_fallback">传递函数依赖。如果</span><span class="mord mathnormal" style="margin-right:0.22222em;">Y</span></span></span></span>\rightarrow<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mtext>，则</mtext><mi>X</mi></mrow><annotation encoding="application/x-tex">X，则X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mord cjk_fallback">，则</span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span></span></span></span>\leftrightarrow$Y，这时称Z对X直接函数依赖，而不是传递函数依赖。这种情况即非传递函数依赖。</p>
+<p>例如，在关系模式SCD中，学生学号确定后可以唯一确定学生所在院系，即SNo<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>Dept，但Dept<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>↛</mo></mrow><annotation encoding="application/x-tex">\nrightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel amsrm">↛</span></span></span></span>SNo，同时，当院系确定后可唯一确定该院系的系主任，即Dept<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>MN，因此，按照函数依赖的决定关系，上述函数依赖SNo<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>Dept和Dept<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>MN满足传递性，即MN对SNo传递函数依赖。而在学生不存在重名的情况下，有SNo<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>SN、SN<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>SNo、SN→Dept，这时Dept对SNo是直接函数依赖，而不是传递函数依赖。</p>
+<p>如下图，根据上述完全函数依赖、部分函数依赖、传递函数依赖和非传递函数依赖的定义，我们可将函数依赖为4类。在进行范式等级定义时， 如果定义要求函数依赖为完全函数依赖，则表明对函数依赖的传递性没有限制，既可以是完全、传递函数依赖，也可以是完全、非传递函数依赖。</p>
+<p><img src="/img/image-20240616101806520.png" srcset="/img/loading.gif" lazyload alt="image-20240616101806520"></p>
+<h3 id="2-3、案例分析">2.3、案例分析</h3>
+<p>下面我们根据下表中所列举的数据结构和数据项，以商品库存表（关系）中部分关键属性为例，分析数据项（属性间）的函数依赖关系。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">数据结构名称</th>
+<th style="text-align:center">数据项内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">用户信息</td>
+<td style="text-align:center">登录用户名、登录用户密码、电子邮箱等</td>
+</tr>
+<tr>
+<td style="text-align:center">登录凭证</td>
+<td style="text-align:center">用户名、登录时间等</td>
+</tr>
+<tr>
+<td style="text-align:center">商品库存</td>
+<td style="text-align:center">商品编号、名称、类别、生产厂家、入库时间、概述、库存量、供应商信息等</td>
+</tr>
+<tr>
+<td style="text-align:center">系统订单</td>
+<td style="text-align:center">订单编号、提交时间、订单总计、订单状态、销售商品、物流信息等</td>
+</tr>
+<tr>
+<td style="text-align:center">收货地址</td>
+<td style="text-align:center">联系人、性别、快递地址、手机、电子邮箱等</td>
+</tr>
+</tbody>
+</table>
+<p>根据数据项之间的语义关系，商品编号能够唯一决定每件入库商品的基本信息、人库时间信息和供应商信息。因此，商品库存关系模式包含的函数依赖集合F如下所示。</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>F</mi><mo>=</mo><mo stretchy="false">{</mo><mtext>商品编号</mtext><mo>→</mo><mo stretchy="false">{</mo><mtext>名称，类别，生产厂家，入库时间，概述，库存量，供应商信息</mtext><mo stretchy="false">}</mo><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">F=\{商品编号 \rightarrow \{名称，类别，生产厂家，入库时间，概述，库存量，供应商信息\}\}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord cjk_fallback">商品编号</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord cjk_fallback">名称，类别，生产厂家，入库时间，概述，库存量，供应商信息</span><span class="mclose">}}</span></span></span></span></span></p>
+<p>根据上述函数依赖，当商品编号确定时，可以唯一确定该商品的名称、类别、生产厂家、概述、库存量和供应商信息等。因此，我们可进一步将函数依赖集合的右侧进行分解，将其分解为单属性的多个函数依赖。分解后的函数依赖集合F如下所示。</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>F</mi><mo>=</mo><mo stretchy="false">{</mo><mtext>商品编号</mtext><mo>→</mo><mtext>名称，商品编号</mtext><mo>→</mo><mtext>类别，商品编号</mtext><mo>→</mo><mtext>生产厂家，商品编号</mtext><mo>→</mo><mtext>入库时间，商品编号</mtext><mo>→</mo><mtext>概述，商品编号</mtext><mo>→</mo><mtext>库存量，商品编号</mtext><mo>→</mo><mtext>供应商信息</mtext><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">F=\{商品编号 \rightarrow 名称，商品编号 \rightarrow 类别，商品编号 \rightarrow 生产厂家，商品编号 \rightarrow 入库时间，商品编号 \rightarrow 概述，商品编号 \rightarrow 库存量，商品编号 \rightarrow 供应商信息\}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord cjk_fallback">商品编号</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">名称，商品编号</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">类别，商品编号</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">生产厂家，商品编号</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">入库时间，商品编号</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">概述，商品编号</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">库存量，商品编号</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord cjk_fallback">供应商信息</span><span class="mclose">}</span></span></span></span></span></p>
+<p>逐一分析上述函数依赖，其中，商品编号<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>供应商信息的右侧不是单属性，按照属性原子化的要求，将供应商信息按业务台账的样例数据展开，即商品编号<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>{供应商编号，供应商名称，供应商联系方式}。仔细分析该函数依赖发现，商品编号虽然能够唯一决定供应商编号，但商品编号与供应商名称和供应商联系方式为传递函数依赖关系，即满足业务语义的函数依赖为：商品编号→供应商编号，供应商编号→供应商名称，供应商编号→供应商联系方式。</p>
+<p>通过上述分析，商品库存关系的函数依赖集合F如下所示。</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>F</mi><mo>=</mo><mo stretchy="false">{</mo><mtext>商品编号</mtext><mo>→</mo><mtext>名称，商品编号</mtext><mo>→</mo><mtext>类别，商品编号</mtext><mo>→</mo><mtext>生产厂家，商品编号</mtext><mo>→</mo><mtext>入库时间，商品编号</mtext><mo>→</mo><mtext>概述，商品编号</mtext><mo>→</mo><mtext>库存量，商品编号</mtext><mo>→</mo><mtext>供应商编号，供应商编号</mtext><mo>→</mo><mtext>供应商名称，供应商编号</mtext><mo>→</mo><mtext>供应商联系方式</mtext><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">F=\{商品编号 \rightarrow 名称，商品编号 \rightarrow 类别，商品编号 \rightarrow 生产厂家，商品编号 \rightarrow 入库时间，商品编号 \rightarrow 概述，商品编号 \rightarrow 库存量，商品编号 \rightarrow 供应商编号，供应商编号 \rightarrow 供应商名称，供应商编号 \rightarrow 供应商联系方式\}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord cjk_fallback">商品编号</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">名称，商品编号</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">类别，商品编号</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">生产厂家，商品编号</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">入库时间，商品编号</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">概述，商品编号</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">库存量，商品编号</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">供应商编号，供应商编号</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">供应商名称，供应商编号</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord cjk_fallback">供应商联系方式</span><span class="mclose">}</span></span></span></span></span></p>
+<p>通过上述方法，我们可以抽象出案例中其他关系模式的函数依赖，鉴于篇幅原因不再赘述。</p>
+<h2 id="三、范式">三、范式</h2>
+<h3 id="3-1、范式的提出">3.1、范式的提出</h3>
+<p>关系模式的分解是解决关系模式异常的主要手段，那么如何衡量分解后模式的好坏？利用范式理论可回答该问题。</p>
+<p>从1971年起，埃德加·考特相继提出了第一范式(1NF)、第二范式(2NF)和第三范式(3NF)。1974年，埃德加·考特和博伊斯(Boyce)共同提出了一个新的范式的概念，即BC范式(BCNF)。1976年，费金(Fagin)提出了第四范式(4NF)。此后，人们又提出了第五范式(5NF)。各个范式之间的联系可以表示为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5</mn><mi>N</mi><mi>F</mi><mo>⊂</mo><mn>4</mn><mi>N</mi><mi>F</mi><mo>⊂</mo><mi>B</mi><mi>C</mi><mi>N</mi><mi>F</mi><mo>⊂</mo><mn>3</mn><mi>N</mi><mi>F</mi><mo>⊂</mo><mn>2</mn><mi>N</mi><mi>F</mi><mo>⊂</mo><mn>1</mn><mi>N</mi><mi>F</mi></mrow><annotation encoding="application/x-tex">5NF \subset 4NF \subset BCNF \subset 3NF \subset 2NF \subset 1NF</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord">5</span><span class="mord mathnormal" style="margin-right:0.13889em;">NF</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⊂</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord">4</span><span class="mord mathnormal" style="margin-right:0.13889em;">NF</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⊂</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">BCNF</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⊂</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord">3</span><span class="mord mathnormal" style="margin-right:0.13889em;">NF</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⊂</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.13889em;">NF</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⊂</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">1</span><span class="mord mathnormal" style="margin-right:0.13889em;">NF</span></span></span></span>，如下图所示。</p>
+<p><img src="/img/image-20240616103837717.png" srcset="/img/loading.gif" lazyload alt="image-20240616103837717"></p>
+<h3 id="3-2、范式的级别">3.2、范式的级别</h3>
+<h4 id="3-2-1、第一范式">3.2.1、第一范式</h4>
+<h5 id="3-2-1-1、定义">3.2.1.1、定义</h5>
+<p>第一范式(1NF)是关系模式的最基本规范形式，它要求关系模式中每个属性都是不可再分的原子项。</p>
+<p>第一范式的标准定义是，如果关系模式R所有的属性均为原子属性，即每个属性都是不可再分的，则称R属于第一范式，记作<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>∈</mo><mn>1</mn><mi>N</mi><mi>F</mi></mrow><annotation encoding="application/x-tex">R \in 1NF</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">1</span><span class="mord mathnormal" style="margin-right:0.13889em;">NF</span></span></span></span>。</p>
+<p>1NF是关系模式应具备的最基本条件，只有满足1NF的关系模式才称为规范化关系模式，1NF的关系模式是后续更高级别规范化的基础，这也是它被称为“第一”的原因。</p>
+<h5 id="3-2-1-2、规范化方法">3.2.1.2、规范化方法</h5>
+<p>在设计数据库时，第一范式的实施步骤是将关系模式中所有的属性原子化。</p>
+<p>这里需要注意的是，我们强调1NF是关系数据库规范化设计的基础，目的是让初学者在开展数据库设计时，确保属性尽量原子化，培养关系规范化设计的基本素养。但是在实际进行数据库设计时，综合考虑查询效率等原因，我们会让部分属性呈现非原子化的情况，如商品的物流信息等。在实际进行数据库设计时，还是应尽量遵守1NF的要求，仅当具备丰富的数据库经验后，再考虑属性原子化的成本问题。</p>
+<h5 id="3-2-1-3、缺点">3.2.1.3、缺点</h5>
+<p>一个关系模式仅仅属于第一范式是不够的。前面给出的泛关系模式SCD属于第一范式，但它存在数据冗余、插入异常、删除异常和更新异常等问题。</p>
+<p>下面我们来分析泛关系模式SCD中的函数依赖关系。</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mspace width="1em"/><mspace width="1em"/><mspace width="1em"/><mspace width="1em"/><mspace width="1em"/><mspace width="1em"/><mspace width="1em"/><mspace width="1em"/><mo stretchy="false">(</mo><mi>S</mi><mi>N</mi><mi>o</mi><mo separator="true">,</mo><mtext> </mtext><mi>C</mi><mi>N</mi><mi>o</mi><mo stretchy="false">)</mo><mspace width="1em"/><munder accentunder="true"><mi>f</mi><mo stretchy="true">→</mo></munder><mspace width="1em"/><mi>S</mi><mi>c</mi><mi>o</mi><mi>r</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">\quad \quad \quad \quad \quad \quad \quad \quad (SNo, \  CNo) \quad \underrightarrow{f} \quad Score
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.4664em;vertical-align:-0.7164em;"></span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:1em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">SN</span><span class="mord mathnormal">o</span><span class="mpunct">,</span><span class="mspace"> </span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">CN</span><span class="mord mathnormal">o</span><span class="mclose">)</span><span class="mspace" style="margin-right:1em;"></span><span class="mord accentunder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span class="svg-align" style="top:-2.2836em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="height:0.522em;min-width:0.888em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.522em" viewBox="0 0 400000 522" preserveAspectRatio="xMaxYMin slice"><path d="M0 241v40h399891c-47.3 35.3-84 78-110 128
+-16.7 32-27.7 63.7-33 95 0 1.3-.2 2.7-.5 4-.3 1.3-.5 2.3-.5 3 0 7.3 6.7 11 20
+ 11 8 0 13.2-.8 15.5-2.5 2.3-1.7 4.2-5.5 5.5-11.5 2-13.3 5.7-27 11-41 14.7-44.7
+ 39-84.5 73-119.5s73.7-60.2 119-75.5c6-2 9-5.7 9-11s-3-9-9-11c-45.3-15.3-85
+-40.5-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5
+-12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67
+ 151.7 139 205zm0 0v40h399900v-40z"/></svg></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7164em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal">core</span></span></span></span></span></p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>S</mi><mi>N</mi><mi>o</mi><mo>→</mo><mi>S</mi><mi>N</mi><mspace width="1em"/><mspace width="1em"/><mo stretchy="false">(</mo><mi>S</mi><mi>N</mi><mi>o</mi><mo separator="true">,</mo><mtext> </mtext><mi>C</mi><mi>N</mi><mi>o</mi><mo stretchy="false">)</mo><mspace width="1em"/><munder accentunder="true"><mi>p</mi><mo stretchy="true">→</mo></munder><mspace width="1em"/><mi>S</mi><mi>N</mi></mrow><annotation encoding="application/x-tex">SNo \rightarrow SN \quad \quad (SNo, \  CNo) \quad \underrightarrow{p} \quad SN
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">SN</span><span class="mord mathnormal">o</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.4664em;vertical-align:-0.7164em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">SN</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:1em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">SN</span><span class="mord mathnormal">o</span><span class="mpunct">,</span><span class="mspace"> </span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">CN</span><span class="mord mathnormal">o</span><span class="mclose">)</span><span class="mspace" style="margin-right:1em;"></span><span class="mord accentunder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.4306em;"><span class="svg-align" style="top:-2.2836em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="height:0.522em;min-width:0.888em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.522em" viewBox="0 0 400000 522" preserveAspectRatio="xMaxYMin slice"><path d="M0 241v40h399891c-47.3 35.3-84 78-110 128
+-16.7 32-27.7 63.7-33 95 0 1.3-.2 2.7-.5 4-.3 1.3-.5 2.3-.5 3 0 7.3 6.7 11 20
+ 11 8 0 13.2-.8 15.5-2.5 2.3-1.7 4.2-5.5 5.5-11.5 2-13.3 5.7-27 11-41 14.7-44.7
+ 39-84.5 73-119.5s73.7-60.2 119-75.5c6-2 9-5.7 9-11s-3-9-9-11c-45.3-15.3-85
+-40.5-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5
+-12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67
+ 151.7 139 205zm0 0v40h399900v-40z"/></svg></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">p</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7164em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">SN</span></span></span></span></span></p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>S</mi><mi>N</mi><mi>o</mi><mo>→</mo><mi>A</mi><mi>g</mi><mi>e</mi><mspace width="1em"/><mspace width="1em"/><mo stretchy="false">(</mo><mi>S</mi><mi>N</mi><mi>o</mi><mo separator="true">,</mo><mtext> </mtext><mi>C</mi><mi>N</mi><mi>o</mi><mo stretchy="false">)</mo><mspace width="1em"/><munder accentunder="true"><mi>p</mi><mo stretchy="true">→</mo></munder><mspace width="1em"/><mi>A</mi><mi>g</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">SNo \rightarrow Age \quad \quad (SNo, \  CNo) \quad \underrightarrow{p} \quad Age
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">SN</span><span class="mord mathnormal">o</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.4664em;vertical-align:-0.7164em;"></span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:1em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">SN</span><span class="mord mathnormal">o</span><span class="mpunct">,</span><span class="mspace"> </span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">CN</span><span class="mord mathnormal">o</span><span class="mclose">)</span><span class="mspace" style="margin-right:1em;"></span><span class="mord accentunder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.4306em;"><span class="svg-align" style="top:-2.2836em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="height:0.522em;min-width:0.888em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.522em" viewBox="0 0 400000 522" preserveAspectRatio="xMaxYMin slice"><path d="M0 241v40h399891c-47.3 35.3-84 78-110 128
+-16.7 32-27.7 63.7-33 95 0 1.3-.2 2.7-.5 4-.3 1.3-.5 2.3-.5 3 0 7.3 6.7 11 20
+ 11 8 0 13.2-.8 15.5-2.5 2.3-1.7 4.2-5.5 5.5-11.5 2-13.3 5.7-27 11-41 14.7-44.7
+ 39-84.5 73-119.5s73.7-60.2 119-75.5c6-2 9-5.7 9-11s-3-9-9-11c-45.3-15.3-85
+-40.5-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5
+-12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67
+ 151.7 139 205zm0 0v40h399900v-40z"/></svg></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">p</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7164em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">e</span></span></span></span></span></p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>S</mi><mi>N</mi><mi>o</mi><mo>→</mo><mi>D</mi><mi>e</mi><mi>p</mi><mi>t</mi><mspace width="1em"/><mspace width="1em"/><mo stretchy="false">(</mo><mi>S</mi><mi>N</mi><mi>o</mi><mo separator="true">,</mo><mtext> </mtext><mi>C</mi><mi>N</mi><mi>o</mi><mo stretchy="false">)</mo><mspace width="1em"/><munder accentunder="true"><mi>p</mi><mo stretchy="true">→</mo></munder><mspace width="1em"/><mi>D</mi><mi>e</mi><mi>p</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">SNo \rightarrow Dept \quad \quad (SNo, \  CNo) \quad \underrightarrow{p} \quad Dept
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">SN</span><span class="mord mathnormal">o</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.4664em;vertical-align:-0.7164em;"></span><span class="mord mathnormal">De</span><span class="mord mathnormal">pt</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:1em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">SN</span><span class="mord mathnormal">o</span><span class="mpunct">,</span><span class="mspace"> </span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">CN</span><span class="mord mathnormal">o</span><span class="mclose">)</span><span class="mspace" style="margin-right:1em;"></span><span class="mord accentunder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.4306em;"><span class="svg-align" style="top:-2.2836em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="height:0.522em;min-width:0.888em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.522em" viewBox="0 0 400000 522" preserveAspectRatio="xMaxYMin slice"><path d="M0 241v40h399891c-47.3 35.3-84 78-110 128
+-16.7 32-27.7 63.7-33 95 0 1.3-.2 2.7-.5 4-.3 1.3-.5 2.3-.5 3 0 7.3 6.7 11 20
+ 11 8 0 13.2-.8 15.5-2.5 2.3-1.7 4.2-5.5 5.5-11.5 2-13.3 5.7-27 11-41 14.7-44.7
+ 39-84.5 73-119.5s73.7-60.2 119-75.5c6-2 9-5.7 9-11s-3-9-9-11c-45.3-15.3-85
+-40.5-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5
+-12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67
+ 151.7 139 205zm0 0v40h399900v-40z"/></svg></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">p</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7164em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathnormal">De</span><span class="mord mathnormal">pt</span></span></span></span></span></p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>D</mi><mi>e</mi><mi>p</mi><mi>t</mi><mo>→</mo><mi>M</mi><mi>N</mi><mspace width="1em"/><mspace width="1em"/><mspace width="1em"/><mspace width="1em"/><mspace width="1em"/><mspace width="1em"/><mi>S</mi><mi>N</mi><mi>o</mi><mspace width="1em"/><munder accentunder="true"><mi>t</mi><mo stretchy="true">→</mo></munder><mspace width="1em"/><mi>D</mi><mi>e</mi><mi>p</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">Dept \rightarrow MN \quad \quad \quad \quad \quad \quad SNo \quad \underrightarrow{t} \quad Dept
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">De</span><span class="mord mathnormal">pt</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.2053em;vertical-align:-0.522em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">MN</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">SN</span><span class="mord mathnormal">o</span><span class="mspace" style="margin-right:1em;"></span><span class="mord accentunder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6151em;"><span class="svg-align" style="top:-2.478em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="height:0.522em;min-width:0.888em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.522em" viewBox="0 0 400000 522" preserveAspectRatio="xMaxYMin slice"><path d="M0 241v40h399891c-47.3 35.3-84 78-110 128
+-16.7 32-27.7 63.7-33 95 0 1.3-.2 2.7-.5 4-.3 1.3-.5 2.3-.5 3 0 7.3 6.7 11 20
+ 11 8 0 13.2-.8 15.5-2.5 2.3-1.7 4.2-5.5 5.5-11.5 2-13.3 5.7-27 11-41 14.7-44.7
+ 39-84.5 73-119.5s73.7-60.2 119-75.5c6-2 9-5.7 9-11s-3-9-9-11c-45.3-15.3-85
+-40.5-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5
+-12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67
+ 151.7 139 205zm0 0v40h399900v-40z"/></svg></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.522em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathnormal">De</span><span class="mord mathnormal">pt</span></span></span></span></span></p>
+<p>为方便分析，我们使用函数依赖图整体表示SCD中的函数依赖关系。在函数依赖图中，使用矩形框表示属性，使用箭头表示函数依赖的决定关系，箭头上标注函数依赖的类型，如下图所示。</p>
+<p><img src="/img/image-20240616111955103.png" srcset="/img/loading.gif" lazyload alt="image-20240616111955103"></p>
+<p>从该图可以看出，泛关系模式SCD中既存在完全函数依赖，又存在部分函数依赖和传递函数依赖。由于关系模式中存在各类函数依赖，导致数据操作中出现了种种问题。为解决这些问题，我们还需要进一步分解关系模式，减少过于复杂的函数依赖关系。</p>
+<h4 id="3-2-2、第二范式">3.2.2、第二范式</h4>
+<h5 id="3-2-2-1、定义">3.2.2.1、定义</h5>
+<p>第二范式(2NF)是在第一范式基础上构建的范式。</p>
+<p>第二范式的标准定义是，如果关系模式<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>∈</mo><mn>1</mn><mi>N</mi><mi>F</mi></mrow><annotation encoding="application/x-tex">R \in 1NF</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">1</span><span class="mord mathnormal" style="margin-right:0.13889em;">NF</span></span></span></span>，且每个非主属性都完全函数依赖于R的主码，则称R属于第二范式，记作<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>∈</mo><mn>2</mn><mi>N</mi><mi>F</mi></mrow><annotation encoding="application/x-tex">R \in 2NF</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.13889em;">NF</span></span></span></span>。如果数据库模式中每个关系模式都是2NF，则称这个数据库模式为2NF的数据库模式。</p>
+<p>在泛关系模式SCD中，SNo、CNo为主属性，Age、Dept、SN、MN和Score均为非主属性，根据前面的进行分析，存在非主属性对主码的部分函数依赖，所以SCDE2NF。如下图，将SCD分解为2个关系模式SD和SC。在SD中，主码为SNo，主码是单属性，不可能存在部分函数依赖。在SC中， (SNo, CNo) <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>Score。分解后的关系模式SD和SC消除了非主属性对主码的部分函数依赖，SD和SC均属于2NF。</p>
+<p><img src="/img/image-20240616114357270.png" srcset="/img/loading.gif" lazyload alt="image-20240616114357270"></p>
+<p>按照2NF的定义，当关系模式不存在非主属性时，关系模式属于2NF。例如，在关系模式TC (T, C)中，一个教师可以讲授多门课程，一门课程可以被多个教师讲授，T和C两个属性的组合(T, C)是主码，T、C都是主属性，而没有非主属性，所以也就不可能存在非主属性对主码的部分函数依赖，因此<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mi>C</mi><mo>∈</mo><mn>2</mn><mi>N</mi><mi>F</mi></mrow><annotation encoding="application/x-tex">TC \in 2NF</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">TC</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.13889em;">NF</span></span></span></span>。</p>
+<p>经以上分析，我们可以得到以下两个结论。</p>
+<ul>
+<li>
+<p>从1NF关系中消除非主属性对主码的部分函数依赖，是获得2NF的关键步骤。</p>
+</li>
+<li>
+<p>如果R的主码为单属性，或R的全体属性均为主属性，则<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>∈</mo><mn>2</mn><mi>N</mi><mi>F</mi></mrow><annotation encoding="application/x-tex">R \in 2NF</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.13889em;">NF</span></span></span></span>。</p>
+</li>
+</ul>
+<h5 id="3-2-2-2、规范化方法">3.2.2.2、规范化方法</h5>
+<p>基于关系模式“一事一地”原则，从满足第一范式的关系模式中，将部分函数依赖的决定属性和被决定属性提取出来，形成不存在部分函数依赖的子关系模式集合，分解后的每一个关系模式只描述一个实体或者实体间的联系。下面以关系模式SCD为例说明第二范式的规范化过程。</p>
+<p>将SCD (SNo, SN, Age, Dept, MN, CNo, Score)规范为2NF。由(SNo, CNo)  <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder accentunder="true"><mi>p</mi><mo stretchy="true">→</mo></munder></mrow><annotation encoding="application/x-tex">\underrightarrow{p}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.147em;vertical-align:-0.7164em;"></span><span class="mord accentunder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.4306em;"><span class="svg-align" style="top:-2.2836em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="height:0.522em;min-width:0.888em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.522em" viewBox="0 0 400000 522" preserveAspectRatio="xMaxYMin slice"><path d="M0 241v40h399891c-47.3 35.3-84 78-110 128
+-16.7 32-27.7 63.7-33 95 0 1.3-.2 2.7-.5 4-.3 1.3-.5 2.3-.5 3 0 7.3 6.7 11 20
+ 11 8 0 13.2-.8 15.5-2.5 2.3-1.7 4.2-5.5 5.5-11.5 2-13.3 5.7-27 11-41 14.7-44.7
+ 39-84.5 73-119.5s73.7-60.2 119-75.5c6-2 9-5.7 9-11s-3-9-9-11c-45.3-15.3-85
+-40.5-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5
+-12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67
+ 151.7 139 205zm0 0v40h399900v-40z"/></svg></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">p</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7164em;"><span></span></span></span></span></span></span></span></span>  (SN, Age, Dept, MN}，(SNo, CNo)  <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder accentunder="true"><mi>f</mi><mo stretchy="true">→</mo></munder></mrow><annotation encoding="application/x-tex">\underrightarrow{f}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.4109em;vertical-align:-0.7164em;"></span><span class="mord accentunder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span class="svg-align" style="top:-2.2836em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="height:0.522em;min-width:0.888em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.522em" viewBox="0 0 400000 522" preserveAspectRatio="xMaxYMin slice"><path d="M0 241v40h399891c-47.3 35.3-84 78-110 128
+-16.7 32-27.7 63.7-33 95 0 1.3-.2 2.7-.5 4-.3 1.3-.5 2.3-.5 3 0 7.3 6.7 11 20
+ 11 8 0 13.2-.8 15.5-2.5 2.3-1.7 4.2-5.5 5.5-11.5 2-13.3 5.7-27 11-41 14.7-44.7
+ 39-84.5 73-119.5s73.7-60.2 119-75.5c6-2 9-5.7 9-11s-3-9-9-11c-45.3-15.3-85
+-40.5-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5
+-12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67
+ 151.7 139 205zm0 0v40h399900v-40z"/></svg></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7164em;"><span></span></span></span></span></span></span></span></span>  Score，可以判断，{SN, Age,Dept, MN}部分函数依赖于(SNo, CNo)，不满足第二范式要求。将该部分函数依赖中的决定因素SNo和被决定因素提取出来，得到SNo  <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder accentunder="true"><mi>f</mi><mo stretchy="true">→</mo></munder></mrow><annotation encoding="application/x-tex">\underrightarrow{f}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.4109em;vertical-align:-0.7164em;"></span><span class="mord accentunder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span class="svg-align" style="top:-2.2836em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="height:0.522em;min-width:0.888em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.522em" viewBox="0 0 400000 522" preserveAspectRatio="xMaxYMin slice"><path d="M0 241v40h399891c-47.3 35.3-84 78-110 128
+-16.7 32-27.7 63.7-33 95 0 1.3-.2 2.7-.5 4-.3 1.3-.5 2.3-.5 3 0 7.3 6.7 11 20
+ 11 8 0 13.2-.8 15.5-2.5 2.3-1.7 4.2-5.5 5.5-11.5 2-13.3 5.7-27 11-41 14.7-44.7
+ 39-84.5 73-119.5s73.7-60.2 119-75.5c6-2 9-5.7 9-11s-3-9-9-11c-45.3-15.3-85
+-40.5-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5
+-12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67
+ 151.7 139 205zm0 0v40h399900v-40z"/></svg></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7164em;"><span></span></span></span></span></span></span></span></span>  {SN, Age, Dept, MN}，从而形成两个关系模式SD和SC，如下图所示。</p>
+<p><img src="/img/image-20240616120029007.png" srcset="/img/loading.gif" lazyload alt="image-20240616120029007"></p>
+<p>按照“一事一地”原则，SNo  <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder accentunder="true"><mi>f</mi><mo stretchy="true">→</mo></munder></mrow><annotation encoding="application/x-tex">\underrightarrow{f}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.4109em;vertical-align:-0.7164em;"></span><span class="mord accentunder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span class="svg-align" style="top:-2.2836em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="height:0.522em;min-width:0.888em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.522em" viewBox="0 0 400000 522" preserveAspectRatio="xMaxYMin slice"><path d="M0 241v40h399891c-47.3 35.3-84 78-110 128
+-16.7 32-27.7 63.7-33 95 0 1.3-.2 2.7-.5 4-.3 1.3-.5 2.3-.5 3 0 7.3 6.7 11 20
+ 11 8 0 13.2-.8 15.5-2.5 2.3-1.7 4.2-5.5 5.5-11.5 2-13.3 5.7-27 11-41 14.7-44.7
+ 39-84.5 73-119.5s73.7-60.2 119-75.5c6-2 9-5.7 9-11s-3-9-9-11c-45.3-15.3-85
+-40.5-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5
+-12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67
+ 151.7 139 205zm0 0v40h399900v-40z"/></svg></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7164em;"><span></span></span></span></span></span></span></span></span>  {SN, Age, Dept, MN}描述了关系模式SD，(SNo,CNo)   <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder accentunder="true"><mi>f</mi><mo stretchy="true">→</mo></munder></mrow><annotation encoding="application/x-tex">\underrightarrow{f}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.4109em;vertical-align:-0.7164em;"></span><span class="mord accentunder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span class="svg-align" style="top:-2.2836em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="height:0.522em;min-width:0.888em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.522em" viewBox="0 0 400000 522" preserveAspectRatio="xMaxYMin slice"><path d="M0 241v40h399891c-47.3 35.3-84 78-110 128
+-16.7 32-27.7 63.7-33 95 0 1.3-.2 2.7-.5 4-.3 1.3-.5 2.3-.5 3 0 7.3 6.7 11 20
+ 11 8 0 13.2-.8 15.5-2.5 2.3-1.7 4.2-5.5 5.5-11.5 2-13.3 5.7-27 11-41 14.7-44.7
+ 39-84.5 73-119.5s73.7-60.2 119-75.5c6-2 9-5.7 9-11s-3-9-9-11c-45.3-15.3-85
+-40.5-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5
+-12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67
+ 151.7 139 205zm0 0v40h399900v-40z"/></svg></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7164em;"><span></span></span></span></span></span></span></span></span>  Score描述了关系模式SC。</p>
+<p>经上述关系模式分解后，SD的主码为SNo, SC的主码为(SNo, CNo)，其他出现在两个关系模式中的属性均为非主属性，且非主属性在对应的关系模式中对主码均是完全函数依赖。因此，$SD \in 2NF, : SC \in 2NF $。</p>
+<p>第一范式的关系模式经过投影分解转换成第二范式的关系模式后，消除了一些数据冗余。分析上图中SD和SC中的数据，可以看出，它们的存储冗余度比关系模式SCD有了较大幅度的降低。学生的姓名、年龄不需要重复存储多次。这样便可在一定程度上避免数据更新所造成的数据不一致性问题。同时，由于把学生的基本信息与选课信息分开存储，则学生基本信息因没有选课而不能插入的问题得到了解决，插入异常问题得到了改善。同样，如果某个学生不再选修C1课程，只在选课关系SC中删除该学生选修C1的记录即可，SD中有关该学生的信息不受任何影响，这解决了部分删除异常问题。因此，分解后的关系模式SD和SC在性能上比SCD有了显著提高</p>
+<h5 id="3-2-2-3、缺点">3.2.2.3、缺点</h5>
+<p>第二范式的关系模式解决了第一范式中存在的一些问题，但在进行数据操作时，仍然存在下面的一些问题。以分解后满足第二范式的关系模式SD为例，分析如下。</p>
+<ul>
+<li>
+<p>数据冗余。如每个系名和系主任的名字存储的次数等于该系的学生人数。</p>
+</li>
+<li>
+<p>插人异常。如当一个新系没有招生时，有关该系的信息无法插入。</p>
+</li>
+<li>
+<p>删除异常。如某系学生全部毕业而没有招生时删除全部学生的记录也随之删除了该系的有关信息。</p>
+</li>
+<li>
+<p>更新异常。如更换系主任时，仍需改动较多的学生记录。</p>
+</li>
+</ul>
+<p>存在上述问题的原因是，在SD中存在非主属性对主码的传递函数依赖。分析SD中的函数依赖发现，在函数依赖SNo  <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder accentunder="true"><mi>t</mi><mo stretchy="true">→</mo></munder></mrow><annotation encoding="application/x-tex">\underrightarrow{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1371em;vertical-align:-0.522em;"></span><span class="mord accentunder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6151em;"><span class="svg-align" style="top:-2.478em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="height:0.522em;min-width:0.888em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.522em" viewBox="0 0 400000 522" preserveAspectRatio="xMaxYMin slice"><path d="M0 241v40h399891c-47.3 35.3-84 78-110 128
+-16.7 32-27.7 63.7-33 95 0 1.3-.2 2.7-.5 4-.3 1.3-.5 2.3-.5 3 0 7.3 6.7 11 20
+ 11 8 0 13.2-.8 15.5-2.5 2.3-1.7 4.2-5.5 5.5-11.5 2-13.3 5.7-27 11-41 14.7-44.7
+ 39-84.5 73-119.5s73.7-60.2 119-75.5c6-2 9-5.7 9-11s-3-9-9-11c-45.3-15.3-85
+-40.5-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5
+-12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67
+ 151.7 139 205zm0 0v40h399900v-40z"/></svg></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.522em;"><span></span></span></span></span></span></span></span></span>  MN中，非主属性MN对主码SNo传递函数依赖，导致出现了数据冗余、插入异常、删除异常、更新异常等问题。为此，我们还需要对关系模式SD进一步进行模式分解，消除传递函数依赖所产生的异常问题。</p>
+<h4 id="3-2-3、第三范式">3.2.3、第三范式</h4>
+<h5 id="3-2-3-1、定义">3.2.3.1、定义</h5>
+<p>第三范式(3NF)是在第二范式的基础上构建的范式。</p>
+<p>第三范式的标准定义是，如果关系模式<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>∈</mo><mn>2</mn><mi>N</mi><mi>F</mi></mrow><annotation encoding="application/x-tex">R \in 2NF</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.13889em;">NF</span></span></span></span>，且每个非主属性都非传递函数依赖于R的主码，则称R属于第三范式，记作<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>∈</mo><mn>3</mn><mi>N</mi><mi>F</mi></mrow><annotation encoding="application/x-tex">R \in 3NF</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">3</span><span class="mord mathnormal" style="margin-right:0.13889em;">NF</span></span></span></span>。</p>
+<p>前面由关系模式SCD分解而得到的SD (SNo, SN, Age, Dept, MN)和SC (SNo, CNo, Score)，它们都属于第二范式。在SC中，主码为(SNo, CNo)，非主属性为Score，函数依赖为(SNo, CNo) <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>Score，非主属性Score非传递函数依赖于主码(SNo, CNo)，因此，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>C</mi><mo>∈</mo><mn>3</mn><mi>N</mi><mi>F</mi></mrow><annotation encoding="application/x-tex">SC \in 3NF</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">SC</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">3</span><span class="mord mathnormal" style="margin-right:0.13889em;">NF</span></span></span></span>。但在SD中，主码为SNo，非主属性Dept和MN与主码SNo间存在函数依赖SNo<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>Dept和Dept<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>MN，即SNo  <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder accentunder="true"><mi>t</mi><mo stretchy="true">→</mo></munder></mrow><annotation encoding="application/x-tex">\underrightarrow{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1371em;vertical-align:-0.522em;"></span><span class="mord accentunder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6151em;"><span class="svg-align" style="top:-2.478em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="height:0.522em;min-width:0.888em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.522em" viewBox="0 0 400000 522" preserveAspectRatio="xMaxYMin slice"><path d="M0 241v40h399891c-47.3 35.3-84 78-110 128
+-16.7 32-27.7 63.7-33 95 0 1.3-.2 2.7-.5 4-.3 1.3-.5 2.3-.5 3 0 7.3 6.7 11 20
+ 11 8 0 13.2-.8 15.5-2.5 2.3-1.7 4.2-5.5 5.5-11.5 2-13.3 5.7-27 11-41 14.7-44.7
+ 39-84.5 73-119.5s73.7-60.2 119-75.5c6-2 9-5.7 9-11s-3-9-9-11c-45.3-15.3-85
+-40.5-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5
+-12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67
+ 151.7 139 205zm0 0v40h399900v-40z"/></svg></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.522em;"><span></span></span></span></span></span></span></span></span>  MN。由此可见，非主属性MN与主码SNo间存在传递函数依赖，所以<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>D</mi><mo mathvariant="normal">∉</mo><mn>3</mn><mi>N</mi><mi>F</mi></mrow><annotation encoding="application/x-tex">SD \notin 3NF</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel"><span class="mord"><span class="mrel">∈</span></span><span class="mord vbox"><span class="thinbox"><span class="llap"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="inner"><span class="mord"><span class="mord">/</span><span class="mspace" style="margin-right:0.0556em;"></span></span></span><span class="fix"></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">3</span><span class="mord mathnormal" style="margin-right:0.13889em;">NF</span></span></span></span>。</p>
+<h5 id="3-2-3-2、规范化方法">3.2.3.2、规范化方法</h5>
+<p>将第二范式关系模式中存在的传递函数依赖提取出来，确保每个关系模式不存在非主属性对主码的传递函数依赖，然后遵循“一事一地”原则，让一个关系只描述一个实体或者实体间的联系。下面以关系模式SD为例说明第三范式的规范化过程。</p>
+<p>通过语义分析可知，关系模式SD中包含的函数依赖SNo  <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder accentunder="true"><mi>t</mi><mo stretchy="true">→</mo></munder></mrow><annotation encoding="application/x-tex">\underrightarrow{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1371em;vertical-align:-0.522em;"></span><span class="mord accentunder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6151em;"><span class="svg-align" style="top:-2.478em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="height:0.522em;min-width:0.888em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.522em" viewBox="0 0 400000 522" preserveAspectRatio="xMaxYMin slice"><path d="M0 241v40h399891c-47.3 35.3-84 78-110 128
+-16.7 32-27.7 63.7-33 95 0 1.3-.2 2.7-.5 4-.3 1.3-.5 2.3-.5 3 0 7.3 6.7 11 20
+ 11 8 0 13.2-.8 15.5-2.5 2.3-1.7 4.2-5.5 5.5-11.5 2-13.3 5.7-27 11-41 14.7-44.7
+ 39-84.5 73-119.5s73.7-60.2 119-75.5c6-2 9-5.7 9-11s-3-9-9-11c-45.3-15.3-85
+-40.5-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5
+-12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67
+ 151.7 139 205zm0 0v40h399900v-40z"/></svg></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.522em;"><span></span></span></span></span></span></span></span></span>  MN不满足第三范式要求，需将传递、函数依赖进行拆分，拆分为完全、非传递函数依赖，即SNo  <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder accentunder="true"><mi>f</mi><mo stretchy="true">→</mo></munder></mrow><annotation encoding="application/x-tex">\underrightarrow{f}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.4109em;vertical-align:-0.7164em;"></span><span class="mord accentunder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span class="svg-align" style="top:-2.2836em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="height:0.522em;min-width:0.888em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.522em" viewBox="0 0 400000 522" preserveAspectRatio="xMaxYMin slice"><path d="M0 241v40h399891c-47.3 35.3-84 78-110 128
+-16.7 32-27.7 63.7-33 95 0 1.3-.2 2.7-.5 4-.3 1.3-.5 2.3-.5 3 0 7.3 6.7 11 20
+ 11 8 0 13.2-.8 15.5-2.5 2.3-1.7 4.2-5.5 5.5-11.5 2-13.3 5.7-27 11-41 14.7-44.7
+ 39-84.5 73-119.5s73.7-60.2 119-75.5c6-2 9-5.7 9-11s-3-9-9-11c-45.3-15.3-85
+-40.5-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5
+-12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67
+ 151.7 139 205zm0 0v40h399900v-40z"/></svg></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7164em;"><span></span></span></span></span></span></span></span></span>  Dept，Dept  <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder accentunder="true"><mi>f</mi><mo stretchy="true">→</mo></munder></mrow><annotation encoding="application/x-tex">\underrightarrow{f}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.4109em;vertical-align:-0.7164em;"></span><span class="mord accentunder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span class="svg-align" style="top:-2.2836em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="height:0.522em;min-width:0.888em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.522em" viewBox="0 0 400000 522" preserveAspectRatio="xMaxYMin slice"><path d="M0 241v40h399891c-47.3 35.3-84 78-110 128
+-16.7 32-27.7 63.7-33 95 0 1.3-.2 2.7-.5 4-.3 1.3-.5 2.3-.5 3 0 7.3 6.7 11 20
+ 11 8 0 13.2-.8 15.5-2.5 2.3-1.7 4.2-5.5 5.5-11.5 2-13.3 5.7-27 11-41 14.7-44.7
+ 39-84.5 73-119.5s73.7-60.2 119-75.5c6-2 9-5.7 9-11s-3-9-9-11c-45.3-15.3-85
+-40.5-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5
+-12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67
+ 151.7 139 205zm0 0v40h399900v-40z"/></svg></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7164em;"><span></span></span></span></span></span></span></span></span>  MN。结合“一事一地”原则，关系模式SD中描述了两个实体，其中一个是学生实体，其属性有SNo、SN、 Age、Dept；另一个是系别的实体，其属性有Dept和MN。按照分解后获得的函数依赖Dept  <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder accentunder="true"><mi>f</mi><mo stretchy="true">→</mo></munder></mrow><annotation encoding="application/x-tex">\underrightarrow{f}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.4109em;vertical-align:-0.7164em;"></span><span class="mord accentunder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span class="svg-align" style="top:-2.2836em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="height:0.522em;min-width:0.888em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.522em" viewBox="0 0 400000 522" preserveAspectRatio="xMaxYMin slice"><path d="M0 241v40h399891c-47.3 35.3-84 78-110 128
+-16.7 32-27.7 63.7-33 95 0 1.3-.2 2.7-.5 4-.3 1.3-.5 2.3-.5 3 0 7.3 6.7 11 20
+ 11 8 0 13.2-.8 15.5-2.5 2.3-1.7 4.2-5.5 5.5-11.5 2-13.3 5.7-27 11-41 14.7-44.7
+ 39-84.5 73-119.5s73.7-60.2 119-75.5c6-2 9-5.7 9-11s-3-9-9-11c-45.3-15.3-85
+-40.5-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5
+-12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67
+ 151.7 139 205zm0 0v40h399900v-40z"/></svg></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7164em;"><span></span></span></span></span></span></span></span></span>  MN，分解SD形成两个关系模式，分别是学生关系模式S (SNo, SN, Age, Dept)和系别关系模式D (Dept, MN)，如下图所示。</p>
+<p><img src="/img/image-20240616122623233.png" srcset="/img/loading.gif" lazyload alt="image-20240616122623233"></p>
+<p>从该图可以看出，分解为第三范式后，函数依赖关系变得更加简单，既没有非主属性对主码的部分函数依赖，也没有非主属性对主码的传递函数依赖，解决了第二范式中存在的问题。</p>
+<ul>
+<li>
+<p>数据冗余降低了。如系主任的姓名存储的次数与该系的学生人数无关，只在D中存储一次。</p>
+</li>
+<li>
+<p>不存在插入异常。如当一个新系没有学生时，该系的信息可以直接插入D中，而与S无关。</p>
+</li>
+<li>
+<p>不存在删除异常。当要删除某系的全部学生而仍然保留该系的有关信息时，可以只删除S中的相关学生记录，而不影响D中的数据。</p>
+</li>
+<li>
+<p>不存在更新异常。如更换系主任时，只需要修改D中一个相应元组的MN属性值，不会出现数据不一致性问题。</p>
+</li>
+</ul>
+<h5 id="3-2-3-3、缺点">3.2.3.3、缺点</h5>
+<p>在将泛关系模式SCD规范到第三范式后，泛关系模式SCD所存在的数据冗余、插入异常、删除异常和更新异常问题已经全部消失。但第二范式和第三范式均针对非主属性和主属性之间的函数依赖关系，并未考虑主属性与主码的函数依赖关系或主属性之间的函数依赖关系。如果发生了这种函数依赖，仍有可能存在数据冗余、插入异常、删除异常和修改异常。</p>
+<p>例如，设有关系模式SNC (SNo, SN, CNo, Score)，其中SNo代表学号，SN代表学生姓名并假设没有重名，CNo代表课程号，Score代表成绩。可以判定，SNC有两个候选码(SNo, CNo)和(SN, CNo)，其函数依赖如下。</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>S</mi><mi>N</mi><mi>o</mi><mo>↔</mo><mi>S</mi><mi>N</mi></mrow><annotation encoding="application/x-tex">SNo \leftrightarrow SN
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">SN</span><span class="mord mathnormal">o</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">↔</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">SN</span></span></span></span></span></p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo stretchy="false">(</mo><mi>S</mi><mi>N</mi><mi>o</mi><mo separator="true">,</mo><mtext> </mtext><mi>C</mi><mi>N</mi><mi>o</mi><mo stretchy="false">)</mo><mo>→</mo><mi>S</mi><mi>c</mi><mi>o</mi><mi>r</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">(SNo, \: CNo) \rightarrow Score
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">SN</span><span class="mord mathnormal">o</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">CN</span><span class="mord mathnormal">o</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal">core</span></span></span></span></span></p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo stretchy="false">(</mo><mi>S</mi><mi>N</mi><mo separator="true">,</mo><mtext> </mtext><mi>C</mi><mi>N</mi><mi>o</mi><mo stretchy="false">)</mo><mo>→</mo><mi>S</mi><mi>c</mi><mi>o</mi><mi>r</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">(SN, \: CNo) \rightarrow Score
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">SN</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">CN</span><span class="mord mathnormal">o</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal">core</span></span></span></span></span></p>
+<p>在SNC中，主属性为{SNo, SN, CNo}，非主属性为Score，如果选择(SNo, CNo)为主码，则唯一的非主属性Score对主码不存在部分函数依赖，也不存在传递函数依赖，所以<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>N</mi><mi>C</mi><mo>∈</mo><mn>3</mn><mi>N</mi><mi>F</mi></mrow><annotation encoding="application/x-tex">SNC \in 3NF</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">SNC</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">3</span><span class="mord mathnormal" style="margin-right:0.13889em;">NF</span></span></span></span>。但是，因为SNo<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>↔</mo></mrow><annotation encoding="application/x-tex">\leftrightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">↔</span></span></span></span>SN，存在主属性对主码的部分函数依赖(SNo, CNo)  <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder accentunder="true"><mi>p</mi><mo stretchy="true">→</mo></munder></mrow><annotation encoding="application/x-tex">\underrightarrow{p}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.147em;vertical-align:-0.7164em;"></span><span class="mord accentunder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.4306em;"><span class="svg-align" style="top:-2.2836em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="height:0.522em;min-width:0.888em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.522em" viewBox="0 0 400000 522" preserveAspectRatio="xMaxYMin slice"><path d="M0 241v40h399891c-47.3 35.3-84 78-110 128
+-16.7 32-27.7 63.7-33 95 0 1.3-.2 2.7-.5 4-.3 1.3-.5 2.3-.5 3 0 7.3 6.7 11 20
+ 11 8 0 13.2-.8 15.5-2.5 2.3-1.7 4.2-5.5 5.5-11.5 2-13.3 5.7-27 11-41 14.7-44.7
+ 39-84.5 73-119.5s73.7-60.2 119-75.5c6-2 9-5.7 9-11s-3-9-9-11c-45.3-15.3-85
+-40.5-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5
+-12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67
+ 151.7 139 205zm0 0v40h399900v-40z"/></svg></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">p</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7164em;"><span></span></span></span></span></span></span></span></span>  SN，造成SNC中存在较大的数据冗余，即学生姓名的出现次数等于该学生所选的课程数，同时，当更改某个学生的姓名时，必须搜索出该姓名的每个学生记录，并对其姓名逐一修改，这样容易造成数据不一致性问题。</p>
+<p>为解决第三范式中主属性与主码之间的部分函数依赖问题，需消除第三范式中存在的主属性对主码的函数依赖关系，将第三范式进一步规范化到BCNF。</p>
+<p>实际上，BCNF只出现在主码为属性集的情况下。在关系模式中，当出现主属性与主码的函数依赖关系时，可以将该函数依赖涉及的主属性从现有关系模式中分解出来，构建新的关系模式，如将SNC分解为关系模式SS (SNo, SN) （用于描述学生实体）和关系模式SC (SNo, CNo, Score) （用于描述学生与课程的联系），分解后的关系模式不存在主属性对主码的部分函数依赖。</p>
+<p>有关BCNF的内容，读者可以参阅相关资料，这里不进行详细讲解。</p>
+<h3 id="3-3、关系模式的规范化过程">3.3、关系模式的规范化过程</h3>
+<p>本书重点介绍了1NF、2NF、3NF（对于其他类型的范式，本书不再详细介绍）。一个低一级范式的关系模式，通过模式分解转化为若干个高一级范式的关系模式的集合，这种分解过程称为u 关系模式的规范化。关系模式的规范化过程就是逐步消除关系模式中不合适的函数依赖的过程。</p>
+<p>1.关系模式规范化的原则</p>
+<p>在满足属性原子化的基础上，规范化的基本原则就是遵循“一事一地”的原则，即一个关系模式只描述一个实体或者实体间的联系。若多于一个实体，就把它“分离”出来。</p>
+<ol start="2">
+<li>关系模式规范化的步骤</li>
+</ol>
+<p>在满足属性原子化的基础上，规范化的步骤就是对原关系进行模式分解，消除非主属性与主属性之间的部分函数依赖和传递函数依赖，消除主属性与主码之间的部分函数依赖。关系模式规范化的基本步骤如图12-10所示。</p>
+<p>(1)检查泛关系模式中各属性，将不满足原子性要求的属性分解为原子属性，形成满足1NF的关系模式。</p>
+<p>(2)分析所有满足1NF关系模式的主码与主属性，查验每个关系模式中非主属性和主码的函数依赖关系，如果存在非主属性对主码的部分函数依赖，则分解该关系模式，消除关系模式中非主属性对主码的部分函数依赖，将1NF关系模式转换成2NF关系模式。</p>
+<p>(3)分析所有满足2NF的关系模式，查验每个关系模式中非主属性和主码的函数依赖关系，如果存在非主属性对主码的传递函数依赖，则分解该关系模式，消除关系模式中非主属性对主码的部分函数依赖，将2NF关系模式转换成3NF关系模式。</p>
+<p>(4)分析所有满足第三范式的关系模式，查验每个关系模式中主属性和主码的函数依赖关系，如果存在主属性对主码的部分函数依赖，则分解该关系模式，消除关系模式中主属性对主码的部分函数依赖，将3NF关系模式转换成BCNF关系模式。</p>
+<p>一般情况下，没有数据冗余、插入异常、更新异常和删除异常的数据库设计可称为合适的数据库设计。但是进行关系模式分解时，要综合考虑分解后关系模式的查询效率和存储代价，视实际情况而定。对于那些只需查找而不要求插入、删除等操作的数据库系统，不宜过度分解，否则当对系统进行整体查询时，需要更多的表连接操作，这有可能得不偿失。</p>
+<p>在实际应用中，最有价值的是3NF和BCNF，在进行关系模式的规范化时，通常分解到3NF 就足够了。</p>
+<h3 id="3-4、关系模式的规范化的要求">3.4、关系模式的规范化的要求</h3>
+<p>关系模式的规范化过程是通过对关系模式的分解来实现的，但是模式分解的方式不是唯一的，不同的分解会得到不同的关系模式。在这些分解方法中，只有能够保证分解后的关系模式与原关系模式等价的方法才是有意义的。所谓等价的关系模式，即模式分解过程保持分解前后的函数依赖和具有无损连接分解。</p>
+<p>无损连接分解是指分解后的关系模式经过自然连接后形成的关系模式，与分解前的关系模式具有相同的信息量。对图12-8中的关系模式SD和SC进行分析发现，两个关系模式自然连接后与分解前的关系模式SCD表达的信息量相同，即分解没有丢失任何信息，满足分解的无损连接要求。</p>
+<p>保持函数依赖是指分解后关系模式的所有函数依赖与分解前关系模式的函数依赖等价。这里的等价性需要依赖于规范化理论的Armstrong公理。Armstrong公理内容较为复杂，我们可以以更为直观的方式理解：不要将一个完全、非传递的函数依赖中出现的决定因素和被决定因素分解到不同关系模式中，例如不要把SCD中决定因素SNo和被决定因素SN、Age等分解到不同的关系模式中，这样就可保证分解后的关系模式的函数依赖与分解前关系模式的函数依赖等价。函数依赖的蕴含以及Armstrong公理等内容涉及一套完整、复杂的推理理论和体系，感兴趣的读者：可参考相关资料进行学习。</p>
+<p>需要注意的是，无损连接性和函数依赖保持性是两个相互独立的标准。具有无损连接性的分解不一定具有函数依赖保持性。同样，具有函数依赖保持性的分解也不一定具有无损连接性。</p>
+<h2 id="四、小结">四、小结</h2>
+<p>本章讲述了关系操作的常见异常和关系规范化主要内容；介绍了函数依赖的定义和类型；数重点讲解了第一范式、第二范式、第三范式这3类主流范式的定义和关系，以及各类范式转化的原则、步骤和注意事项。</p>
+<p>不合理的关系模式主要存在数据冗余、插人异常、删除异常和更新异常。发生上述异常的原因是关系模式中描述了过多的事物，我们可采田关系模式分解方法，将不合理的关系模式转换为规范的关系模式。</p>
+<p>函数依赖为关系模式分解提供分析工具，它从关系模式所表示的业务语义出发，以形式化方式展示各属性之间的逻辑语义依赖关系。常见的函数依赖包括完全函数依赖、部分函数依赖和传递函数依赖。</p>
+<p>基于“一事一地”的原则，借助函数依赖和关系规范化理论，我们可将关系模式分解为满足第一范式、第二范式、第三范式和BCNF要求的关系模式。关系模式分解需保证分解过程既具有无损连接性又保持函数依赖，通常分解到第三范式或BCNF就足够了。</p>
+<h2 id="五、参考">五、参考</h2>
+<p><a target="_blank" rel="noopener" href="https://product.dangdang.com/29379508.html">《数据库原理及应用教程（MySQL版）》</a></p>
+<p><a target="_blank" rel="noopener" href="https://product.dangdang.com/11615897847.html">《数据库系统原理 自考04735》</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="category-chain-item">数据库</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86/" class="print-no-link">#数据库原理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据库原理：关系模式的规范化理论</div>
+      <div>https://kuberxy.github.io/2024/12/01/数据库原理：关系模式的规范化理论/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Mr.x</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/05/26/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9A%E5%88%86%E9%85%8D%E6%8E%92%E5%BA%8F/" title="数据结构：分配排序">
+                        <span class="hidden-mobile">数据结构：分配排序</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
