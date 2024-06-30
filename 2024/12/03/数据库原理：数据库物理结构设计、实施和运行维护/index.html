@@ -1,0 +1,1262 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Mr.x">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="数据库逻辑结构设计完成之后，就进入数据库物理结构设计阶段，在这个阶段将确定数据库物理结构，并对其进行评价。初步评价完成后，就进入数据库实施阶段，其中包括确定数据库结构、数据加载、编制应用程序与调试、数据库试运行等步骤。数据库系统投入正式运行，标志着数据库运行和维护阶段的开始。本章将着重介绍数据库物理结构设计的任务和内容、数据库实施步骤，以及数据库运行和维护阶段需要完成的任务。 本章学习目标：理解数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库原理：数据库物理结构设计、实施和运行维护">
+<meta property="og:url" content="https://kuberxy.github.io/2024/12/03/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E7%89%A9%E7%90%86%E7%BB%93%E6%9E%84%E8%AE%BE%E8%AE%A1%E3%80%81%E5%AE%9E%E6%96%BD%E5%92%8C%E8%BF%90%E8%A1%8C%E7%BB%B4%E6%8A%A4/index.html">
+<meta property="og:site_name" content="Kubxy">
+<meta property="og:description" content="数据库逻辑结构设计完成之后，就进入数据库物理结构设计阶段，在这个阶段将确定数据库物理结构，并对其进行评价。初步评价完成后，就进入数据库实施阶段，其中包括确定数据库结构、数据加载、编制应用程序与调试、数据库试运行等步骤。数据库系统投入正式运行，标志着数据库运行和维护阶段的开始。本章将着重介绍数据库物理结构设计的任务和内容、数据库实施步骤，以及数据库运行和维护阶段需要完成的任务。 本章学习目标：理解数">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-03T05:47:11.000Z">
+<meta property="article:modified_time" content="2024-06-30T10:16:41.000Z">
+<meta property="article:author" content="Mr.x">
+<meta property="article:tag" content="数据库原理">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>数据库原理：数据库物理结构设计、实施和运行维护 - Kubxy</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据库原理：数据库物理结构设计、实施和运行维护"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-03 13:47" pubdate>
+          2024年12月3日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          77 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据库原理：数据库物理结构设计、实施和运行维护</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>数据库逻辑结构设计完成之后，就进入数据库物理结构设计阶段，在这个阶段将确定数据库物理结构，并对其进行评价。初步评价完成后，就进入数据库实施阶段，其中包括确定数据库结构、数据加载、编制应用程序与调试、数据库试运行等步骤。数据库系统投入正式运行，标志着数据库运行和维护阶段的开始。本章将着重介绍数据库物理结构设计的任务和内容、数据库实施步骤，以及数据库运行和维护阶段需要完成的任务。</p>
+<p>本章学习目标：理解数据库物理结构设计阶段的任务，能够在概念结构设计的基础上进行合理的物理结构设计；了解数据库实施及运行和维护的主要工作。</p>
+<h2 id="一、数据库物理结构设计">一、数据库物理结构设计</h2>
+<h3 id="1-1、数据库物理结构设计的任务和步骤">1.1、数据库物理结构设计的任务和步骤</h3>
+<p>数据库的物理结构设计是在数据库逻辑结构基础之上，利用数据库管理系统提供的方法、技术，以较优的存储结构、数据存储路径、合理的数据存储位置及存储分配，设计出一个高效的、可实现的物理数据库结构。物理结构设计是为了有效地实现逻辑模式，确定所采取的存储策略。此阶段是以逻辑设计的结果作为输入，结合具体DBMS的特点与存储设备特性进行设计，选定数据库在物理设备上的存储结构和存取方法。</p>
+<p>数据库物理结构设计通常分为以下两步。</p>
+<ul>
+<li>
+<p>确定物理结构，即确定数据库的存取方法和存储结构。</p>
+</li>
+<li>
+<p>评价物理结构，评价的重点是时间和空间效率。</p>
+</li>
+</ul>
+<h3 id="1-2、数据库物理结构设计的内容和方法">1.2、数据库物理结构设计的内容和方法</h3>
+<p>数据库物理结构设计得好，可以使各事务的响应时间短、存储空间利用率高、事务吞吐量大。在设计数据库时，首先要对经常用到的查询和对数据进行更新的事务进行详细分析，获得物理结构设计所需的各种参数。</p>
+<p>对于数据查询，需要着重分析以下几方面的信息。</p>
+<ul>
+<li>
+<p>查询所涉及的关系。</p>
+</li>
+<li>
+<p>查询条件所涉及的属性。</p>
+</li>
+<li>
+<p>连接条件所涉及的属性。</p>
+</li>
+<li>
+<p>查询列表中涉及的属性。</p>
+</li>
+</ul>
+<p>对于更新数据的事务，需要着重分析以下几方面的信息。</p>
+<ul>
+<li>
+<p>更新所涉及的关系。</p>
+</li>
+<li>
+<p>每个关系上的更新条件所涉及的属性。</p>
+</li>
+<li>
+<p>更新操作所涉及的属性。</p>
+</li>
+</ul>
+<p>在数据库上运行的操作和事务是不断变化的，因此，数据库设计人员需要根据这些操作的变化不断调整数据库的物理结构，以获得最佳的数据库性能。</p>
+<p>其次，要充分了解所使用的DBMS的内部特征，特别是系统提供的存取方法和存储结构。关于此方面，数据库设计人员需要做好以下工作。</p>
+<ul>
+<li>
+<p>充分了解DBMS的特点，例如存储结构和存储方法、DBMS所能提供的物理环境等。</p>
+</li>
+<li>
+<p>充分了解应用环境，特别是应用的处理频率和响应时间要求。</p>
+</li>
+<li>
+<p>熟悉外存设备的特性，例如设备的I/O特性等。</p>
+</li>
+</ul>
+<p>在对上述关键信息和参数进行充分了解及确定之后，数据库设计人员就可以开始进行物理结构设计了。通常情况下，关系数据库的物理结构设计工作内容主要包括以下几方面。</p>
+<ul>
+<li>
+<p>确定数据的存储结构：影响数据结构的因素主要包括存取时间、存储空间利用率和维护代价。在设计时应当根据实际情况对这3个方面综合考虑，例如利用DBMS的索引功能等，力争选择一个最优的方案。</p>
+</li>
+<li>
+<p>设计合适的存取路径：主要指确定如何建立索引。例如，确定应该在哪些关系模式上建立索引、在哪些列上可以建立索引、建立多少个索引合适、是否建立聚集索引等。</p>
+</li>
+<li>
+<p>确定数据的存放位置：为了提高系统的存取效率，应将数据分为易变部分和稳定部分、经常存取部分和不常存取部分，确定哪些存放在高速存储器上、哪些存放在低速存储器上。</p>
+</li>
+<li>
+<p>确定系统配置：数据库设计人员和DBA在进行数据存储时要考虑物理优化的问题，这就需要重新设置系统配置的参数，如同时使用数据库的用户数、同时打开的数据库对象数、缓冲区的大小及个数、时间片的大小、填充因子等，这些参数将直接影响存取时间和存储空间的分配。</p>
+</li>
+</ul>
+<h3 id="1-3、确定物理结构">1.3、确定物理结构</h3>
+<h4 id="1-3-1、存储记录结构的设计">1.3.1、存储记录结构的设计</h4>
+<p>在物理结构中，数据的基本存取单位是存储记录。有了逻辑记录结构以后，就可以设计存储记录结构，一个存储记录可以和一个或多个逻辑记录相对应。存储记录结构包括记录的组成、数据项的类型和长度，以及逻辑记录到存储记录的映射。某一类型的所有存储记录的集合称为“文件”，文件的存储记录可以是定长的，也可以是变长的。</p>
+<p>文件组织或文件结构是组成文件的存储记录的表示法。文件结构应该表示文件格式、逻辑次序、物理次序、存取路径和物理设备的分配。物理数据库就是指数据库中实际存储记录的格式、逻辑次序、物理次序、存取路径和物理设备的分配。</p>
+<p>决定存储结构的主要因素包括存取时间、存储空间和维护代价3个方面。在进行存储记录结构设计时，数据库设计人员应当根据实际情况对这3个方面进行综合权衡。一般DBMS也提供一定的灵活性可供选择，包括聚集和索引。</p>
+<blockquote>
+<p>聚集</p>
+</blockquote>
+<p>聚集就是为了提高查询速度，把在一个（或一组）属性上具有相同值的元组集中地存放在一个物理块中。如果存放不下，可以存放在相邻的物理块中。其中，这个（或这组）属性称为聚集码。聚集有以下两个作用。</p>
+<ul>
+<li>
+<p>使用聚集以后，聚集码相同的元组集中在一起了，因而聚集值不必在每个元组中重复存储，只要在一个元组中存储一次即可，从而节省了存储空间。</p>
+</li>
+<li>
+<p>聚集功能可以大大提高按聚集码进行查询的效率。例如，要查询学生关系中计算机系的学生名单，假设计算机系有300名学生。在极端情况下，这些学生的记录会分布在300个不同的物理块中，这时如果要查询计算机系的学生，就需要做300次I/O操作，这将影响系统查询的性能。如果按照系别建立聚集，使同一个系的学生记录集中存放，则每做一次I/O操作，就可以获得多个满足查询条件的记录，从而显著地减少了存取磁盘的次数。</p>
+</li>
+</ul>
+<blockquote>
+<p>索引</p>
+</blockquote>
+<p>存储记录是属性值的集合，主码可以唯一确定一个记录，而其他属性的一个具体值不能唯一确定一个记录。在主码上应该建立唯一索引，这样不但可以提高查询速度，还能避免主码重复值的输入，确保了数据的完整性。</p>
+<p>在数据库中，用户存取的最小单位是属性。如果对某些非主属性的检索很频繁，可以考虑建立这些属性的索引文件。索引文件对存储记录重新进行内部连接，从逻辑上改变了记录的存储位置，从而改变了存取数据的入口点。关系中数据越多，索引的优越性也就越明显。</p>
+<p>建立多个索引文件可以缩短存取时间，但是这也增加了索引文件所占用的存储空间及维护的开销。如果查询多，并且对查询的性能要求比较高，则可以考虑多建一些索引；如果数据更改多，并且对更改的效率要求比较高，则应该考虑少建一些索引。因此，索引的建立应该根据实际需要综合考虑。</p>
+<h4 id="1-3-2、存取方法的确定">1.3.2、存取方法的确定</h4>
+<p>存取方法是为存储在物理设备上的数据提供存储和检索能力的方法。一个存取方法包括存储结构和检索结构两个部分。存储结构限定了可能存取的路径和存储记录；检索结构定义了每个应用的存取路径，但不涉及存储结构的设计和设备分配。</p>
+<p>存储记录是属性的集合，属性是数据项类型，可用作主码或候选码。主码唯一地确定了一个记录。辅助码是用于记录索引的属性，可能并不唯一确定某一个记录。</p>
+<p>存取路径的设计分为主存取路径的设计与辅存取路径的设计。主存取路径与初始记录的装入有关，通常是用主码来检索的。首先利用这种方法设计各个文件，使其能最有效地处理主要的应用。一个物理数据库很可能有几套主存取路径。辅存取路径是通过辅助码的索引对存储记录重新进行内部连接，从而改变存取数据的入口点。用辅助索引可以缩短存取时间，但增加了存储空间和索引维护的开销。设计人员应根据具体情况做出权衡。</p>
+<h4 id="1-3-3、数据存放位置的确定">1.3.3、数据存放位置的确定</h4>
+<p>为了提高系统性能，人们应该根据应用情况将数据的易变部分、稳定部分、经常存取部分和存取频率较低部分分开存放。</p>
+<p>例如，目前许多计算机都有多个磁盘，人们可以将表和索引分别存放在不同的磁盘上，在查询时，由于两个磁盘驱动器并行工作，因此提高了物理读写的速度。在多用户环境下，人们可以将日志文件和数据库对象（表、索引等）存放在不同的磁盘上，以加快存取速度。另外，数据库的数据备份、日志文件备份等，只在数据库发生故障进行恢复时才使用，而且数据量很大，因此，人们可以将其存放在磁盘上，以改进整个系统的性能。</p>
+<h4 id="1-3-4、系统配置的确定">1.3.4、系统配置的确定</h4>
+<p>DBMS产品一般提供了一些系统配置变量、存储分配参数，供数据库设计人员和DBA对数据库进行物理优化。系统为这些变量设定了初始值，但是这些值不一定适合每一种应用环境，在物理结构设计阶段，数据库设计人员要根据实际情况重新对这些变量赋值，以满足新的要求。</p>
+<p>系统配置变量和存储分配参数很多，例如，同时使用数据库的用户数、同时打开的数据库对象数、内存分配参数、缓冲区分配参数（使用的缓冲区长度、个数）、存储分配参数、数据库的大小、时间片的大小、锁的数目等，这些参数值影响存取时间和存储空间的分配。在进行物理结构设计时，数据库设计人员要根据应用环境确定这些参数值，以使系统的性能达到最优。</p>
+<p>物理结构设计过程中对系统配置变量的调整只是初步的，在系统运行时还需要根据实际运行情况做进一步的参数调整，以改进系统性能。</p>
+<h3 id="1-4、评价物理结构">1.4、评价物理结构</h3>
+<p>物理结构设计过程中，数据库设计人员要对时间效率、空间效率、维护代价和各种用户要求进行权衡，形成多种方案，对这些方案围绕上述指标进行定量估算，分析其优缺点，并进行权衡、比较，选择出一个较合理的物理结构。</p>
+<p>评价物理结构依赖于具体的DBMS，主要考虑操作开销，即为使用户获得及时、准确的数据所需的开销和计算机资源的开销，具体可分为以下几类。</p>
+<ul>
+<li>
+<p>查询和响应时间。响应时间是从查询开始到查询结果开始显示之间所经历的时间。一个好的设计可以减少CPU时间和I/O时间。</p>
+</li>
+<li>
+<p>更新事务的开销。更新事务的开销主要是修改索引、重写物理块或文件及写校验等方面的开销。</p>
+</li>
+<li>
+<p>生成报告的开销。生成报告的开销主要包括索引、重组、排序和结果显示的开销。</p>
+</li>
+<li>
+<p>主存储空间的开销。主存储空间包括程序和数据所占用的空间。对数据库设计人员来说，一般可以对缓冲区进行适当的控制，如缓冲区个数和大小。</p>
+</li>
+<li>
+<p>辅助存储空间的开销。辅助存储空间分为数据块和索引块两种，数据库设计人员可以控制索引块的大小、索引块的充满度等。</p>
+</li>
+</ul>
+<h3 id="1-5、案例的物理结构设计">1.5、案例的物理结构设计</h3>
+<p>针对逻辑结构设计得到的关系模式，分析字段可以选择的数据类型，对存储记录结构进行设计。经过逻辑结构设计之后最终形成了10个关系模式，这里以关系模式供应商、关系模式商品和关系模式供应为例进行详细分析与设计，其他关系模式的存储记录结构仅给出结果作为参考。</p>
+<h4 id="1-5-1、供应商的存储记录结构设计">1.5.1、供应商的存储记录结构设计</h4>
+<p>关系模式供应商的主码为供应商编号，以供应商所在地对供应商进行区分，前2位表示供应商所在省（直辖市）编号，如&quot;01&quot;表示北京，&quot;02&quot;表示天津，以此类推；如果某地的供应商最多为1000个，则供应商编号可以选择字符型，由5位构成，如&quot;01000&quot;表示位于北京的序号为1的供应商。供应商名称和电子邮箱的长短不一，可以选择可变长度字符类型；联系方式通常为11位（固定电话加区号或者手机号），所以这里设计其为字符型，由11位构成。同时，为了方便在MySQL中对字段和表进行操作，将表名称、字段名称设计为英文描述，供应商表的结构如下表所示。</p>
+<p>表1：供应商表（Supplier）的结构</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">字段名</th>
+<th style="text-align:center">字段描述</th>
+<th style="text-align:center">数据类型</th>
+<th style="text-align:center">完整性约束</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">supid</td>
+<td style="text-align:center">供应商编号</td>
+<td style="text-align:center">CHAR(5)</td>
+<td style="text-align:center">主码</td>
+</tr>
+<tr>
+<td style="text-align:center">supname</td>
+<td style="text-align:center">供应商名称</td>
+<td style="text-align:center">VARCHAR(40)</td>
+<td style="text-align:center">非空</td>
+</tr>
+<tr>
+<td style="text-align:center">email</td>
+<td style="text-align:center">电子邮箱</td>
+<td style="text-align:center">VARCHAR(40)</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">telephone</td>
+<td style="text-align:center">联系方式</td>
+<td style="text-align:center">CHAR(1)</td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<h4 id="1-5-2、商品的存储记录结构设计">1.5.2、商品的存储记录结构设计</h4>
+<p>关系模式商品的主码是商品编号，设计商品编号为字符型，由11位构成。商品名称、生产厂家和概述的长短不一，可以选择可变长度字符类型，但是概述比前二者要求的长度要长一些。入库时间精确到秒，可以选择为日期时间型。缩略图是一种区别于前述属性的类型，在MySQL中通常用两种方式来存储：一是将图片转换成二进制数据流存入数据库；二是将图片上传至服务器，数据库只存放图片的路径。由于第一种方式在调用时数据库的负担较大，在图片很多的情况下，显然不适用，因此这里选择以路径的方式来对缩略图进行存储。商品表的结构如表下所示。</p>
+<p>表1：商品（Commodity）的结构</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">字段名</th>
+<th style="text-align:center">字段描述</th>
+<th style="text-align:center">数据类型</th>
+<th style="text-align:center">完成性约束</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">commodityid</td>
+<td style="text-align:center">商品编号</td>
+<td style="text-align:center">CHAR(1)</td>
+<td style="text-align:center">主码</td>
+</tr>
+<tr>
+<td style="text-align:center">commodityname</td>
+<td style="text-align:center">商品名称</td>
+<td style="text-align:center">VARCHAR(40)</td>
+<td style="text-align:center">非空</td>
+</tr>
+<tr>
+<td style="text-align:center">manufacturer</td>
+<td style="text-align:center">生产厂家</td>
+<td style="text-align:center">VARCHAR(40)</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">storagetime</td>
+<td style="text-align:center">入库时间</td>
+<td style="text-align:center">DATETIME</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">summary</td>
+<td style="text-align:center">概述</td>
+<td style="text-align:center">VARCHAR(500)</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">thumbnail</td>
+<td style="text-align:center">缩略图</td>
+<td style="text-align:center">VARCHAR(100)</td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<h4 id="1-5-3、供应的存储记录结构设计">1.5.3、供应的存储记录结构设计</h4>
+<p>关系模式供应的主码由供应商编号和商品编号共同组成，二者的数据类型及长度同供应商表和商品表。供应时间可以选择日期型，单价为货币型，此处选择DECIMAL (9, 2)，可以存储的范围是-9999999.99~9999999.99。数量可以选择数值型，此处以整型为例。供应表的结构如下表所示。</p>
+<p>表1：供应（Supply）的结构</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">字段名</th>
+<th style="text-align:center">字段描述</th>
+<th style="text-align:center">数据类型</th>
+<th style="text-align:center">完整性约束</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">supid</td>
+<td style="text-align:center">供应商编号</td>
+<td style="text-align:center">CHAR(5)</td>
+<td style="text-align:center">主码</td>
+</tr>
+<tr>
+<td style="text-align:center">commodityid</td>
+<td style="text-align:center">商品编号</td>
+<td style="text-align:center">CHAR(11)</td>
+<td style="text-align:center">主码</td>
+</tr>
+<tr>
+<td style="text-align:center">supplytime</td>
+<td style="text-align:center">供应时间</td>
+<td style="text-align:center">DATE</td>
+<td style="text-align:center">非空</td>
+</tr>
+<tr>
+<td style="text-align:center">supplyprice</td>
+<td style="text-align:center">单价</td>
+<td style="text-align:center">DECIMAL (9, 2)</td>
+<td style="text-align:center">非空</td>
+</tr>
+<tr>
+<td style="text-align:center">supplynumber</td>
+<td style="text-align:center">数量</td>
+<td style="text-align:center">INT</td>
+<td style="text-align:center">非空</td>
+</tr>
+</tbody>
+</table>
+<h4 id="1-5-4、其他表的存储记录结构设计">1.5.4、其他表的存储记录结构设计</h4>
+<p>对每个关系模式中的属性进行详细分析之后，结合实际情况，可以确定其他7个关系模式的存储记录结构，分别如下表所示。</p>
+<p>表1：商品分类表（Type）的结构</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">字段名</th>
+<th style="text-align:center">字段描述</th>
+<th style="text-align:center">数据类型</th>
+<th style="text-align:center">完整性约束</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">typeid</td>
+<td style="text-align:center">分类编号</td>
+<td style="text-align:center">CHAR(2)</td>
+<td style="text-align:center">主码</td>
+</tr>
+<tr>
+<td style="text-align:center">typename</td>
+<td style="text-align:center">分类名称</td>
+<td style="text-align:center">CHAR(10)</td>
+<td style="text-align:center">非空</td>
+</tr>
+<tr>
+<td style="text-align:center">typedetail</td>
+<td style="text-align:center">分类概述</td>
+<td style="text-align:center">VARCHAR(50)</td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<p>表2：订单表（Order）的结构</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">字段名</th>
+<th style="text-align:center">字段描述</th>
+<th style="text-align:center">数据类型</th>
+<th style="text-align:center">完整性约束</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">orderid</td>
+<td style="text-align:center">订单编号</td>
+<td style="text-align:center">CHAR(7)</td>
+<td style="text-align:center">主码</td>
+</tr>
+<tr>
+<td style="text-align:center">committime</td>
+<td style="text-align:center">提交时间</td>
+<td style="text-align:center">DATETIME</td>
+<td style="text-align:center">非空</td>
+</tr>
+<tr>
+<td style="text-align:center">orderstate</td>
+<td style="text-align:center">订单状态</td>
+<td style="text-align:center">CHAR(6)</td>
+<td style="text-align:center">非空</td>
+</tr>
+<tr>
+<td style="text-align:center">addressid</td>
+<td style="text-align:center">地址编号</td>
+<td style="text-align:center">CHAR(10)</td>
+<td style="text-align:center">外码</td>
+</tr>
+</tbody>
+</table>
+<p>表3：物流表（Logistics）的结构</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">字段名</th>
+<th style="text-align:center">字段描述</th>
+<th style="text-align:center">数据类型</th>
+<th style="text-align:center">完整性约束</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">logisticsid</td>
+<td style="text-align:center">物流编号</td>
+<td style="text-align:center">CHAR(3)</td>
+<td style="text-align:center">主码</td>
+</tr>
+<tr>
+<td style="text-align:center">logisticsname</td>
+<td style="text-align:center">物流公司名称</td>
+<td style="text-align:center">CHAR(10)</td>
+<td style="text-align:center">非空</td>
+</tr>
+<tr>
+<td style="text-align:center">logisticstelephone</td>
+<td style="text-align:center">物理公司电话</td>
+<td style="text-align:center">CHAR(11)</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">expressid</td>
+<td style="text-align:center">快递单号</td>
+<td style="text-align:center">CHAR(14)</td>
+<td style="text-align:center">非空</td>
+</tr>
+<tr>
+<td style="text-align:center">orderid</td>
+<td style="text-align:center">订单编号</td>
+<td style="text-align:center">CHAR(17)</td>
+<td style="text-align:center">外码</td>
+</tr>
+</tbody>
+</table>
+<p>表4：地址表（Address）的结构</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">字段名</th>
+<th style="text-align:center">字段描述</th>
+<th style="text-align:center">数据类型</th>
+<th style="text-align:center">完整性约束</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">addressid</td>
+<td style="text-align:center">地址编号</td>
+<td style="text-align:center">CHAR(10)</td>
+<td style="text-align:center">主码</td>
+</tr>
+<tr>
+<td style="text-align:center">person</td>
+<td style="text-align:center">联系人</td>
+<td style="text-align:center">CHAR(4)</td>
+<td style="text-align:center">非空</td>
+</tr>
+<tr>
+<td style="text-align:center">sex</td>
+<td style="text-align:center">性别</td>
+<td style="text-align:center">CHAR(2)</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">telephone</td>
+<td style="text-align:center">手机</td>
+<td style="text-align:center">CHAR(11)</td>
+<td style="text-align:center">非空</td>
+</tr>
+<tr>
+<td style="text-align:center">email</td>
+<td style="text-align:center">电子邮箱</td>
+<td style="text-align:center">VARCHAR(40)</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">country</td>
+<td style="text-align:center">国家</td>
+<td style="text-align:center">CHAR(10)</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">province</td>
+<td style="text-align:center">省</td>
+<td style="text-align:center">CHAR(10)</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">city</td>
+<td style="text-align:center">市县</td>
+<td style="text-align:center">CHAR(10)</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">street</td>
+<td style="text-align:center">街道</td>
+<td style="text-align:center">CHAR(20)</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">customerid</td>
+<td style="text-align:center">用户编号</td>
+<td style="text-align:center">INT(11)</td>
+<td style="text-align:center">外码</td>
+</tr>
+</tbody>
+</table>
+<p>表5：用户表（Customer）的结构</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">字段名</th>
+<th style="text-align:center">字段描述</th>
+<th style="text-align:center">数据类型</th>
+<th style="text-align:center">完整性约束</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">customerid</td>
+<td style="text-align:center">用户编号</td>
+<td style="text-align:center">INT(11)</td>
+<td style="text-align:center">主码</td>
+</tr>
+<tr>
+<td style="text-align:center">cusname</td>
+<td style="text-align:center">登录名</td>
+<td style="text-align:center">CHAR(20)</td>
+<td style="text-align:center">非空</td>
+</tr>
+<tr>
+<td style="text-align:center">cuspassword</td>
+<td style="text-align:center">登录密码</td>
+<td style="text-align:center">CHAR(10)</td>
+<td style="text-align:center">非空</td>
+</tr>
+<tr>
+<td style="text-align:center">cusemail</td>
+<td style="text-align:center">电子邮箱</td>
+<td style="text-align:center">VARCHAR(40)</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">cusauthority</td>
+<td style="text-align:center">用户权限</td>
+<td style="text-align:center">TINYINT</td>
+<td style="text-align:center">取值为1和2。1表示采购用户，2表示销售用户</td>
+</tr>
+<tr>
+<td style="text-align:center">registime</td>
+<td style="text-align:center">注册时间</td>
+<td style="text-align:center">DATETIME</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">logtime</td>
+<td style="text-align:center">上次登录时间</td>
+<td style="text-align:center">DATETIME</td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<p>表6：属于表（Classification）的结构</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">字段名</th>
+<th style="text-align:center">字段描述</th>
+<th style="text-align:center">数据类型</th>
+<th style="text-align:center">完整性约束</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">typeid</td>
+<td style="text-align:center">分类编号</td>
+<td style="text-align:center">CHAR(2)</td>
+<td style="text-align:center">主码</td>
+</tr>
+<tr>
+<td style="text-align:center">commodityid</td>
+<td style="text-align:center">商品编号</td>
+<td style="text-align:center">CHAR(11)</td>
+<td style="text-align:center">主码</td>
+</tr>
+</tbody>
+</table>
+<p>表7：包含表（Contain）的结构</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">字段名</th>
+<th style="text-align:center">字段描述</th>
+<th style="text-align:center">数据类型</th>
+<th style="text-align:center">完整性约束</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">orderid</td>
+<td style="text-align:center">订单编号</td>
+<td style="text-align:center">CHAR(17)</td>
+<td style="text-align:center">主码</td>
+</tr>
+<tr>
+<td style="text-align:center">commodityid</td>
+<td style="text-align:center">商品编号</td>
+<td style="text-align:center">CHAR(11)</td>
+<td style="text-align:center">主码</td>
+</tr>
+<tr>
+<td style="text-align:center">saleprice</td>
+<td style="text-align:center">销售单价</td>
+<td style="text-align:center">DECIMAL (9, 2)</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">salenumber</td>
+<td style="text-align:center">销售数量</td>
+<td style="text-align:center">INT</td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="二、数据库实施及运行和维护">二、数据库实施及运行和维护</h2>
+<h3 id="2-1、数据库实施">2.1、数据库实施</h3>
+<p>对数据库的物理设计进行初步评价之后，就可以进行数据库实施了。数据库实施是指根据逻辑结构设计和物理结构设计的结果，在计算机上建立起实际的数据库结构、装入数据、进行测试和试运行的过程。数据库实施主要包括建立数据库结构、装入数据、应用程序编码与调试、数据库试运行和整理文档等工作。</p>
+<h4 id="2-1-1、建立数据库结构">2.1.1、建立数据库结构</h4>
+<p>DBMS提供的数据定义语言(DDL)可以定义数据库结构。我们可使用CREATE TABLE语句定义所需的基本表，使用CREATE VIEW语句定义视图。此外，建立数据库结构还包括创建索引、存储过程等。</p>
+<p>对案例的数据表使用DDL进行创建，这里以创建供应商表、商品表和供应表为例，其他表的创建语句不再赘述。</p>
+<h4 id="2-1-2、装入数据">2.1.2、装入数据</h4>
+<p>装入数据又称为数据库加载(Loading)，是数据库实施阶段最主要的工作。</p>
+<p>由于数据库的数据量一般很大，它们分散于一个企业（或组织）各个部门的数据文件、报表或多种形式的单据中，存在大量的重复数据，并且其格式和结构一般不符合数据库的要求，因此人们必须把这些数据收集起来加以整理，去掉冗余并转换成数据库所规定的格式，这样处理之后才能装入数据库，该过程称为数据的清洗和转换。数据的清洗和转换需要耗费大量的人力、物力，是一种非常单调乏味而又意义重大的工作。</p>
+<p>由于应用环境和数据来源的差异，不可能存在普遍通用的清洗和转换规则，现有的DBMS 并不提供通用的数据清洗和转换软件来完成这一工作。</p>
+<p>对于一般的小型系统，装入的数据量较少，可以采用人工方法来完成。首先将需要装入的数据从各个部门的数据文件中筛选出来，清洗并转换成符合数据库要求的数据格式，然后输入计算机中，最后进行数据校验，检查输入的数据是否有误。但是，人工方法不仅效率低，而且容易产生差错。对于数据量较大的系统，应该由计算机来完成这一工作。通常的处理方法是设计一个数据输入子系统，其主要功能是从大量的原始数据文件中清洗、分类、综合和转换数据库所需的数据，把它们加工成数据库所要求的结构形式，最后装入数据库中，同时采用多种检验技术检查输入数据的正确性。</p>
+<p>为了保证装入数据库中的数据正确无误，人们必须高度重视数据的校验工作。由于要入库的数据格式或结构与系统的要求不完全一样，有的差别可能还比较大，所以向数据库内输入数据时会发生错误，数据转换过程中也有可能出错。在系统的设计中应该考虑多种数据检验技术，在数据转换过程中应使用不同的方法进行多次检验，数据确认正确后方可入库。</p>
+<p>如果在数据库设计时，原来的数据库系统仍在使用，则数据的转换工作是将原来老系统中的数据结构转换成新系统中的数据结构。同时还要转换原来的应用程序，使之能在新系统下有效地运行。</p>
+<p>数据的清洗、分类、综合和转换常常需要多次才能完成，需要编写许多应用程序。由于这一工作需要耗费较多的时间，因此为了保证数据能够及时入库，在进行数据库物理结构设计的同时应该编制数据输入子系统，而不能等数据库物理结构设计完成后才开始。</p>
+<p>目前，很多DBMS都提供了数据导入的功能，有些DBMS还提供了功能强大的数据转换功能，比如可以借助MySQL的导人和导出功能完成数据加载的部分工作。</p>
+<h4 id="2-1-3、应用程序编码与调试">2.1.3、应用程序编码与调试</h4>
+<p>数据库应用程序的设计属于一般的程序设计范畴，但数据库应用程序有自己的一些特点。例如，大量使用屏幕显示控制语句、形式多样的输出报表、数据的有效性和完整性检查、有灵活的交互功能等。</p>
+<p>为了加快应用系统的开发速度，一般选择集成开发环境，利用代码辅助生成、可视化设计、代码错误检测和代码优化技术，实现高效的应用程序编写和调试，如Microsoft的Visual Studio、Jetbrains的IntelliJ IDEA和开源的Eclipse等。这些工具一般还支持数据库访问的插件，方便在统一开发环境中进行程序编码和数据库调试工作。</p>
+<p>数据库结构建立好之后，就可以开始编制与调试数据库的应用程序，这时由于数据入库尚未完成，调试程序时可以先使用模拟数据。</p>
+<h4 id="2-1-4、数据库试运行">2.1.4、数据库试运行</h4>
+<p>应用程序编写完成，并有了一小部分数据装入后，就可以进入数据库试运行阶段。该阶段应该按照系统支持的各种应用分别测试应用程序在数据库上的操作情况，该阶段也称为联合调试阶段。在这一阶段要完成以下两方面的工作。</p>
+<ul>
+<li>
+<p>功能测试。实际运行应用程序，执行对数据库的各种操作，测试它们能否完成各种预先设计的功能。</p>
+</li>
+<li>
+<p>性能测试。测试系统的性能指标，分析是否符合设计目标。</p>
+</li>
+</ul>
+<p>数据库试运行对于系统的性能检验和评价是很重要的，因为有些参数的最佳值只有在试运行后才能找到。如果测试的结果不符合设计目标，则应返回设计阶段，重新修改设计和编写程序，有时甚至需要返回逻辑结构设计阶段，调整逻辑结构。</p>
+<p>重新设计物理结构甚至逻辑结构，会导致数据重新入库。由于数据装入的工作量很大，所以一般分期分批地组织数据装人，先装入小批量数据做调试用，待试运行基本合格后，再大批量装人数据，逐步增加数据量，逐步完成运行评价。</p>
+<p>数据库的实施和调试不是几天就能完成的，需要有一定的时间。在此期间由于系统还不稳定，随时可能发生硬件或软件故障，加之数据库刚刚建立，操作人员对系统还不熟悉，对其规律缺乏了解，容易发生操作错误，这些故障和错误很可能破坏数据库中的数据，这种破坏又很可能在数据库中引起连锁反应，破坏整个数据库。因此，数据库开发人员必须做好数据库的转储和恢复工作，这要求数据库开发人员熟悉DBMS的转储和恢复功能，并根据调试方式和特点首先加以实施，尽量减少对数据库的破坏，并简化故障恢复。</p>
+<h4 id="2-1-5、整理文档">2.1.5、整理文档</h4>
+<p>在应用程序编码、调试和试运行时，数据库开发人员应该随时将发现的问题和解决方法记录下来，将它们整理存档作为资料，供以后正式运行和改进时参考。全部的调试工作完成之后，数据库开发人员还应该编写测试报告、应用系统的技术说明书和使用说明书，在正式运行时随系统一起交给用户。完整的文件资料是应用系统的重要组成部分，这一点容易被忽视，数据库开发人员必须强调这一工作的重要性，以引起用户与数据库设计人员的充分重视。</p>
+<h3 id="2-2、数据库运行和维护">2.2、数据库运行和维护</h3>
+<p>数据库试运行结果符合设计目标后，数据库就投入正式运行，进入运行和维护阶段。数据库系统投入正式运行，标志着数据库应用开发工作的基本结束，但并不意味着设计过程已经结束。由于应用环境不断发生变化，用户的需求和处理方法不断发展，数据库在运行过程中的存储结构也会不断变化，从而必须修改和扩充相应的应用程序。在这一阶段，应由DBA不断地对据库设计进行评价、调整、修改，即对数据库进行经常性的维护。对数据库设计进行评价、调整、修改等维护工作是个长期的任务，也是设计工作的继续和提高。数据库运行和维护阶段的主要任务包括以下4项内容。</p>
+<h4 id="2-2-1、转储和恢复数据库">2.2.1、转储和恢复数据库</h4>
+<p>数据库的转储和恢复是系统正式运行后最重要的维护工作。为了防止数据库出现重大的失误（如数据丢失、数据库遭遇物理性破坏等）， DBA应针对不同的应用需求制订不同的转储计划，定期对数据库和日志文件进行备份，将其转储到其他磁盘。同时，DBA也应该能够利用数据库备份和日志文件备份进行恢复，尽可能减少对数据库的破坏。</p>
+<h4 id="2-2-2、维护数据库的安全性与完整性">2.2.2、维护数据库的安全性与完整性</h4>
+<p>按照设计阶段提供的安全规范和故障恢复规范，DBA要经常检查系统的安全，根据用户的实际需要授予用户不同的操作权限。数据库在运行过程中，由于应用环境发生变化，对安全性的要求可能发生变化，比如，有的数据原来是机密的，现在变成可以公开查询的了，系统中用户的权限等级也会发生变化，DBA要根据实际情况及时调整相应的授权，以保证数据库的安全性。同样，数据库的完整性约束条件也可能会随应用环境的改变而改变，这时DBA也要对其进行调整，以满足用户的要求。</p>
+<h4 id="2-2-3、监测并改善数据库性能">2.2.3、监测并改善数据库性能</h4>
+<p>监视数据库的运行情况，并对监测数据进行分析，找出能够提高性能的可行性，并适当地对数据库进行调整。目前许多DBMS产品都提供了监测系统性能参数的工具，DBA可以利用这些工具得到系统运行过程中一系列性能参数的值。DBA应仔细分析这些数据，判断当前系统运行状况是否为最佳；利用这些工具并结合用户的反馈确定改进措施；及时改正运行中发现的错误；按用户的要求对数据库的现有功能进行适当的扩充。但要注意，在增加新功能时应保证原有功能和性能不受损害。</p>
+<h4 id="2-2-4、重新组织和构造数据库">2.2.4、重新组织和构造数据库</h4>
+<p>数据库建立后，除了数据本身是动态变化以外，随着应用环境的变化，数据库本身也必须变化以适应应用要求。</p>
+<p>数据库运行一段时间后，随着记录的不断增加、删除和修改，数据库的物理存储结构会发生改变，从而使数据库的物理特性受到破坏，这会降低数据库存储空间的利用率和数据的存取效率，使数据库的性能下降。因此，DBA需要对数据库进行重新组织，即重新安排数据的存储位置，回收垃圾，改进数据库的响应时间和空间利用率，提高系统性能。这与操作系统对“磁盘碎片”进行处理的概念相类似。数据库的重新组织只是使数据库的物理存储结构发生变化，而数据库的逻辑结构不变，根据数据库的三级模式，可以知道数据库的重新组织对系统功能没有影响，只是为了提高系统的性能。</p>
+<p>数据库的重新组织并不修改原来设计的逻辑结构，而数据库的重新构造则不同，它要部分修改数据库的模式和内模式。</p>
+<p>数据库应用环境的变化可能导致数据库的逻辑结构发生变化，例如，要增加新的实体、增加某些实体的属性、实体之间的联系发生了变化，这会使原有的数据库设计不能满足新的要求。DBA必须对原来的数据库重新构造，适当调整数据库的模式和内模式，例如，增加新的数据项、增加或删除索引、修改完整性约束条件等。</p>
+<p>DBMS一般提供了重新组织和构造数据库的应用程序，以帮助DBA完成数据库的重新组织和重新构造工作。</p>
+<p>数据库的结构和应用程序设计得好还是坏只是相对的，它并不能保证数据库应用系统始终处于良好的性能状态。这是因为数据库中的数据随着数据库的使用而发生变化，随着这些变化的不断增加，系统的性能有可能会日趋下降，所以即使在不出现故障的情况下，DBA也要对数据库进行维护，以便数据库始终能够获得较好的性能。因此，数据库的设计工作并非一劳永逸，一个好的数据库应用系统需要精心维护方能保持良好的性能。</p>
+<p>只要数据库系统在运行，就需要不断地进行修改、调整和维护。一旦应用变化太大，数据库重新组织也无济于事，这就表明数据库应用系统的生命周期结束，应该建立新系统，重新设计数据库。从头开始数据库设计工作，标志着一个新的数据库应用系统生命周期的开始。</p>
+<h2 id="三、小结">三、小结</h2>
+<p>数据库设计包括6个阶段，即需求分析、概念结构设计、逻辑结构设计、物理结构设计、数据库实施、数据库运行和维护，其中将数据库落实到应用中的最后3个阶段是物理结构设计、数据库实施、数据库运行和维护。</p>
+<p>数据库物理结构设计的任务是在数据库逻辑结构设计的基础上为每个关系模式选择合适的存取方法和存储结构，常用的存取方法是索引方法和聚集方法。在常用的连接属性和选择属性上建立索引，可显著提高查询效率。物理结构设计包括确定物理结构和评价物理结构两步。</p>
+<p>根据逻辑结构设计和物理结构设计的结果，在计算机上建立起实际的数据库结构，装入数据，进行应用程序的设计，并试运行整个数据库系统，这是数据库实施阶段的任务。</p>
+<p>数据库设计的最后阶段是数据库的运行和维护，包括转储和恢复数据库、维护数据库的安全性与完整性、监测并改善数据库性能，必要时需要进行数据库的重新组织和构造。</p>
+<p>数据库设计的成功与否与许多具体因素有关，但只要掌握了数据库设计的基本方法，就可以设计出可行的数据库系统。</p>
+<h2 id="四、参考">四、参考</h2>
+<p><a target="_blank" rel="noopener" href="https://product.dangdang.com/29379508.html">《数据库原理及应用教程（MySQL版）》</a></p>
+<p><a target="_blank" rel="noopener" href="https://product.dangdang.com/11615897847.html">《数据库系统原理 自考04735》</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="category-chain-item">数据库</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86/" class="print-no-link">#数据库原理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据库原理：数据库物理结构设计、实施和运行维护</div>
+      <div>https://kuberxy.github.io/2024/12/03/数据库原理：数据库物理结构设计、实施和运行维护/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Mr.x</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月3日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/12/02/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A6%82%E5%BF%B5%E7%BB%93%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%92%8C%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84%E8%AE%BE%E8%AE%A1/" title="数据库原理：数据库概念结构设计和逻辑结构设计">
+                        <span class="hidden-mobile">数据库原理：数据库概念结构设计和逻辑结构设计</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
