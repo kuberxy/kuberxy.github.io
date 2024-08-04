@@ -1,0 +1,992 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Mr.x">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="指针是C语言中的一个重要概念。通过指针，我们可以简化一些C编程任务的执行。指针是C语言的精髓，同时也是C语言最难理解的一部分内容，要想成为一名优秀的C程序员，学好指针是很有必要的。 一、指针的基本概念 指针是一个特殊的变量，用于存储另一个变量的内存地址。 程序运行过程中产生的数据都保存在内存中，内存是以字节为单位的连续存储空间，每个字节都有一个编号，这个编号称为内存地址。程序中的变量在生存期内都占">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C语言程序设计：指针">
+<meta property="og:url" content="https://kuberxy.github.io/2024/09/15/C%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%EF%BC%9A%E6%8C%87%E9%92%88/index.html">
+<meta property="og:site_name" content="Kubxy">
+<meta property="og:description" content="指针是C语言中的一个重要概念。通过指针，我们可以简化一些C编程任务的执行。指针是C语言的精髓，同时也是C语言最难理解的一部分内容，要想成为一名优秀的C程序员，学好指针是很有必要的。 一、指针的基本概念 指针是一个特殊的变量，用于存储另一个变量的内存地址。 程序运行过程中产生的数据都保存在内存中，内存是以字节为单位的连续存储空间，每个字节都有一个编号，这个编号称为内存地址。程序中的变量在生存期内都占">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240727170649389.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240728083743560.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240728092526585.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240728093403506.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240728094513971.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240728110909428.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240728111104792.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240728142832034.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/9d73520b90de92758f13f35b656c87cc.jpg">
+<meta property="og:image" content="https://kuberxy.github.io/img/0b0633923b4fa450f2743777d74615f5.jpg">
+<meta property="og:image" content="https://kuberxy.github.io/img/79ae9b98a8bf654871dd48bcf7ae16b5.jpg">
+<meta property="og:image" content="https://kuberxy.github.io/img/6de6bfe5d4e3dcaf9da99ea3e971e13f.jpg">
+<meta property="article:published_time" content="2024-09-15T05:47:11.000Z">
+<meta property="article:modified_time" content="2024-07-28T09:25:06.000Z">
+<meta property="article:author" content="Mr.x">
+<meta property="article:tag" content="C语言">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://kuberxy.github.io/img/image-20240727170649389.png">
+  
+  
+  
+  <title>C语言程序设计：指针 - Kubxy</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="C语言程序设计：指针"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-09-15 13:47" pubdate>
+          2024年9月15日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          12k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          97 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">C语言程序设计：指针</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>指针是C语言中的一个重要概念。通过指针，我们可以简化一些C编程任务的执行。指针是C语言的精髓，同时也是C语言最难理解的一部分内容，要想成为一名优秀的C程序员，学好指针是很有必要的。</p>
+<h2 id="一、指针的基本概念">一、指针的基本概念</h2>
+<p>指针是一个特殊的变量，用于存储另一个变量的内存地址。</p>
+<p>程序运行过程中产生的数据都保存在内存中，内存是以字节为单位的连续存储空间，每个字节都有一个编号，这个编号称为内存地址。程序中的变量在生存期内都占据一定字节的内存，这些字节在内存中是连续的，其第一个字节的地址就是该变量的地址。例如，在程序中定义一个int类型的变量a：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-type">int</span> a=<span class="hljs-number">10</span>;<br></code></pre></td></tr></table></figure>
+<p>那么编译器会根据变量a的数据类型int，在内存中为其分配4个字节地址连续的存储空间。假如这块连续空间的首地址为0x0037FBD0，那么这个变量占据0x0037FBD0～0x0037FBCC这4个字节的空间，0x0037FBD0就是变量a的地址。因为通过变量的地址可以找到变量所在的存储空间，所以说变量的地址指向变量所在的存储空间，地址是指向该变量的指针。内存单元和地址的关系如下图所示。</p>
+<p><img src="/img/image-20240727170649389.png" srcset="/img/loading.gif" lazyload alt="image-20240727170649389"></p>
+<p>存储变量a的内存地址为0x0037FBD0，如果用一个变量保存该地址，如变量p，那么p就称为指向变量a的指针。</p>
+<h3 id="1-1、指针的定义">1.1、指针的定义</h3>
+<p>定义指针的语法格式如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs C">变量类型* 变量名<br></code></pre></td></tr></table></figure>
+<p>上述语法格式中，变量类型指的是指针指向的数据的类型，变量名前的符号“*”表示该变量是一个指针类型的变量。举例说明：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-comment">// 定义一个int型的指针变量p</span><br><span class="hljs-type">int</span>* p;<br></code></pre></td></tr></table></figure>
+<p>其中“*”表明p是一个指针，int表明该指针指向一个int型数据所在的地址。</p>
+<h3 id="1-2、指针的赋值">1.2、指针的赋值</h3>
+<p>指针有两种赋值方法。一种是接收变量的地址为其赋值，如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 定义一个int型的变量a</span><br><span class="hljs-type">int</span> a=<span class="hljs-number">10</span>;<br><br><span class="hljs-comment">// 定义一个int型的指针变量p</span><br><span class="hljs-type">int</span>* p;<br><br><span class="hljs-comment">// 使int型的指针p指向int型变量a所在的存储空间</span><br>p=&amp;a;<br></code></pre></td></tr></table></figure>
+<p>另一种是与其他指针指向同一块存储空间，如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 定义一个int型的指针q</span><br><span class="hljs-type">int</span>* q;<br><br><span class="hljs-comment">//使int型的指针q与p指向同一块存储空间</span><br>q=p;<br></code></pre></td></tr></table></figure>
+<p>注：第一种方法中出现的“&amp;”是取址运算符，其作用是获取变量的内存地址。</p>
+<h3 id="1-3、指针的引用">1.3、指针的引用</h3>
+<p>指针的引用，就是根据指针中存放的地址，访问该地址对应的变量。访问指针所指变量的方式非常简单，只需在指针之前添加一个取值运算符“*”即可，其语法格式如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">*指针名<br></code></pre></td></tr></table></figure>
+<p>具体示例如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> a=<span class="hljs-number">10</span>;<br><span class="hljs-type">int</span>* p=&amp;a;<br><span class="hljs-comment">// 输出指针指向的地址中存储的数据</span><br><span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d\n&quot;</span>, *p);<br></code></pre></td></tr></table></figure>
+<h3 id="1-4、野指针、空指针、无类型指针">1.4、野指针、空指针、无类型指针</h3>
+<h4 id="1-4-1、野指针">1.4.1、野指针</h4>
+<p>野指针，指的是指向不可用区域的指针。野指针的形成原因有以下两种。</p>
+<ul>
+<li>
+<p>指针变量没有被初始化。定义的指针变量若没有被初始化，则可能指向系统中任意一块存储空间。若指向的存储空间正在使用，当发生调用并执行某种操作时，就可能造成系统崩溃。所以在定义指针时应使其指向合法空间。</p>
+</li>
+<li>
+<p>若两个指针指向同一块存储空间，指针与内存使用完毕之后，调用相应函数释放了一个指针与其指向的内存，却未改变另一个指针的指向，此时未被释放的指针就变为野指针。</p>
+</li>
+</ul>
+<p>对野指针进行操作可能会发生不可预知的错误。在编程时，可以通过“if(p==NULL){}”来判断指针是否指向空，但是无法检测该指针是否为野指针，为了避免野指针的出现，在定义指针时最好将其指向NULL。</p>
+<h4 id="1-4-2、空指针">1.4.2、空指针</h4>
+<p>空指针，是指没有指向任何存储单元的指针。有时我们可能需要用到指针，但是不确定指针在何时何处使用，因此可先将定义好的指针指向空。具体示例如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 0是唯一不必转换就可以赋值给指针的数据 </span><br><span class="hljs-type">int</span> *p1=<span class="hljs-number">0</span>;<br><span class="hljs-comment">// NULL是一个宏定义，其作用与0相同 </span><br><span class="hljs-type">int</span> *p2=<span class="hljs-literal">NULL</span>;<br><span class="hljs-comment">// 在ASCII码中，编号为0的字符就是空</span><br></code></pre></td></tr></table></figure>
+<p>通常，在编程时，先将指针初始化为空，再对其进行赋值操作：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> x=<span class="hljs-number">10</span>;<br><span class="hljs-type">int</span> *p=<span class="hljs-literal">NULL</span>;<br>p=&amp;x;<br></code></pre></td></tr></table></figure>
+<h4 id="1-4-3、无类型指针">1.4.3、无类型指针</h4>
+<p>之前讲述的指针都有确定的类型，如int类型、char类型等，但有时指针无法被给出明确的类型定义，此时就用到了无类型指针。无类型指针使用void*修饰，这种指针指向一块内存，但其类型不定，程序无法根据这种定义确定为该指针指向的变量分配多少存储空间，所以若使用该指针为其他基类指针赋值，必须先转换成其他类型的指针。使用空指针接收其他指针时不需要强转。具体示例如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 定义无类型的指针</span><br><span class="hljs-type">void</span> *p=<span class="hljs-literal">NULL</span>, *q=<span class="hljs-literal">NULL</span>;<br><br><span class="hljs-comment">// 将无类型的指针p强制转换为int类型再赋值</span><br><span class="hljs-type">int</span> *m=(<span class="hljs-type">int</span> *)p;<br><br><span class="hljs-comment">// 空指针q接收其他类型的指针时不必强转</span><br><span class="hljs-type">int</span> a=<span class="hljs-number">10</span>;<br>q=&amp;a;<br><br></code></pre></td></tr></table></figure>
+<h2 id="二、指针的运算">二、指针的运算</h2>
+<h3 id="2-1、取地址运算符">2.1、取地址运算符</h3>
+<p>定义变量时，系统会为变量在内存中开辟一段空间，用于存储该变量的值，每个变量的存储空间都有唯一的编号，这个编号就是变量的内存地址。</p>
+<p>C语言支持以取址运算符“&amp;”获得变量的内存地址，其语法格式如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">&amp;变量名<br></code></pre></td></tr></table></figure>
+<p>示例代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 定义变量a</span><br><span class="hljs-type">int</span> a=<span class="hljs-number">10</span>;<br><span class="hljs-comment">// 定义int类型的指针p，并取变量a的地址赋值给p</span><br><span class="hljs-type">int</span>* p=&amp;a<br></code></pre></td></tr></table></figure>
+<p>在上述代码中，首先定义了一个int类型的变量a，然后定义了一个int类型的指针p，并取变量a的地址赋值给变量p。此时，&amp;a的值与p的值是相同的。</p>
+<p>注：在为指针赋值时，变量数据类型与指针的基类型最好相同，例如，将int类型变量的地址赋值给int类型指针。如果将int类型变量的地址赋值给float类型指针，程序虽然不会报错，但由于不同类型指针对应的内存单元数量不同，在解读指针指向的变量时会产生类型不兼容错误。</p>
+<h3 id="2-2、取值运算符">2.2、取值运算符</h3>
+<p>指针存储的是另一个变量的内存地址，如果我们希望获取该内存地址中存储的值，可以通过取值运算符“*”得到，其语法格式如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">*指针表达式<br></code></pre></td></tr></table></figure>
+<p>以上格式中的“*”表示取值运算符，“指针表达式”一般为指针名，示例代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">//定义变量a </span><br><span class="hljs-type">int</span> a=<span class="hljs-number">10</span>;<br><span class="hljs-comment">// 定义int型指针p，并取变量a的地址赋值给p</span><br><span class="hljs-type">int</span> *p=&amp;a;<br><span class="hljs-comment">//定义int类变量b，并取指针p中存储的值赋给b</span><br><span class="hljs-type">int</span> b=*p;<br></code></pre></td></tr></table></figure>
+<p>上述代码中，指针p存储的是变量a的内存地址，当使用*p获取值时，得到的值实际上是变量a的值，因此，最终b的值为10。</p>
+<h3 id="2-3、其它常用的指针运行">2.3、其它常用的指针运行</h3>
+<p>除了上面提到的取址和取值运算，指针在程序中会涉及的运算还包括指针与整数相加减、自增、自减、同类指针相减等。</p>
+<h4 id="2-3-1、指针与整数相加、减">2.3.1、指针与整数相加、减</h4>
+<p>指针可以与整数进行相加或相减运算，具体示例如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">p+<span class="hljs-number">1</span>;<br></code></pre></td></tr></table></figure>
+<p>在该示例中，p是一个指针，p+1表示将指针向后移动1个数据长度。数据长度是指对应的基类型所占的字节数，也称为步长，若指针是int类型，则p的步长为4字节，执行p+1，则p的值加上4个字节，即p向后移动4个字节。该操作可通过下图来理解。</p>
+<p><img src="/img/image-20240728083743560.png" srcset="/img/loading.gif" lazyload alt="image-20240728083743560"></p>
+<p>由图可知，变量a的地址是001，p的值也是001，当执行“p = p+1”时，因为p的基类型是int，在内存中占4个字节，所以p+1后，p就指向了“001+4字节”后面的位置，即地址005的位置。</p>
+<p>同样，指针也可以与整数进行相减运算，例如，在上图中，p指向地址005，如果执行p-1操作，则指针会重新指向地址001。</p>
+<p>指针的加减运算实质上是指针在内存中的移动，需要注意的是，对于单独零散的变量，指针的加减运算并无意义，只有指向连续的同类型数据区域，指针加、减整数才有实际意义，因此指针的加减运算通常出现在数组操作中。</p>
+<h4 id="2-3-2、指针的自增、自减">2.3.2、指针的自增、自减</h4>
+<p>指针也可以进行自增或自减运算，具体示例如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c">p++;<br>p--;<br>++p;<br>--p;<br></code></pre></td></tr></table></figure>
+<p>上面的代码表达了指针的自增与自减运算，指针的自增、自减运算就是使指针向前或向后移动一个步长。需要注意的是，当自增或自减运算符在指针后面时，指针先参与其他运算，然后再进行自增或自减；当自增或自减运算符在指针前面时，指针先进行自增或自减运算，然后再进行其他运算。</p>
+<p>指针的自增、自减运算与指针的加减运算含义是相同的，每自增（减）一次都是向后（前）移动一个步长，即p++、++p最终的结果与p+1是相同的。</p>
+<h4 id="2-3-3、同类指针相减运算">2.3.3、同类指针相减运算</h4>
+<p>同类型指针可以进行相减操作，具体示例如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">pm-pn;<br></code></pre></td></tr></table></figure>
+<p>在该示例中，pm和pn是两个同类型的指针。同类指针进行相减运算，其结果为两个指针之间数据元素的个数，即指针的步长个数。例如，有连续内存空间上的两个int类型指针pm与pn，若pm与pn之间相差8个字节，则pm-pn结果为2，这是因为int类型指针的步长为4，两个指针相差8字节，则是2个步长。</p>
+<p>需要注意的是，同类指针之间只有相减运算，没有相加运算，两个地址相加是没有意义的，此外，不同类型指针之间不能进行相减运算。</p>
+<h2 id="三、指针与数组">三、指针与数组</h2>
+<p>指针除了可以指向单个变量，还可以指向一段连续存放数据的内存空间，如字符串、数组等。</p>
+<h3 id="3-1、与一维数组">3.1、与一维数组</h3>
+<h4 id="3-1-1、定义一维数组指针">3.1.1、定义一维数组指针</h4>
+<p>数组在内存中占据一段连续的空间，对于一维数组来说，数组名默认保存了数组在内存中的地址，而一维数组的第1个元素与数组的地址是重合的，因此在定义指向数组的指针时可以直接将数组名赋值给指针变量，也可以取第1个元素的地址赋值给指针变量，另外，指向数组的指针的基类型与数组元素的类型是相同的。</p>
+<p>以int型数组为例，假设有一个int型的数组，其定义如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> a[<span class="hljs-number">5</span>]=&#123;<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>&#125;;<br></code></pre></td></tr></table></figure>
+<p>若要使用指针指向该数组，则其方法如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 将数组名a赋值给指针p1</span><br><span class="hljs-type">int</span> *p1=a;<br><br><span class="hljs-comment">// 取数组第1个元素的地址赋值给指针p2</span><br><span class="hljs-type">int</span> *p2=&amp;a[<span class="hljs-number">0</span>];<br></code></pre></td></tr></table></figure>
+<p>在该代码中，指针p1与指针p2都指向数组a。</p>
+<blockquote>
+<p>小提示：数组名 vs 指针</p>
+</blockquote>
+<p>数组名保存了数组的地址，其功能与指针相同，对数组名取值可以得到数组第1个元素。但数组名与指针又有不同，数组名是一个常量，不可以再对其进行赋值，另外，对数组名取地址得到的还是数组的地址，因此在上述代码中，定义指向数组的指针还可以通过如下方法：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span>* p=&amp;a; <br></code></pre></td></tr></table></figure>
+<h4 id="3-1-2、使用指针访问一维数组元素">3.1.2、使用指针访问一维数组元素</h4>
+<p>定义了指向数组的指针，则指针可以像使用数组名一样，通过下标取值法对数组中的元素进行访问，其格式如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">p[下标]<br></code></pre></td></tr></table></figure>
+<p>例如，通过指针p访问数组a的元素，示例代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 获取数组第1个元素，相当于a[0] </span><br>p[<span class="hljs-number">0</span>];<br><span class="hljs-comment">// 获取数组第2个元素，相当于a[1]</span><br>p[<span class="hljs-number">1</span>];<br></code></pre></td></tr></table></figure>
+<p>数组指针除了使用下标形式访问数组元素之外，还可以通过取值运算符“*”访问数组元素。例如，通过*p可以访问到数组的第1个元素，如果访问数组后面的元素，如访问第3个元素a[2]，则有两种方式。</p>
+<p>（1）移动指针。</p>
+<p>使指针指向a[2]，获取指针指向元素的值，代码如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 将指针加2，使指针指向a[2]</span><br>p=p+<span class="hljs-number">2</span>;<br><span class="hljs-comment">// 通过*运算符获取到a[2]元素</span><br>*p;<br></code></pre></td></tr></table></figure>
+<p>在该代码中，指针p从数组首地址向后移动了2个步长，指向了数组第3个元素。数组是一段连续的内存空间，因此可以使指针在这段内存空间上进行加减运算，其内存结构如下图所示。</p>
+<p><img src="/img/image-20240728092526585.png" srcset="/img/loading.gif" lazyload alt="image-20240728092526585"></p>
+<p>在执行p=p+2之后，指针p向后移动，从第1个元素指向第3个元素。</p>
+<p>（2）不移动指针。</p>
+<p>通过数组指针的加减运算找到指定元素位置并取值，代码如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 获取元素a[2]</span><br>*(p+<span class="hljs-number">2</span>);<br></code></pre></td></tr></table></figure>
+<p>在该代码中，指针p还是指向数组首地址，以指针当前指向的位置为基准，取后面两个步长处的元素，即a[2]。</p>
+<h3 id="3-2、与二维数组">3.2、与二维数组</h3>
+<h4 id="3-2-1、定义二维数组指针">3.2.1、定义二维数组指针</h4>
+<p>假设定义一个2行3列的二维数组，其示例如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> a[<span class="hljs-number">2</span>][<span class="hljs-number">3</span>]=&#123;&#123;<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>&#125;,&#123;<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>&#125;&#125;;<br></code></pre></td></tr></table></figure>
+<p>其中a是二维数组的数组名，该数组中包含两行数据，分别为{1，2，3}和{4，5，6}。从其形式上可以看出，这两行数据又分别为一个一维数组，所以二维数组又视为数组元素为一维数组的一维数组，二维数组的逻辑结构与内存结构如下图所示。</p>
+<p><img src="/img/image-20240728093403506.png" srcset="/img/loading.gif" lazyload alt="image-20240728093403506"></p>
+<p>由图可知，与一维数组一样，二维数组的首地址与数组第1个元素的地址是重合的，因此在定义指向二维数组的指针时，可以将二维数组的数组名赋值给指针，也可以取二维数组的第1个元素的地址赋值给指针。</p>
+<p>需要注意的是，二维数组指针的定义要比一维数组复杂一些，定义二维数组指针时需指定列的个数，其格式如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">数组元素类型(* 数组指针名)[列数];<br></code></pre></td></tr></table></figure>
+<p>在该语法格式中，“*数组指针名”使用了一个圆括号括起来，这样做是因为“[]”的优先级高于“*”，如果不括起来编译器就会将“数组指针名”和“[列数]”先进行运算，构成一个数组。此时就相当于在一个数组前加上了“*”，即定义了一个用来存放指针类型的数组，而不是定义指向数组的指针。</p>
+<p>按照上述格式定义指向数组a的指针，示例代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 二维数组名赋值给指针p1  </span><br><span class="hljs-type">int</span> (*p1)[<span class="hljs-number">3</span>]=a;<br><br><span class="hljs-comment">// 取第一个元素的地址赋值给p2</span><br><span class="hljs-type">int</span> (*p2)[<span class="hljs-number">3</span>]=&amp;a[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>];<br></code></pre></td></tr></table></figure>
+<p>在该代码中，指针p1与指针p2都指向二维数组a，这与一维数组指针的定义方式是相同的。</p>
+<p>我们知道，二维数组可以看作每一行存储的元素为一维数组，如上图（b）所示，在二维数组a中，a[0]是个一维数组，表示二维数组的第1行，它保存的也是一个地址，这个地址就是二维数组的首地址，因此在定义二维数组指针时，也可以将二维数组的第1行地址赋值给指针，示例代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 取第一行地址赋值给p3</span><br><span class="hljs-type">int</span> (*p3)[<span class="hljs-number">3</span>]=a[<span class="hljs-number">0</span>];<br></code></pre></td></tr></table></figure>
+<p>在该代码中，指针p3也指向二维数组a，对指针p1、p2、p3取值，结果都是二维数组的第1个元素。虽然可以通过多种方式定义二维数组，但平常使用最多的还是直接使用二维数组名定义二维数组指针。</p>
+<h4 id="3-2-2、使用指针访问二维数组元素">3.2.2、使用指针访问二维数组元素</h4>
+<p>使用二维数组指针访问数组元素可以通过下标的方式实现，示例代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 访问第1个元素</span><br>p[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>];<br></code></pre></td></tr></table></figure>
+<p>除此之外，还可以通过移动指针访问二维数组中的元素，但指针在二维数组中的运算与一维数组不同，在一维数组中，指向数组的指针每加1，指针移动步长等于一个数组元素的大小，而在二维数组中，指针每加1，指针将移动一行。</p>
+<p>以二维数组a为例，若定义了指向数组的指针p，则p初始时指向数组首地址，即数组的第1行元素，若使p+1，则p将指向数组中的第2行元素，其逻辑结构与内存结构如下图所示。</p>
+<p><img src="/img/image-20240728094513971.png" srcset="/img/loading.gif" lazyload alt="image-20240728094513971"></p>
+<p>由图可知，在二维数组a中，指针加1，是从第1行移动到了第2行，在内存中，则是从第1个元素移动到了第4个元素，即跳过了一行（3个元素）的距离。综上，在二维数组中，指针每加1，就移动1行，即移动二维数组中列的个数，如果每行有n个元素，则指针的移动距离为n×步长。</p>
+<p>另外，一般用数组名与行号表示一行数据，以上文定义的二维数组a为例，a[0]就表示第1行数据，a[1]表示第2行数据。a[0]、a[1]相当于二维数组中一维数组的数组名，指向二维数组对应行的第1个元素，即<code>a[0]=&amp;a[0][0]，a[1]=&amp;a[1][0]</code>。</p>
+<blockquote>
+<p>已经得到二维数组中每一行元素的首地址，那么该如何获取二维数组中的单个元素呢？</p>
+</blockquote>
+<p>此时仍将二维数组视为数组元素为一维数组的一维数组，将一个一维数组视为一个元素，再单独获取一维数组中的元素。已知一维数组的首地址为a[i]，此时的a[i]相当于一维数组的数组名，类比一维数组中使用指针的基本原则，使用a[i]+j，可以得到第i行中第j个元素的地址，对其使用“*”操作符，则<code>*（a[i]+j）</code>表示二维数组中的元素<code>a[i][j]</code>。若类比取值原则对行地址a[i]进行转化，则a[i]可表示为a+i。</p>
+<p>在此需要注意一个问题，即<code>a+i</code>与<code>*（a+i）</code>的意义。通过之前一维数组的学习我们都知道，“*”表示取指针指向的地址存储的数据。在二维数组中，a+i虽然指向的是该行元素的首地址，但它代表的是整行数据元素，只是一个地址，并不表示某一个元素的值，因此<code>*（a+i）</code>仍然表示一个地址，与a[i]等价。<code>*（a+i）+j</code>表示二维数组元素<code>a[i][j]</code>的地址，等价于<code>&amp;a[i][j]</code>，也等价于<code>a[i]+j</code>。</p>
+<p>下面给出二维数组中指针与数据的多种表示方法及意义。仍以数组a[][]为例，具体如下表所示。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">表示形式</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">a</td>
+<td style="text-align:center">二维数组名，指向一维数组a[0]，是第1行元素首地址，也是<code>a[0][0]</code>的地址</td>
+</tr>
+<tr>
+<td style="text-align:center">a[i], *(a+i)</td>
+<td style="text-align:center">一维数组名，表示二维数组第i行元素首地址，等价于<code>&amp;a[i][0]</code></td>
+</tr>
+<tr>
+<td style="text-align:center">*(a+i)+j</td>
+<td style="text-align:center">二维数组元素地址，二维数组中最小数据单元地址，等价于<code>&amp;a[i][j]</code></td>
+</tr>
+<tr>
+<td style="text-align:center">*(*(a+i)+j)</td>
+<td style="text-align:center">二维数组元素，表示第i行第j列数据的值，等价于<code>a[i][j]</code></td>
+</tr>
+</tbody>
+</table>
+<p>通过以上描述可知，使用指针访问二维数组中的元素有多种方法，例如定义指向二维数组的指针p，通过p访问二维数组a中的第2行第2列的元素，则有如下几种方式：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c">p[<span class="hljs-number">1</span>][<span class="hljs-number">1</span>];<br>*(p[<span class="hljs-number">1</span>]+<span class="hljs-number">1</span>);<br>*(*(p+<span class="hljs-number">1</span>)+<span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+<h2 id="四、指针与函数">四、指针与函数</h2>
+<p>除了变量与数组，指针还经常与函数结合使用，指针可以作为函数参数进行传递，提高参数传递的效率，降低直接传递变量的开销。除此之外，还可以定义指向函数的指针，此种指针称为函数指针，函数指针在实际编程开发中也经常使用。</p>
+<h3 id="4-1、指针作为函数参数">4.1、指针作为函数参数</h3>
+<p>在C语言中，实参和形参之间的数据传递是单向的值传递，即只能由实参传递给形参，而不能由形参传递给实参。这与C语言中内存的分配方式有关。当发生函数调用时，系统会使用形参对应的实参为形参赋值，此时的形参及该函数中的变量都存放在函数调用过程中系统在栈区开辟的空间里，栈区随着函数的调用而被分配，随着函数的结束而被释放，在此过程中，栈区对主调函数不可见，因此主调函数并不能读取栈中形参的数据。若要将栈中的数据传递给主调函数，只能用关键字“return”来实现。</p>
+<p>并非所有从主调函数传入被调函数的数据都是不需要改变的。虽然利用返回值可以将在被调函数中修改的数据返回给主调函数，但是C语言中返回值只能返回一个数据，往往不能达到要求；函数中我们也曾学到过全局变量，然而这种方式违背模块化程序设计的原则，与函数的思想背道而驰。</p>
+<p>今天，我们将学习一种新的方法，使用指针作为函数的形参，通过传递地址的方式，使形参和实参都指向主调函数中数据所在地址，从而使被调函数可以对主调函数中的数据进行操作。由于指针既可以获得变量的地址，也可以得到变量值，所以指针交换包含两个方面，一是指针指向交换，二是指针所指地址中存储数据的改变。</p>
+<h4 id="4-1-1、指向交换">4.1.1、指向交换</h4>
+<p>若要交换指针的指向，首先需要申请一个指针（作为辅助变量），记录其中一个指针原来的指向，再使该指针指向另外一个指针，使另外一个指针指向该指针原来的指向。假设p和q都是int类型的指针，则其指向交换示意图如下图示。</p>
+<p><img src="/img/image-20240728110909428.png" srcset="/img/loading.gif" lazyload alt="image-20240728110909428"></p>
+<p>具体的实现方法如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 创建辅助变量指针</span><br><span class="hljs-type">int</span>* tmp=<span class="hljs-literal">NULL</span>;<br><span class="hljs-comment">// 使用辅助指针记录指针p的指向</span><br>tmp=p;<br><span class="hljs-comment">// 使指针p记录指针q的指向</span><br>p=q;<br><span class="hljs-comment">// 使指针q指向p原来指向的地址</span><br>q=tmp;<br></code></pre></td></tr></table></figure>
+<h4 id="4-1-2、数据交换">4.1.2、数据交换</h4>
+<p>若要交换指针指向的空间中的数据，首先需要获取数据，使用“*”运算符可获取数据。假设p和q都是int类型的指针，则数据交换示意图如下图所示。</p>
+<p><img src="/img/image-20240728111104792.png" srcset="/img/loading.gif" lazyload alt="image-20240728111104792"></p>
+<p>具体的实现方法如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 创建辅助变量</span><br><span class="hljs-type">int</span> tmp=<span class="hljs-number">0</span>;<br><span class="hljs-comment">// 使用辅助变量记录指针p指向地址中的数据</span><br>tmp=*p;<br><span class="hljs-comment">// 将q指向地址中的数据放到p所指地址中</span><br>*p=*q;<br><span class="hljs-comment">// 将p中原来的数据放到q所指地址中</span><br>*q=tmp;<br></code></pre></td></tr></table></figure>
+<h4 id="4-1-3、指针作为函数参数">4.1.3、指针作为函数参数</h4>
+<p>在C语言中，使用指针作为函数参数，就是将变量的地址传递给函数，在函数中可以通过指针操作具体的变量。例如，定义一个函数<code>func(int *p1，int *p2)</code>，其作用是比较两个数的大小，函数代码如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">func</span><span class="hljs-params">(<span class="hljs-type">int</span> *p1, <span class="hljs-type">int</span> *p2)</span><br>&#123;<br>    <span class="hljs-keyword">if</span>(*p1 &gt; *p2)<br>    &#123;<br>        <span class="hljs-keyword">return</span> *p1;<br>    &#125;<br>    <span class="hljs-keyword">return</span> *p2;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>以上定义的函数func()接受两个指针作为参数，现有两个变量，定义如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> a=<span class="hljs-number">10</span>;<br><span class="hljs-type">int</span> b=<span class="hljs-number">20</span>;<br></code></pre></td></tr></table></figure>
+<p>如果将变量a与b传递给函数func()，则要传递两个变量的地址，在传递参数的过程中，可以直接取地址进行传递，还可以定义指向变量的指针，将指针传递给函数，示例代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 直接取变量a与b的地址传递给函数</span><br>func(&amp;a, &amp;b);<br><span class="hljs-comment">// 定义指向变量的指针</span><br><span class="hljs-type">int</span> *pa=&amp;a, *pb=&amp;b;<br><span class="hljs-comment">// 将指针作为参数进行传递</span><br>func(pa, pb);<br></code></pre></td></tr></table></figure>
+<p>上述代码中，两次函数调用都是将变量a与b的地址传递给了函数func()，在函数内部，可以通过地址访问变量的值，进行比较大小的操作。</p>
+<h3 id="4-2、数组指针作为函数参数">4.2、数组指针作为函数参数</h3>
+<p>除了单独的变量，数组指针也可以作为函数参数。数组指针作为函数参数进行传递时，是将数组的首地址传递给函数，这样在函数内部可以通过地址访问数组元素，对数组进行操作。数组指针作为函数参数与普通变量的指针作为函数是一样的，都是将相应数据的地址传递给函数，在函数内部通过地址操作数据，示例代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 一维数组指针作为函数参数</span><br><span class="hljs-type">int</span> arr1[<span class="hljs-number">10</span>];<br><span class="hljs-type">int</span> *p1=arr1;<br>func1(p1);<br><br><span class="hljs-comment">// 二维数组指针作为函数参数</span><br><span class="hljs-type">int</span> arr2[<span class="hljs-number">2</span>][<span class="hljs-number">3</span>];<br><span class="hljs-type">int</span> (*p2)[<span class="hljs-number">3</span>]=arr2;<br>func2(p2);<br></code></pre></td></tr></table></figure>
+<p>在上述代码中，分别将一维数组与二维数组的指针作为参数传递给了相应的函数。</p>
+<p>需要注意的是，当函数接收一个二维数组指针作为参数时，其参数形式与二维数组指针的定义格式相同，例如上述代码中func2()函数接收一个二维数组指针，则其参数形式如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 函数接收一个二维数组指针作为参数</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">func2</span><span class="hljs-params">(<span class="hljs-type">int</span> (*p)[<span class="hljs-number">3</span>])</span>;<br></code></pre></td></tr></table></figure>
+<h3 id="4-3、函数指针">4.3、函数指针</h3>
+<p>实际上指针还可以指向函数，当指针指向的是一个函数时，这个指针就叫函数指针。</p>
+<h4 id="4-3-1、函数指针的定义">4.3.1、函数指针的定义</h4>
+<p>若在程序中定义了一个函数，在编译时，编译器会为函数代码分配一段存储空间，这段空间的起始地址（又称入口地址）称为这个函数的指针。在C语言中，可以定义一个指针指向存放函数代码的存储空间的起始地址，这样的指针叫作函数指针。函数指针的定义格式如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">返回值类型 (*指针名)(参数列表)  <br></code></pre></td></tr></table></figure>
+<p>该格式中的返回值类型表示指针指向的函数的返回值类型，“*”表示这是一个指针，参数列表表示该指针所指函数的形参列表。需要注意的是，由于优先级的关系，“*指针名”要用圆括号括起来。</p>
+<p>假设定义一个参数列表为两个int类型变量，返回值类型为int的函数指针，则其格式如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> (*p)(<span class="hljs-type">int</span>, <span class="hljs-type">int</span>);<br></code></pre></td></tr></table></figure>
+<p>上面的例子中定义了函数指针变量p，该指针变量只能指向返回值类型为int且有两个int类型参数的函数。</p>
+<h4 id="4-3-2、函数指针的赋值">4.3.2、函数指针的赋值</h4>
+<p>在程序中，可以将函数的地址（即函数名）赋值给该指针变量，但要注意，函数指针的类型应与它所指向的函数原型相同，即函数必须有两个int类型的变量，且返回一个int类型的数据，假设有一函数声明为：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-type">int</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span></span>;<br></code></pre></td></tr></table></figure>
+<p>则可以使用以上定义的函数指针指向该函数，即使用该函数的地址为函数指针赋值，赋值代码如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">p=func;<br></code></pre></td></tr></table></figure>
+<p>定义函数指针时，函数指针的参数列表与返回值类型必须要与所指向的函数保持一致，否则会发生错误，例如有如下函数声明：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">func1</span><span class="hljs-params">(<span class="hljs-type">char</span> ch)</span>;<br></code></pre></td></tr></table></figure>
+<p>则p=func1的赋值是错误的，因为函数指针p与func1()函数参数类型不匹配。</p>
+<h4 id="4-3-2、函数指针的应用">4.3.2、函数指针的应用</h4>
+<p>函数指针主要有两个用途：调用函数、作为函数参数。</p>
+<h5 id="4-3-2-1、调用函数">4.3.2.1、调用函数</h5>
+<p>使用函数指针调用对应函数，方法与使用函数名调用函数类似，将函数名替换为指针名即可。假设要调用指针p指向的函数，其形式如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">p(<span class="hljs-number">3</span>, <span class="hljs-number">5</span>);<br></code></pre></td></tr></table></figure>
+<p>上述代码与<code>func(3, 5)</code>的效果相同。</p>
+<h5 id="4-3-2-2、作为函数参数">4.3.2.2、作为函数参数</h5>
+<p>函数指针的另一用途是将函数的地址作为函数参数传入其他函数。将函数的地址传入其他函数，就可以在被调函数中使用该函数。例如，有一个函数func()，其定义如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">func</span><span class="hljs-params">(<span class="hljs-type">int</span> a)</span><br>&#123;<br>    <span class="hljs-keyword">return</span> ++a;<br>&#125;<br><br><span class="hljs-type">int</span> (*pf)(<span class="hljs-type">int</span>)=func;<br></code></pre></td></tr></table></figure>
+<p>另有函数add()，其参数列表中包含函数指针，具体定义如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">add</span><span class="hljs-params">(<span class="hljs-type">int</span> (*p)(<span class="hljs-type">int</span>), <span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span><br>&#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d\n&quot;</span>, p(a)+p(b));<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>函数add()中的参数p是一个函数指针，它有一个int类型的参数，返回一个int类型的数据，其与函数func()的原型相同。因此，在调用add()时，可以将函数指针pf作为实参传入，其调用形式如下：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">add</span>(pf, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>);<br></code></pre></td></tr></table></figure>
+<p>上述代码中，函数指针pf作为参数传递给了函数add()，add()函数的实参3与5可以被pf调用。</p>
+<p>需要注意的是，函数指针不能进行算术运算，如p+n、p++、- -p等，这些运算是无意义的。</p>
+<h4 id="4-3-3、多学一招：右左法则">4.3.3、多学一招：右左法则</h4>
+<p>在C语言中，常常会有一些结构复杂的指针嵌套声明，例如<code>int (*func)(int *p)</code>，解读这些声明往往会令人头痛，为此，有人从C语言标准中总结出了一套解读规则，称为右左法则。</p>
+<p>右左法则的声明：首先从左侧第1个标识符看起，然后往右看，再往左看。每当遇到圆括号时，就应该掉转阅读方向。一旦解析完圆括号里面所有的东西，就跳出圆括号。重复这个过程直到整个声明解析完毕。</p>
+<p>例如，上述声明<code>int (*func)(int *p)</code>，根据右左法则，其解读过程如下：</p>
+<ul>
+<li>从左侧第1个标识符看起，即从func看起。</li>
+<li>往右看，是圆括号；再往左看，是一个“*”符号，则确定func是一个指针。</li>
+<li>跳出括号，从右侧看起，右侧是圆括号，表明func是一个函数指针；解读右侧括号中的内容，得知该函数具有一个int *类型的参数。</li>
+<li>右侧解读完毕，再看左侧，左侧是int，表明该函数指针指向的函数返回一个int类型的数据。</li>
+<li>最后得出结论：func是一个函数指针，它指向的函数有一个int*类型的参数，返回值类型为int。</li>
+</ul>
+<h3 id="4-4、回调函数">4.4、回调函数</h3>
+<p>函数指针可以作为函数参数使用，通过函数指针调用的函数称为回调函数，回调函数在大型的工程和一些系统框架中很常见，如在服务器领域使用的Reactor架构、MFC编程中使用的“句柄”等。回调函数存在的意义是在特定的条件发生时，调用方对该条件下即时的响应处理。回调函数的简单用法如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 回调函数</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">show</span><span class="hljs-params">(<span class="hljs-type">char</span> *s, <span class="hljs-type">void</span> (*ptr)(<span class="hljs-type">char</span> *))</span><br>&#123;<br>    (*ptr)(s);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">print</span><span class="hljs-params">(<span class="hljs-type">char</span> *p)</span><br>&#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s\n&quot;</span>, p);<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-type">char</span> str[<span class="hljs-number">16</span>]=<span class="hljs-string">&quot;回调函数&quot;</span>;<br>    show(str, print);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上述代码定义了两个函数：show()函数与print()函数。show()函数有两个参数，字符指针和函数指针，在函数体中调用函数指针指向的函数（回调函数）实现具体的功能，需要注意的是，show()函数使用了第一个参数作为回调函数的参数。print()函数有一个字符指针参数，其作用是打印字符指针指向的内容。</p>
+<p>在main()函数中，定义一个字符数组str，然后调用show()函数，将str数组与print()函数作为参数传给show()函数，则print()函数就是show()函数的回调函数。show()函数将str作为参数再次传给print()函数，通过print()函数打印出数组str的内容。程序的运行结果如下所示：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">回调函数<br></code></pre></td></tr></table></figure>
+<h2 id="五、指针数组">五、指针数组</h2>
+<p>指针也可以构成数组。若一个数组中的所有元素都是指针类型，那么这个数组就是指针数组，该数组中的每一个元素都存放一个地址。</p>
+<h3 id="5-1、定义指针数组">5.1、定义指针数组</h3>
+<p>定义一维指针数组的语法格式如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">类型名 *数组名[数组长度]；<br></code></pre></td></tr></table></figure>
+<p>在该语法格式中，类型名表示该指针数组的数组元素指向的变量的数据类型，符号“*”表示数组元素是指针。假设，要定义一个包含5个整型指针的指针数组，其实现如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> *p[<span class="hljs-number">5</span>];<br></code></pre></td></tr></table></figure>
+<p>该代码定义了一个长度为5的指针数组p，数组中元素的数据类型都是int*类型。由于“[]”的优先级比“*”高，数组名p先和“[]”结合，表示这是一个长度为5的数组，之后数组名与“*”结合，表示该数组中元素的数据类型都是int*类型。即该数组中的每个元素都指向一个整型变量。</p>
+<p>指针数组的数组名是一个地址，它指向该数组中的第1个元素，也就是该数组中存储的第1个地址。指针数组的数组名的实质就是一个指向数组的二级指针。一个单纯的地址没有意义，地址应作为变量的地址存在，所以指针数组中存储的指针应该指向实际的变量。假设现在使用一个字符型的指针数组a，依次存储如下的多个字符串：</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs 1c"><span class="hljs-string">&quot;this is a string&quot;</span><br><span class="hljs-string">&quot;hello world&quot;</span><br><span class="hljs-string">&quot;I love China&quot;</span><br></code></pre></td></tr></table></figure>
+<p>则该指针数组的定义如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">char</span>* a[<span class="hljs-number">3</span>]=&#123; <span class="hljs-string">&quot;this is a string&quot;</span>, <span class="hljs-string">&quot;hello world&quot;</span>, <span class="hljs-string">&quot;I love China&quot;</span>&#125;;<br></code></pre></td></tr></table></figure>
+<p>根据以上分析可知，数组名指向数组元素，数组元素指向变量，数组名是一个指向指针的指针。数组名、数组元素与数组元素指向的数据之间的逻辑关系如下图所示。</p>
+<p><img src="/img/image-20240728142832034.png" srcset="/img/loading.gif" lazyload alt="image-20240728142832034"></p>
+<p>上图中，指针数组名a代表指针数组的首地址，a+1即为第2个元素a[1]所在的地址，以此类推，a+2为第3个元素a[2]所在地址。</p>
+<p>指针数组中存储的元素是地址，其访问方式与普通数组相同，例如上面定义的数组a，其元素访问代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">//值为this is string </span><br>a[<span class="hljs-number">0</span>];<br><span class="hljs-comment">//值为hello world </span><br>a[<span class="hljs-number">1</span>];<br><span class="hljs-comment">//值为I love China</span><br>a[<span class="hljs-number">2</span>];<br></code></pre></td></tr></table></figure>
+<p>此时，我们可能会奇怪，为什么数组元素输出的不是地址而是地址中的字符串数据？</p>
+<p>这与字符串的输出属性有关，在这里我们只需要了解指针数组中存储的是变量的地址即可。</p>
+<h3 id="5-2、指针数组的应用">5.2、指针数组的应用</h3>
+<p>指针数组在C语言编程中非常重要，为能够更好地掌握指针数组的应用，下面我们来看一个使用指针数组处理一组数据的示例。</p>
+<p>有一个float类型的数组存储了学生的成绩，其定义如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">float</span> arr[<span class="hljs-number">10</span>] = &#123;<span class="hljs-number">88.5</span>,<span class="hljs-number">90</span>,<span class="hljs-number">76</span>,<span class="hljs-number">89.5</span>,<span class="hljs-number">94</span>,<span class="hljs-number">98</span>,<span class="hljs-number">65</span>,<span class="hljs-number">77</span>,<span class="hljs-number">99.5</span>,<span class="hljs-number">68</span>&#125;;<br></code></pre></td></tr></table></figure>
+<p>然后定义一个指针数组str，将数组arr中的元素取地址赋给str中的元素，示例代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 定义一个float类型的指针数组</span><br><span class="hljs-type">float</span> *str[<span class="hljs-number">10</span>];<br><br><span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>; i&lt;<span class="hljs-number">10</span>; i++)<br>&#123;<br>    <span class="hljs-comment">// 将arr数组中的元素取地址赋予str数组元素 </span><br>    str[i]=&amp;arr[i];<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>在该代码中，定义了一个float类型指针数组str，然后使用for循环将arr数组中的元素地址赋给了str数组元素，则数组arr与数组str之间的关系如下图所示。</p>
+<p><img src="/img/9d73520b90de92758f13f35b656c87cc.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>指针数组str中存储的是数组arr中的数组元素地址，可以通过操作指针数组str对这一组成绩进行排序，而不改变原数组arr，例如使用冒泡排序对数组str进行从大到小的排序，示例代码如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 定义临时指针用于指针的指向交换</span><br><span class="hljs-type">float</span> *ptm;<br><span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>; i&lt;<span class="hljs-number">10</span><span class="hljs-number">-1</span>; i++)<br>&#123;   <br>    <span class="hljs-keyword">for</span>(j=<span class="hljs-number">0</span>; j&lt;<span class="hljs-number">10</span><span class="hljs-number">-1</span>-i; j++)<br>    &#123;<br>        <span class="hljs-keyword">if</span>(*str[j]&lt;*str[j+<span class="hljs-number">1</span>])<br>        &#123;<br>            ptm=str[j];<br>            str[j]=str[j+<span class="hljs-number">1</span>];<br>            str[j+<span class="hljs-number">1</span>]=ptm;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>该代码使用冒泡排序对指针数组str进行从大到小的排序，在str数组中，每个元素都是一个指针，因此，在比较元素大小时，使用“*”符号取值进行比较。排序完成之后，数组arr并没有改变，只是指针数组str中的指针指向发生了改变，此时数组str与数组arr之间的关系如下图所示。<br>
+<img src="/img/0b0633923b4fa450f2743777d74615f5.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>当然，如果在排序过程中，不交换指针数组str中的指针，而交换指针指向的数据，则数组arr就会被改变。交换str中指针指向的数据，示例代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 定义一个float类型的临时变量</span><br><span class="hljs-type">float</span> tpm;<br><span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>; i&lt;<span class="hljs-number">10</span><span class="hljs-number">-1</span>; i++)<br>&#123;<br>    <span class="hljs-keyword">for</span>(j=<span class="hljs-number">0</span>; j&lt;<span class="hljs-number">10</span><span class="hljs-number">-1</span>-j; j++)<br>    &#123;<br>        <span class="hljs-keyword">if</span>(*str[j]&lt;*str[j+<span class="hljs-number">1</span>])<br>        &#123;<br>            tmp=*str[j];<br>            *str[j]=*str[j+<span class="hljs-number">1</span>];<br>            *str[j+<span class="hljs-number">1</span>]=tmp;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上述代码在排序时交换了str数组中指针指向的数据，排序完成之后，指针数组str与数组arr之间的关系如下图所示。</p>
+<p><img src="/img/79ae9b98a8bf654871dd48bcf7ae16b5.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>由上图可知，在排序中交换了指针指向的数据，则arr数组改变，而指针数组str中指针的指向并没有改变，但其指向的位置处的数据发生了改变，因此指针数组str也相当于完成了排序。</p>
+<p>由上述示例可知，使用指针数组处理数据更加灵活，正因如此，指针数组的应用很广泛，特别是在操作字符串、结构体、文件等数据时应用更加广泛。</p>
+<h2 id="六、二级指针">六、二级指针</h2>
+<p>前面介绍指针都是一级指针，一级指针指向普通的变量和数组。其实，指针还可以指向另一个指针，即指针中存储的是指针的地址，这样的指针称为二级指针。根据二级指针中存放的数据，二级指针可分为指向指针的指针和指向指针数组的指针。</p>
+<h3 id="6-1、指向指针的指针">6.1、指向指针的指针</h3>
+<p>定义一个指向指针的指针，其格式如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">变量类型 **指针名;<br></code></pre></td></tr></table></figure>
+<p>在该语法格式中，变量类型是指针的基类型，即最终指向的数据的类型，它必须是C语言的有效数据类型。两个符号“*”表明这个变量是个二级指针变量。例如，有如下定义：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 整型变量</span><br><span class="hljs-type">int</span> a=<span class="hljs-number">10</span>;<br><span class="hljs-comment">// 一级指针p，指向整型变量a </span><br><span class="hljs-type">int</span> *p=&amp;a;<br><span class="hljs-comment">// 二级指针q，指向一级指针p</span><br><span class="hljs-type">int</span> **q=&amp;p;<br></code></pre></td></tr></table></figure>
+<p>在该代码中，指针q是一个二级指针，其中存储一级指针p的地址，而p中存储整型变量a的地址，它们之间的逻辑关系如下图所示。</p>
+<p><img src="/img/6de6bfe5d4e3dcaf9da99ea3e971e13f.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>由图可知，二级指针q中保存的是一级指针p的地址，假如变量a的存储空间地址为0x001，则指针p存储的值就是0x001，指针也是一个变量，系统也要为其分配空间，假如指针p的存储空间地址为0x010，则q中保存的值就是0x010。</p>
+<p>二级指针的解读也遵循右左法则，对声明<code>int **q</code>，其解读方式如下。</p>
+<ul>
+<li>从最左边第1个标识符q进行处理。</li>
+<li>其右侧没有内容，再看左侧是一个“*”符号，表明q是一个指针。</li>
+<li>接着看左侧，还是一个“*”符号，表明（*q）也是一个指针，即*q的值是一个指针，因此q是一个二级指针。</li>
+<li>再看左侧是一个int，表明q是一个int类型的二级指针。</li>
+</ul>
+<p>通过二级指针访问变量时，需要连续使用两个“*”运算符，例如通过二级指针q访问变量a，其代码如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 访问变量a</span><br>**q<br></code></pre></td></tr></table></figure>
+<p>代码相当于*（*q），*q的值为p，因此其结果与*p是相同的，都是访问变量a。</p>
+<h3 id="6-2、指向指针数组的指针">6.2、指向指针数组的指针</h3>
+<p>假设要定义一个指针p，使其指向指针数组a[]，则其定义语句如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">char</span> *a[<span class="hljs-number">3</span>]=&#123;<span class="hljs-number">0</span>&#125;;<br><span class="hljs-type">char</span> **p=a;<br></code></pre></td></tr></table></figure>
+<p>该语句中定义的p是指向指针数组的指针，当把指针数组a的地址赋给指针p时，p就指向指针数组a的首元素a[0]，a[0]元素是一个指针，p指向a[0]，则p就是一个指向指针的指针，是一个二级指针。</p>
+<p>当然若再次定义指向该指针的指针，会得到三级指针。指针本来就是C语言中较为难理解的部分，若能掌握指针的精髓，将其充分利用，自然能够提高程序的效率，大大地优化代码，但是指针功能太过强大，若是因指针使用引发错误，很难查找与补救，所以程序中使用较多的一般为一级指针，二级指针使用的频率要远远低于一级指针，再多级的指针使用的频率则更低。</p>
+<h2 id="七、指针与const">七、指针与const</h2>
+<p>在开发程序时，为了防止数据被使用者非法篡改，可以使用const限定符。const限定符修饰的变量在程序运行中不能被修改，在一定程度上可以提高程序的安全性和可靠性。</p>
+<p>const限定符通常与指针配合使用，与指针配合使用时有3种形式，具体方式如下。</p>
+<h3 id="7-1、指针常量">7.1、指针常量</h3>
+<p>指针常量，指的是指针是一个常量，其存放的地址不能被改变。其语法格式如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">数据类型* <span class="hljs-type">const</span> 指针名;<br></code></pre></td></tr></table></figure>
+<p>该语法格式，在“指针名”前添加了const限定符，那么该指针就是一个常量，它存储的地址不能改变，即指针指向不能被改变。示例代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> num1=<span class="hljs-number">10</span>, num2=<span class="hljs-number">11</span>;<br><span class="hljs-type">int</span>* <span class="hljs-type">const</span> p=&amp;num1;<br><span class="hljs-comment">// 错误</span><br>p=&amp;num2;<br></code></pre></td></tr></table></figure>
+<p>在该代码中，指针p使用const限定符修饰，将变量num1的地址赋值给指针常量p，那么指针p存储的地址不能被改变。因此，<code>p=&amp;num2</code>会报错。</p>
+<h3 id="7-2、常量指针">7.2、常量指针</h3>
+<p>常量指针，指的是指针指向的变量的值是一个常量，不能通过指针修改其所指变量的值。其语法格式如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">const</span> 数据类型* 指针名;<br></code></pre></td></tr></table></figure>
+<p>该语法格式，在数据类型前面添加了const限定符，那么该指针指向的变量的值将变为常量，不能通过指针修改其所指变量的值。示例代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-type">int</span> num=<span class="hljs-number">10</span>;<br>  <span class="hljs-type">int</span>* p=&amp;num;<br>  *p=<span class="hljs-number">11</span>;<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d\n&quot;</span>, num);<br><br>  <span class="hljs-type">const</span> <span class="hljs-type">int</span>* q=&amp;num;<br>  <span class="hljs-comment">// 错误</span><br>  *q=<span class="hljs-number">10</span>;<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>在该代码中，变量num为普通变量，指针p是普通指针，可以通过指针p修改变量num的值。而指针q是常量指针，因此不能通过q修改变量num的值。</p>
+<h3 id="7-3、指向常量的常指针">7.3、指向常量的常指针</h3>
+<p>指向常量的常指针，指的是指针所指向的地址不能被改变，且其所指的变量的值也不能被改变。其语法格式如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">const</span> 数据类型* <span class="hljs-type">const</span> 指针名;<br></code></pre></td></tr></table></figure>
+<p>该语法格式，在”数据类型“和”指针名“前都添加了const限定修饰符，那么该指针的值为常量，且该指针所指向的变量也为常量。示例代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-type">int</span> num=<span class="hljs-number">10</span>;<br>  <span class="hljs-type">const</span> <span class="hljs-type">int</span>* <span class="hljs-type">const</span> p=&amp;num;<br>  num=<span class="hljs-number">11</span>;<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d\n&quot;</span>, *p);<br>  <span class="hljs-comment">// 错误</span><br>  p=<span class="hljs-literal">NULL</span>;<br>  <span class="hljs-comment">// 错误</span><br>  *p=<span class="hljs-number">11</span>;<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<p>在该代码中，定义了一个指向常量的常指针p，并将变量num的地址赋值给变量p。此时，指针p的指向不能被改变，且不能通过指针p修改变量num的值。</p>
+<h2 id="八、小结">八、小结</h2>
+<h2 id="九、参考">九、参考</h2>
+<p><a target="_blank" rel="noopener" href="https://product.dangdang.com/29379508.html">《数据库原理及应用教程（MySQL版）》</a></p>
+<p><a target="_blank" rel="noopener" href="https://product.dangdang.com/11615897847.html">《数据库系统原理 自考04735》</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/" class="category-chain-item">程序设计</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C%E8%AF%AD%E8%A8%80/" class="print-no-link">#C语言</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>C语言程序设计：指针</div>
+      <div>https://kuberxy.github.io/2024/09/15/C语言程序设计：指针/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Mr.x</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年9月15日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/09/16/C%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%EF%BC%9A%E7%BB%93%E6%9E%84%E4%BD%93/" title="C语言程序设计：结构体">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">C语言程序设计：结构体</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/05/26/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9A%E5%88%86%E9%85%8D%E6%8E%92%E5%BA%8F/" title="数据结构：分配排序">
+                        <span class="hidden-mobile">数据结构：分配排序</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
