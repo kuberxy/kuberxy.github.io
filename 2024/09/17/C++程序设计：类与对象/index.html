@@ -1,0 +1,903 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Mr.x">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="面向对象是程序开发领域中的重要思想，这种思想符合人类认识客观世界的逻辑，是当前计算机软件工程学的主流思想。C++在设计之初就是一门面向对象语言，了解面向对象程序设计思想对于学习C++开发至关重要。在面向对象中，类和对象是非常重要的两个概念，本章将针对面向对象中的类和对象进行详细的介绍。 一、面向对象程序设计思想 面向对象是一种符合人类思维习惯的程序设计思想。现实生活中存在各种形态不同的事物，这些事">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++程序设计：类与对象">
+<meta property="og:url" content="https://kuberxy.github.io/2024/09/17/C++%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%EF%BC%9A%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1/index.html">
+<meta property="og:site_name" content="Kubxy">
+<meta property="og:description" content="面向对象是程序开发领域中的重要思想，这种思想符合人类认识客观世界的逻辑，是当前计算机软件工程学的主流思想。C++在设计之初就是一门面向对象语言，了解面向对象程序设计思想对于学习C++开发至关重要。在面向对象中，类和对象是非常重要的两个概念，本章将针对面向对象中的类和对象进行详细的介绍。 一、面向对象程序设计思想 面向对象是一种符合人类思维习惯的程序设计思想。现实生活中存在各种形态不同的事物，这些事">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://kuberxy.github.io/img/ba06a15eff0cd1f18749bc6d2881942f.jpg">
+<meta property="og:image" content="https://kuberxy.github.io/img/bfd86e9274f56fd1a813e09a2b406afc.jpg">
+<meta property="og:image" content="https://kuberxy.github.io/img/eb2fed4f3344efacc50e02b51a06f94c.jpg">
+<meta property="og:image" content="https://kuberxy.github.io/img/f5bf7f1f63d518b96d94942f2f0ec969.jpg">
+<meta property="og:image" content="https://kuberxy.github.io/img/41234404a9ea4d30fe1c17b6347eaca1.jpg">
+<meta property="article:published_time" content="2024-09-17T05:47:11.000Z">
+<meta property="article:modified_time" content="2024-08-18T04:12:03.000Z">
+<meta property="article:author" content="Mr.x">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://kuberxy.github.io/img/ba06a15eff0cd1f18749bc6d2881942f.jpg">
+  
+  
+  
+  <title>C++程序设计：类与对象 - Kubxy</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="C++程序设计：类与对象"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-09-17 13:47" pubdate>
+          2024年9月17日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          16k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          130 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">C++程序设计：类与对象</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>面向对象是程序开发领域中的重要思想，这种思想符合人类认识客观世界的逻辑，是当前计算机软件工程学的主流思想。C++在设计之初就是一门面向对象语言，了解面向对象程序设计思想对于学习C++开发至关重要。在面向对象中，类和对象是非常重要的两个概念，本章将针对面向对象中的类和对象进行详细的介绍。</p>
+<h2 id="一、面向对象程序设计思想">一、面向对象程序设计思想</h2>
+<p>面向对象是一种符合人类思维习惯的程序设计思想。现实生活中存在各种形态不同的事物，这些事物之间存在着各种各样的联系。在程序中使用对象映射现实中的事物，利用对象之间的关系描述事物之间的联系，这种思想就是面向对象。</p>
+<p>面向过程是分析出解决问题所需要的步骤，然后用函数把这些步骤一一实现，使用的时候依次调用就可以了。面向对象不同于面向过程，它是把构成问题的事物按照一定规则划分为多个独立的对象，然后通过调用对象的方法解决问题。当然，一个应用程序会包含多个对象，通过多个对象的相互配合即可实现应用程序所需的功能，这样当应用程序功能发生变动时，只需要修改个别对象就可以了，使代码更容易维护。</p>
+<p>面向对象程序设计思想有三大特征：封装、继承和多态。下面针对这三个特征进行简单的介绍。</p>
+<ul>
+<li>
+<p>封装。封装是面向对象程序设计思想最重要的特征。封装就是隐藏，它将数据和数据处理过程封装成一个独立性很强的模块，避免外界直接访问对象属性而造成耦合度过高以及过度依赖。</p>
+<p>封装是面向对象的核心思想，将对象的属性和行为封装起来，行为对外提供接口，不需要让外界知道具体的实现细节。例如，用户使用电脑，只需要通过外部接口连接鼠标、键盘等设备操作电脑就可以了，无须知道电脑内部的构成以及电脑是如何工作的。</p>
+</li>
+<li>
+<p>继承。继承主要描述的是类与类之间的关系，通过继承无须重新编写原有类，就能对原有类的功能进行扩展。例如，有一个交通工具类，该类描述了交通工具的特性和功能，而小汽车类不仅包含交通工具的特性和功能，还应该增加小汽车特有的功能，这时可以让小汽车类继承交通工具类，在小汽车类中单独添加小汽车特有的属性和方法就可以了。继承不仅增强了代码复用性，提高了开发效率，而且也为程序的维护提供了便利。</p>
+<p>在软件开发中，继承使软件具有开放性、可扩充性，这是数据组织和分类行之有效的方法，它简化了类和对象的创建工作量，增强了代码的可重用性。</p>
+</li>
+<li>
+<p>多态。多态是指事物的多种表现形态。例如，上课铃声响起后，各科老师准备去不同的班级上课，上体育课的学生在操场站好了队等体育老师发布口令，上文化课的学生听到铃声后回到各自的班级，这就是多态。</p>
+<p>在面向对象程序设计思想中，多态就是不同的对象对同一信息产生不同的行为。多态是面向对象技术中的一个难点，很多初学者都难以理解。面向对象的多态特性使得软件开发更科学、更符合人类的思维习惯，更有效地提高软件开发效率，缩短开发周期，提高软件可靠性。</p>
+</li>
+</ul>
+<p>上述特征适用于所有的面向对象语言，深入了解这些特征是掌握面向对象程序设计思想的关键。面向对象的思想只有通过大量的实践去学习和理解才能真正领悟。</p>
+<h2 id="二、初识类和对象">二、初识类和对象</h2>
+<p>在面向对象程序设计思想中，类和对象是非常重要的两个概念。如果要掌握C++这门面向对象的程序设计语言，有必要先学习类和对象。类和对象的关系，如同建筑设计图纸与建筑物的关系，类是对象的模板，对象是类的实体。</p>
+<h3 id="2-1、类的定义">2.1、类的定义</h3>
+<p>类是对象的抽象，是一种自定义数据类型，它用于描述一组对象的共同属性和行为。类的定义格式如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> 类名<br>&#123;<br>权限控制符:<br>    成员;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>关于类定义格式的具体介绍如下。</p>
+<ul>
+<li>
+<p>class是定义类的关键字。</p>
+</li>
+<li>
+<p>类名是类的标识符，其命名遵循标识符的命名规范。</p>
+</li>
+<li>
+<p>类名后面的一对大括号，用于包含类的成员，类的所有成员要在这一对大括号中声明。类中可以定义成员变量（也称为属性）和成员函数（也称为方法），成员变量用于描述对象的属性，成员函数用于描述对象的行为。</p>
+</li>
+<li>
+<p>声明类的成员时，通常需要使用权限控制符限定成员的访问规则，权限控制符包括public、protected和private，这三种权限控制符的权限依次递减。</p>
+</li>
+<li>
+<p>大括号的后面的一个分号“；”用于表示类定义的结束。</p>
+</li>
+</ul>
+<p>下面根据上述格式定义一个学生类，该类描述的学生属性包括姓名、性别和年龄等，行为包括学习、考试等，具体定义代码如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 定义学生类Student</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Student</span><br>&#123;<br><span class="hljs-comment">// 公有权限</span><br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-comment">// 声明表示学习的成员函数</span><br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">study</span><span class="hljs-params">()</span></span>;<br>  <span class="hljs-comment">// 声明表示考试的成员函数</span><br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">exam</span><span class="hljs-params">()</span></span>;<br><span class="hljs-comment">// 私有权限</span><br><span class="hljs-keyword">private</span>:<br>  <span class="hljs-comment">// 声明表示姓名的成员变量</span><br>  string _name;<br>  <span class="hljs-comment">// 声明表示年龄的成员变量</span><br>  <span class="hljs-type">int</span> _age<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>上述代码定义了一个简单的学生类Student，该类中有_nam e、_age两个成员变量，它们是类的私有成员；除了成员变量，该类还定义了study()和exam()两个成员函数，它们是类的公有成员。通常情况下，类的成员函数在类中声明，在类外实现。在类外实现成员函数，必须在返回值之后、函数名之前加上所属的类作用域，即“类名::”，表示函数属于哪个类。在类外实现成员函数的格式如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++">返回值类型 类名::函数名称(参数列表)<br>&#123;<br>  <span class="hljs-comment">// 函数体</span><br>  ...<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>例如，在类外实现类Student的成员函数，示例代码如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 类外实现estudy()成员函数</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">Student::study</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;学习C++&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;<br>&#125;<br><br><span class="hljs-comment">// 类外实现exam()成员函数</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">Student::exam</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;C++考试成绩100分&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>如果函数名前没有类名和作用域限定符“::”，则函数不是类的成员函数，而是一个普通的函数。</p>
+<p>为了大家更好地理解成员的访问规则，下面针对权限控制符进行具体介绍。</p>
+<ul>
+<li>
+<p>public（公有类型）：被public修饰的成员也称为公有成员。公有成员是类的外部接口，可以被所属类的成员函数、友元函数、友元类、类对象、派生类对象访问。</p>
+</li>
+<li>
+<p>protected（保护类型）：被protected修饰的成员称为保护成员，其访问权限介于私有和公有之间，可以被所属类的成员函数、友元函数、友元类和派生类对象访问。</p>
+</li>
+<li>
+<p>private（私有类型）：被private修饰的成员称为私有成员，只能被所属类的成员函数、友元函数、友元类访问。</p>
+</li>
+</ul>
+<h3 id="2-2、对象的创建">2.2、对象的创建</h3>
+<p>定义了类，就相当于定义了一个数据类型。类与int、char等数据类型的使用方法是一样的，可以定义变量，使用类定义的变量通常称为该类的对象。对象的定义格式如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">类名 对象名;<br></code></pre></td></tr></table></figure>
+<p>在上述格式中，对象的命名遵循标识符的命名规范。下面创建一个表示学生类Student的对象，示例代码如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">Student stu;<br></code></pre></td></tr></table></figure>
+<p>上述代码中，创建了类的对象stu之后，系统就要为对象分配内存空间，用于存储对象成员。每个对象都有成员变量和成员函数两部分内容。成员变量标识对象的属性，比如创建两个Student类对象stu1和stu2，由于两个学生的姓名、性别、年龄都不同，因此在创建对象时应当为每个对象分配独立的内存空间存储成员变量的值。</p>
+<p>成员函数描述的是对象的行为，每个对象的行为都相同，比如学生对象stu1和stu2都具有学习、考试行为。如果为每个对象的成员函数也分配不同的空间，则必然造成浪费。因此，C++用同一块空间存放同类对象的成员函数代码，每个对象调用同一段代码。对象与成员之间的内存分配示意图如下图所示。</p>
+<p><img src="/img/ba06a15eff0cd1f18749bc6d2881942f.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h3 id="2-3、对象的使用">2.3、对象的使用</h3>
+<p>为对象分配了内存空间之后，就可以向这块内存空间中存储数据了。存储数据的目的是访问数据，即访问对象的成员。对象的成员变量和成员函数的访问可以通过“.”运算符实现，其格式如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++">对象名.成员变量<br>对象名.成员函数<br></code></pre></td></tr></table></figure>
+<p>在上述格式中，通过“.”运算符既可以访问对象的成员变量也可以调用对象的成员函数。</p>
+<h3 id="2-4、案例">2.4、案例</h3>
+<p>下面通过案例演示类的定义、对象的创建及对象的成员访问，如下例所示。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br>using namespace <span class="hljs-built_in">std</span>;<br><br><span class="hljs-comment">// 定义学生类Student</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Student</span></span><br><span class="hljs-class">&#123;</span><br><span class="hljs-comment">// 公有类型</span><br>public:<br>  <span class="hljs-comment">// 声明表示学习的成员函数</span><br>  <span class="hljs-type">void</span> <span class="hljs-title function_">study</span><span class="hljs-params">()</span>;<br>  <span class="hljs-comment">// 声明表考试的成员函数</span><br>  <span class="hljs-type">void</span> <span class="hljs-title function_">exam</span><span class="hljs-params">()</span>;<br>  <span class="hljs-comment">// 声明表示姓名的成员变量</span><br>  <span class="hljs-built_in">string</span> _name;<br>  <span class="hljs-comment">// 声明表示年龄的成员变量</span><br>  <span class="hljs-type">int</span> _age;<br>&#125;;<br><br><span class="hljs-comment">// 类外实现study()成员函数</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">Student::study</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;学习C++&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;<br>&#125;<br><br><span class="hljs-comment">// 类外实现exam()成员函数</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">Student::exam</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;C++考试成绩100分&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-comment">// 创建Student类对象stu</span><br>  Student stu;<br>  <span class="hljs-comment">// 设置对象stu的姓名</span><br>  stu._name=<span class="hljs-string">&quot;张三&quot;</span>;<br>  <span class="hljs-comment">// 设置对象stu的年龄</span><br>  stu._age=<span class="hljs-number">-20</span>;<br>  <span class="hljs-built_in">cout</span>&lt;&lt;stu._name&lt;&lt;stu._age&lt;&lt;<span class="hljs-string">&quot;岁&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;<br>  <span class="hljs-comment">// 调用study()成员函数</span><br>  stu.study();<br>  <span class="hljs-comment">// 调用exam()成员函数</span><br>  stu.exam();<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上述代码，在第3～10行代码定义了学生类Student，该类中有两个公有成员变量_name和_age，分别表示学生的姓名和年龄，有两个公有成员函数study()和exam()。第11～18行代码是在类外实现类的成员函数。第21～23行代码，在main()函数中创建Student类对象stu，并设置对象stu的_name和_age值。第24～26行代码通过对象stu调用对象的成员函数，输出对象stu的信息。</p>
+<blockquote>
+<p>小提示：new创建类对象</p>
+</blockquote>
+<p>类是自定义数据类型，与基本数据类型的使用方式相同，也可以使用new创建类对象。例如，上面定义的Student类，可以使用new创建Student类对象，示例代码如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 使用new创建类对象</span><br>Student* ps=<span class="hljs-keyword">new</span> Student;<br><span class="hljs-comment">// 其他功能代码</span><br>...<br><span class="hljs-comment">// 使用delete释放对象</span><br><span class="hljs-keyword">delete</span> ps;<br></code></pre></td></tr></table></figure>
+<h2 id="三、封装">三、封装</h2>
+<p>C++中的封装是通过类实现的，通过类把具体事物抽象为一个由属性和行为结合的独立单位，类的对象会表现出具体的属性和行为。在类的封装设计中通过权限控制方式实现类成员的访问，目的是隐藏对象的内部实现细节，只对外提供访问的接口。在前面的Student类示例中，将对象stu的年龄值设置为−20，这在语法上不会有任何问题，程序可以正常运行，但在现实生活中明显不合理。为了避免这种情况，在设计类时，要控制成员变量的访问权限，不允许外界随意访问。</p>
+<p>通过权限控制符可以限制外界对类的成员变量的访问，将对象的状态信息隐藏在对象内部，通过类提供的函数（接口）实现对类中成员的访问。在定义类时，将类中的成员变量设置为私有或保护属性，即使用private或protected关键字修饰成员变量。使用类提供的公有成员函数（public修饰的成员函数），如用于获取成员变量值的getXxx()函数和用于设置成员变量值的setXxx()函数，操作成员变量的值。</p>
+<p>下面修改前面的Student类示例，使用private关键字修饰类的成员变量，并提供相应的成员函数访问类的成员变量，代码如下所示。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-comment">// 定义学生类Student</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Student</span><br>&#123;<br><span class="hljs-comment">// 公有类型</span><br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-comment">// 声明表示学习的成员函数</span><br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">study</span><span class="hljs-params">()</span></span>;<br>  <span class="hljs-comment">// 声明表示考试的成员函数</span><br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">exam</span><span class="hljs-params">()</span></span>;<br>  <span class="hljs-comment">// 声明设置姓名的成员函数</span><br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">setName</span><span class="hljs-params">(string name)</span></span>;<br>  <span class="hljs-comment">// 声明设置年龄的成员函数</span><br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">setAge</span><span class="hljs-params">(<span class="hljs-type">int</span> age)</span></span>;<br>  <span class="hljs-comment">// 声明获取姓名的成员函数</span><br>  <span class="hljs-function">string <span class="hljs-title">getName</span><span class="hljs-params">()</span></span>;<br>  <span class="hljs-comment">// 声明获取年龄的成员函数</span><br>  <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">getAge</span><span class="hljs-params">()</span></span>;<br><span class="hljs-keyword">private</span>:<br>  <span class="hljs-comment">// 声明表示姓名的成员变量</span><br>  string _name;<br>  <span class="hljs-comment">// 声明表示年龄的成员变量</span><br>  <span class="hljs-type">int</span> _age;<br>&#125;;<br><br><span class="hljs-comment">// 类外实现study()成员函数</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Student::study</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  cout&lt;&lt;<span class="hljs-string">&quot;学习C++&quot;</span>&lt;&lt;endl;<br>&#125;<br><br><span class="hljs-comment">// 类外实现exam()成员函数</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Student::exam</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  cout&lt;&lt;<span class="hljs-string">&quot;C++考试成绩100分&quot;</span>&lt;&lt;endl;<br>&#125;<br><br><span class="hljs-comment">// 类外实现setName()成员函数</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Student::setName</span><span class="hljs-params">(string name)</span></span><br><span class="hljs-function"></span>&#123;<br>  _name = name;<br>&#125;<br><br><span class="hljs-comment">// 类外实现setAge()成员函数</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Student::setAge</span><span class="hljs-params">(<span class="hljs-type">int</span> age)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">if</span>(age&lt;<span class="hljs-number">0</span>||age&gt;<span class="hljs-number">100</span>)<br>  &#123;<br>    cout&lt;&lt;_name&lt;&lt;<span class="hljs-string">&quot;年龄输入错误&quot;</span>&lt;&lt;endl;<br>    _age=<span class="hljs-number">0</span>;<br>  &#125;<br>  <span class="hljs-keyword">else</span><br>    _age=age;<br>&#125;<br><br><span class="hljs-comment">// 类外实现getName()成员函数</span><br><span class="hljs-function">string <span class="hljs-title">Student::getName</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> _name;<br>&#125;<br><br><span class="hljs-comment">// 类外实现getAge()成员函数</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">Student::getAge</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> _age;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-comment">// 创建Student类对象stu</span><br>  Student stu;<br>  <span class="hljs-comment">// 设置对象stu的姓名</span><br>  stu.<span class="hljs-built_in">setName</span>(<span class="hljs-string">&quot;张三&quot;</span>);<br>  <span class="hljs-comment">// 设置对象stu的年龄</span><br>  stu.<span class="hljs-built_in">setAge</span>(<span class="hljs-number">-20</span>);<br>  <span class="hljs-comment">// 调用成员函数getName()和getAge()获取对象stu的姓名、年龄并输出</span><br>  cout&lt;&lt;stu.<span class="hljs-built_in">getName</span>()&lt;&lt;stu.<span class="hljs-built_in">getAge</span>()&lt;&lt;<span class="hljs-string">&quot;岁&quot;</span>&lt;&lt;endl;<br>  <span class="hljs-comment">// 调用成员函数study()</span><br>  stu.<span class="hljs-built_in">study</span>();<br>  <span class="hljs-comment">// 调用成员函数exam()</span><br>  stu.<span class="hljs-built_in">exam</span>();<br><br>  <span class="hljs-comment">// 创建Student类对象stu1</span><br>  Student stu1;<br>  stu1.<span class="hljs-built_in">setName</span>(<span class="hljs-string">&quot;李四&quot;</span>);<br>  stu1.<span class="hljs-built_in">setAge</span>(<span class="hljs-number">22</span>);<br>  cout&lt;&lt;stu1.<span class="hljs-built_in">getName</span>()&lt;&lt;stu1.<span class="hljs-built_in">getAge</span>()&lt;&lt;<span class="hljs-string">&quot;岁&quot;</span>&lt;&lt;endl;<br>  stu1.<span class="hljs-built_in">study</span>();<br>  stu1.<span class="hljs-built_in">exam</span>();<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上述代码，将Student中的成员变量_name和_age定义为私有成员，并定义了公有成员函数setName()、setAge()、getName()和getAge()，分别用于设置和获取对象的姓名和年龄。第28～37行代码，在实现setAge()时，对传入的参数age进行了判断处理，如果age&gt;100或age&lt;0，则输出“年龄输入错误”的信息，并将_age值设置为0。第48～52行代码，创建对象stu，调用setName()函数和setAge()函数，分别用于设置对象stu的_name和_age；调用getName()函数和getAge()函数，分别用于获取对象stu的_name和_age。第56～60行代码，创建Student类对象stu1，设置其姓名和年龄，并获取对象stu1的姓名和年龄将其输出。</p>
+<p>在上述代码中，_name和_age成员为私有成员，因此不能通过对象直接访问，如果直接通过对象访问_name和_age，编译器会报错，如下图所示。</p>
+<p><img src="/img/bfd86e9274f56fd1a813e09a2b406afc.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h2 id="四、this指针">四、this指针</h2>
+<p>在前面的示例中，程序创建了两个对象stu和stu1，对象stu调用getName()函数获取的姓名是“张三”，对象stu调用getName()函数获取的姓名是“李四”。在调用过程中，getName()函数可以区分到底是对象stu调用还是对象stu1调用，这是通过this指针实现的。</p>
+<p>this指针是C++实现封装的一种机制，它将对象和对象调用的非静态成员函数联系在一起，从外部看来，每个对象都拥有自己的成员函数。当创建一个对象时，编译器会初始化一个this指针，指向创建的对象，this指针并不存储在对象内部，而是作为所有非静态成员函数的参数。例如，在前面的示例中，当创建对象stu时，编译器会初始化一个this指针指向对象stu，stu调用成员函数setName()或getName()时，编译器会将this指针作为函数的参数，编译后的函数代码可以表示为如下形式：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Student::setName</span><span class="hljs-params">(Student* <span class="hljs-keyword">this</span>, string name)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">this</span>-&gt;_name=name;<br>&#125;<br><br><span class="hljs-function">string <span class="hljs-title">Student::getName</span><span class="hljs-params">(Student* <span class="hljs-keyword">this</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>-&gt;_name;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上述代码演示的过程是隐含的，它由编译器完成。当对象stu调用成员函数时，指向对象stu的this指针作为成员函数的第一个参数，在成员函数内部使用对象属性时，编译器会通过this指针访问对象属性。</p>
+<p>在实现类的成员函数时，如果形参与类的属性重名，则可以用this指针解决。例如，在前面的示例中，类的成员变量为_name和_age，setName()函数和setAge()函数的形参为name和age，没有出现重名现象。如果将类的成员变量改为name和age，则这两个成员变量和setName()函数、setAge()函数的形参重名，在赋值时无法区分（name=name，age=age），此时可以使用this指针进行区分，示例代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Student::setName</span><span class="hljs-params">(string name)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">this</span>-&gt;name=name;<br>&#125;<br><br><span class="hljs-function">string <span class="hljs-title">Student::getName</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>-&gt;name;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>如果类的成员函数的返回值是一个对象，则可以使用return *this返回对象本身。</p>
+<h2 id="五、构造函数">五、构造函数</h2>
+<p>构造函数是类的特殊成员函数，用于初始化对象。构造函数在创建对象时由编译器自动调用。C++中的每个类至少要有一个构造函数，如果类中没有定义构造函数，系统会提供一个默认的无参构造函数，默认的无参构造函数体也为空，不具有实际的初始化意义。因此，在C++程序中要显示定义构造函数。</p>
+<h3 id="5-1、自定义构造函数">5.1、自定义构造函数</h3>
+<p>构造函数是类的特殊成员函数，C++编译器严格规定了构造函数的接口形式，其定义格式如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> 类名<br>&#123;<br>权限控制符:<br>  构造函数名(参数列表)<br>  &#123;<br>    函数体<br>  &#125;<br>  <span class="hljs-comment">// 其他成员</span><br>  ...<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>关于构造函数定义格式的说明，具体如下。</p>
+<ul>
+<li>构造函数名必须与类名相同。</li>
+<li>构造函数名的前面不需要设置返回值类型。</li>
+<li>构造函数中无返回值，不能使用return返回。</li>
+<li>构造函数的成员权限控制符一般设置为public。</li>
+</ul>
+<p>如果在类中提供了自定义构造函数，编译器便不再提供默认构造函数。自定义构造函数时，可以定义无参构造函数，也可以定义有参构造函数，下面分别进行讲解。</p>
+<h4 id="5-1-1、自定义无参构造函数">5.1.1、自定义无参构造函数</h4>
+<p>自定义无参构造函数时，可以在函数内部直接给成员变量赋值。下面通过案例演示无参构造函数的定义与调用，如下所示。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iomanip&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-comment">// 定义时钟类Clock</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Clock</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-comment">// 声明无参构造函数</span><br>  <span class="hljs-built_in">Clock</span>();<br>  <span class="hljs-comment">// 声明显示时间的成员函数</span><br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">showTime</span><span class="hljs-params">()</span></span>;<br><span class="hljs-keyword">private</span>:<br>  <span class="hljs-comment">// 声明表示小时的成员变量</span><br>  <span class="hljs-type">int</span> _hour;<br>  <span class="hljs-comment">// 声明表示分钟的成员变量</span><br>  <span class="hljs-type">int</span> _min;<br>  <span class="hljs-comment">// 声明表示秒的成员变量</span><br>  <span class="hljs-type">int</span> _sec;<br>&#125;;<br><br><span class="hljs-comment">// 类外实现无参构造函数</span><br>Clock::<span class="hljs-built_in">Clock</span>()<br>&#123;<br>  <span class="hljs-comment">// 初识化过程，将成员变量初始化为0</span><br>  _hour=<span class="hljs-number">0</span>;<br>  _min=<span class="hljs-number">0</span>;<br>  _sec=<span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-comment">// 类外实现成员函数</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Clock::showTime</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  cout&lt;&lt;<span class="hljs-built_in">setw</span>(<span class="hljs-number">2</span>)&lt;&lt;<span class="hljs-built_in">setfill</span>(<span class="hljs-string">&#x27;0&#x27;</span>)&lt;&lt;_hour&lt;&lt;<span class="hljs-string">&quot;:&quot;</span>&lt;&lt;<span class="hljs-built_in">setw</span>(<span class="hljs-number">2</span>)&lt;&lt;<span class="hljs-built_in">setfill</span>(<span class="hljs-string">&#x27;0&#x27;</span>)&lt;&lt;_min&lt;&lt;<span class="hljs-string">&quot;:&quot;</span>&lt;&lt;<span class="hljs-built_in">setw</span>(<span class="hljs-number">2</span>)&lt;&lt;<span class="hljs-built_in">setfill</span>(<span class="hljs-string">&#x27;0&#x27;</span>)&lt;&lt;_sec&lt;&lt;endl;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-comment">// 创建对象clock</span><br>  Clock clock;<br>  cout&lt;&lt;<span class="hljs-string">&quot;clock: &quot;</span>;<br>  <span class="hljs-comment">// 通过对象调用成员函数showTime()显示时间</span><br>  clock.<span class="hljs-built_in">showTime</span>();<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上述代码，第7行代码声明了一个无参构造函数；第14～19行代码在类外实现构造函数，在构造函数体中直接将初始值赋给成员变量；第28～30行代码在main()函数中创建了对象clock，并通过对象调用showTime()成员函数显示初始化时间。</p>
+<h4 id="5-1-2、自定义有参构造函数">5.1.2、自定义有参构造函数</h4>
+<p>如果希望在创建对象时提供有效的初始值，可以通过定义有参构造函数实现。下面修改时钟类Clock，将无参构造函数修改为有参构造函数，以演示有参构造函数的定义与使用，如下所示。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iomanip&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-comment">// 定义时钟类Clock</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Clock</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-comment">// 声明有参构造函数</span><br>  <span class="hljs-built_in">Clock</span>(<span class="hljs-type">int</span> hour, <span class="hljs-type">int</span> min, <span class="hljs-type">int</span> sec);<br>  <span class="hljs-comment">// 声明显示时间的成员函数</span><br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">showTime</span><span class="hljs-params">()</span></span>;<br><span class="hljs-keyword">private</span>:<br>  <span class="hljs-comment">// 声明表示小时的成员变量</span><br>  <span class="hljs-type">int</span> _hour;<br>  <span class="hljs-comment">// 声明表示分钟的成员变量</span><br>  <span class="hljs-type">int</span> _min;<br>  <span class="hljs-comment">// 声明表示秒的成员变量</span><br>  <span class="hljs-type">int</span> _sec;<br>&#125;;<br><br>Clock::<span class="hljs-built_in">Clock</span>(<span class="hljs-type">int</span> hour, <span class="hljs-type">int</span> min, <span class="hljs-type">int</span> sec)<br>&#123;<br>  <span class="hljs-comment">// 初识化过程，将初始值直接赋值给成员变量</span><br>  _hour=hour;<br>  _min=min;<br>  _sec=sec;<br>&#125;<br><br><span class="hljs-comment">// 类外实现成员函数</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Clock::showTime</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  cout&lt;&lt;<span class="hljs-built_in">setw</span>(<span class="hljs-number">2</span>)&lt;&lt;<span class="hljs-built_in">setfill</span>(<span class="hljs-string">&#x27;0&#x27;</span>)&lt;&lt;_hour&lt;&lt;<span class="hljs-string">&quot;:&quot;</span>&lt;&lt;<span class="hljs-built_in">setw</span>(<span class="hljs-number">2</span>)&lt;&lt;<span class="hljs-built_in">setfill</span>(<span class="hljs-string">&#x27;0&#x27;</span>)&lt;&lt;_min&lt;&lt;<span class="hljs-string">&quot;:&quot;</span>&lt;&lt;<span class="hljs-built_in">setw</span>(<span class="hljs-number">2</span>)&lt;&lt;<span class="hljs-built_in">setfill</span>(<span class="hljs-string">&#x27;0&#x27;</span>)&lt;&lt;_sec&lt;&lt;endl;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-comment">// 创建对象clock1，传入初始值</span><br>  <span class="hljs-function">Clock <span class="hljs-title">clock1</span><span class="hljs-params">(<span class="hljs-number">10</span>,<span class="hljs-number">20</span>,<span class="hljs-number">30</span>)</span></span>;<br>  <span class="hljs-comment">// 通过对象调用成员函数showTime()显示时间</span><br>  cout&lt;&lt;<span class="hljs-string">&quot;clock1: &quot;</span>;<br>  clock1.<span class="hljs-built_in">showTime</span>();<br><br>  <span class="hljs-comment">// 创建对象clock1，传入初始值</span><br>  <span class="hljs-function">Clock <span class="hljs-title">clock2</span><span class="hljs-params">(<span class="hljs-number">22</span>,<span class="hljs-number">16</span>,<span class="hljs-number">12</span>)</span></span>;<br>  cout&lt;&lt;<span class="hljs-string">&quot;clock2: &quot;</span>;<br>  <span class="hljs-comment">// 通过对象调用成员函数showTime()显示时间</span><br>  clock2.<span class="hljs-built_in">showTime</span>();<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上述代码，第7行代码声明了有参构造函数；第14～19行代码在类外实现有参构造函数，将参数赋值给成员变量，在创建对象时调用有参构造函数，用户可以传入初始值（参数）完成对象初始化。第28～33行代码，创建了两个Clock对象clock1和clock2，这两个对象在创建时，传入了不同的参数，因此各个对象调用成员函数showTime()显示的初始化时间是不一样的。</p>
+<p>需要注意的是，在实现构造函数时，除了在函数体中初始化成员变量，还可以通过“:”运算符在构造函数的后面初始化成员变量，这种方式称为列表初始化，其格式如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++">类::构造函数(参数列表):成员变量<span class="hljs-number">1</span>(参数<span class="hljs-number">1</span>), 成员变量<span class="hljs-number">2</span>(参数<span class="hljs-number">2</span>), ..., 成员变量<span class="hljs-built_in">n</span>(参数n)<br>&#123;<br>  构造函数体<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>前面的Clock类，使用列表初始化实现成员变量初始化的方式如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++">Clock::<span class="hljs-built_in">Clock</span>(<span class="hljs-type">int</span> hour, <span class="hljs-type">int</span> min, <span class="hljs-type">int</span> sec):_hour(hour),_min(min),_sec(sec)<br>&#123;<br>  ...<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="5-2、重载构造函数">5.2、重载构造函数</h3>
+<p>在C++中，构造函数允许重载。例如，Clock类可以定义多个构造函数，示例代码如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Clock</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-comment">// 构造函数重载</span><br>  <span class="hljs-built_in">Clock</span>();<br>  <span class="hljs-built_in">Clock</span>(<span class="hljs-type">int</span> hour);<br>  <span class="hljs-built_in">Clock</span>(<span class="hljs-type">int</span> hour, <span class="hljs-type">int</span> min);<br>  <span class="hljs-built_in">Clock</span>(<span class="hljs-type">int</span> hour, <span class="hljs-type">int</span> min, <span class="hljs-type">int</span> sec);<br>  <span class="hljs-comment">// 声明显示时间的成员函数</span><br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">showTime</span><span class="hljs-params">()</span></span>;<br><span class="hljs-keyword">private</span>:<br>  <span class="hljs-comment">// 声明表示小时的成员变量</span><br>  <span class="hljs-type">int</span> _hour;<br>  <span class="hljs-comment">// 声明表示分钟的成员变量</span><br>  <span class="hljs-type">int</span> _min;<br>  <span class="hljs-comment">// 声明表示秒的成员变量</span><br>  <span class="hljs-type">int</span> _sec;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>当定义具有默认参数的重载构造函数时，要防止调用的二义性。下面修改前面的Clock类，定义重载构造函数，并且其中一个构造函数具有默认参数，在创建对象时，构造函数调用会产生二义性，如下所示。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iomanip&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-comment">// 定义时钟类Clock</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Clock</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-built_in">Clock</span>(<span class="hljs-type">int</span> hour, <span class="hljs-type">int</span> min);<br>  <span class="hljs-built_in">Clock</span>(<span class="hljs-type">int</span> hour, <span class="hljs-type">int</span> min, <span class="hljs-type">int</span> sec=<span class="hljs-number">0</span>);<br>  <span class="hljs-comment">// 声明显示时间的成员函数</span><br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">showTime</span><span class="hljs-params">()</span></span>;<br><span class="hljs-keyword">private</span>:<br>  <span class="hljs-comment">// 声明表示小时的成员变量</span><br>  <span class="hljs-type">int</span> _hour;<br>  <span class="hljs-comment">// 声明表示分钟的成员变量</span><br>  <span class="hljs-type">int</span> _min;<br>  <span class="hljs-comment">// 声明表示秒的成员变量</span><br>  <span class="hljs-type">int</span> _sec;<br>&#125;;<br><br><span class="hljs-comment">// 类外实现构造函数</span><br>Clock::<span class="hljs-built_in">Clock</span>(<span class="hljs-type">int</span> hour, <span class="hljs-type">int</span> min):_hour(hour),_min(min)<br>&#123;<br>  cout&lt;&lt;<span class="hljs-string">&quot;传入两个参数的构造函数&quot;</span>&lt;&lt;endl;<br>  _sec=<span class="hljs-number">10</span>;<br>&#125;<br><br><span class="hljs-comment">// 类外实现构造函数</span><br>Clock::<span class="hljs-built_in">Clock</span>(<span class="hljs-type">int</span> hour, <span class="hljs-type">int</span> min, <span class="hljs-type">int</span> sec=<span class="hljs-number">0</span>)<br>&#123;<br>  cout&lt;&lt;<span class="hljs-string">&quot;传入三个参数的构造函数&quot;</span>;<br>  _hour=hour;<br>  _min=min;<br>  _sec=sec;<br>&#125;<br><br><span class="hljs-comment">// 类外实现成员函数showTime()</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Clock::showTime</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  cout&lt;&lt;<span class="hljs-built_in">setw</span>(<span class="hljs-number">2</span>)&lt;&lt;<span class="hljs-built_in">setfill</span>(<span class="hljs-string">&#x27;0&#x27;</span>)&lt;&lt;_hour&lt;&lt;<span class="hljs-string">&quot;:&quot;</span>&lt;&lt;<span class="hljs-built_in">setw</span>(<span class="hljs-number">2</span>)&lt;&lt;<span class="hljs-built_in">setfill</span>(<span class="hljs-string">&#x27;0&#x27;</span>)&lt;&lt;_min&lt;&lt;<span class="hljs-string">&quot;:&quot;</span>&lt;&lt;<span class="hljs-built_in">setw</span>(<span class="hljs-number">2</span>)&lt;&lt;<span class="hljs-built_in">setfill</span>(<span class="hljs-string">&#x27;0&#x27;</span>)&lt;&lt;_sec&lt;&lt;endl;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-comment">// 创建对象clock</span><br>  <span class="hljs-function">Clock <span class="hljs-title">clock</span><span class="hljs-params">(<span class="hljs-number">8</span>,<span class="hljs-number">0</span>)</span></span>;<br>  cout&lt;&lt;<span class="hljs-string">&quot;clock: &quot;</span>;<br>  <span class="hljs-comment">// 调用成员函数显示时间</span><br>  clock.<span class="hljs-built_in">showTime</span>();<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上述代码，第8行代码声明了一个构造函数，该构造函数有两个参数；第9行代码声明了一个构造函数，该构造函数有三个参数，且第三个参数有默认值；第16～27行代码，在类外实现了这两个构造函数；第36行代码，在main()函数中创建一个对象clock，传入两个参数，编译器无法确认调用的是第8行的构造函数还是第9行的构造函数，因此无法通过编译。</p>
+<h3 id="5-3、含有成员对象的类的构造函数">5.3、含有成员对象的类的构造函数</h3>
+<p>C++允许将一个对象作为另一个类的成员变量，即类中的成员变量可以是其他类的对象，这样的成员变量称为类的子对象或成员对象。含有成员对象的类的定义格式如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span><br>&#123;<br>  <span class="hljs-comment">// 对象a作为类B的成员变量</span><br>  A a;<br>  <span class="hljs-comment">// 其他成员</span><br>  ...<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>在创建含有成员对象的对象时，先执行成员对象的构造函数，再执行类的构造函数。例如，上述格式中，类B包含一个类A对象作为成员变量，在创建类B对象时，先执行类A的构造函数，将类A对象创建出来，再执行类B的构造函数，创建类B对象。如果类A构造函数有参数，其参数要从类B的构造函数中传入，且必须以“:”运算符初始化类A对象。</p>
+<p>在类中包含对象成员，能够真实地描述客观事物之间的包含关系，比如描述学生信息的类，类中的成员除了姓名、学号属性，还包含出生日期。在定义学生类的时候，可以先定义一个描述年、月、日的出生日期类，再定义学生类，将出生日期类的对象作为学生类的成员变量。</p>
+<p>下面通过案例演示含有成员对象的类的构造函数的定义与调用，如下所示。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-comment">// 定义出生日期类Birth</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Birth</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-comment">// 构造函数</span><br>  <span class="hljs-built_in">Birth</span>(<span class="hljs-type">int</span> year, <span class="hljs-type">int</span> month, <span class="hljs-type">int</span> day);<br>  <span class="hljs-comment">// 声明成员函数show()显示日期</span><br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">show</span><span class="hljs-params">()</span></span>;<br><span class="hljs-keyword">private</span>:<br>  <span class="hljs-type">int</span> _year;<br>  <span class="hljs-type">int</span> _month;<br>  <span class="hljs-type">int</span> _day;<br>&#125;;<br><br><span class="hljs-comment">// 类外实现构造函数</span><br>Birth::<span class="hljs-built_in">Birth</span>(<span class="hljs-type">int</span> year, <span class="hljs-type">int</span> month, <span class="hljs-type">int</span> day):_year(year),_month(month),_day(day)<br>&#123;<br>  cout&lt;&lt;<span class="hljs-string">&quot;Birth类构造函数&quot;</span>&lt;&lt;endl;<br>&#125;<br><br><span class="hljs-comment">// 类外实现show()函数</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Birth::show</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  cout&lt;&lt;<span class="hljs-string">&quot;出生日期: &quot;</span>&lt;&lt;_year&lt;&lt;<span class="hljs-string">&quot;-&quot;</span>&lt;&lt;_month&lt;&lt;<span class="hljs-string">&quot;-&quot;</span>&lt;&lt;_day&lt;&lt;endl;<br>&#125;<br><br><span class="hljs-comment">// 定义学生类Student</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Student</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-comment">// 构造函数</span><br>  <span class="hljs-built_in">Student</span>(string name, <span class="hljs-type">int</span> id, <span class="hljs-type">int</span> year, <span class="hljs-type">int</span> month, <span class="hljs-type">int</span> day);<br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">show</span><span class="hljs-params">()</span></span>;<br><span class="hljs-keyword">private</span>:<br>  string _name;<br>  <span class="hljs-type">int</span> _id;<br>  Birth birth;<br>&#125;;<br><br><span class="hljs-comment">// 类外实现构造函数</span><br>Student::<span class="hljs-built_in">Student</span>(string name, <span class="hljs-type">int</span> id, <span class="hljs-type">int</span> year, <span class="hljs-type">int</span> month, <span class="hljs-type">int</span> day):<span class="hljs-built_in">birth</span>(year,month,day)<br>&#123;<br>  cout&lt;&lt;<span class="hljs-string">&quot;Student类构造函数&quot;</span>&lt;&lt;endl;<br>  _name=name;<br>  _id=id;<br>&#125;<br><br><span class="hljs-comment">// 类外实现show()函数</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Student::show</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  cout&lt;&lt;<span class="hljs-string">&quot;姓名: &quot;</span>&lt;&lt;_name&lt;&lt;endl;<br>  cout&lt;&lt;<span class="hljs-string">&quot;学号: &quot;</span>&lt;&lt;_id&lt;&lt;endl;<br>  birth.<span class="hljs-built_in">show</span>();<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-comment">// 创建学生对象stu</span><br>  <span class="hljs-function">Student <span class="hljs-title">stu</span><span class="hljs-params">(<span class="hljs-string">&quot;lili&quot;</span>,<span class="hljs-number">10002</span>,<span class="hljs-number">2000</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>)</span></span>;<br>  <span class="hljs-comment">// 显示学生信息</span><br>  stu.<span class="hljs-built_in">show</span>();<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上述代码，第3～12行代码定义了出生日期类Birth，该类有3个成员变量，分别是_year、_month、_day，并且定义了有参数的构造函数；第24～34行代码定义了学生类Student，该类有3个成员变量，分别是_name、_id、birth，其中birth是类Birth的对象。此外，Student类还定义了一个构造函数。由于成员对象birth的构造函数有3个参数，这3个参数要从类Student的构造函数中获取，因此Student类的构造函数共有5个参数。第36～42行代码用于实现Student类的构造函数，birth成员对象必须通过“:”运算符在Student构造函数后面初始化，无法在Student构造函数体中赋值。第52～53行代码，在main()函数中创建Student类对象stu，并通过对象stu调用成员函数show()显示学生信息。</p>
+<h2 id="六、析构函数">六、析构函数</h2>
+<p>创建对象时，系统会为对象分配所需要的内存空间等资源，当程序结束或对象被释放时，系统为对象分配的资源也需要回收，以便可以重新分配给其他对象使用。在C++中，对象资源的释放通过析构函数完成。析构函数的作用是在对象被释放之前完成一些清理工作。析构函数调用完成之后，对象占用的资源也被释放。</p>
+<p>与构造函数一样，析构函数也是类的一个特殊成员函数，其定义格式如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> 类名<br>&#123;<br>  ~析构函数名称();<br>  <span class="hljs-comment">// 其他成员</span><br>  ...<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>关于析构函数的定义，有以下注意事项。</p>
+<ul>
+<li>析构函数的名称与类名相同，在析构函数名称前添加“～”符号。</li>
+<li>析构函数没有参数。因为没有参数，所以析构函数不能重载，一个类中只有一个析构函数。</li>
+<li>析构函数没有返回值，不能在析构函数名称前添加任何返回值类型。在析构函数内部，也不能通过return返回任何值。</li>
+</ul>
+<p>当程序结束时，编译器会自动调用析构函数完成对象的清理工作，如果类中没有定义析构函数，编译器会提供一个默认的析构函数，但默认的析构函数只能完成栈内存对象的资源清理，无法完成堆内存对象的资源清理。因此，在程序中往往需要自定义析构函数。析构函数的调用情况主要有以下几种。</p>
+<ul>
+<li>在一个函数中定义了一个对象，当函数调用结束时，对象应当被释放，对象释放之前编译器会调用析构函数释放资源。</li>
+<li>对于static修饰的对象和全局对象，只有在程序结束时编译器才会调用析构函数。</li>
+<li>对于new运算符创建的对象，在调用delete释放时，编译器会调用析构函数释放资源。</li>
+</ul>
+<p>析构函数的调用顺序与构造函数的调用顺序是相反的。在构造对象和析构对象时，C++遵循的原则是：先构造的后析构，后构造的先析构。例如，连续创建了两个对象A1和A2，在创建时，先调用构造函数构造对象A1，再调用构造函数构造对象A2；在析构时，先调用析构函数析构对象A2，再调用析构函数析构对象A1。</p>
+<p>下面通过案例演示析构函数的定义与调用，如下所示。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> _CRT_SECURE_NO_WARNINGS</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;string.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-comment">// 定义兔子类Rabbit</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Rabbit</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-comment">// 声明构造函数</span><br>  <span class="hljs-built_in">Rabbit</span>(string name, <span class="hljs-type">const</span> <span class="hljs-type">char</span>* pf);<br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">eat</span><span class="hljs-params">()</span></span>;<br>  <span class="hljs-comment">// 声明析构函数</span><br>  ~<span class="hljs-built_in">Rabbit</span>();<br><span class="hljs-keyword">private</span>:<br>  <span class="hljs-comment">// 声明表示兔子名字的成员变量</span><br>  string _name;<br>  <span class="hljs-comment">// 声明表示兔子食物的成员变量</span><br>  <span class="hljs-type">char</span>* _food;<br>&#125;;<br><br>Rabbit::<span class="hljs-built_in">Rabbit</span>(string name, <span class="hljs-type">const</span> <span class="hljs-type">char</span>* pf)<br>&#123;<br>  cout&lt;&lt;<span class="hljs-string">&quot;调用构造函数&quot;</span>&lt;&lt;endl;<br>  _name=name;<br>  <span class="hljs-comment">// 为_food指针申请空间</span><br>  _food=<span class="hljs-keyword">new</span> <span class="hljs-type">char</span>[<span class="hljs-number">50</span>];<br>  <span class="hljs-comment">// 初始化_food空间</span><br>  <span class="hljs-built_in">memset</span>(_food,<span class="hljs-number">0</span>,<span class="hljs-number">50</span>);<br>  <span class="hljs-comment">// 将参数pf指向的数据复制到_food中</span><br>  <span class="hljs-built_in">strcpy</span>(_food,pf);<br>&#125;<br><br><span class="hljs-comment">// 类外实现成员函数</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Rabbit::eat</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  cout&lt;&lt;_name&lt;&lt;<span class="hljs-string">&quot; is eating &quot;</span>&lt;&lt;_food&lt;&lt;endl;<br>&#125;<br><br><span class="hljs-comment">// 类外实现析构函数</span><br>Rabbit::~<span class="hljs-built_in">Rabbit</span>()<br>&#123;<br>  cout&lt;&lt;<span class="hljs-string">&quot;调用析构函数, 析构&quot;</span>&lt;&lt;_name&lt;&lt;endl;<br>  <span class="hljs-keyword">if</span>(_food!=<span class="hljs-literal">NULL</span>)<br>    <span class="hljs-keyword">delete</span> []_food;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-function">Rabbit <span class="hljs-title">A</span><span class="hljs-params">(<span class="hljs-string">&quot;A&quot;</span>,<span class="hljs-string">&quot;luobo&quot;</span>)</span></span>;<br>  A.<span class="hljs-built_in">eat</span>();<br>  <span class="hljs-function">Rabbit <span class="hljs-title">B</span><span class="hljs-params">(<span class="hljs-string">&quot;B&quot;</span>,<span class="hljs-string">&quot;baicai&quot;</span>)</span></span>;<br>  B.<span class="hljs-built_in">eat</span>();<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上述代码，第4～13行代码，定义了一个兔子类Rabbit，该类有两个成员变量，分别是_name、_food，有一个构造函数、一个析构函数和一个普通成员函数eat()；第14～21行代码在类外实现构造函数。在实现构造函数时，由于第二个成员变量_food是字符指针变量，因此在赋值时，要先使用new运算符为_food指针申请一块内存空间并初始化，再将参数pf指向的数据复制到_food指向的空间；第22～25行代码在类外实现eat()函数；第26～31行代码在类外实现析构函数，在析构函数中，使用delete运算符释放_food指向的内存空间。第34～37行代码，在main()函数中，分别创建两个对象A和B，然后调用成员函数eat()实现吃食物的功能。</p>
+<p>在创建对象的过程中，对象A与对象B除了对象本身所占用的内存空间，还各自拥有一块new运算符在堆上申请的空间，对象A与对象B占用的内存空间如下图所示。</p>
+<p><img src="/img/eb2fed4f3344efacc50e02b51a06f94c.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>程序运行结束后，编译器会调用析构函数释放对象资源，在释放时，先释放_food指向的内存空间，再释放对象所占用的内存空间。</p>
+<h2 id="七、拷贝构造函数">七、拷贝构造函数</h2>
+<p>在程序中，经常使用已有对象完成新对象的初始化。例如，在定义变量int a=3后，再定义新变量int b=a。在类中，需要定义拷贝构造函数才能完成这样的功能。接下来，本节将针对拷贝构造函数进行详细讲解。</p>
+<h3 id="7-1、拷贝构造函数的定义">7.1、拷贝构造函数的定义</h3>
+<p>拷贝构造函数是一种特殊的构造函数，它具有构造函数的所有特性，并且使用本类对象的引用作为形参，能够通过一个已经存在的对象初始化该类的另一个对象。拷贝构造函数的定义格式如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> 类名<br>&#123;<br><span class="hljs-keyword">public</span>:<br>  构造函数名称(<span class="hljs-type">const</span> 类名&amp; 对象名)<br>  &#123;<br>    函数体<br>  &#125;<br>  <span class="hljs-comment">// 其他成员</span><br>  ...<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>在定义拷贝构造函数时，为了使引用的对象不被修改，通常使用const修饰引用的对象。下面通过案例演示拷贝构造函数的定义与调用，如下所示。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Sheep</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-built_in">Sheep</span>(string name, string color);<br>  <span class="hljs-built_in">Sheep</span>(<span class="hljs-type">const</span> Sheep&amp; another);<br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">show</span><span class="hljs-params">()</span></span>;<br>  ~<span class="hljs-built_in">Sheep</span>();<br><span class="hljs-keyword">private</span>:<br>  string _name;<br>  string _color;<br>&#125;;<br><br>Sheep::<span class="hljs-built_in">Sheep</span>(string name, string color)<br>&#123;<br>  cout&lt;&lt;<span class="hljs-string">&quot;调用构造函数&quot;</span>&lt;&lt;endl;<br>  _name=name;<br>  _color=color;<br>&#125;<br><br>Sheep::<span class="hljs-built_in">Sheep</span>(<span class="hljs-type">const</span> Sheep&amp; another)<br>&#123;<br>  cout&lt;&lt;<span class="hljs-string">&quot;调用拷贝构造函数&quot;</span>&lt;&lt;endl;<br>  _name=another._name;<br>  _color=another._color;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Sheep::show</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  cout&lt;&lt;_name&lt;&lt;<span class="hljs-string">&quot; &quot;</span>&lt;&lt;_color&lt;&lt;endl;<br>&#125;<br><br>Sheep::~<span class="hljs-built_in">Sheep</span>()<br>&#123;<br>  cout&lt;&lt;<span class="hljs-string">&quot;调用析构函数&quot;</span>&lt;&lt;endl;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-function">Sheep <span class="hljs-title">sheepA</span><span class="hljs-params">(<span class="hljs-string">&quot;Doly&quot;</span>,<span class="hljs-string">&quot;white&quot;</span>)</span></span>;<br>  cout&lt;&lt;<span class="hljs-string">&quot;sheepA: &quot;</span>;<br>  sheepA.<span class="hljs-built_in">show</span>();<br><br>  <span class="hljs-comment">// 使用sheepA初始化新对象sheepB</span><br>  <span class="hljs-function">Sheep <span class="hljs-title">sheepB</span><span class="hljs-params">(sheepA)</span></span>;<br>  cout&lt;&lt;<span class="hljs-string">&quot;sheepB: &quot;</span>;<br>  sheepB.<span class="hljs-built_in">show</span>();<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上述代码，第3～13行代码定义了一个绵羊类Sheep，该类有两个成员变量，分别是_name、_color。此外，该类还声明了有参构造函数、拷贝构造函数、普通成员函数show()和析构函数；第20～25行代码，在类外实现拷贝构造函数，在函数体中，将形参sheepA的成员变量值赋给类的成员变量；第37～39行代码，在main()函数，创建了Sheep类对象sheepA，并输出sheepA的信息；第40行代码创建Sheep类对象sheepB，并使用对象sheepA初始化对象sheepB，在这个过程中编译器会调用拷贝构造函数；第41～42行代码输出对象sheepB的信息。</p>
+<p>当涉及对象之间的赋值时，编译器会自动调用拷贝构造函数。拷贝构造函数的调用情况有以下三种。</p>
+<ul>
+<li>使用一个对象初始化另一个对象。上例就是使用一个对象初始化另一个对象。</li>
+<li>对象作为参数传递给函数。当函数的参数为对象时，编译器会调用拷贝构造函数将实参传递给形参。</li>
+<li>函数返回值为对象。当函数返回值为对象时，编译器会调用拷贝构造函数将返回值复制到临时对象中，将数据传出。</li>
+</ul>
+<h3 id="7-2、浅拷贝">7.2、浅拷贝</h3>
+<p>拷贝构造函数是特殊的构造函数，如果程序没有定义拷贝构造函数，C++会提供一个默认的拷贝构造函数，默认拷贝构造函数只能完成简单的赋值操作，无法完成含有堆内存成员数据的拷贝。例如，如果类中有指针类型的数据，默认的拷贝构造函数只是进行简单的指针赋值，即将新对象的指针成员指向原有对象的指针指向的内存空间，并没有为新对象的指针成员申请新空间，这种情况称为浅拷贝。</p>
+<p>浅拷贝在析构指向堆内存空间的变量时，往往会出现多次析构而导致程序错误。C++初学者自定义的拷贝构造函数往往实现的是浅拷贝。下面通过案例演示浅拷贝，如下所示。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> _CRT_SECURE_NO_WARNINGS</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;string.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-comment">// 定义绵羊类Sheep</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Sheep</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-comment">// 声明有参构造函数</span><br>  <span class="hljs-built_in">Sheep</span>(string name, string color, <span class="hljs-type">const</span> <span class="hljs-type">char</span>* home);<br>  <span class="hljs-comment">// 声明拷贝造函数</span><br>  <span class="hljs-built_in">Sheep</span>(<span class="hljs-type">const</span> Sheep&amp; another);<br>  <span class="hljs-comment">// 声明普通成员函数</span><br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">show</span><span class="hljs-params">()</span></span>;<br>  <span class="hljs-comment">// 声明析构函数</span><br>  ~<span class="hljs-built_in">Sheep</span>();<br><span class="hljs-keyword">private</span>:<br>  <span class="hljs-comment">// 声明表示绵羊名字的成员变量</span><br>  string _name;<br>  <span class="hljs-comment">// 声明表示绵羊颜色的成员变量</span><br>  string _color;<br>  <span class="hljs-comment">// 声明表示绵羊家的成员变量</span><br>  <span class="hljs-type">char</span>* _home;<br>&#125;;<br><br>Sheep::<span class="hljs-built_in">Sheep</span>(string name, string color, <span class="hljs-type">const</span> <span class="hljs-type">char</span>* home)<br>&#123;<br>  cout&lt;&lt;<span class="hljs-string">&quot;调用构造函数&quot;</span>&lt;&lt;endl;<br>  _name=name;<br>  _color=color;<br>  <span class="hljs-comment">// 为指针成员home分配空间，将形参home的内容复制到_home指向的空间</span><br>  <span class="hljs-type">int</span> len=<span class="hljs-built_in">strlen</span>(home)+<span class="hljs-number">1</span>;<br>  _home=<span class="hljs-keyword">new</span> <span class="hljs-type">char</span>[len];<br>  <span class="hljs-built_in">memset</span>(_home,<span class="hljs-number">0</span>,len);<br>  <span class="hljs-built_in">strcpy</span>(_home,home);<br>&#125;<br><br><span class="hljs-comment">// 类外实现拷贝构造函数</span><br>Sheep::<span class="hljs-built_in">Sheep</span>(<span class="hljs-type">const</span> Sheep&amp; another)<br>&#123;<br>  cout&lt;&lt;<span class="hljs-string">&quot;调用拷贝构造函数&quot;</span>&lt;&lt;endl;<br>  _name=another._name;<br>  _color=another._color;<br>  <span class="hljs-comment">// 浅拷贝</span><br>  _home=another._home;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Sheep::show</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  cout&lt;&lt;_name&lt;&lt;<span class="hljs-string">&quot; &quot;</span>&lt;&lt;_color&lt;&lt;<span class="hljs-string">&quot; &quot;</span>&lt;&lt;_home&lt;&lt;endl;<br>&#125;<br><br>Sheep::~<span class="hljs-built_in">Sheep</span>()<br>&#123;<br>  cout&lt;&lt;<span class="hljs-string">&quot;调用析构函数&quot;</span>&lt;&lt;endl;<br>  <span class="hljs-keyword">if</span>(_home!=<span class="hljs-literal">NULL</span>)<br>    <span class="hljs-keyword">delete</span> []_home;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-type">const</span> <span class="hljs-type">char</span> *p=<span class="hljs-string">&quot;beijing&quot;</span>;<br><br>  <span class="hljs-function">Sheep <span class="hljs-title">sheepA</span><span class="hljs-params">(<span class="hljs-string">&quot;Doly&quot;</span>,<span class="hljs-string">&quot;white&quot;</span>,p)</span></span>;<br>  cout&lt;&lt;<span class="hljs-string">&quot;sheepA: &quot;</span>;<br>  sheepA.<span class="hljs-built_in">show</span>();<br><br>  <span class="hljs-comment">// 使用sheepA初始化新对象sheepB</span><br>  <span class="hljs-function">Sheep <span class="hljs-title">sheepB</span><span class="hljs-params">(sheepA)</span></span>;<br>  cout&lt;&lt;<span class="hljs-string">&quot;sheepB: &quot;</span>;<br>  sheepB.<span class="hljs-built_in">show</span>();<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上述代码，在绵羊类Sheep中增加了一个char类型的指针变量成员_home，用于表示绵羊对象的家。增加了_home成员变量之后，类Sheep的构造函数、拷贝构造函数、析构函数都进行了相应修改。第17～27行代码实现构造函数，在构造函数内部，首先为_home指针申请堆内存空间，然后调用strcpy()函数将形参home的内容复制到_home指向的空间。第28～34行代码实现拷贝构造函数，在拷贝构造函数内部，对指针成员只进行了简单的赋值操作，即浅拷贝。第39～44行代码实现析构函数，在析构函数内部，使用delete运算符释放_home指向的内存空间。第47～53行代码，在main()函数中，先创建对象sheepA，再创建对象sheepB，并用对象sheepA初始化对象sheepB。</p>
+<p>在这个过程中，使用对象sheepA初始化对象sheepB是浅拷贝过程，因为对象sheepB的_home指针指向的是对象sheepA的_home指针指向的空间。浅拷贝过程如下图所示。</p>
+<p><img src="/img/f5bf7f1f63d518b96d94942f2f0ec969.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>在浅拷贝过程中，对象sheepA中的_home指针与对象sheepB中的_home指针指向同一块内存空间。当程序运行结束时，析构函数释放对象所占用资源，析构函数先析构对象sheepB，后析构对象sheepA。在析构sheepB对象时释放了_home指向的堆内存空间的数据，当析构sheepA时_home指向的堆内存空间已经释放，再次释放内存空间的资源，程序运行异常终止，即存储“beijing”的堆内存空间被释放了两次，因此程序抛出异常，这种现象被称重析构（double free）。</p>
+<h3 id="7-3、深拷贝">7.3、深拷贝</h3>
+<p>所谓深拷贝，就是在拷贝构造函数中完成更深层次的复制，当类中有指针成员时，深拷贝可以为新对象的指针分配一块内存空间，将数据复制到新空间。例如，在前面的绵羊类Sheep中，用对象sheepA初始化对象sheepB时，可以为对象sheepB的指针_home申请一块新的内存空间，将数据复制到这块新的内存空间。</p>
+<p>下面修改绵羊类Sheep的拷贝构造函数，实现深拷贝过程。修改后的拷贝构造函数代码如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c++">Sheep::<span class="hljs-built_in">Sheep</span>(<span class="hljs-type">const</span> Sheep&amp; another)<br>&#123;<br>  cout&lt;&lt;<span class="hljs-string">&quot;调用拷贝构造函数&quot;</span>&lt;&lt;endl;<br>  _name=another._name;<br>  _color=another._color;<br>  <span class="hljs-comment">// 完成深拷贝</span><br>  <span class="hljs-type">int</span> len=<span class="hljs-built_in">strlen</span>(another._home)+<span class="hljs-number">1</span>;<br>  _home=<span class="hljs-keyword">new</span> <span class="hljs-type">char</span>[len];<br>  <span class="hljs-built_in">strcpy</span>(_home,another._home);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>拷贝构造函数修改之后，再次运行程序，程序不再抛出异常。在深拷贝过程中，对象sheepB中的_home指针指向了独立的内存空间，是一份完整的对象拷贝，其逻辑结构如下图所示。</p>
+<p><img src="/img/41234404a9ea4d30fe1c17b6347eaca1.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>由图可知，对象sheepA中的_home指针与对象sheepB中的_home指针指向不同的内存空间，在析构时，析构各自对象所占用的资源不会再产生冲突。</p>
+<h2 id="八、关键字修饰类的成员">八、关键字修饰类的成员</h2>
+<p>前面学习的类中，成员变量都是我们比较熟悉的简单类型，比如int、char*等，但很多时候为描述比较复杂的情况，例如，只允许类的成员函数读取成员变量的值，但不允许在成员函数内部修改成员变量的值，此时就需要使用const关键字修饰成员函数；或者，类中的成员变量在多个对象之间共享，此时就需要使用static关键字修饰成员变量。本节将针对const和static关键字修饰类的成员进行讲解。</p>
+<h3 id="8-1、const修饰类的成员">8.1、const修饰类的成员</h3>
+<p>生活中有许多的数据是不希望被改变的，如圆周率、普朗克常数、一个人的国籍等。同样，在程序设计中有些数据也不希望被改变，只允许读取。对于不希望被改变的数据，可以使用const关键字修饰。在类中，const既可以修饰类的成员变量，也可以修饰类的成员函数。下面对这两种情况分别进行讲解。</p>
+<h4 id="8-1-1、const修饰成员变量">8.1.1、const修饰成员变量</h4>
+<p>使用const修饰的成员变量称为常成员变量。对于常成员变量，仅可以进行一次数据的初始化，之后是不能修改的。常成员变量通常使用有参构造函数进行初始化。</p>
+<p>下面通过案例演示const关键字修饰类的成员变量，如下所示。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-comment">// 定义类Person</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Person</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-comment">// 声明有参构造函数</span><br>  <span class="hljs-built_in">Person</span>(string name, <span class="hljs-type">int</span> age, string addr);<br>  <span class="hljs-comment">// 声明表示住址的常成员变量</span><br>  <span class="hljs-type">const</span> string _addr;<br>  <span class="hljs-comment">// 声明析构函数</span><br>  ~<span class="hljs-built_in">Person</span>();<br><span class="hljs-keyword">private</span>:<br>  <span class="hljs-comment">// 声明表示姓名的常成员变量</span><br>  <span class="hljs-type">const</span> string _name;<br>  <span class="hljs-comment">// 声明表示年龄的常成员变量</span><br>  <span class="hljs-type">const</span> <span class="hljs-type">int</span> _age;<br>&#125;;<br><br><span class="hljs-comment">// 类外实现构造函数</span><br>Person::<span class="hljs-built_in">Person</span>(string name, <span class="hljs-type">int</span> age, string addr):_name(name),_age(age),_addr(addr)<br>&#123;<br>  cout&lt;&lt;<span class="hljs-string">&quot;初始化const修饰的成员变量&quot;</span>&lt;&lt;endl;<br>  cout&lt;&lt;<span class="hljs-string">&quot;name: &quot;</span>&lt;&lt;_name&lt;&lt;endl;<br>  cout&lt;&lt;<span class="hljs-string">&quot;age: &quot;</span>&lt;&lt;_age&lt;&lt;endl;<br>  cout&lt;&lt;<span class="hljs-string">&quot;addr: &quot;</span>&lt;&lt;_addr&lt;&lt;endl;<br>&#125;<br><br><span class="hljs-comment">// 类外实现析构函数</span><br>Person::~<span class="hljs-built_in">Person</span>()&#123;&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-function">Person <span class="hljs-title">p1</span><span class="hljs-params">(<span class="hljs-string">&quot;张三&quot;</span>,<span class="hljs-number">18</span>,<span class="hljs-string">&quot;北大街&quot;</span>)</span></span>;<br>  p1._addr=<span class="hljs-string">&quot;南大街&quot;</span>;<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上述代码，第3～12行代码定义了一个类Person，该类有三个常成员变量：_name、_age和_addr。第14～21行代码，在类外实现类的构造函数，类的常成员变量在构造函数中完成初始化，即创建对象时完成初始化。第25行代码创建Person类对象p1，在创建对象时完成了三个常成员变量的初始化。这是创建对象后初始化常成员变量的唯一机会，常成员变量一旦初始化就不能再改变。第26行代码试图修改常成员变量，因此程序会报错。</p>
+<h4 id="8-1-2、const修饰成员函数">8.1.2、const修饰成员函数</h4>
+<p>使用const修饰的成员函数称为常成员函数。在常成员函数内部，只能访问类的成员变量，而不能修改类的成员变量；并且，常成员函数只能调用类的常成员函数，而不能调用类的非常成员函数。类中定义的成员函数若与常成员函数名相同则构成重载，常成员函数只能由const修饰的对象进行访问。</p>
+<p>与修饰成员变量不同的是，修饰成员函数时，const位于成员函数的后面，其格式如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">返回值类型 函数名() <span class="hljs-type">const</span>;<br></code></pre></td></tr></table></figure>
+<p>下面通过案例演示const关键字修饰类的成员函数，如下所示。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-comment">// 定义类Person</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Person</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-comment">// 声明有参构造函数</span><br>  <span class="hljs-built_in">Person</span>(string, <span class="hljs-type">int</span>, string, string);<br>  <span class="hljs-comment">// 声明析构函数</span><br>  ~<span class="hljs-built_in">Person</span>();<br>  <span class="hljs-comment">// 声明表示住址的常成员变量</span><br>  <span class="hljs-type">const</span> string _addr;<br>  <span class="hljs-comment">// 声明显示个人信息的常成员函数</span><br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">myInfor</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span>;<br>  <span class="hljs-comment">// 声明显示个人信息的普通成员函数</span><br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">myInfor</span><span class="hljs-params">()</span></span>;<br>  <span class="hljs-comment">// 声明显示住址的普通成员函数</span><br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">place</span><span class="hljs-params">()</span></span>;<br><span class="hljs-keyword">private</span>:<br>  <span class="hljs-comment">// 声明表示姓名的常成员变量</span><br>  <span class="hljs-type">const</span> string _name;<br>  <span class="hljs-comment">// 声明表示年龄的常成员变量</span><br>  <span class="hljs-type">const</span> <span class="hljs-type">int</span> _age;<br>  <span class="hljs-comment">// 声明表示水果的普通成员变量</span><br>  string _favFruit;<br>&#125;;<br><br><span class="hljs-comment">// 有参构造函数初识化对象</span><br>Person::<span class="hljs-built_in">Person</span>(string name, <span class="hljs-type">int</span> age, string addr, string favFruit):_name(name),_age(age),_addr(addr),_favFruit(favFruit)&#123;&#125;<br><br><span class="hljs-comment">// 类外实现常成员函数myInfor()</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Person::myInfor</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-comment">// _favFruit=&quot;榴莲&quot;;</span><br>  <span class="hljs-comment">// place();</span><br>  cout&lt;&lt;<span class="hljs-string">&quot;我叫&quot;</span>&lt;&lt;_name&lt;&lt;<span class="hljs-string">&quot;今年&quot;</span>&lt;&lt;_age&lt;&lt;<span class="hljs-string">&quot;岁, &quot;</span>&lt;&lt;<span class="hljs-string">&quot;我喜欢吃&quot;</span>&lt;&lt;_favFruit&lt;&lt;endl;<br>&#125;<br><br><span class="hljs-comment">// 类外实现析构函数</span><br>Person::~<span class="hljs-built_in">Person</span>()&#123;&#125;<br><br><span class="hljs-comment">// 类外实现普通成员函数myInfor()</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Person::myInfor</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  _favFruit=<span class="hljs-string">&quot;桃子&quot;</span>;<br>  cout&lt;&lt;<span class="hljs-string">&quot;我叫&quot;</span>&lt;&lt;_name&lt;&lt;<span class="hljs-string">&quot;今年&quot;</span>&lt;&lt;_age&lt;&lt;<span class="hljs-string">&quot;岁, &quot;</span>&lt;&lt;<span class="hljs-string">&quot;我喜欢吃&quot;</span>&lt;&lt;_favFruit&lt;&lt;endl;<br>  <span class="hljs-built_in">place</span>();<br>&#125;<br><br><span class="hljs-comment">// 类外实现普通成员函数place()</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Person::place</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  cout&lt;&lt;<span class="hljs-string">&quot;我住在&quot;</span>&lt;&lt;_addr&lt;&lt;endl;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-comment">// 创建对象p1</span><br>  <span class="hljs-function">Person <span class="hljs-title">p1</span><span class="hljs-params">(<span class="hljs-string">&quot;张三&quot;</span>,<span class="hljs-number">18</span>,<span class="hljs-string">&quot;北大街&quot;</span>,<span class="hljs-string">&quot;苹果&quot;</span>)</span></span>;<br>  <span class="hljs-comment">// 调用普通成员函数myInfor()</span><br>  p1.<span class="hljs-built_in">myInfor</span>();<br>  <span class="hljs-comment">// 创建对象p2</span><br>  <span class="hljs-function"><span class="hljs-type">const</span> Person <span class="hljs-title">p2</span><span class="hljs-params">(<span class="hljs-string">&quot;李四&quot;</span>,<span class="hljs-number">18</span>,<span class="hljs-string">&quot;南大街&quot;</span>,<span class="hljs-string">&quot;橘子&quot;</span>)</span></span>;<br>  <span class="hljs-comment">// 调用常成员函数myInfor()</span><br>  p2.<span class="hljs-built_in">myInfor</span>();<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上述代码，第3～16行代码定义了Person类，该类中定义了三个成员变量，其中_name和_age是常成员函数。此外，第9～10行代码声明了Person类两个重载的成员函数myInfor()，第9行代码的myInfor()函数为常成员函数，第10行代码的myInfor()函数为普通成员函数。第22～27行代码在类外实现常成员函数myInfor()，在函数内部，输出各个成员变量的值。需要注意的是，类的常成员函数不能修改成员变量的值，也不能调用非常成员函数，如第24～25行代码，如果取消注释，程序就会报错。第29～35行代码在类外实现普通成员函数m yInfor()，在函数内部，可以像第31行代码那样修改成员变量的值，也可以像第34行代码那样调用非常成员函数。第42～43行代码创建普通对象p1，并通过p1调用myInfor()函数，普通对象p1调用的是普通成员函数myInfor()。第44～45行代码创建常对象p2，并通过p2调用m yInfor()，常对象p2成功调用了常成员函数myInfor()。</p>
+<h3 id="8-2、static修饰类的成员">8.2、static修饰类的成员</h3>
+<p>类中的成员变量，在某些时候被多个类的对象共享，实现对象行为的协调作用。共享数据通过static实现，用static修饰成员后，创建的对象都共享一个静态成员。例如，设计学生类时，可以定义一个成员变量用于统计学生的总人数，由于总人数应该只有一个有效值，因此完全不必在每个学生对象中都定义一个成员变量表示学生总人数，而是在对象以外的空间定义一个表示总人数的成员变量让所有对象共享。这个表示总人数的成员变量就可以使用static关键字修饰。static既可以修饰类的成员变量，也可以修饰类的成员函数，下面分别对这两种情况进行讲解。</p>
+<h4 id="8-2-1、static修饰成员变量">8.2.1、static修饰成员变量</h4>
+<p>static修饰的静态成员变量只能在类的内部定义，在类的外部初始化。静态成员变量在调用时，可以通过对象和类进行访问。由于static成员变量存储在类的外部，计算类的大小时不包含在内。</p>
+<p>下面通过案例演示static关键字修饰类的成员变量，如下所示。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-comment">// 定义学生类Student</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Student</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-comment">// 声明有参构造函数</span><br>  <span class="hljs-built_in">Student</span>(string name);<br>  <span class="hljs-comment">// 声明析构函数</span><br>  ~<span class="hljs-built_in">Student</span>();<br>  <span class="hljs-comment">// 声明表示学生总数的静态成员变量</span><br>  <span class="hljs-type">static</span> <span class="hljs-type">int</span> _sum;<br><span class="hljs-keyword">private</span>:<br>  <span class="hljs-comment">// 声明表示学生姓名的成员变量</span><br>  string _name;<br>&#125;;<br><br><span class="hljs-comment">// 类外实现Student类有参构造函数</span><br>Student::<span class="hljs-built_in">Student</span>(string name)<br>&#123;<br>  <span class="hljs-keyword">this</span>-&gt;_name=name;<br>  _sum++;<br>&#125;<br><br><span class="hljs-comment">// 类外实现析构函数</span><br>Student::~<span class="hljs-built_in">Student</span>()&#123;&#125;<br><br><span class="hljs-comment">// 类外初始化静态成员变量_sum</span><br><span class="hljs-type">int</span> Student::_sum=<span class="hljs-number">0</span>;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-function">Student <span class="hljs-title">stu1</span><span class="hljs-params">(<span class="hljs-string">&quot;张三&quot;</span>)</span></span>;<br>  <span class="hljs-function">Student <span class="hljs-title">stu2</span><span class="hljs-params">(<span class="hljs-string">&quot;李四&quot;</span>)</span></span>;<br>  <span class="hljs-comment">// 通过对象访问静态成员变量</span><br>  cout&lt;&lt;<span class="hljs-string">&quot;人数是: &quot;</span>&lt;&lt;stu1._sum&lt;&lt;endl;<br>  cout&lt;&lt;<span class="hljs-string">&quot;人数是: &quot;</span>&lt;&lt;stu2._sum&lt;&lt;endl;<br>  <span class="hljs-comment">// 通过类访问静态成员变量</span><br>  cout&lt;&lt;<span class="hljs-string">&quot;人数是: &quot;</span>&lt;&lt;Student::_sum&lt;&lt;endl;<br>  cout&lt;&lt;<span class="hljs-string">&quot;stu1的大小是: &quot;</span>&lt;&lt;<span class="hljs-built_in">sizeof</span>(stu1)&lt;&lt;endl;<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上述代码，第3～11行代码定义了学生类Student，其中，第8行代码定义了静态成员变量_sum。第13～17行代码在类外部实现有参构造函数，每当创建对象时，_sum的值自动加1，用于统计建立Student类对象的数目。第19行代码在类外部初始化_sum的值为0。第22～23行代码创建了两个对象stu1和stu2。第24～25行代码通过对象stu1和stu2访问静态成员变量_sum，对象stu1和对象stu2访问到的静态成员变量_sum值均为2。第26行代码通过类的作用域访问静态成员变量_sum，通过类的作用域访问到的静态成员变量_sum值也为2。第27行代码计算对象stu1的大小，对象stu1的大小为28，静态成员变量并不包含在对象中。</p>
+<h4 id="8-2-2、static修饰成员函数">8.2.2、static修饰成员函数</h4>
+<p>类中定义的普通函数只能通过对象调用，无法使用类调用。使用static修饰的成员函数，同静态成员变量一样，可以通过对象或类调用。</p>
+<p>静态成员函数可以直接访问类中的静态成员变量和静态成员函数，对外提供了访问接口，实现了静态成员变量的管理。需要注意的是，静态成员函数属于类，不属于对象，没有this指针。</p>
+<p>下面通过案例演示static关键字修饰类的成员函数，如下所示。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;math.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-comment">// 定义坐标点类Point</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Point</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-built_in">Point</span>(<span class="hljs-type">float</span> x, <span class="hljs-type">float</span> y);<br>  ~<span class="hljs-built_in">Point</span>();<br>  <span class="hljs-comment">// 声明静态成员函数</span><br>  <span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">float</span> <span class="hljs-title">getLen</span><span class="hljs-params">(Point&amp; p1, Point&amp; p2)</span></span>;<br>  <span class="hljs-comment">// 声明静态成员变量_len</span><br>  <span class="hljs-type">static</span> <span class="hljs-type">float</span> _len;<br><span class="hljs-keyword">private</span>:<br>  <span class="hljs-type">float</span> _x;<br>  <span class="hljs-type">float</span> _y;<br>&#125;;<br><br><span class="hljs-type">float</span> Point::_len=<span class="hljs-number">0</span>;<br><br><span class="hljs-comment">// 类外实现有参构造函数</span><br>Point::<span class="hljs-built_in">Point</span>(<span class="hljs-type">float</span> x=<span class="hljs-number">0</span>, <span class="hljs-type">float</span> y=<span class="hljs-number">0</span>):_x(x),_y(y)<br>&#123;<br>  cout&lt;&lt;<span class="hljs-string">&quot;初始化坐标点&quot;</span>&lt;&lt;endl;<br>&#125;<br><br>Point::~<span class="hljs-built_in">Point</span>()&#123;&#125;<br><br><span class="hljs-comment">// 类外实现静态成员函数</span><br><span class="hljs-function"><span class="hljs-type">float</span> <span class="hljs-title">Point::getLen</span><span class="hljs-params">(Point &amp;p1, Point &amp;p2)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-type">float</span> x=<span class="hljs-built_in">abs</span>(p1._x-p2._x);<br>  <span class="hljs-type">float</span> y=<span class="hljs-built_in">abs</span>(p1._y-p2._y);<br>  _len=<span class="hljs-built_in">sqrtf</span>(x*x+y*y);<br><br>  <span class="hljs-keyword">return</span> _len;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-function">Point <span class="hljs-title">p1</span><span class="hljs-params">(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>)</span></span>;<br>  <span class="hljs-function">Point <span class="hljs-title">p2</span><span class="hljs-params">(<span class="hljs-number">6</span>,<span class="hljs-number">8</span>)</span></span>;<br>  cout&lt;&lt;Point::<span class="hljs-built_in">getLen</span>(p1,p2)&lt;&lt;endl;<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上述代码，第4～14行代码定义了类Point，其中，第9行代码定义了静态成员函数getLen()，用于获取两个坐标点之间的距离；第10行代码定义了静态成员变量_len，用于存储两个坐标点之间的距离。第16～19行代码在类外实现有参构造函数，初始化坐标点的值，默认值为0。第21～27行代码，在类外实现getLen()函数，计算传入的两个坐标p1和p2之间的距离，并将结果保存到变量_len中。第30～31行代码初始化坐标点p1和p2。第32行代码调用getLen()函数计算两个坐标点之间的距离。</p>
+<h3 id="8-3、staic-const修饰类的成员">8.3、staic const修饰类的成员</h3>
+<p>使用static const修饰类成员，既实现了数据共享又达到了数据不被改变的目的。此时，修饰成员函数与修饰普通函数格式一样，修饰成员变量必须在类的内部进行初始化。示例如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Point</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-function"><span class="hljs-type">const</span> <span class="hljs-type">static</span> <span class="hljs-type">float</span> <span class="hljs-title">getLen</span><span class="hljs-params">()</span></span>;<br><span class="hljs-keyword">private</span>:<br>  <span class="hljs-type">const</span> <span class="hljs-type">static</span> <span class="hljs-type">float</span> area;<br>&#125;;<br><br><span class="hljs-type">const</span> <span class="hljs-type">float</span> area=<span class="hljs-number">3600</span>;<br></code></pre></td></tr></table></figure>
+<h2 id="九、友元">九、友元</h2>
+<p>类中的成员通过权限控制符实现了数据的封装，若对象要访问类中的私有数据，则只能通过成员函数实现。这种方式实现了数据的封装却增加了开销，有时候需要通过外部函数或类直接访问其他类的私有成员，为此C++提供了友元，使用友元可以访问类中的所有成员，函数和类都可以作为某个类的友元。</p>
+<p>从面向对象程序设计来讲，友元破坏了封装的特性。但由于友元简单易用，因此在实际开发中较为常用，如数据操作、类与类之间消息传递等，可以提高访问效率。使用友元需要注意以下几点：</p>
+<ul>
+<li>友元声明位置由程序设计者决定，且不受类中public、private、protected权限控制符的影响。</li>
+<li>友元关系是单向的，即类A是类B的友元，但B不是A的友元。</li>
+<li>友元关系不具有传递性，即类C是类D的友元，类E是类C的友元，但类E不是类D的友元。</li>
+<li>友元关系不能被继承。</li>
+</ul>
+<h3 id="9-1、友元函数">9.1、友元函数</h3>
+<p>若在类中声明某一函数为友元函数，则该函数可以操作类中的所有数据。友元函数可以是类外定义的函数或者是其他类中的成员函数。接下来分别讲解类外定义的普通函数作为类的友元函数和类成员函数作为友元函数的用法。</p>
+<h4 id="9-1-1、普通函数作为友元函数">9.1.1、普通函数作为友元函数</h4>
+<p>将普通函数作为类的友元函数，在类中使用friend关键字声明该普通函数就可以实现，友元函数可以在类中任意位置声明。普通函数作为类的友元函数的声明格式如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> 类名<br>&#123;<br>  <span class="hljs-keyword">friend</span> 函数返回值类型 友元函数名(形参列表);<br>  <span class="hljs-comment">// 其他成员</span><br>  ...<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>下面通过案例演示普通函数作为友元函数的用法，如下所示。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Circle</span><br>&#123;<br><span class="hljs-comment">// 声明普通函数getArea()为友元函数</span><br><span class="hljs-function"><span class="hljs-keyword">friend</span> <span class="hljs-type">void</span> <span class="hljs-title">getArea</span><span class="hljs-params">(Circle &amp;circle)</span></span>;<br><span class="hljs-keyword">private</span>:<br>  <span class="hljs-type">float</span> _radius;<br>  <span class="hljs-type">const</span> <span class="hljs-type">float</span> PI=<span class="hljs-number">3.14</span>;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-built_in">Circle</span>(<span class="hljs-type">float</span> radius);<br>  ~<span class="hljs-built_in">Circle</span>();<br>&#125;;<br><br>Circle::<span class="hljs-built_in">Circle</span>(<span class="hljs-type">float</span> radius=<span class="hljs-number">0</span>):_radius(radius)<br>&#123;<br>  cout&lt;&lt;<span class="hljs-string">&quot;初始化圆的半径为: &quot;</span>&lt;&lt;_radius&lt;&lt;endl;<br>&#125;<br><br>Circle::~<span class="hljs-built_in">Circle</span>() &#123;&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">getArea</span><span class="hljs-params">(Circle &amp;circle)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-comment">// 访问类中的成员变量</span><br>  cout&lt;&lt;<span class="hljs-string">&quot;圆的半径是: &quot;</span>&lt;&lt;circle._radius&lt;&lt;endl;<br>  cout&lt;&lt;<span class="hljs-string">&quot;圆的面积是: &quot;</span>&lt;&lt;circle.PI*circle._radius*circle._radius&lt;&lt;endl;<br>  cout&lt;&lt;<span class="hljs-string">&quot;友元函数修改半径&quot;</span>&lt;&lt;endl;<br>  circle._radius=<span class="hljs-number">1</span>;<br>  cout&lt;&lt;<span class="hljs-string">&quot;圆的半径是: &quot;</span>&lt;&lt;circle._radius&lt;&lt;endl;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-function">Circle <span class="hljs-title">circle</span><span class="hljs-params">(<span class="hljs-number">10</span>)</span></span>;<br>  <span class="hljs-built_in">getArea</span>(circle);<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上述代码，第3～12行代码定义了关于圆的类Circle，其中圆的半径_radius和圆周率PI是私有成员；第5行代码在类中声明了友元函数getArea()，用于计算圆的面积；第18～26行代码是getArea()函数的实现；第29行代码创建对象circle，并初始化圆的半径为10；第30行代码调用友元函数getArea()计算圆的面积，面积计算完成后，修改圆的半径为1。</p>
+<h4 id="9-1-2、其他类的成员函数作为友元函数">9.1.2、其他类的成员函数作为友元函数</h4>
+<p>其他类中的成员函数作为本类的友元函数时，需要在本类中表明该函数的作用域，并添加友元函数所在类的前向声明，其语法格式如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 类B的前向声明</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span>;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-comment">// 声明成员函数func()</span><br>  <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">func</span><span class="hljs-params">()</span></span>;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span><br>&#123;<br><span class="hljs-comment">// 声明类A的成员函数func()为友元函数</span><br><span class="hljs-function"><span class="hljs-keyword">friend</span> <span class="hljs-type">int</span> <span class="hljs-title">A::func</span><span class="hljs-params">()</span></span>;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>下面通过案例演示类的成员函数作为其他类的友元函数的用法，如下所示。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;math.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Point</span>;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Circle</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-comment">// 声明计算面积的成员函数</span><br>  <span class="hljs-function"><span class="hljs-type">float</span> <span class="hljs-title">getArea</span><span class="hljs-params">(Point &amp;p1, Point &amp;p2)</span></span>;<br><span class="hljs-keyword">private</span>:<br>  <span class="hljs-type">const</span> <span class="hljs-type">float</span> PI=<span class="hljs-number">3.14</span>;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Point</span><br>&#123;<br><span class="hljs-comment">// 声明类Circle的成员函数getArea()为友元函数</span><br><span class="hljs-function"><span class="hljs-keyword">friend</span> <span class="hljs-type">float</span> <span class="hljs-title">Circle::getArea</span><span class="hljs-params">(Point &amp;p1, Point &amp;p2)</span></span>;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-built_in">Point</span>(<span class="hljs-type">float</span> x, <span class="hljs-type">float</span> y);<br>  ~<span class="hljs-built_in">Point</span>();<br><span class="hljs-keyword">private</span>:<br>  <span class="hljs-type">float</span> _x;<br>  <span class="hljs-type">float</span> _y;<br>&#125;;<br><br><span class="hljs-comment">// 实现Point类的构造函数</span><br>Point::<span class="hljs-built_in">Point</span>(<span class="hljs-type">float</span> x=<span class="hljs-number">0</span>, <span class="hljs-type">float</span> y=<span class="hljs-number">0</span>):_x(x),_y(y)<br>&#123;<br>  cout&lt;&lt;<span class="hljs-string">&quot;初始化坐标点&quot;</span>&lt;&lt;endl;<br>&#125;<br><br>Point::~<span class="hljs-built_in">Point</span>()&#123;&#125;<br><br><br><span class="hljs-function"><span class="hljs-type">float</span> <span class="hljs-title">Circle::getArea</span><span class="hljs-params">(Point &amp;p1, Point &amp;p2)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-comment">// 获取横轴坐标间的距离</span><br>  <span class="hljs-type">double</span> x=<span class="hljs-built_in">abs</span>(p1._x-p2._x);<br>  <span class="hljs-comment">// 获取纵轴坐标间的距离</span><br>  <span class="hljs-type">float</span> y=<span class="hljs-built_in">abs</span>(p1._y-p2._y);<br>  <span class="hljs-comment">// 计算两个坐标点之间的距离</span><br>  <span class="hljs-type">float</span> len=<span class="hljs-built_in">sqrtf</span>(x*x+y*y);<br>  cout&lt;&lt;<span class="hljs-string">&quot;获取两个坐标点之间的距离是&quot;</span>&lt;&lt;len&lt;&lt;endl;<br><br>  <span class="hljs-comment">// 友元函数访问私有成员变量PI</span><br>  <span class="hljs-keyword">return</span> len*len*PI;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-function">Point <span class="hljs-title">p1</span><span class="hljs-params">(<span class="hljs-number">5</span>,<span class="hljs-number">5</span>)</span></span>;<br>  <span class="hljs-function">Point <span class="hljs-title">p2</span><span class="hljs-params">(<span class="hljs-number">10</span>,<span class="hljs-number">10</span>)</span></span>;<br>  Circle circle;<br>  <span class="hljs-type">float</span> area=circle.<span class="hljs-built_in">getArea</span>(p1,p2);<br>  cout&lt;&lt;<span class="hljs-string">&quot;圆的面积是: &quot;</span>&lt;&lt;area&lt;&lt;endl;<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上述代码，第4行代码声明类Point；第5～11行代码定义了圆类Circle；第12～22行代码定义了坐标点类Point，其中第15行代码将Circle类中的成员函数getArea()声明为友元函数。第28～35行代码是getArea()函数的实现，函数的参数为Point类对象的引用，该函数计算两个坐标点距离的绝对值，然后以距离作为圆的半径，计算圆的面积后返回。其中，第34行在计算圆的面积时访问了Circle类中的私有成员PI。第38～39行代码初始化坐标点p1和p2。第40～41行代码，创建对象circle，并通过对象circle调用友元函数getArea()计算圆的面积。</p>
+<h3 id="9-2、友元类">9.2、友元类</h3>
+<p>除了可以声明函数为类的友元函数，还可以将一个类声明为友元类，友元类可以声明在类中任意位置。声明友元类之后，友元类中的所有成员函数都是该类的友元函数，能够访问该类的所有成员。与声明友元函数类似，友元类也是使用关键字friend声明，其语法格式如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 类B的前向声明</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span>;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span>&#123;&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span><br>&#123;<br><span class="hljs-comment">// 声明类A是类B的友元类</span><br><span class="hljs-keyword">friend</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>下面通过案例演示友元类的用法，如下所示。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-comment">// 定义Time类，描述时分秒</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Time</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-comment">// 声明有参构造函数</span><br>  <span class="hljs-built_in">Time</span>(<span class="hljs-type">int</span> hour, <span class="hljs-type">int</span> minute, <span class="hljs-type">int</span> second);<br>  <span class="hljs-comment">// 声明类Date为友元类</span><br>  <span class="hljs-keyword">friend</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Date</span>;<br><span class="hljs-keyword">private</span>:<br>  <span class="hljs-type">int</span> _hour, _minute, _second;<br>&#125;;<br><br><span class="hljs-comment">// 定义Date类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Date</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-comment">// 声明有参构造函数</span><br>  <span class="hljs-built_in">Date</span>(<span class="hljs-type">int</span> year, <span class="hljs-type">int</span> month, <span class="hljs-type">int</span> day);<br>  <span class="hljs-comment">// 声明显示时间的成员函数</span><br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">showTime</span><span class="hljs-params">(Time&amp; time)</span></span>;<br><span class="hljs-keyword">private</span>:<br>  <span class="hljs-type">int</span> _year, _month, _day;<br>&#125;;<br><br><span class="hljs-comment">// 实现Date类构造函数</span><br>Date::<span class="hljs-built_in">Date</span>(<span class="hljs-type">int</span> year, <span class="hljs-type">int</span> month, <span class="hljs-type">int</span> day)<br>&#123;<br>  _year=year;<br>  _month=month;<br>  _day=day;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Date::showTime</span><span class="hljs-params">(Time&amp; time)</span></span><br><span class="hljs-function"></span>&#123;<br>  cout&lt;&lt;_year&lt;&lt;<span class="hljs-string">&quot;-&quot;</span>&lt;&lt;_month&lt;&lt;<span class="hljs-string">&quot;-&quot;</span>&lt;&lt;_day&lt;&lt;<span class="hljs-string">&quot; &quot;</span>&lt;&lt;time._hour&lt;&lt;<span class="hljs-string">&quot;:&quot;</span>&lt;&lt;time._minute&lt;&lt;<span class="hljs-string">&quot;:&quot;</span>&lt;&lt;time._second&lt;&lt;endl;<br>&#125;<br><br><span class="hljs-comment">// 实现Time类构造函数</span><br>Time::<span class="hljs-built_in">Time</span>(<span class="hljs-type">int</span> hour, <span class="hljs-type">int</span> minute, <span class="hljs-type">int</span> second)<br>&#123;<br>  _hour=hour;<br>  _minute=minute;<br>  _second=second;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-comment">// 创建Time对象</span><br>  <span class="hljs-function">Time <span class="hljs-title">time</span><span class="hljs-params">(<span class="hljs-number">17</span>,<span class="hljs-number">30</span>,<span class="hljs-number">20</span>)</span></span>;<br>  <span class="hljs-comment">// 创建Date对象</span><br>  <span class="hljs-function">Date <span class="hljs-title">date</span><span class="hljs-params">(<span class="hljs-number">2019</span>,<span class="hljs-number">10</span>,<span class="hljs-number">31</span>)</span></span>;<br>  <span class="hljs-comment">// 调用showTime()显示年月日、时分秒信息</span><br>  date.<span class="hljs-built_in">showTime</span>(time);<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上述代码，第3～10行代码定义了Tim e类，该类有三个成员变量_hour、_minute和_second，分别表示时、分、秒；此外，Time类还声明了Date友元类；第11～18行代码定义了Date类，Date类有三个成员变量_year、_month和_day，分别用于表示年、月、日。第19～30行代码在类外实现Date类的构造函数和成员函数showTime()；第31～36行代码在类外实现Time类的构造函数；第39～40行代码分别创建对象time和date；第41行代码通过对象date调用成员函数showTime()，并以对象time作为参数。</p>
+<h2 id="十、参考">十、参考</h2>
+<p>[《C++程序设计教程》](<a target="_blank" rel="noopener" href="https://www.dedao.cn/ebook/detail?id=OAdXprx6N41dm9BQkayr8z7OqLGoE3lzebR0YMlVAnxRZXK2Dg5pbevPJjjnQv2e">《C++程序设计教程（第2版）》电子书在线阅读-黑马程序员　编著-得到APP (dedao.cn)</a>)</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/" class="category-chain-item">程序设计</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/" class="print-no-link">#C++</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>C++程序设计：类与对象</div>
+      <div>https://kuberxy.github.io/2024/09/17/C++程序设计：类与对象/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Mr.x</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年9月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/09/18/C++%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%EF%BC%9A%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/" title="C++程序设计：运算符重载">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">C++程序设计：运算符重载</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/09/16/C%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%EF%BC%9A%E7%BB%93%E6%9E%84%E4%BD%93/" title="C语言程序设计：结构体">
+                        <span class="hidden-mobile">C语言程序设计：结构体</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
