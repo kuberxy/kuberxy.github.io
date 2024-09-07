@@ -1,0 +1,1002 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Mr.x">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="数据库设计是数据库系统设计与开发的关键性工作。本文将介绍数据库设计的主要任务、特点、方法和设计步骤。同时，基于案例“电子商务系统中的销售业务管理和采购业务管理”， 重点介绍需求分析方法论及案例的需求分析过程。 一、数据库设计概述 1.1、任务 数据库设计是指对于给定的业务描述和应用环境，通过合理的数据分析、设计和组织方法，综合DBMS特性及系统支撑环境特性，构造最为适合的数据库模式，建立数据库及其">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库原理：数据库设计概述及需求分析">
+<meta property="og:url" content="https://kuberxy.github.io/2024/08/25/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E6%A6%82%E8%BF%B0%E5%8F%8A%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Kubxy">
+<meta property="og:description" content="数据库设计是数据库系统设计与开发的关键性工作。本文将介绍数据库设计的主要任务、特点、方法和设计步骤。同时，基于案例“电子商务系统中的销售业务管理和采购业务管理”， 重点介绍需求分析方法论及案例的需求分析过程。 一、数据库设计概述 1.1、任务 数据库设计是指对于给定的业务描述和应用环境，通过合理的数据分析、设计和组织方法，综合DBMS特性及系统支撑环境特性，构造最为适合的数据库模式，建立数据库及其">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240616163854054.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240616171509243.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240623085034339.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240623094347040.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240623101650787.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240623102003437.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240623110819821.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240623112531341.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240623120444870.png">
+<meta property="article:published_time" content="2024-08-25T05:47:11.000Z">
+<meta property="article:modified_time" content="2024-09-03T03:56:02.000Z">
+<meta property="article:author" content="Mr.x">
+<meta property="article:tag" content="数据库原理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://kuberxy.github.io/img/image-20240616163854054.png">
+  
+  
+  
+  <title>数据库原理：数据库设计概述及需求分析 - Kubxy</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据库原理：数据库设计概述及需求分析"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-08-25 13:47" pubdate>
+          2024年8月25日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          79 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据库原理：数据库设计概述及需求分析</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>数据库设计是数据库系统设计与开发的关键性工作。本文将介绍数据库设计的主要任务、特点、方法和设计步骤。同时，基于案例“电子商务系统中的销售业务管理和采购业务管理”， 重点介绍需求分析方法论及案例的需求分析过程。</p>
+<h2 id="一、数据库设计概述">一、数据库设计概述</h2>
+<h3 id="1-1、任务">1.1、任务</h3>
+<p>数据库设计是指对于给定的业务描述和应用环境，通过合理的数据分析、设计和组织方法，综合DBMS特性及系统支撑环境特性，构造最为适合的数据库模式，建立数据库及其应用系统，使之能可靠、有效地满足用户的信息处理要求。数据库设计的任务如下图所示。</p>
+<p><img src="/img/image-20240616163854054.png" srcset="/img/loading.gif" lazyload alt="image-20240616163854054"></p>
+<h3 id="1-2、内容">1.2、内容</h3>
+<p>数据库设计的内容主要包括：数据库的结构设计和数据库的行为设计。</p>
+<ul>
+<li>
+<p>数据库的结构设计。数据库的结构设计是指根据给定的应用环境，进行数据库的模式或子模式的设计。它包括数据库的概念设计、逻辑设计和物理设计。数据库模式包含了整个数据库系统的库表结构，一经构建后，若需求未发生重大变化，通常是不容易改变的，所以数据库的结构设计又称为静态模型设计。</p>
+</li>
+<li>
+<p>数据库的行为设计。数据库的行为设计主要是指数据库用户的行为和动作设计，这些行为和动作需要通过应用程序实现，所以数据库的行为设计也可以看作应用程序或业务逻辑的设计。用户的行为一般是根据业务的变化对数据库中的数据进行增加、修改、删除，所以数据库的行为设计是动态的，行为设计又称为动态模型设计。</p>
+</li>
+</ul>
+<h3 id="1-3、方法">1.3、方法</h3>
+<p>在具体实施数据库设计时，常用的数据库设计方法有直观设计法、规范设计法和计算机辅助设计法。</p>
+<ul>
+<li>
+<p>直观设计法。直观设计法也称为手工试凑法，这种方法直接根据业务需要给出数据库的关系模式，依赖于设计者的经验和技巧。由于缺乏科学理论和工程原则的支持，设计质量很难保证，常常在数据库运行一段时间后因各种问题，如字段缺失、关系冗余等问题，需要对数据库进行修改，从而增加了系统维护的代价。因此，直接设计法并不适用于现代大型或复杂数据库系统的设计。</p>
+</li>
+<li>
+<p>规范设计法。规范设计法包括E-R模型方法、范式理论方法和视图方法。</p>
+<ul>
+<li>E-R模型方法。E-R模型方法是由陈品山(P. PS. Chen)于1976年提出的，其基本思想是在需求分析的基础上，用易于表达的Entity（实体）-Relationship（联系）图构造一个反映现实世界各类数据项关系的概念模式，然后运用转化规则，将概念模式转换成关系模式。</li>
+<li>范式理论方法。范式理论方法是一种结构化设计方法，其基本思想是在需求分析的基础上，确定数据库模型中全部属性间的函数依赖关系，然后运用范式理论，构建满足规范化要求的关系模式的集合。</li>
+<li>视图方法。视图方法先收集重点业务涉及的各功能点，通过系统原型设计等方式，构建各功能点相关的数据视图，然后将这些数据视图看作数据库系统的外模式，通过分解和合并视图的手段，形成数据库关系模式。</li>
+</ul>
+</li>
+<li>
+<p>计算机辅助设计法。计算机辅助设计法是指在数据库设计过程中使用数据库辅助设计工具，辅助设计人员高效、规范化地完成数据库设计。常用的数据库辅助设计工具包括Sybase公司的PowerDesigner、Premium公司的Navicat、Oracle公司的MySQL Workbench等。</p>
+</li>
+</ul>
+<p>现代数据库设计方法是上述设计方法相互融合的产物，达到更为高效、规范化的数据库设计目标。如下图，描述了一种混合多种设计方法的现代数据库设计过程。</p>
+<p><img src="/img/image-20240616171509243.png" srcset="/img/loading.gif" lazyload alt="image-20240616171509243"></p>
+<p>通过E-R模型方法设计数据库，然后使用范式理论方法对设计的结果进行分析和验证，最后通过视图方法核验设计结果是否完整覆盖所有功能点。各设计步骤在计算机辅助设计工具（如PowerDesigner、Navicat、 MySQL Workbench等）上进行，以达到多人协作、高效、规范化开发的目的。</p>
+<h3 id="1-4、步骤">1.4、步骤</h3>
+<p>数据库设计各阶段与数据库结构设计、行为设计的关系如下图所示。</p>
+<p><img src="/img/image-20240623085034339.png" srcset="/img/loading.gif" lazyload alt="image-20240623085034339"></p>
+<p>数据库设计的步骤主要包括：</p>
+<ul>
+<li>
+<p>数据库系统规划。结合业务需求，对数据库系统进行可行性分析和规划，判断是否有必要分析、设计和开发该数据库系统。</p>
+</li>
+<li>
+<p>需求分析。综合运用面向过程或面向对象分析方法，收集与业务相关的数据资源和业务描述，使用数据流图或用例图等工具，抽象满足业务需求的数据模型（数据项）和功能模型。其中，数据模型用于数据库结构设计，功能模型用于数据库行为设计。为避免因遗漏业务和需求导致反复回溯修改需求分析结果等问题，在该阶段需进行多轮验证，以降低回溯修改成本。</p>
+</li>
+<li>
+<p>设计。根据需求分析阶段的数据模型和功能模型，获取满足业务需求的数据库结构和程序结构。其中，数据库结构设计先后通过概念结构设计、逻辑结构设计和物理结构设计步骤，设计满足业务的功能性需求和非功能性需求的关系模型或其他数据模型。数据库行为设计通过系统架构设计、系统模块设计等过程，设计系统架构、功能模块组成及模块间调用接口。</p>
+</li>
+<li>
+<p>实现。根据设计结果，完成数据库和程序实现工作。数据库实现主要完成数据库管理系统选型工作，以及数据库、表、视图、用户、角色、权限、存储过程等内容的创建工作。程序实现主要指使用选定的程序设计语言、框架开发操作数据库的应用程序和界面等。</p>
+</li>
+<li>
+<p>加载和测试。实现数据库和程序后，通过数据加载、软件测试等手段，测试实现内容是否满足需求分析要求。</p>
+</li>
+<li>
+<p>运行和维护。将数据库系统部署在指定环境下，对数据库系统进行持续性的监控和维护。必要时，结合新的业务需求，对数据库结构和应用程序进行优化或重构。</p>
+</li>
+</ul>
+<p>上述每个阶段都要对产生的文档进行评价，分析该阶段产生的设计结果是否满足系统业务的功能性和非功能性需求。如果设计结果不符合，则需修改，以求最后实现的数据库能够准确和客观地反映现实世界中业务的执行过程。</p>
+<p>在各阶段中，数据库结构设计和行为设计是紧密结合的，二者相互参照和相互补充。结构设计为行为设计提供数据模型，行为设计将用户相关操作转换为数据模型的增加、修改、删除和查找操作。</p>
+<p>在数据库结构设计过程中，数据库系统规划阶段主要完成项目的可行性论证，该阶段与使用系统的用户环境、业务场景及市场需求等密切相关。</p>
+<h2 id="二、需求分析">二、需求分析</h2>
+<p>需求分析是数据库设计的重要环节，其结果是否准确将直接影响到后面各个阶段的设计，并影响到设计结果是否实用且满足用户需求。经验表明，潜藏在需求分析中的不正确结果，直到测试阶段才可能发现，纠正该错误要付出很大代价。因此，系统设计人员需要高度重视系统的需求分析工作。</p>
+<h3 id="2-1、任务">2.1、任务</h3>
+<p>从数据库设计的角度来看，需求分析的任务是：对使用系统的组织、部门或企业相关用户进行调查，收集业务或原系统的相关信息，抽象新建系统的数据字典、角色和功能，确定新建系统的实现边界，编写需求规格说明书。</p>
+<p>具体来说，需求分析阶段的任务主要包括3项内容：调查分析用户活动、转换业务需求，确定系统边界、编写需求分析规格说明书。</p>
+<blockquote>
+<p>调查分析用户活动</p>
+</blockquote>
+<p>该过程对相关用户的业务或旧系统进行分析，收集业务相关原始资料，明确未来系统开发的需求目标，确定这个目标的功能域和数据域。具体做法如下。</p>
+<ul>
+<li>
+<p>调查业务或新系统相关的组织机构，句括该组织的部门组成、各部门的职责和任务等。</p>
+</li>
+<li>
+<p>调查业务的线下实施方式或旧系统的业务流程，包括业务涉及的用户角色、业务执行概要、业务的输入输出文件、表格和其他类型数据、业务间交互方式等。</p>
+</li>
+</ul>
+<blockquote>
+<p>转换业务需求，确定系统边界</p>
+</blockquote>
+<p>在熟悉业务活动的基础上，使用规范化分析方法，与用户共同明确对新系统的功能性需求、信息需求、非功能性需求等各类需求。其中：</p>
+<ul>
+<li>
+<p>功能性需求是指为实现某一业务系统所需提供的功能。不同业务分解得到的功能可以共享，如采购和销售业务都需要查询商品库存功能，因此，两个业务在实现时刻共享该功能。分解后的功能还可用于抽象功能所涉及的信息需求和非功能性需求等。</p>
+</li>
+<li>
+<p>信息需求是指各类功能所包含的输入、输出数据。大部分输入、输出数据是有结构的，可以看作由数据项构成的数据结构，如登录功能需要用户名、密码等数据项。有些输入和输出的数据为图像、文本文件等非结构的形式。在信息需求中，重点关注有结构的输入、输出数据，汇总输入、输出数据中包含的所有数据项，明确业务实现所需的全域数据，为后续设计工作奠定基础。</p>
+</li>
+<li>
+<p>非功能性需求指用户在使用系统功能时所需的响应时间、安全性、可靠性、相关界面易用性、数据可恢复性等方面要求。相同功能在不同系统中的非功能性需求可能不同，如网银或在线交易系统对用户身份验证功能的可靠性要求显著高于一般业务系统的用户身份验证功能。因此，针对业务需求，系统设计人员有必要精准地分析系统各功能的非功能性需求。</p>
+</li>
+</ul>
+<p>在收集各种需求数据后，对调查结果进行初步分析，确定新系统的边界，确定哪些功能由计算机完成或将来准备让计算机完成，哪些活动由人工完成。由计算机完成的功能就是新系统应该实现的功能。涉及新旧系统版本迭代或与其他业务系统交互的情况时，系统设计人员还需界定新旧系统的迁移方式或不同系统的数据交互方法。</p>
+<blockquote>
+<p>编写需求分析规格说明书</p>
+</blockquote>
+<p>系统需求分析阶段的最后是编写系统需求分析规格说明书。编写需求分析规格说明书是一个不断反复、逐步深入和逐步完善的过程，需求分析规格说明书应包括以下内容。</p>
+<ul>
+<li>
+<p>系统概况，包括系统的目标、范围、背景和现状。</p>
+</li>
+<li>
+<p>系统的原理和技术及对原系统的改善。</p>
+</li>
+<li>
+<p>系统需实现的业务。</p>
+</li>
+<li>
+<p>系统实现业务的角色、功能和信息需求。</p>
+</li>
+<li>
+<p>系统的非功能性需求。</p>
+</li>
+<li>
+<p>系统的预期技术方案及方案的可行性（可选）。</p>
+</li>
+<li>
+<p>系统开发的规划和绩效要求等。</p>
+</li>
+</ul>
+<p>完成系统需求分析规格说明书后，系统设计人员可在项目单位的领导下组织有关技术专家进行评审，对需求分析结果开展再审查，审查通过后由项目方和开发方领导签字认可。</p>
+<p>随需求分析规格说明书，系统设计人员还需提供下列附件。</p>
+<ul>
+<li>
+<p>需求调研原始数据，包括会议纪要、录音、图片、业务相关文件、数据和台账等。</p>
+</li>
+<li>
+<p>组织机构图、组织之间联系图和各机构功能业务一览图。</p>
+</li>
+<li>
+<p>系统需求分析规格说明书中图表源文件。</p>
+</li>
+<li>
+<p>专家论证意见。</p>
+</li>
+</ul>
+<p>通过专家论证、用户认可和修改后的系统需求分析规格说明书是设计者和用户一致确认的权威性文件，为今后各阶段设计工作提供依据。</p>
+<h3 id="2-2、方法">2.2、方法</h3>
+<p>从方法论的角度来看，系统设计人员可通过自顶向下和自底向上两种方法开展需求分析工作，如下图所示。</p>
+<p><img src="/img/image-20240623094347040.png" srcset="/img/loading.gif" lazyload alt="image-20240623094347040"></p>
+<blockquote>
+<p>自顶向下的需求分析方法</p>
+</blockquote>
+<p>自顶向下的需求分析方法又称自上而下的需求分析方法，它采用逐层分解的方式，将已知宏观业务的需求按业务的执行部门、涉及岗位或角色等，划分为相对具体的子业务需求，如果子业务需求还可细分，则再次执行分解方法，直到分解到基本功能点为止。为避免分解后的需求过于琐碎，如果分解后的需求达到了便于实现、可供复用等要求，即可停止需求的分解过程。</p>
+<p>自顶向下的需求分析方法与人类理解陌生事物的思考过程类似，人类更习惯于将一个陌生的事务进行视觉或者语言上的分解，分解到熟悉或者更容易理解及记忆的层面。因此，在业务场景或业务需求较为陌生或过于复杂的情况下，适合采用自顶向下的需求分析方法。</p>
+<p>假设某公司计划开发一个电子商务系统，经过调研和分析，发现该电子商务系统需要重点实现商品的采购和商品的销售业务，于是电子商务这一业务需求被分解为商品采购业务和商品销售业务，商品采购业务和商品销售业务还可进行再分解，直到分解为较为实现、易于共享的功能为止。</p>
+<p>许多需求分析工具，如数据流图等，都使用了自顶向下的分析策略，运用逐层分解方法，获得业务相关的数据项或数据结构。</p>
+<blockquote>
+<p>自底向上的需求分析方法</p>
+</blockquote>
+<p>自底向上的需求分析方法又称自下而上的需求分析方法，它采用逐层组合的方式，将已知业务需求按业务间协同原则，构成更为复杂或者更为宏观的业务需求，如果构成的新业务需求不满足目标业务需求，还将进一步组合现有业务需求，直到组合后的业务需求满足目标需求为止。</p>
+<p>自底向上的需求分析方法与人类迁移学习或深入理解熟知事物的过程类似，均是从几个比较熟悉的概念或组件出发，经过组合，形成更为复杂的原理或事物。自底向上的需求分析方法强调对已有知识和组件的复用，在数据库设计人员子系统业务开发经验丰富或已经具有相关业务系统的情况下，适合使用自底向上的需求分析方法。</p>
+<p>假设数据库设计人员已经设计了多个电子商务系统，并具有了一定数量可复用的商品采购和商品销售子系统，当面对新系统时，数据库设计人员只需结合新、旧系统的业务差异，对现有组件进行加工和复用，即可形成新系统的需求分析结果。</p>
+<blockquote>
+<p>混合需求分析方法</p>
+</blockquote>
+<p>在实际数据库设计过程中，自顶向下的需求分析方法容易产生需求过度分解或需求分解不够细致等问题，而自底向上的需求分析方法容易产生需求组合结果与目标需求存在偏差等问题，因此，通常将两种需求分析方法结合形成更为灵活的混合需求分析方法。</p>
+<p>混合需求分析方法首先运用自顶向下的需求分析方法分解较为宏观的业务需求，在分解到一定层次后，为避免出现需求分析不够细致或过度等问题，数据库设计人员可结合已经掌握的其他相关业务系统或具体业务执行细节等资料，开展自底向上的需求分析，最后达到自顶向下分解的业务需求与自底向上组合的业务需求一致。</p>
+<h3 id="2-3、工具">2.3、工具</h3>
+<p>数据流图是一种常用的自顶向下需求分析工具。通过数据流图分析业务中数据的流动形式，并获得业务相关的数据字典。数据流图和数据字典是需求分析阶段形成的主要内容，这些内容将作为数据库结构设计的基础。</p>
+<blockquote>
+<p>数据流图</p>
+</blockquote>
+<p>使用自顶向下的需求分析方法时，任何一个数据库系统都可抽象为下图所示的数据流图。</p>
+<p><img src="/img/image-20240623101650787.png" srcset="/img/loading.gif" lazyload alt="image-20240623101650787"></p>
+<p>在数据流图中，用命名的箭头表示数据流、用圆圈表示处理，用平行线或不封闭的矩形表示存储结构，用封闭的矩形表示数据来源和数据输出。如下图，是一个简单的数据流图示例。</p>
+<p><img src="/img/image-20240623102003437.png" srcset="/img/loading.gif" lazyload alt="image-20240623102003437"></p>
+<p>数据流图表达了数据和处理过程的关系，强调业务执行过程中使用数据和产生数据的过程，其目标是获得业务的处理逻辑和业务涉及的数据资源。业务的处理逻辑可作为数据库行为设计的依据，通常采用跨职能流程图来描述。业务涉及的数据资源可作为数据库结构设计的依据，通常采用数据字典（由数据项组成）来描述。</p>
+<p>数据流图通常是分层表示和抽象业务的。一个简单的系统可用一张数据流图来表示。当系统业务比较复杂时，可运用自顶向下的需求分析方法，通过分层数据流图描述不同层次的业务需求。</p>
+<blockquote>
+<p>数据字典</p>
+</blockquote>
+<p>数据字典是对系统中数据资源结构和处理过程的详细描述，是各类数据结构和属性的清单。它与数据流图互为注释。在需求分析阶段，数据字典通常包含以下5部分内容。</p>
+<ul>
+<li>
+<p>数据项。数据项是数据的最小单位，其具体内容包括数据项名、含义说明、别名、类型、长度、取值范围、与其他数据项的关系。其中，取值范围、与其他数据项的关系这两项内容定义了完整性约束条件，是设计数据检验功能的依据。</p>
+<p>例如，商品的名称可作为描述商品的数据项，依据具体的业务需求，可分析它的类型、长度、取值范围以及与其他描述商品的数据项的关系。</p>
+</li>
+<li>
+<p>数据结构。数据结构是有意义的数据项集合。其内容包括数据结构名、组成的数据项。</p>
+<p>例如，商品可以作为商品采购业务的数据结构，它包含了商品名称等数据项。</p>
+</li>
+<li>
+<p>数据流。数据流表示业务执行过程中数据在系统内传输的路径。其内容包括数据流名、说明、流出过程、流入过程。其中，流入过程说明该数据由什么过程而来，流出过程说明该数据传输到什么过程。</p>
+<p>例如，商品采购业务中，数据流的名称为商品采购，流入过程是将供应商提供的某个商品采购信息保存到商品库存表中。</p>
+</li>
+<li>
+<p>数据存储。数据存储是指处理过程中数据的存放场所，通常为数据库、文件或其他业务处理过程。</p>
+<p>例如，商品库存台账是线下进行商品采购业务的数据的存放场所。</p>
+</li>
+<li>
+<p>处理过程。处理过程通常描述了数据的处理逻辑。处理过程包括处理过程名、说明、输入（数据流）、输出（数据流）和处理（简要说明）。</p>
+</li>
+</ul>
+<h2 id="三、案例">三、案例</h2>
+<p>为了更为清晰、系统地掌握数据库设计方法，下面结合电子商务系统中常见的销售和采购业务，展示数据库设计各阶段的实施方法。</p>
+<h3 id="3-1、概述">3.1、概述</h3>
+<p>电子商务系统是目前使用最为广泛的一类数据库系统，其关键业务所涉及的数据库设计方案涵盖常规数据库系统的各设计环节，学习和实践电子商务系统关键业务的数据库设计过程，对开展其他领域的数据库系统设计工作具有借鉴意义。</p>
+<p>综合案例的学习成本、实际应用价值及教材篇幅等原因，本书选取电子商务系统中销售和采购业务作为案例，删减电子商务系统中其他复杂业务，形成适用于本篇教学的数据库设计案例。</p>
+<h3 id="3-2、关键业务描述">3.2、关键业务描述</h3>
+<p>某公司因业务需要自行开发一套电子商务系统。作为系统设计人员，在重点调研了商品采购和销售部门后，获取如下业务需求信息。</p>
+<blockquote>
+<p>商品采购部的业务描述</p>
+</blockquote>
+<p>商品采购部门由专人记录从供应商采购各类商品的信息，并将采购信息记录在台账中。采购信息的台账中包含每次采购的商品编号、商品名称、类别、单价（采购时）、生产厂家、入库时间、商品概述、商品的缩略图、供应商和供货数量。其中：</p>
+<ul>
+<li>
+<p>商品编号是唯一标识每一件商品的11位字符串。</p>
+</li>
+<li>
+<p>商品类别包括图书、手机和计算机等。在目前的业务中，公司采用了多归类方法，即一个商品可属于多个类别，比如，一部手机既可以是手机类别，也可以是数码产品类别，这样分类便于提高商品查找的命中率。</p>
+</li>
+<li>
+<p>商品的缩略图为JPG或PNG格式的图片。</p>
+</li>
+<li>
+<p>生产厂家根据商品类型表达的含义略有差异，如果是图书类商品，则生产厂家表示出版社；如果是其他类型的商品，生产厂家即为实际生产机构。</p>
+</li>
+<li>
+<p>商品的详细信息通常为500个中文字符以内的文字描述。</p>
+</li>
+<li>
+<p>商品供应商信息包含了供应商的名称、电话和电子邮箱。一件商品可以由多个供应商供应。</p>
+</li>
+<li>
+<p>商品的供货数量标识每次采购商品时的供货数量。</p>
+</li>
+</ul>
+<p>某一次商品采购的台账示例如下图所示。</p>
+<blockquote>
+<p>商品销售部的业务描述</p>
+</blockquote>
+<p>商品销售部由专人记录每次商品销售的订单情况，并将订单信息记录在台账中。每条销售记录由3部分内容构成，分别是订单的基本信息、物流信息和订单中商品信息。其中：</p>
+<ul>
+<li>
+<p>订单的基本信息包括订单编号、提交时间、状态和总计金额。其中，订单编号为17位数字，前8位为当前日期，后9位为按订单提交顺序生成的编码，该编号能够唯一标识每一条订单记录；订单提交时间精确到秒；订单状态包括“已提交”、“已发货”、“已完成”等。</p>
+</li>
+<li>
+<p>订单的物流信息包括联系人（收货人）、性别、快递地址、手机、电子邮箱、使用的物流信息。需注意，在待实现的系统中，收货人可以与实际下单用户不同，实际下单用户必须是可以登录系统的合法用户，而收货人信息不受此限制。同时，系统用户可以存储多条收货人信息，便于后续下单快速选取。</p>
+</li>
+<li>
+<p>订单中商品信息包括编号、名称、数量、单价（销售）。上述信息的取值约束可参考商品管理部门记录的商品信息。</p>
+</li>
+</ul>
+<p>某一次商品销售订单的台账示例如下图所示。</p>
+<p>销售部门销售前需检查采购的库存信息，发货后需修改采购的库存信息。采购部门根据商品库存信息和市场需要，对库存紧缺商品进行采购。</p>
+<p>实际销售过程还需考虑支付方式、会员积分抵扣费用、商品活动打折等诸多情况，本案例并未考虑，读者在熟练掌握销售部门现有业务的数据库实现基础上，可进一步结合实际业务需要，开展扩展性数据库设计工作。</p>
+<blockquote>
+<p>系统合法用户管理业务</p>
+</blockquote>
+<p>作为在线运行的电子商务系统，需保存合法用户的登录信息，方便对合法用户的身份核对后提供相应服务。合法用户的登录信息包括登录名、密码、电子邮箱、角色、手机等信息。其中，角色可标识用户是一般消费者还是相关部门的管理人员。</p>
+<p>在一些中大规模数据库系统中，系统合法用户还需保存其他重要信息，如用户的登录IP地址、用户的密码保护策略、用户的激活状态等信息。读者可在本案例基础上进行扩展。</p>
+<h3 id="3-3、需求分析">3.3、需求分析</h3>
+<p>本节将通过数据流图分析11.3节所述的案例业务，然后根据数据流图，抽象各业务所涉及的数据字典。</p>
+<blockquote>
+<p>顶层数据流图</p>
+</blockquote>
+<p>围绕案例，通过自顶向下的需求分析方法绘制描述待开发系统的顶层数据流图，如下图所示。</p>
+<p><img src="/img/image-20240623110819821.png" srcset="/img/loading.gif" lazyload alt="image-20240623110819821"></p>
+<p>顶层数据流图表现了最为宏观的系统操作源（合法系统操作人员）、系统信息流（商品采购和销售信息）、系统信息处理过程（商品采购和销售业务）、系统信息的处理结果（商品库存台账和商品销售台账）。</p>
+<p>顶层数据流图可以有效界定系统的边界，明确需要逐层分解的关键业务和各业务操作数据后的必要存储信息。</p>
+<blockquote>
+<p>0层数据流图</p>
+</blockquote>
+<p>顶层数据流图提供的数据存储结构与现实业务中使用的数据台账类似。这些台账往往具有数据冗余（如商品编号）、数据不规范（如物流信息由多项信息组成）等问题，无法直接从这些台账结构中抽象出有效的数据字典。因此，数据库设计人员还需进一步使用自顶向下的需求分析方法，细化顶层数据流图中出现的数据源、数据流、数据处理过程及数据处理结果。</p>
+<p>对顶层数据流图进行分解，形成0层数据流图，如下图所示。</p>
+<p><img src="/img/image-20240623112531341.png" srcset="/img/loading.gif" lazyload alt="image-20240623112531341"></p>
+<p>在0层数据流图中，合法系统操作人员根据业务执行主体和权限差异，被分解为合法商品采购人员和合法商品销售人员。商品采购和销售业务被分解为商品采购业务和商品销售业务。根据分解后的业务之间的关系，建立商品库存台账和商品销售业务在商品查询和结果反馈之间的数据流关系。</p>
+<blockquote>
+<p>1层数据流图</p>
+</blockquote>
+<p>0层数据流图中提供的商品库存台账和商品销售台账与0层数据流图中的台账信息没有本质差异，仍然存在数据冗余和数据不规范等问题，同时，现实世界中的合法采购人员在新开发的系统中需要经过登录并通过身份认证才可确定其权限，为此，对0层数据流图中的数据源、数据流、数据处理和存储结构进一步分解，得到案例的1层数据流图，如下图所示。</p>
+<p><img src="/img/image-20240623120444870.png" srcset="/img/loading.gif" lazyload alt="image-20240623120444870"></p>
+<p>与0层数据流图相比，1层数据流图中涉及的数据处理业务、数据流和存储结构要复杂和丰富得多。需要注意的是，相对复杂的1层数据流图并非从0层数据流图直接分解绘制得到的，而是在0层数据流图基础上，递归地采用自顶向下的业务分析方法，将业务分解为各类功能和数据结构得到的。具体过程如下。</p>
+<ul>
+<li>
+<p>首先，为判断0层数据流图中的各类数据源的合法性，需在新开发的系统中提供用户登录业务，结合系统中已经保存的合法用户信息表，验证用户提供信息的正确性。对于通过登录验证的合法用户，用户登录业务将输出登录成功凭证，供后续业务执行时查询和参考。</p>
+</li>
+<li>
+<p>其次，对于商品采购业务，结合实际采购过程，需参考供应商提供的商品信息进行采购，采购后将采购结果存储在商品库存表中。因此，商品采购业务可分解为商品采购入库业务（功能），商品库存台账可分解为供应商提供的经销商品信息和采购确认后的商品库存信息。</p>
+</li>
+<li>
+<p>再次，对于商品销售业务，结合实际销售过程，需从商品库存中，查询库存情况，在库存满足销售数量的前提下，根据收货地址和物流信息生成商品订单，同时，减少商品库存数量。因此，商品销售业务可分解为查询销售商品和商品订单生成两个业务（功能），商品销售台账可分解为收、地址表和系统订单表两个存储结构。</p>
+</li>
+</ul>
+<p>经过上述分解后，1层数据流图中产生的各类存储结构比顶层数据流图和0层数据流图更方便业务的操作，此时，可基于1层数据流图中的存储结构，抽象出有效的数据字典。</p>
+<p>需要注意的是，数据流图的抽象层次并没有严格的要求，如案例中的1层数据流图，还可以进一步分解为2层数据流图。同时，数据流图中存储结构的分解也是与业务分解同向同行的。分解业务粒度不同，可能得到的存储结构也不相同。总之，数据流图的目标是更好地理解业务与操作数据的关系，从而更好地抽象出所需的数据字典，抽象后的数据字典还需要进一步经过专家论证，审核是否能够充分支撑所有业务的运行。</p>
+<blockquote>
+<p>案例的数据字典</p>
+</blockquote>
+<p>下面重点分析案例的数据字典包含哪些数据结构和数据项，有关数据流、存储和处理过程的内容，读者可参照前文介绍，结合案例业务，在实际进行需求分析规格说明书撰写时补充完成。</p>
+<p>根据案例的1层数据流图，案例的数据结构和数据项如下表所示。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">数据结构名称</th>
+<th style="text-align:center">数据项内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">用户信息</td>
+<td style="text-align:center">登录用户名、登录用户密码、电子邮箱等</td>
+</tr>
+<tr>
+<td style="text-align:center">登录凭证</td>
+<td style="text-align:center">用户名、登录时间等</td>
+</tr>
+<tr>
+<td style="text-align:center">商品库存</td>
+<td style="text-align:center">商品编号、名称、类别、生产厂家、入库时间、概述、库存量、供应商信息等</td>
+</tr>
+<tr>
+<td style="text-align:center">系统订单</td>
+<td style="text-align:center">订单编号、提交时间、订单总计、订单状态、销售商品、物流信息等</td>
+</tr>
+<tr>
+<td style="text-align:center">收货地址</td>
+<td style="text-align:center">联系人、性别、快递地址、手机、电子邮箱等</td>
+</tr>
+</tbody>
+</table>
+<p>观察该表可发现，虽然经过多次数据流图的分解操作，分解后的数据项仍然存在冗余和不规范等问题，主要问题如下。</p>
+<ul>
+<li>
+<p>结构冗余问题：登录凭证信息只为其他业务执行时确保操作者的身份，其是否有必要保存在数据库中？</p>
+</li>
+<li>
+<p>数据项冗余问题：商品库存中库存量信息和系统订单中订单总计均可通过每次采购的商品数量及订单中商品销售情况计算得到，这类可以根据已有信息计算得到的信息是否有必要再存储到数据库中？</p>
+</li>
+<li>
+<p>数据结构和数据项规范化问题：商品库存中供应商信息和系统订单中物流信息可进一步细分为其他的数据项，这类信息是否需进一步分解成不可再分的数据项？</p>
+</li>
+<li>
+<p>数据项命名问题：系统订单表中的物流信息和收货地址表中的物流信息名称相同，但包含的内容是不同的，对于这类同名异义的数据项该如何处理？</p>
+</li>
+</ul>
+<p>上述问题对于有经验的数据库设计人员，往往能够在需求分析阶段予以快速解决。但通常情况下，数据库设计人员面对的业务是自己不熟悉的，而且数据库设计经验仍需不断提升，因此，数据库设计人员需注意，数据库设计的目的是通过分工明确的设计步骤，在每一阶段重点解决数据库设计的一个核心问题，并非在一个阶段中解决所有问题。需求分析阶段的核心是系统边界是否清晰以及边界内业务所涉及的数据结构和数据项是否完整。有关数据的冗余问题、数据的规范问题及数据的命名冲突问题，数据库设计人员还可在后续的数据糜设计步骤中，通过相关方法和工具识别并予以解决。</p>
+<h2 id="四、小结">四、小结</h2>
+<p>本章讲述了数据库设计的主要任务及数据库设计各阶段的主要内容；介绍了贯穿于本篇的数据库设计案例；讲解了需求分析的任务、方法论，重点给出了使用数据流图开展案例需求分析的步骤和注意事项。</p>
+<p>数据库设计的任务是根据给定的业务研制相应的数据库结构，基于“反复探寻，逐步求精”的设计原则，采用数据库系统规划阶段、需求分析阶段、设计阶段、实现阶段、加载和测试阶段、运行和维护阶段共6个阶段，实现对数据库的结构设计和行为设计。其中结构设计和行为设计是同向同行、相互辅助的。</p>
+<p>需求分析的目标是明确系统的业务边界及业务所涉及的数据字典，可采用自顶向下和自底向上的方法进行分析。数据流图是一种典型的自顶向下需求分析方法，它借助“逐层分解”的方法将宏观的业务需求分解为便于抽象的数据结构或数据项。</p>
+<h2 id="五、参考">五、参考</h2>
+<p><a target="_blank" rel="noopener" href="https://product.dangdang.com/29379508.html">《数据库原理及应用教程（MySQL版）》</a></p>
+<p><a target="_blank" rel="noopener" href="https://product.dangdang.com/11615897847.html">《数据库系统原理 自考04735》</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="category-chain-item">数据库</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86/" class="print-no-link">#数据库原理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据库原理：数据库设计概述及需求分析</div>
+      <div>https://kuberxy.github.io/2024/08/25/数据库原理：数据库设计概述及需求分析/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Mr.x</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年8月25日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/09/01/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%EF%BC%9A%E5%85%B3%E7%B3%BB%E6%A8%A1%E5%BC%8F%E7%9A%84%E8%A7%84%E8%8C%83%E5%8C%96%E7%90%86%E8%AE%BA/" title="数据库原理：关系模式的规范化理论">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据库原理：关系模式的规范化理论</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/08/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%EF%BC%9A%E8%A7%A6%E5%8F%91%E5%99%A8%E5%92%8C%E4%BA%8B%E4%BB%B6/" title="数据库原理：触发器和事件">
+                        <span class="hidden-mobile">数据库原理：触发器和事件</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

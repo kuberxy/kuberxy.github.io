@@ -1,0 +1,1178 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Mr.x">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="数据库概念结构设计和逻辑结构设计是在需求分析基础上， 分析数据结构、数据项之间的语义关系，然后绘制全局E-R图，再通过关系模式转化规则，将E-R图转换为关系模式。转换后的关系模式可使用规范化理论进行验证和优化。 本章学习目标：学习本章后， 读者应理解概念结构设计和逻辑结构设计的主要工作，掌握使用E-R模型绘制局部E-R图并整合形成全局E-R图的方法，能够运用关系模式转化规则，将全局E-R图转换为关">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库原理：数据库概念结构设计和逻辑结构设计">
+<meta property="og:url" content="https://kuberxy.github.io/2024/09/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A6%82%E5%BF%B5%E7%BB%93%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%92%8C%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84%E8%AE%BE%E8%AE%A1/index.html">
+<meta property="og:site_name" content="Kubxy">
+<meta property="og:description" content="数据库概念结构设计和逻辑结构设计是在需求分析基础上， 分析数据结构、数据项之间的语义关系，然后绘制全局E-R图，再通过关系模式转化规则，将E-R图转换为关系模式。转换后的关系模式可使用规范化理论进行验证和优化。 本章学习目标：学习本章后， 读者应理解概念结构设计和逻辑结构设计的主要工作，掌握使用E-R模型绘制局部E-R图并整合形成全局E-R图的方法，能够运用关系模式转化规则，将全局E-R图转换为关">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240623143840621.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240623144754324.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240623152458681.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240623154713057.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240623162720258.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240623163553875.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240623165531556.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240623173841022.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240629160717286.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240629162932088.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240630095727258.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240630120505751.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240630144741634.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240630145520177.png">
+<meta property="article:published_time" content="2024-09-15T05:47:11.000Z">
+<meta property="article:modified_time" content="2024-09-03T03:38:11.000Z">
+<meta property="article:author" content="Mr.x">
+<meta property="article:tag" content="数据库原理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://kuberxy.github.io/img/image-20240623143840621.png">
+  
+  
+  
+  <title>数据库原理：数据库概念结构设计和逻辑结构设计 - Kubxy</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据库原理：数据库概念结构设计和逻辑结构设计"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-09-15 13:47" pubdate>
+          2024年9月15日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          13k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          111 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据库原理：数据库概念结构设计和逻辑结构设计</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>数据库概念结构设计和逻辑结构设计是在需求分析基础上， 分析数据结构、数据项之间的语义关系，然后绘制全局E-R图，再通过关系模式转化规则，将E-R图转换为关系模式。转换后的关系模式可使用规范化理论进行验证和优化。</p>
+<p>本章学习目标：学习本章后， 读者应理解概念结构设计和逻辑结构设计的主要工作，掌握使用E-R模型绘制局部E-R图并整合形成全局E-R图的方法，能够运用关系模式转化规则，将全局E-R图转换为关系模式并进行关系模式的评价和改进工作。</p>
+<h2 id="一、概念结构设计">一、概念结构设计</h2>
+<h3 id="1-1、概念结构设计的主要任务">1.1、概念结构设计的主要任务</h3>
+<p>在需求分析阶段，经调研人员充分调查并形成用户需求（数据结构和数据项）后，设计人员还需要将用户需求转换为信息世界的模型结构，以方便在计算机世界中刻画用户的需求。</p>
+<p>概念结构设计的主要任务：将需求分析得到的用户需求（数据结构和数据项），抽象为描述数据结构、数据项之间关系的抽象模型，该抽象模型称为概念模型。</p>
+<p>在概念结构设计过程中，数据库设计人员只需专注于分析数据结构、数据项之间的语义关系，形成抽象的E-R模型，无须关心DBMS选型或有关数据存储工作。</p>
+<h3 id="1-2、概念结构设计的必要性">1.2、概念结构设计的必要性</h3>
+<p>早期数据库设计不包含概念结构设计，数据库设计人员在需求分析工作完成后，直接开展逻辑结构设计和物理结构设计，这导致在这一阶段既需要考虑DBMS的存储、效率等特性，又要分析数据结构和数据项之间的关系，设计内容繁多，设计过程复杂，设计结果的评价难度高，设计过程控制效率低。为简化该阶段的工作，埃德加·考特在需求分析和逻辑结构设计之增加了概念结构设计阶段，并引入E-R图用于描述概念结构设计的结果——概念模型。这样做主要有以下两个优点。</p>
+<ul>
+<li>从数据库设计人员角度，将概念结构设计从逻辑结构设计中分离出来后，各阶段的任务相对单一化。对于概念模型，数据库设计人员只需根据抽象的数据结构和数据项，分析其语义关联性，无须关心DBMS选型或有关数据存储工作。</li>
+<li>从业务操作人员角度，概念模型不含具体的DBMS的技术细节，这使设计结果更容易为用户所理解，便于数据库设计人员与用户交流并确认模型的正确性。</li>
+</ul>
+<h3 id="1-3、概念结构设计的步骤">1.3、概念结构设计的步骤</h3>
+<p>基于Е-R图的概念结构设计主要包括局部Е-R图设计和全局Е-R图设计，其步骤如下图所示。</p>
+<p><img src="/img/image-20240623143840621.png" srcset="/img/loading.gif" lazyload alt="image-20240623143840621"></p>
+<p>其中：</p>
+<ul>
+<li>
+<p>局部E-R图设计。根据需求分析获得的数据结构和数据项，基于不同业务线，完成局部E-R图设计。</p>
+</li>
+<li>
+<p>全局E-R图设计。集成各局部E-R图，形成全局E-R图。</p>
+</li>
+</ul>
+<h3 id="1-4、概念模型的E-R表示方式">1.4、概念模型的E-R表示方式</h3>
+<p>E-R模型(Entity Relationship Model)是广泛应用于数据库设计工作中的一种概念模型，它利用E-R图来表示数据结构（实体型）之间的联系和数据结构（实体型）与数据项（属性）之间的联系。</p>
+<p>E-R图的基本成分包括实体型、属性和联系，它们的表示方式如下图所示。</p>
+<p><img src="/img/image-20240623144754324.png" srcset="/img/loading.gif" lazyload alt="image-20240623144754324"></p>
+<p>其中：</p>
+<ul>
+<li>
+<p>实体型：用矩形框表示，框内标注实体名称。</p>
+</li>
+<li>
+<p>属性：用椭圆形框表示，框内标注属性名称。一般用无向边将属性与相应的实体相连。</p>
+</li>
+<li>
+<p>联系：联系用菱形框表示，框内标注联系名称。一般用无向边将联系与有关实体相连，同时在无向边旁标上联系的类型，即1:1、1:n或m:n。</p>
+</li>
+</ul>
+<p>实体之间的联系有一对一(1:1)、一对多(1: n)和多对多(m: n) 3种类型。例如，一个学生只能有一个学号(1:1)，一个系有多个学生(1: n)，学生选修课程(m: n)。</p>
+<p>现实业务的复杂性导致实体联系的复杂性，根据参与实体数量，可将E-R图上实体间的联系归结为下图所示的3种基本形式。</p>
+<p><img src="/img/image-20240623152458681.png" srcset="/img/loading.gif" lazyload alt="image-20240623152458681"></p>
+<p>其中：</p>
+<ul>
+<li>
+<p>图(a)表示，两个实体型之间的联系。</p>
+</li>
+<li>
+<p>图(b)表示，两个以上实体型之间的联系。</p>
+</li>
+<li>
+<p>图©表示，同一实体型内部各实体之间的联系。例如，一个部门内的职工有领导与被领导的联系，即某一职工（干部）领导若干名职工，而一个职工（普通员工）仅被另外一个职工直接领导，这就构成了实体型内部的一对多的联系。</p>
+</li>
+</ul>
+<p>需要注意的是，因为联系本身也是一种实体型，所以联系也可以有属性。如果一个联系具有属性，则这些联系也要用无向边与其属性连接起来。例如，学生选修的课程有相应的成绩。这里的“成绩”既不是学生的属性，也不是课程的属性，只能是学生选修课程的联系的属性，如下图所示。</p>
+<p><img src="/img/image-20240623154713057.png" srcset="/img/loading.gif" lazyload alt="image-20240623154713057"></p>
+<p>E-R图的基本思想就是分别用矩形框、椭圆形框和菱形框表示实体型、属性和联系，使用无向边将属性与其相应的实体连接起来，并将联系和有关实体相连接，注明联系类型。上图就是一个描述学生与课程联系的完整的E-R图。</p>
+<p>在绘制E-R图时，常见的错误是没有遵循E-R图设计规范。需注意的是，属性可以与实体连接、也可以与联系连接，但两个属性不能直接相连。同时，实体与实体之间也不能直接相连，必须通过联系连接在一起。此外，1: n的联系需要根据业务分析哪个实体是1端，哪个实体是n端。</p>
+<p>除了上述表示E-R图的方法外，还可以采用其他方式进行绘制。例如：使用UML类图中类的方法表示实体，使用类间的联系表示实体的联系；在联系类型中给出补充，标注联系的强制实施情况；补充实体间的继承关系。上述E-R图的绘制标准和扩展方式均是在熟悉基本E-R图绘制的基础上，方便经验丰富的设计人员更为深入地从面向对象设计角度考虑数据库设计，为后续围绕数据库设计结果开展面向对象程序设计服务。读者初次学习数据库设计时，还需先掌握基本E-R图的绘制方法，然后补充学习行业中常见的其他E-R图绘制方法。</p>
+<h3 id="1-5、局部E-R图设计">1.5、局部E-R图设计</h3>
+<p>建立局部E-R模型，就是根据待开发系统的需求分析结果，按系统使用部门、角色或关键业务线，对系统建模过程进行划分，使用E-R图描述每个划分中包含的实体、属性和联系，并绘制相应的局部E-R图，以描述实体的属性、实体与实体间的联系及联系类型。</p>
+<h4 id="1-5-1、划分依据">1.5.1、划分依据</h4>
+<p>局部E-R图设计的基础是待开发系统的划分，主要划分方式有以下几种。</p>
+<ul>
+<li>
+<p>按关键业务线进行划分，如教学管理系统包含教师授课业务、学生选课业务、学生评教业务等核心业务线，可依据这些业务线绘制相应的局部E-R图。</p>
+</li>
+<li>
+<p>按系统使用部门进行划分，如企业管理系统包含人力资源管理、销售管理、物料管理等，每个管理环节由对应部门负责，可依据不同部门绘制相应的局部E-R图。</p>
+</li>
+<li>
+<p>按照角色划分，如各类评价系统的使用者包括奖项申报人员、评奖管理人员和评价专家等角色，依据不同角色可绘制相应的局部E-R图。</p>
+</li>
+</ul>
+<p>在面对一些复杂业务系统时，如企业级全域型业务管理系统，数据库设计人员可综合运用2~3种方法对业务进行划分，形成实体规模或业务难度相当的局部业务，以便于绘制局部E-R图。</p>
+<h4 id="1-5-2、实体和属性的区分依据">1.5.2、实体和属性的区分依据</h4>
+<p>局部E-R图绘制的关键就是正确区分实体和属性。实体和属性之间在形式上并无可以明显区分的界限，通常是按照现实世界中事物的自然划分来定义实体和属性的，例如，需求分析的数据结构往往可表示为实体，描述数据结构的数据项可表示为属性。</p>
+<p>在区分或发现实体、属性时，常用两种方法：分类(Classification)和聚集(Aggregation)。</p>
+<ul>
+<li>
+<p>分类。分类定义某一类概念作为现实世界中一组对象的类型，将一组具有某些共同特性和行为的对象抽象为一个实体。对象和实体之间是&quot;is member of&quot;的关系。例如，在教学管理数据库中，“赵亦”是一名学生，这表示“赵亦”是学生中的一员，她具有学生们共同的特性和行为。</p>
+</li>
+<li>
+<p>聚集。聚集定义某一类型的组成成分，将对象类型的组成成分抽象为实体的属性。组成成分与对象类型之间是&quot;is part of&quot;的关系。例如，学号、姓名、性别、年龄和系别等可以抽象为学生实体的属性，其中学号是标识学生实体的主码。</p>
+</li>
+</ul>
+<h4 id="1-5-3、实体和属性的设计粒度">1.5.3、实体和属性的设计粒度</h4>
+<p>在进行具体设计时，实体和属性是相对而言的，数据库设计人员往往要根据实际情况进行调整。调整时遵循以下原则。</p>
+<ul>
+<li>
+<p>实体具有描述信息，而属性没有。即属性必须是不可分的数据项，不能再由另一些属性组成。</p>
+</li>
+<li>
+<p>属性不能与其他实体具有联系，联系只能发生在实体之间。</p>
+</li>
+</ul>
+<p>例如，学生是一个实体，学号、姓名、性别、年龄和系别等是学生实体的属性。这时，系别只表示学生属于哪个系，不涉及系的具体情况，换句话说，没有需要进一步描述的特性，即是不可分的数据项，则根据上述第一条原则，系别可以作为学生实体的属性。但如果考虑一个系的系主任、学生人数、教师人数、办公地点等，则系别应作为一个实体，如下图所示。</p>
+<p><img src="/img/image-20240623162720258.png" srcset="/img/loading.gif" lazyload alt="image-20240623162720258"></p>
+<p>又如，职称为教师实体的属性，但在涉及住房分配时，由于分房与职称有关，即职称与住房实体之间有联系，则根据上述第二条原则，职称应作为一个实体，如下图所示。</p>
+<p><img src="/img/image-20240623163553875.png" srcset="/img/loading.gif" lazyload alt="image-20240623163553875"></p>
+<p>此外，数据库设计人员可能会遇到这样的情况，即同一数据项可能由于环境和要求的不同，有时作为属性，有时则作为实体，此时必须根据实际情况而定。一般情况下，凡能作为属性对待的，应尽量作为属性，以简化E-R图的处理。</p>
+<p>形成局部E-R模型后，数据库设计人员应该将其反馈给用户，进一步征求用户意见，以求改进和完善，使之如实地反映现实世界情况。需要注意的是，上图所示的数据库设计方法仅用于数据库设计的教学环节。在实际数据库环境中，数据库并不会存储学生的年龄信息，仅会存储学生的出生日期。原因在于年龄每年都会递增，为保障数据库的真实性，必须每年对数据库中所有学生的年龄进行递增操作，这对大型数据库系统来说是不现实的。通常数据库中仅会存储反映学生年龄的静态信息，即出生日期，然后在需要年龄的时候，通过系统当前时间和数据库中存储的出生日期做差获得学生当前的年龄。</p>
+<h3 id="1-6、全局E-R图设计">1.6、全局E-R图设计</h3>
+<h4 id="1-6-1、集成方法">1.6.1、集成方法</h4>
+<p>集成各局部E-R图，即可形成全局E-R图。局部E-R图的集成方法有以下2种。</p>
+<ul>
+<li>
+<p>多元集成法：一次性将多个局部E-R图合并为一个全局E-R图，如下图(a)所示。</p>
+</li>
+<li>
+<p>二元集成法：首先集成两个重要的局部E-R图，以后用累加的方法逐步将一个新的E-R图集成进来，如图(b)所示。</p>
+</li>
+</ul>
+<p><img src="/img/image-20240623165531556.png" srcset="/img/loading.gif" lazyload alt="image-20240623165531556"></p>
+<p>对于复杂的业务系统，一般采用二元集成法。对于简单的业务系统，可以采用多元集成法。</p>
+<h4 id="1-6-2、集成步骤">1.6.2、集成步骤</h4>
+<p>无论使用哪一种集成方法，局部E-R图集成均分成两个步骤，如下图所示。</p>
+<p><img src="/img/image-20240623173841022.png" srcset="/img/loading.gif" lazyload alt="image-20240623173841022"></p>
+<blockquote>
+<p>合并</p>
+</blockquote>
+<p>合并局部E-R图，消除局部E-R图之间的冲突，生成初步E-R图。</p>
+<p>这个步骤将所有的局部E-R图集成为全局概念结构。全局概念结构不仅要支持所有的局部E-R模型，且必须合理地表示一个完整的、一致的数据库概念结构。</p>
+<p>由于各个局部E-R图通常由不同的设计人员并发设计，因此各局部E-R图在集成时不可避免地会出现许多不一致的现象，称为冲突。集成局部E-R图的关键就是合理消除各局部E-R图中的冲突。</p>
+<ul>
+<li>
+<p>属性冲突。属性冲突又分为属性值域冲突和属性的取值单位冲突。</p>
+<ul>
+<li>属性值域冲突，即属性值的类型、取值范围或取值集合不同。例如学号，有些部门将其定义为数值型，而有些部门将其定义为字符型。</li>
+<li>属性的取值单位冲突。例如零件的质量，有的以千克为单位，有的以克为单位。</li>
+</ul>
+<p>属性冲突属于用户业务上的约定，必须与用户协商后解决。</p>
+</li>
+<li>
+<p>命名冲突。命名冲突可能发生在实体名、属性名或联系名之间，一般表现为同名异义或异名同义。</p>
+<ul>
+<li>同名异义，即同一名称的对象在不同的部门中具有不同的意义。例如，“单位”在某些部门表示人员所在的部门，而在某些部门可能表示物品的质量、长度等属性。</li>
+<li>异名同义，即同一意义的对象在不同的部门中具有不同的名称。例如，对于“房间”这个名称，在教学管理部门中对应为教室，而在后勤管理部门中对应为学生宿舍。</li>
+</ul>
+<p>命名冲突的解决方法与属性冲突相同，也需要与用户协商、讨论后予以解决。</p>
+</li>
+<li>
+<p>结构冲突。结构冲突包括以下3种情况。</p>
+<ul>
+<li>
+<p>同一对象在不同应用中有不同的抽象，可能为实体，也可能为属性。例如，教师的职称在某一局部应用中被当作实体，而在另一局部应用中被当作属性。</p>
+<p>这类冲突在解决时，就是使同一对象在不同应用中具有相同的抽象，或把实体转换为属性，或把属性转换为实体。</p>
+</li>
+<li>
+<p>同一实体在不同应用中属性组成不同，可能是属性个数或属性次序不同。</p>
+<p>解决办法是合并后实体的属性组成为各局部E-R图中同名实体属性的并集，然后再适当调整属性的次序。</p>
+</li>
+<li>
+<p>同一联系在不同应用中呈现不同的类型。例如，E1与E2在某一应用中可能是一对一联系，而在另一应用中可能是一对多或多对多联系，也可能在E1、E2、E3三者之间有联系。</p>
+<p>这种情况应该根据应用的语义对实体联系的类型进行综合或调整。</p>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>优化</p>
+</blockquote>
+<p>消除不必要的冗余，经规范化验证，生成全局E-R图。</p>
+<p>冗余是指冗余的数据和实体之间冗余的联系。冗余的数据是指可由基本的数据导出的数据，冗余的联系是指可由其他的联系导出的联系。在消除冲突合并后得到的初步E-R图中，可能存在冗余的数据或冗余的联系。冗余的存在容易破坏数据库的完整性，给数据库的维护增加困难，应该消除。</p>
+<p>通过合并和优化过程所获得的最终E-R模型代表了用户的全部业务要求，沟通“要求”和“设计”，是成功建立数据库的关键。因此，用户和数据库设计人员必须对这一模型反复讨论，在用户确认这一模型已正确无误后，才能进入下一阶段的设计工作。</p>
+<h2 id="二、逻辑结构设计">二、逻辑结构设计</h2>
+<h3 id="2-1、逻辑结构设计的任务和步骤">2.1、逻辑结构设计的任务和步骤</h3>
+<p>概念结构设计阶段得到的E-R图是描述业务的抽象模型，它独立于任何数据模型（网状模型、层次模型和关系模型），同时也独立于任何一个具体的DBMS。为了建立用户所要求的数据库，数据库设计人员需要把概念结构模型转换为某个具体的DBMS所支持的数据模型。</p>
+<p>数据库逻辑结构设计的任务是将概念结构模型转换成特定DBMS所支持的数据模型。由此便进入了“实现设计”阶段，在这一阶段，数据库设计人员需要考虑具体的DBMS的性能、具体的数据模型的特点。</p>
+<p>E-R图所表示的概念结构模型可以转换成任何一种具体的DBMS所支持的数据模型，如网状模型、层次模型和关系模型。这里只讨论关系数据库的逻辑结构设计问题，所以重点介绍如何将E-R图转换为关系模型。</p>
+<p>如下图，是逻辑结构设计的步骤。</p>
+<p><img src="/img/image-20240629160717286.png" srcset="/img/loading.gif" lazyload alt="image-20240629160717286"></p>
+<p>关系数据库的逻辑结构设计分为以下3步：</p>
+<ul>
+<li>
+<p>步骤1：初始关系模式设计，将基本E-R图按照关系模式转换规则转换为初始关系模式。</p>
+</li>
+<li>
+<p>步骤2：关系模式规范化，利用规范化理论判断初始关系模式是否满足BCNF。</p>
+</li>
+<li>
+<p>步骤3：模式的评价与改进，对规范化后的关系模型对照需求进行评价。</p>
+</li>
+</ul>
+<p>上述步骤完成后，就可进入数据库的物理结构设计阶段。</p>
+<h3 id="2-2、初始关系模式转换原则和具体做法">2.2、初始关系模式转换原则和具体做法</h3>
+<h4 id="2-2-1、转换原则">2.2.1、转换原则</h4>
+<p>将E-R图转换为关系模式时需遵循以下原则。</p>
+<p>实体转换原则：将每一个实体转换为一个关系模式，实体的名称为关系模式的名称，实体的属性是关系的属性，实体的码就是关系的主码。</p>
+<p>关系转换原则：将每一个联系转换为一个关系模式，联系的名称为关系模式的名称，联系的属性是关系的属性，与联系相关联的所有实体的码，加入联系所转换成的关系模式中，然后根据联系类型决定关系的码。具体如下：</p>
+<ul>
+<li>
+<p>如果为1:1联系，则联系关联的每个实体的主码都可以是关系的候选码，根据业务需要，任选某一候选码作为主码即可。例如：班级和班主任两个实体间的属于联系，该属于联系的主码既可以是班级实体的主码，也可以是班主任实体的主码。</p>
+</li>
+<li>
+<p>如果为1: n联系，则联系关联的n端实体的主码是关系的主码。例如：学生和院系两个实体的属于联系，该属于联系的主码为学生实体的主码。</p>
+</li>
+<li>
+<p>如果为m: n联系，则联系关联的每个实体的主码的组合形成关系的主码。例如：学生和课程两个实体的选修联系，该选修联系的主码是由学生实体的主码和课程实体的主码构成的联合主码。</p>
+</li>
+</ul>
+<h4 id="2-2-2、具体做法及注意事项">2.2.2、具体做法及注意事项</h4>
+<p>根据关系模式转化原则，将基本E-R图转换为关系模式时，具体做法及特殊情况如下。</p>
+<ul>
+<li>
+<p>根据实体转换原则，将E-R图中每一个实体转换为一个关系模式集合中的关系，注意不要丢失实体的属性。转换后，标注关系的主码。</p>
+</li>
+<li>
+<p>根据联系转换原则，把每一个联系转换为关系模式，注意联系转换为关系模式的主码选择方式，同时，确保不要丢失联系的任何属性。转换后，标注关系的主码。</p>
+</li>
+<li>
+<p>特殊情况的处理。3个或3个以上实体间的多元联系在转换为关系模式时，与该多元联系相连的各实体的主码及联系本身的属性均转换成为关系的属性，转换后所得到的关系的主码为各实体主码的组合。</p>
+</li>
+</ul>
+<p>如下图，是供应商、项目和零件3个实体之间的多对多联系，如果已知3个实体的主码分别为“供应商号”“项目号”与“零件号”，则它们之间的联系“供应”可转换为关系模式：供应（供应商号，项目号，零件号，数量）。其中，供应商号、项目号、零件号构成联合主码。</p>
+<p><img src="/img/image-20240629162932088.png" srcset="/img/loading.gif" lazyload alt="image-20240629162932088"></p>
+<h3 id="2-3、关系模式规范化">2.3、关系模式规范化</h3>
+<p>利用规范化理论对上述转化的关系模式的逻辑模式进行初步优化，减少乃至消除关系模式中存在的各种异常，改善关系的完整性、一致性和存储效率。</p>
+<p>关系模式规范化过程可分为两个步骤：确定范式级别和实施规范化处理。</p>
+<ul>
+<li>
+<p>确定范式级别。逐一列出关系模式上的函数依赖关系，考察各关系上主码和非主属性之间是否存在部分函数依赖、传递函数依赖，以及主码和主属性之间是否存在部分函数依赖，然后按照范式等级定义，确定每个关系模式的范式级别。</p>
+</li>
+<li>
+<p>实施规范化处理。利用规范化理论，逐一判断各关系模式的范式级别是否满足规范要求，一般至少需要满足3NF或BCNF级别。然后，通过关系模式分解等方法，将不满足范式级别的关系模式进行转化，形成均满足范式等级要求的关系模式集合。</p>
+</li>
+</ul>
+<h3 id="2-4、关系模式的评价和改进">2.4、关系模式的评价和改进</h3>
+<p>为了进一步提高数据库应用系统的性能，数据库设计人员还应该对规范化后的关系模式进行评价和改进。</p>
+<h4 id="2-4-1、模式评价">2.4.1、模式评价</h4>
+<p>模式评价的目的是检查所设计的数据库模式是否满足用户的业务需求（含功能性需求和非功能性需求），从而确定加以改进的部分。模式评价包括功能评价和性能评价。</p>
+<blockquote>
+<p>功能评价</p>
+</blockquote>
+<p>功能评价指对照需求分析，检查规范化后的关系模式集合是否支持用户所有的业务需求。关系模式必须包含用户可能访问的所有属性。在涉及多个关系模式的应用中，应确保连接后不丢失信息。如果发现有的业务不被支持，或不完全被支持，如遗漏属性，则应进行关系模式的改进。发生这种问题的原因可能存在于逻辑结构设计阶段，也可能存在于系统需求分析或概念结构设计阶段。是哪个阶段导致出现问题就返回哪个阶段去改进，因此，数据库设计人员有可能需要对前两个阶段再次进行评审，以解决存在的问题。</p>
+<p>在功能评价过程中，数据库设计人员可能会发现冗余的关系模式或属性，这时应对它们加以区分，搞清楚它们是为未来发展预留的，还是某种错误造成的。如果属于错误造成的，应进行改正；如果这种冗余来源于前两个设计阶段，则也要返回改进，并重新进行评审。</p>
+<blockquote>
+<p>性能评价</p>
+</blockquote>
+<p>对于目前得到的关系模式，由于缺乏物理结构设计所提供的存取效率量化标准和评价手段，所以关系模式的性能评价是比较困难的，只能采用估计的方式，按照预期的逻辑记录的存取数、传送量及物理结构设计算法的模型，估算关系模式的性能。同时，数据库设计人员可根据模式改进中关系模式合并方法，减少关系模式的数量，提高关系模式的性能。</p>
+<p>根据模式评价的结果，对已生成的关系模式进行改讲。如果因为系统需求分析、概念结构设计的疏漏导致某些应用不能得到支持，则应该增加新的关系模式或属性。如果因为性能考虑而要求改进，则可采用合并或分解模式的方法。</p>
+<h4 id="2-4-2、模式合并">2.4.2、模式合并</h4>
+<p>如果有若干个关系模式具有相同的主码，并且对这些关系模式的处理主要是查询操作，而且经常是多关系的连接查询，那么可对这些关系模式进行合并，减少关系连接数量，提高查询效率。</p>
+<p>通常应对相同主码的关系模式尽量执行模式合并操作，对于1:1类型联系转换的关系模式，可与主码相同的关系模式进行合并；对于1: n类型联系转换的关系模式，可与n端关系模式进行合并。例如，将学生与院系两个实体间的属于联系与学生关系模式合并。</p>
+<p>注意，并不是所有主码相同的关系模式都适合执行合并操作。例如，在很多系统中，用户登录信息和用户基本信息存储在两个关系中，这两个关系都采用用户编号作为主码，主码虽然相同，但登录验证的查询频率更高，因此，用户登录信息关系和用户基本信息关系不应进行合并。</p>
+<h4 id="2-4-3、模式分解">2.4.3、模式分解</h4>
+<p>为了提高数据操作的效率和存储空间的利用率，最常用和最重要的模式优化方法就是分解。根据应用的不同要求，数据库设计人员可以对关系模式进行水平分解或垂直分解。</p>
+<blockquote>
+<p>水平分解</p>
+</blockquote>
+<p>水平分解是把关系的元组分为若干个子集合，将分解后的每个子集合定义为一个子关系。对于经常进行大量数据的分类条件查询的关系，可进行水平分解，这样可以减少应用系统每次查询需要访问的记录数，从而提高了查询性能。</p>
+<p>例如，有学生关系（学号，姓名，类别，……），其中类别包括大专生、本科生和研究生。如果多数查询一次只涉及其中的一类学生，就应该把整个学生关系水平分解为大专生、本科生和研究生3个关系。</p>
+<p>在一些记录通话记录的大型系统中，通常按照通话记录的年限对记录通话信息的关系进行水平分解，并将分解出的关系放在不同存取效率的服务器上，对于离当前时间较近的通话记录，通常是查询热点，会放置在存取性能较高的服务器上，其他通话记录放在性能较低的服务器上，这样可以最大化利用服务器性能差异达到最优服务效果。</p>
+<blockquote>
+<p>垂直分解</p>
+</blockquote>
+<p>垂直分解是把关系模式的属性分解为若干个子集合，形成若干个子关系模式，每个子关系模式的主码为原关系模式的主码。垂直分解的原则是把经常一起使用的属性分解出来，形成一个子关系模式。</p>
+<p>例如，有教师关系（教师号，姓名，性别，年龄，职称，工资，岗位津贴，住址，电话），如果经常查询的仅是前6项，而后3项很少使用，则可以将教师关系进行垂直分解，得到以下两个教师关系。</p>
+<ul>
+<li>
+<p>教师关系1（教师号，姓名，性别，年龄，职称，工资）</p>
+</li>
+<li>
+<p>教师关系2（教师号，岗位津贴，住址，电话）</p>
+</li>
+</ul>
+<p>这样便减少了查询的数据传送量，提高了查询速度。</p>
+<p>垂直分解可以提高某些事务的效率，但也有可能使另一些事务不得不执行连接操作，从而降低了效率。因此，是否要进行垂直分解要看分解后的所有事务的总效率是否得到了提高。垂直分解要保证分解后的关系具有无损连接性和函数依赖保持性。</p>
+<p>经过多次的模式评价、模式合并和模式分解之后，最终的关系模式得以确定。</p>
+<h2 id="三、案例">三、案例</h2>
+<h3 id="3-1、案例的局部E-R图设计">3.1、案例的局部E-R图设计</h3>
+<h4 id="3-1-1、案例局部E-R图确定依据">3.1.1、案例局部E-R图确定依据</h4>
+<p>根据案例业务描述，可分别构建面向商品采购和销售业务的局部E-R图。</p>
+<h4 id="3-1-2、商品采购的实体、属性和实体联系分析及局部E-R图">3.1.2、商品采购的实体、属性和实体联系分析及局部E-R图</h4>
+<blockquote>
+<p>实体分析</p>
+</blockquote>
+<p>根据需求分析结果，与商品采购相关的数据结构包括用户、登录凭证和商品库存。运用分类分析方法，商品采购业务涉及的实体为采购用户实体、采购商品实体、商品分类实体和供应商实体。</p>
+<p>未将登录凭证信息作为实体的原因：用户的登录信息只存在于服务器内存中，数据库仅记录用户最近一次登录的时间，对登录后的状态并不存储，因此，可将最近一次登录信息作为属性存储在采购用户实体中，即采购用户实体中的上次登录时间。</p>
+<p>从采购商品实体中分解出商品分类实体的原因：对于案例中提供的《数据库原理及应用教程》，其既属于图书分类也属于教材分类，此时商品的分类不是原子属性，可能由1个或多个分类属性构成。根据关系规范化中属性原子化要求，可将分类单独作为实体，构建分类与采购商品间实体联系，表达采购商品与分类间的关系。</p>
+<p>从采购商品实体中分解出供应商实体的原因：根据案例中提供的采购台账，供应商包含了供应商的单位名称、电话和电子邮箱等信息，其本身也是由多个属性构成的复合属性，因此，需将供应商从采购商品实体中分解出来，再通过采购商品实体和供应商实体的联系描述商品供货情况。</p>
+<blockquote>
+<p>属性分析</p>
+</blockquote>
+<p>运用聚集分析方法，分析需求分析获取的属性是否正确且完整。</p>
+<p>采购用户实体：采购用户实体中包含用户登录相关属性（用户编号、登录用户名、用户密码、电子邮箱）。按实体完整性要求，需补充用户编号属性作为主码。在某些应用中，由于登录用户名不重复且为必填项，所以也可使用登录用户名作为主码。因数据安全和审计需要，需补充登录状态属性（注册时间、上次登录时间）。在大多数系统中，还可进一步补充用户显示名称、用户缩略图、用户出生日期等其他信息，为降低实际业务繁杂属性对案例理解的影响，本案例仅在采购用户实体中考虑有关用户的登录和登录状态属性。</p>
+<p>采购商品实体：采购商品实体中包含商品相关属性（商品编号、商品名、生产厂家、入库时间、概述、缩略图）。为简单起见，本案例并未考虑一个商品由多个厂商生产的情况。同时，需求分析得到的库存数可依据商品采购和销售情况计算得到，为避免数据库冗余存储并未保留。</p>
+<p>商品分类实体：商品分类实体中包含分类相关属性（分类编号、分类名称、分类概述）。按实体完整性要求，补充分类编号属性作为主码。在一些应用中，需记录建立分类的用户信息，本次设计并未考虑。</p>
+<p>供应商实体：供应商实体属性有供应商编号、供应商名称、联系方式、电子邮箱。按实体完整性需要，补充供应商编号属性作为主码。</p>
+<blockquote>
+<p>实体联系分析</p>
+</blockquote>
+<p>根据案例描述，本案例只需将每次采购信息记录在系统中，并不考虑哪个采购人员从哪家供应商采购商品的信息，因此，只需分析采购商品实体、商品分类实体和供应商实体之间的关系。</p>
+<p>采购商品实体和商品分类实体之间是m: n联系。即一个商品可以属于多个分类，一个分类可以被多个商品使用。</p>
+<p>采购商品实体和供应商实体之间是m: n联系。即一个供应商可以供应多个商品，一个商品可以由多个供应商供应。在每次采购过程中，会产生供应时间、单价、数量等属性。</p>
+<p>经过上述分析，商品采购业务相关的实体、属性和联系可总结成两个表。</p>
+<p>表1：商品采购业务相关实体和属性</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">实体名称</th>
+<th style="text-align:center">属性名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">采购用户</td>
+<td style="text-align:center">用户编号、登录用户名、用户密码、电子邮箱、注册时间、上次登录时间</td>
+</tr>
+<tr>
+<td style="text-align:center">采购商品</td>
+<td style="text-align:center">商品编号、商品名、生产厂家、入库时间、概述、缩略图</td>
+</tr>
+<tr>
+<td style="text-align:center">商品分类</td>
+<td style="text-align:center">分类编号、分类名称、分类概述</td>
+</tr>
+<tr>
+<td style="text-align:center">供应商</td>
+<td style="text-align:center">供应商编号、供应商名称、联系方式、电子邮箱</td>
+</tr>
+</tbody>
+</table>
+<p>表2：商品采购业务相关实体的联系</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">实体名称</th>
+<th style="text-align:center">实体名称</th>
+<th style="text-align:center">联系类型</th>
+<th style="text-align:center">产生非主属性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">采购商品</td>
+<td style="text-align:center">商品分类</td>
+<td style="text-align:center">m:n</td>
+<td style="text-align:center">无</td>
+</tr>
+<tr>
+<td style="text-align:center">采购商品</td>
+<td style="text-align:center">供应商</td>
+<td style="text-align:center">m:n</td>
+<td style="text-align:center">供应时间、供应单价、供应数量</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>商品采购业务局部E-R图</p>
+</blockquote>
+<p>根据商品采购业务的实体、属性和实体间联系，绘制描述该局部业务的E-R图，如下图所示。</p>
+<p><img src="/img/image-20240630095727258.png" srcset="/img/loading.gif" lazyload alt="image-20240630095727258"></p>
+<h4 id="3-1-3、商品销售的实体、属性和实体联系分析及局部E-R图">3.1.3、商品销售的实体、属性和实体联系分析及局部E-R图</h4>
+<blockquote>
+<p>实体分析</p>
+</blockquote>
+<p>根据需求分析结果，与商品销售相关的数据结构包括用户、商品、订单和地址。运用分类分析方法，商品销售业务涉及的实体为销售用户实体、销售商品实体、订单实体、地址实体、物流实体。</p>
+<p>从地址实体中分解出物流实体的原因：根据案例中提供的销售台账，物流信息中包含了物流单号和物流承运商名称等信息，其本身为复合属性，不满足属性原子化要求，因此，需将物流从地址实体中分解出来，再通过物流实体和地址实体的联系描述商品的物流情况。</p>
+<blockquote>
+<p>属性分析</p>
+</blockquote>
+<p>运用聚集分析方法，分析需求分析获取的属性是否正确且完整。</p>
+<p>销售用户实体：同采购用户实体类似，销售用户实体中包含登录相关属性（用户编号、登录名、登录密码、电子邮箱、用户权限）、登录状态属性（注册时间、上次登录时间）。</p>
+<p>销售商品实体：同采购商品实体类似，销售商品实体中包含采购商品相关属性（编号、名称）。</p>
+<p>订单实体：订单实体中包含订单相关信息属性（订单编号、提交时间、订单状态）。订单商品信息不是一个原子属性，可建立订单实体和商品采购实体间的管理关系，表达订单包含的采购商品信息。</p>
+<p>地址实体：地址实体包含订单接收人相关属性（地址编号、联系人、性别、手机、电子邮箱）和接收地址相关属性（国家、省、市县、街道）。为保证地址的实体完整性，补充地址编号作为地址实体的主码。注意，在实际的数据库系统开发中，将地址信息拆分可便于统计不同区域的销售情况，不进行地址拆分虽然违反关系模式规范化中属性原子化的要求，但并不影响系统的运行。读者可结合实际业务需要考虑是否拆分地址属性。</p>
+<p>物流实体：物流实体包含了物流编号、物流公司名称、物流公司电话和快递单号属性。按照实体完整性要求，补充物流编号作为地址实体的主码。</p>
+<blockquote>
+<p>实体联系分析</p>
+</blockquote>
+<p>销售商品实体与订单实体之间是m: n联系。一个商品可以在多个订单中出现，一个订单中可以包含多个商品。在每次销售过程中，产生单价和数量属性。</p>
+<p>订单实体和地址实体之间是1: n联系。一个订单只能有一个快递收件地址，一个快递收件地址可以给多个订单复用。</p>
+<p>地址实体与销售用户实体之间是n: 1联系。一个销售用户可以有多个收件人地址，一个收件人地址只能被一个销售用户使用。</p>
+<p>订单实体与物流实体之间是1: n联系。一个订单可能与一个或多个物流信息对应，一个物流信息只对应一个订单。</p>
+<p>经过上述分析，商品销售业务相关的实体、属性和联系可总结成两个表。</p>
+<p>表1：商品销售业务相关实体和属性</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">实体名称</th>
+<th style="text-align:center">属性名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">销售用户</td>
+<td style="text-align:center">用户编号、登录名、登录密码、电子邮箱、用户权限、注册时间、上次登录时间</td>
+</tr>
+<tr>
+<td style="text-align:center">销售商品</td>
+<td style="text-align:center">编号、名称</td>
+</tr>
+<tr>
+<td style="text-align:center">订单</td>
+<td style="text-align:center">订单编号、提交时间、订单状态</td>
+</tr>
+<tr>
+<td style="text-align:center">地址</td>
+<td style="text-align:center">地址编号、联系人、性别、手机、电子邮箱、国家、省、市县、街道</td>
+</tr>
+<tr>
+<td style="text-align:center">物流</td>
+<td style="text-align:center">物流编号、物流公司名称、物流公司电话、快递单号</td>
+</tr>
+</tbody>
+</table>
+<p>表2：商品采购业务相关实体的联系</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">实体名称</th>
+<th style="text-align:center">实体名称</th>
+<th style="text-align:center">联系类型</th>
+<th style="text-align:center">产生非主属性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">销售商品</td>
+<td style="text-align:center">订单</td>
+<td style="text-align:center">m:n</td>
+<td style="text-align:center">单价、数量</td>
+</tr>
+<tr>
+<td style="text-align:center">订单</td>
+<td style="text-align:center">地址</td>
+<td style="text-align:center">1:n</td>
+<td style="text-align:center">无</td>
+</tr>
+<tr>
+<td style="text-align:center">地址</td>
+<td style="text-align:center">销售用户</td>
+<td style="text-align:center">n:1</td>
+<td style="text-align:center">无</td>
+</tr>
+<tr>
+<td style="text-align:center">订单</td>
+<td style="text-align:center">物流</td>
+<td style="text-align:center">1:n</td>
+<td style="text-align:center">无</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>商品销售业务局部E-R图</p>
+</blockquote>
+<p>根据商品销售业务的实体、属性和实体间联系，绘制描述该局部业务的E-R图，如下图所示。</p>
+<p><img src="/img/image-20240630120505751.png" srcset="/img/loading.gif" lazyload alt="image-20240630120505751"></p>
+<h3 id="3-2、案例的全局E-R图设计">3.2、案例的全局E-R图设计</h3>
+<p>在商品采购业务和商品销售业务局部E-R图的基础上，通过局部E-R图集成方法，形成全局E-R图。</p>
+<p>首先，这两个局部E-R图中存在命名冲突。异名同义的情况：商品采购业务局部E-R图中的实体“采购商品”与商品销售业务局部E-R图中的实体“销售商品”，都是指库存中“商品”，合并后统一改为“商品”，这样属性“商品名”和“名称”即可统一为“商品名称”。同名异义的情况：商品采购业务局部E-R图内供应关系上“单价”和商品销售业务局部E-R图内包含关系上“单价”，表示不同含义，前者是采购时的入库单价，后者是销售时的销售单价，为避免歧义，将商品采购业务局部E-R图内供应关系上“单价”修改为“入库单价”，将商品销售业务局部E-R图内包含关系上“单价”修改为“销售单价”，同理，将商品采购业务局部E-R 图内供应关系上“数量”修改为“入库数量”，将商品销售业务局部E-R图内包含关系上“数量&quot;修改为“销售数量”。</p>
+<p>其次，这两个局部E-R图中还存在结构冲突。经异名同义规则修改实体名称后，商品销售业务中实体“商品”和商品采购业务中实体“销售商品”在两个不同应用中的属性组成不同，合并后这两个实体的属性组成为原来局部E-R图中的同名实体属性的并集，消去表示同样含义的属性。</p>
+<p>解决上述冲突后，合并两个局部E-R图，可生成下图所示的初步E-R图。</p>
+<p><img src="/img/image-20240630144741634.png" srcset="/img/loading.gif" lazyload alt="image-20240630144741634"></p>
+<p>再次对初步E-R图进行优化，消除冗余数据。在上图所示的初步E-R图中，“采购用户”实体与“销售用户”实体仅差一个属性“用户权限”，从消除冗余数据的角度，可以将两个实体整合成统一的“用户”实体，在“用户”实体中，通过“用户权限”属性区分当前用户是销售用户还是采购用户。整合形成“用户”实体的另一优势在于提高了系统的可扩展性，当后续系统中包含其他类型用户时，可增减“用户权限”属性内的标识数字，从数据库层面支持系统业务的扩展需要。</p>
+<p>最后，上图所示的初步E-R图在消除冗余“采购用户”实体后，便得到基本E-R图，如下图所示。</p>
+<p><img src="/img/image-20240630145520177.png" srcset="/img/loading.gif" lazyload alt="image-20240630145520177"></p>
+<p>分析上图所示的基本E-R图，我们还可进一步从消除冗余数据的角度，优化实体和联系，如“物流”实体中，相同物流公司的名称和电话冗余出现，可以将物流公司单独抽象为实体并将该实体与现有“物流”信息关联，现有“物流”实体仅保留快递单号即可。上述优化工作需与系统具体需求相关，读者可根据具体业务需要完成基本E-R图优化工作。</p>
+<p>在实际E-R图优化时，并不是所有冗余信息都要消除，有时候系统为了提高运行效率，会将部分信息冗余，以提高数据的查询效率。例如， “订单”实体中可包含冗余的“订单总价”属性，以方便后续按月统计订单销售情况。同时，为提高系统的存储效率，当对省、市县、街道等订单地址信息不单独处理时，可以将“地址”实体的省、市县、街道等信息整合为地址信息，该设计结果虽然不满足关系规范化理论，但在实际数据库设计中也是允许的。</p>
+<h3 id="3-3、案例的逻辑结构设计">3.3、案例的逻辑结构设计</h3>
+<p>将概念结构设计得到的基本E-R图，首先进行初始关系模式的设计，然后对关系模式进行规范化处理，最后进行模式的评价和改进。</p>
+<h4 id="3-3-1、案例的初始关系模式设计">3.3.1、案例的初始关系模式设计</h4>
+<p>首先，采用实体转化原则，对基本E-R图中7个实体进行关系模式转化，转化成下面的7个关系模式，每个关系模式使用属性下画线标注主码。</p>
+<p>供应商（<u>供应商编号</u>，供应商名称，电子邮箱，联系方式）<br>
+商品（<u>商品编号</u>，商品名称，生产厂家，入库时间，概述，缩略图）<br>
+商品分类（<u>分类编号</u>，分类名称，分类概述）<br>
+订单（<u>订单编号</u>，提交时间，订单状态）<br>
+物流（<u>物流编号</u>，物流公司名称，物流公司电话，快递单号）<br>
+地址（<u>地址编号</u>，联系人，性别，手机，电子邮箱，国家，省，市县，街道）<br>
+用户（<u>用户编号</u>，登录名，登录密码，电子邮箱，用户权限，注册时间，上次登录时间）</p>
+<p>然后，采用联系转化原则，根据基本E-R图中联系类型，将图中6个联系分别转化成关系模式，每个关系模式使用属性下画线标注主码。</p>
+<p>m:n类型联系转化成的3个关系模式分别如下。</p>
+<p>供应（<u>供应商编号，商品编号</u>，供应时间，单价，数量）<br>
+属于（<u>分类编号，商品编号</u>）<br>
+包含（<u>订单编号，商品编号</u>，销售单价，销售数量）</p>
+<p>1:n类型联系转化成的3个关系模式分别如下。</p>
+<p>拥有（<u>地址编号</u>，用户编号）<br>
+设置（<u>订单编号</u>，地址编号）<br>
+使用（<u>物流编号</u>，订单编号）</p>
+<h4 id="3-3-2、案例的初始关系模式的规范化">3.3.2、案例的初始关系模式的规范化</h4>
+<p>逐一对初始关系模式按照规范化理论，分析关系模式上的函数依赖关系，明确范式级别。经分析，7个实体转化成的关系模式和6个联系转化成的关系模式均为3NF，确保了属性原子化要求，不存在非主属性对主码的部分函数依赖和传递函数依赖。</p>
+<p>在实际应用中，3NF和BCNF的数据库设计已经满足大部分数据库系统的设计要求，仅在一些特殊的情况下，需要继续对模式进行规范化处理，将3NF和BCNF转换为更高级别的范式。</p>
+<h4 id="3-3-3、案例的关系模式的评价和改进">3.3.3、案例的关系模式的评价和改进</h4>
+<blockquote>
+<p>模式合并</p>
+</blockquote>
+<p>对关系模式进行合并处理，合并具有相同主码的关系模式。一般关系模式的合并主要出现在1: n类型和1:1类型的联系与对应实体的关系模式上。其中，1:1类型联系通常会考虑垂直分解，从而将一个实体划分为两个实体，因此，模式合并时重点考虑1: n类型联系与对应实体的关系模式。</p>
+<p>在案例的关系模式中，“拥有”关系模式与“地址”关系模式具有相同的主码——地址编号，可以将“拥有”关系模式中的“用户编号”添加到“地址”关系模式中，形成新的“地址”关系模式，使用波浪线标注“地址”关系模式中外键，删除“拥有”关系模式。新的“地址”关系模式如下。</p>
+<p>地址（<u>地址编号</u>，联系人，性别，手机，电子邮箱，国家，省，市县，街道，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi><munder><mo><mtext>用户编号</mtext></mo><mo lspace="0em" rspace="0em">∼</mo></munder></mi></mrow><annotation encoding="application/x-tex">\underset{\sim}{用户编号}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.3833em;vertical-align:-0.7em;"></span><span class="mord"><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6833em;"><span style="top:-2.4em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mrel mtight">∼</span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop cjk_fallback">用户编号</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7em;"><span></span></span></span></span></span></span></span></span></span>）</p>
+<p>同理，“设置”关系模式与“订单”关系模式具有相同的主码——订单编号，使用模式合并方法，生成新的“订单”关系模式，删除“设置”关系模式。新的“订单”关系模式如下。</p>
+<p>订单（<u>订单编号</u>，提交时间，订单状态，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi><munder><mo><mtext>地址编号</mtext></mo><mo lspace="0em" rspace="0em">∼</mo></munder></mi></mrow><annotation encoding="application/x-tex">\underset{\sim}{地址编号}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.3833em;vertical-align:-0.7em;"></span><span class="mord"><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6833em;"><span style="top:-2.4em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mrel mtight">∼</span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop cjk_fallback">地址编号</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7em;"><span></span></span></span></span></span></span></span></span></span>）</p>
+<p>同理，“物流”关系模式与“使用”关系模式具有相同的主码——物流编号，使用模式合并方法，生成新的“物流”关系模式，删除“使用”关系模式。新的“物流”关系模式如下。</p>
+<p>物流（<u>物流编号</u>，物流公司名称，物流公司电话，快递单号，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi><munder><mo><mtext>订单编号</mtext></mo><mo lspace="0em" rspace="0em">∼</mo></munder></mi></mrow><annotation encoding="application/x-tex">\underset{\sim}{订单编号}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.3833em;vertical-align:-0.7em;"></span><span class="mord"><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6833em;"><span style="top:-2.4em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mrel mtight">∼</span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop cjk_fallback">订单编号</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7em;"><span></span></span></span></span></span></span></span></span></span>）</p>
+<blockquote>
+<p>模式分解</p>
+</blockquote>
+<p>在系统实际运行时，订单“包含”关系和商品“供应”关系的数据量较大，在短时间内将积累大量的数据，从运行效率角度考虑，可以采用水平分解的方法，按照固定时间周期，将最近1年或3个月内的数据存储在算力较高的服务器上，将剩余的历史数据放在算力较低的服务器上，确保近期订单的查询效率较高，差异化地使用好不同性能的服务器。鉴于篇幅，本案例不再考虑其他模式分解场景，读者可根据实际业务需求，深入对照性能、硬件等需要，对关系模式进行水平分解和垂直分解。</p>
+<h4 id="3-3-4、案例的关系模式">3.3.4、案例的关系模式</h4>
+<p>经过初始关系模式转换、关系模式规范化及关系模式的评价和改进，案例最终的10个关系模式如下。</p>
+<p>供应商（<u>供应商编号</u>，供应商名称，电子邮箱，联系方式）<br>
+商品（<u>商品编号</u>，商品名称，生产厂家，人库时间，概述，缩略图）<br>
+商品分类（<u>分类编号</u>，分类名称，分类概述）<br>
+订单（<u>订单编号</u>，提交时间，订单状态，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi><munder><mo><mtext>地址编号</mtext></mo><mo lspace="0em" rspace="0em">∼</mo></munder></mi></mrow><annotation encoding="application/x-tex">\underset{\sim}{地址编号}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.3833em;vertical-align:-0.7em;"></span><span class="mord"><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6833em;"><span style="top:-2.4em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mrel mtight">∼</span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop cjk_fallback">地址编号</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7em;"><span></span></span></span></span></span></span></span></span></span>）<br>
+物流（<u>物流编号</u>，物流公司名称，物流公司电话，快递单号，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi><munder><mo><mtext>订单编号</mtext></mo><mo lspace="0em" rspace="0em">∼</mo></munder></mi></mrow><annotation encoding="application/x-tex">\underset{\sim}{订单编号}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.3833em;vertical-align:-0.7em;"></span><span class="mord"><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6833em;"><span style="top:-2.4em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mrel mtight">∼</span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop cjk_fallback">订单编号</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7em;"><span></span></span></span></span></span></span></span></span></span>）<br>
+地址（<u>地址编号</u>，联系人，性别，手机，电子邮箱，国家，省，市县，街道，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi><munder><mo><mtext>用户编号</mtext></mo><mo lspace="0em" rspace="0em">∼</mo></munder></mi></mrow><annotation encoding="application/x-tex">\underset{\sim}{用户编号}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.3833em;vertical-align:-0.7em;"></span><span class="mord"><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6833em;"><span style="top:-2.4em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mrel mtight">∼</span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop cjk_fallback">用户编号</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7em;"><span></span></span></span></span></span></span></span></span></span>）<br>
+用户（<u>用户编号</u>，登录名，登录密码，电子邮箱，用户权限，注册时间，上次登录时间）<br>
+供应（<u>供应商编号，商品编号</u>，供应时间，单价，数量）<br>
+属于（分类编号，商品编号）<br>
+包含（<u>订单编号，商品编号</u>，销售单价，销售数量）</p>
+<h2 id="四、小结">四、小结</h2>
+<p>本章讲述了数据库概令结构设计和逻辑结构设计的方法，重点介绍了概念结构设计中局部E-R图和全局E-R图的绘制方法、E-R图转换为关系模式的规则、关系模式评价和改进的方法。</p>
+<p>数据库概念结构设计以需求分析获得的数据字典为基础，首先结合局部业务需要，按照分类和聚集方法绘制局部E-R图，然后通过E-R图集成方法，合并形成初步E-R图，再通过消除冗余和规范化验证方法，获得描述系统整体业务的全局（基本）E-R图。</p>
+<p>数据库逻辑结构设计以全局（基本）E-R图为基础，首先通过关系模式转换规则，将E-R图中的实体和联系转换为关系模式，然后利用规范化理论分析和验证各关系模式的范式级别，最后利用模式合并和分解方法，优化关系模式，并进一步回溯业务需求，判断模式是否需要进一步改进。</p>
+<h2 id="五、参考">五、参考</h2>
+<p><a target="_blank" rel="noopener" href="https://product.dangdang.com/29379508.html">《数据库原理及应用教程（MySQL版）》</a></p>
+<p><a target="_blank" rel="noopener" href="https://product.dangdang.com/11615897847.html">《数据库系统原理 自考04735》</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="category-chain-item">数据库</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86/" class="print-no-link">#数据库原理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据库原理：数据库概念结构设计和逻辑结构设计</div>
+      <div>https://kuberxy.github.io/2024/09/15/数据库原理：数据库概念结构设计和逻辑结构设计/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Mr.x</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年9月15日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/09/15/C%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%EF%BC%9A%E6%8C%87%E9%92%88/" title="C语言程序设计：指针">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">C语言程序设计：指针</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/09/01/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%EF%BC%9A%E5%85%B3%E7%B3%BB%E6%A8%A1%E5%BC%8F%E7%9A%84%E8%A7%84%E8%8C%83%E5%8C%96%E7%90%86%E8%AE%BA/" title="数据库原理：关系模式的规范化理论">
+                        <span class="hidden-mobile">数据库原理：关系模式的规范化理论</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

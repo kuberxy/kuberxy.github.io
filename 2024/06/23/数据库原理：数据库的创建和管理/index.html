@@ -1,0 +1,803 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Mr.x">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="数据库设计是数据库系统设计与开发的关键性工作。本文将介绍数据库设计的主要任务、特点、方法和设计步骤。同时，基于案例“电子商务系统中的销售业务管理和采购业务管理”， 重点介绍需求分析方法论及案例的需求分析过程。 数据库的创建和管理是数据库应用的基础。本章介绍MvsQL的常用存储引擎及其优缺。点、MySQL的常用字符集及其校对规则，以及使用MySQL进行数据库管理。本章学习目标：了解MySQL的常用存">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库原理：数据库的创建和管理">
+<meta property="og:url" content="https://kuberxy.github.io/2024/06/23/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%88%9B%E5%BB%BA%E5%92%8C%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="Kubxy">
+<meta property="og:description" content="数据库设计是数据库系统设计与开发的关键性工作。本文将介绍数据库设计的主要任务、特点、方法和设计步骤。同时，基于案例“电子商务系统中的销售业务管理和采购业务管理”， 重点介绍需求分析方法论及案例的需求分析过程。 数据库的创建和管理是数据库应用的基础。本章介绍MvsQL的常用存储引擎及其优缺。点、MySQL的常用字符集及其校对规则，以及使用MySQL进行数据库管理。本章学习目标：了解MySQL的常用存">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-06-23T05:47:11.000Z">
+<meta property="article:modified_time" content="2024-09-03T03:32:04.000Z">
+<meta property="article:author" content="Mr.x">
+<meta property="article:tag" content="数据库原理">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>数据库原理：数据库的创建和管理 - Kubxy</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据库原理：数据库的创建和管理"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-06-23 13:47" pubdate>
+          2024年6月23日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          52 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据库原理：数据库的创建和管理</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>数据库设计是数据库系统设计与开发的关键性工作。本文将介绍数据库设计的主要任务、特点、方法和设计步骤。同时，基于案例“电子商务系统中的销售业务管理和采购业务管理”， 重点介绍需求分析方法论及案例的需求分析过程。</p>
+<p>数据库的创建和管理是数据库应用的基础。本章介绍MvsQL的常用存储引擎及其优缺。点、MySQL的常用字符集及其校对规则，以及使用MySQL进行数据库管理。本章学习目标：了解MySQL的常用存储引擎及其优缺点；掌握MySQL的字符集及其校对规则的查看和设置方法； 掌握使用MySOL创建、查看、修改和删除数据库的语法格式。</p>
+<h2 id="一、MySQL数据库的存储引擎">一、MySQL数据库的存储引擎</h2>
+<h3 id="1-1、存储引擎概述">1.1、存储引擎概述</h3>
+<p>存储引擎是决定如何存储数据库中的数据、如何为数据建立索引、如何更新和查询数据的机制。由于关系数据库中的数据是以关系表的形式存储的，所以存储引擎也称为表类型。</p>
+<p>Oracle和SQL Server等数据库管理系统中只有一种存储引擎，所有数据存储管理机制都是一样的。MySOL数据库管理系统提供了多种存储引擎，用户可以根据不同的需求为数据表选择不同的存储引擎，也可以根据自己的需要编写自己的存储引擎。</p>
+<p>MySQL的核心就是存储引擎。MySQL默认配置了许多不同的存储引擎，用户可以预先设置或者在MySQL服务器中启用。用户可以选择适用于服务器、数据库和数据表的存储引擎，以便在选择如何存储信息、如何检索这些信息以及需要数据结合什么性能和功能时具有较大的灵活性。</p>
+<p>MySQL提供了插入式的存储引擎，所以，数据库中不同的数据表可以使用不同的存储引擎。MySQL常用的存储引擎有InnoDB、MyISAM、MEMORY和MERGE等。</p>
+<p>用户可以查看MySQL支持的存储引擎，查看命令如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SHOW ENGINES;<br></code></pre></td></tr></table></figure>
+<p>以MySQL Workbench为例，如图4-1所示，在其查询窗口输入&quot;SHOW ENGINES;&quot;，单击“执行”按钮，即可查看各存储引擎的相关信息。</p>
+<p>图4-1中各参数的说明如下。</p>
+<p>(1) Engine：该列显示MySQL支持的所有存储引擎类型。</p>
+<p>(2) Support：该列显示MySQL是否支持当前存储引擎，&quot;YES&quot;表示支持，&quot;NO&quot;表示.不支持。</p>
+<p>(3) Comment：该列显示对存储引擎的解释。</p>
+<p>(4) Transactions：该列显示存储引擎是否支持事务处理，&quot;YES&quot;表示支持，&quot;NO&quot;表示不支持。</p>
+<p>(5) XA：该列显示存储引擎是否支持分布式交易处理的XA规范，&quot;YES&quot;表示支持，&quot;NO&quot;表示不支持。</p>
+<p>(6) Savepoints：该列显示存储引擎是否支持保存点，以便事务可以回滚到保存点，&quot;YES&quot;表示支持，&quot;NO&quot;表示不支持。</p>
+<p>从图4-1中还可以看出，MySQL的默认存储引擎是InnoDB。如果想把其他存储引擎设置为默认存储引擎，可以使用如下命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SET DEFAULT_STORAGE_ENGINE=存储引擎名;<br></code></pre></td></tr></table></figure>
+<p>此外，如果不确定MySQL当前默认的存储引擎，可以使用如下命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SHOW VARIABLES LIKE &#x27;%storage_engine%&#x27;;<br></code></pre></td></tr></table></figure>
+<p>以MySQL Workbench为例，执行上述命令的结果如图4-2所示。</p>
+<h3 id="1-2、InnoDB存储引擎">1.2、InnoDB存储引擎</h3>
+<p>MySQL 5.5之后，InnoDB是MySQL的默认存储引擎。InnoDB是事务型数据库的首选引擎，具有提交、回滚和崩溃修复能力。</p>
+<p>InnoDB提供专门的缓冲池。缓冲池既能缓冲索引又能缓冲数据，常用的数据可以直接在内存中处理，处理速度比从磁盘获取数据要快。</p>
+<p>InnoDB支持行级锁定，行级锁定机制是通过索引来完成的，由于在数据库中大部分的SQL 语句都要使用索引来检索数据，因此行级锁定机制为InnoDB在承受高并发压力的环境下增强了不小的竞争力。</p>
+<p>InnoDB支持外键约束，是MySQL上第一个提供外键约束的存储引擎。InnoDB检查外键、插入、更新和删除，以确保数据的完整性。存储表中的数据时，每张表的存储都按主键顺序存放，如果没有显式地在表定义时指定主键，InnoDB会为每一行生成一个6字节的ROWID，并以此作为主键。</p>
+<p>InnoDB存储引擎将表和索引存储在一个表空间中，表空间可以包含多个文件（或原始磁盘分区）。InnoDB表可以是任何大小。</p>
+<h3 id="1-3、MyISAM存储引擎">1.3、MyISAM存储引擎</h3>
+<p>MySQL 5.5之前，MyISAM是MySQL的默认存储引擎。MyISAM不支持事务处理，也不支持外键约束。但是，MyISAM具有高效的查询速度，插入数据的速度也很快，是在Web、数据仓储等应用环境中最常使用的存储引擎。</p>
+<p>MyISAM不支持事务处理，没有事务记录，所以遇到系统崩溃或者非预期结束所造成的数据错误时，必须完整扫描后才能重新建立索引或者修正未写入硬盘的错误。而且，MyISAM的修复时间与数据量的多少成正比，随着数据量的增加，MyISAM的恢复能力会变弱。MyISAM 不提供专门的缓冲池，必须依靠操作系统来管理读取与写人缓存，因此，在某些情况下，其数据访问效率比InnoDB低。</p>
+<p>使用MyISAM创建数据库，将生成3个文件。文件的主文件名与表名相同，扩展名包括&quot;.frm&quot;“.myd&quot;和”.myi&quot;。其中，“.frm&quot;文件存储数据表的定义，”.myd&quot;文件存储数据表中的数据，&quot;.myi&quot;文件存储数据表的索引。</p>
+<h3 id="1-4、MEMORY存储引擎">1.4、MEMORY存储引擎</h3>
+<p>与InnoDB和MyISAM不同，MEMORY类型的表中的数据存储在内存中，如果数据库重启或者发生崩溃，表中的数据都将消失。MEMORY类型适用于暂时存放数据的临时表、统计操作的中间表，以及数据仓库中的维度表。</p>
+<p>每个MEMORY类型的表对应一个文件，其主文件名与表名相同，扩展名为&quot;.fim&quot;。该文件只存储数据表的定义，而数据表中的数据存储在内存中。这样可以有效地提高数据的处理速度。</p>
+<p>MEMORY默认使用哈希(HASH)索引。其主要特性如下。</p>
+<p>(1)每个表可以有多达32个索引，每个索引16列，最大键长度为500字节。</p>
+<p>(2)执行HASH和BTREE索引。</p>
+<p>(3)在一个MEMORY表中可以有非唯一键。</p>
+<p>(4) MEMORY表使用一个固定的记录长度格式。</p>
+<p>(5)不支持BLOB或者TEXT列。</p>
+<p>(6)支持AUTO_INCREMENT列和对可包含NULL值的列的索引。</p>
+<h3 id="1-5、其他存储引擎">1.5、其他存储引擎</h3>
+<h4 id="1-5-1、MERGE存储引擎">1.5.1、MERGE存储引擎</h4>
+<p>MERGE存储引擎是一组具有相同结构的MyISAM表的组合。MERGE本身没有数据，对MERGE可以进行查询、更新和删除操作，这些操作实际上是对内部的MyISAM表进行的。对MERGE的插人操作，是通过INSERT——METHOD子句来定义的，该子句可以使用3个不同的值，使用FIRST或者LAST值使插入操作被相应地作用在第一个或者最后一个表上，不定义这个子句或者定义为NO，则表示不能对MERGE执行插人操作。对MERGE进行删除操作时，只是删除MERGE的定义，对内部的表没有任何影响。MERGE在磁盘上保留两个文件，文件名以表名开始，一个&quot;.frm&quot;文件存储表定义，另一个&quot;.mrg&quot;文件包含组合表的信息，包括MERGE由哪些表组成、插入数据时的依据。用户可以通过修改&quot;.mrg&quot;文件来修改MERGE，但是修改后要通过FLUSH TABLES刷新。</p>
+<h4 id="1-5-2、BLACKHOLE存储引擎">1.5.2、BLACKHOLE存储引擎</h4>
+<p>BLACKHOLE存储引擎可以用来验证存储文件语法的正确性；可以对二进制日志记录进行开销测量，通过比较，允许与禁止二进制日志功能；可以用来查找与存储和引擎自身不相关的性能瓶颈。</p>
+<h4 id="1-5-3、CSV存储引擎">1.5.3、CSV存储引擎</h4>
+<p>CSV存储引擎实际上操作的是一个标准的CSV文件，不支持索引。CSV文件是很多软件都支持的较为标准的格式，当用户需要把数据库中的数据导出成一份报表文件时，用户可以先在数据库中建立一张CSV表，然后将生成的报表信息插入该表，得到CSV报表文件。</p>
+<h4 id="1-5-4、ARCHIVE存储引擎">1.5.4、ARCHIVE存储引擎</h4>
+<p>ARCHIVE存储引擎主要用于通过较小的存储空间来存储过期的很少访问的历史数据。ARCHIVE不支持索引，其包含一个&quot;.frm&quot;的结构定义文件、一个&quot;.arz&quot;的数据压缩文件和一个&quot;.arm&quot;的meta信息文件。由于其所存储的数据的特殊性，ARCHIVE表不支持删除、修改操作。锁定机制为行级锁定。</p>
+<h3 id="1-6、MyQL存储引擎的选择">1.6、MyQL存储引擎的选择</h3>
+<p>在实际工作中，用户可以根据应用场景的不同，对各种存储引擎的特点进行对比和分析，选择适合的存储引擎。此外，用户还可以根据实际情况对不同的数据表选用不同的存储引擎。</p>
+<p>如果实际应用中需要进行事务处理，在并发操作时要求保持数据的一致性，而且除了查询和插入操作，还经常要进行更新和删除操作，这种情况下用户可以选择InnoDB，这样可以有效降低更新和删除操作导致的锁定，并且可以确保事务的完整性提交和回滚。</p>
+<p>如果实际应用中不需要进行事务处理，以查询和插入操作为主，更新和删除操作较少，并且对事务的完整性和并发性要求不是很高，这种情况下用户可以选择MyISAM。</p>
+<p>如果实际应用中不需要进行事务处理，需要很快的读写速度，并且对数据的安全性要求较低，这种情况下用户可以选择MEMOEY。它对表的大小有要求，不能建立太大的表。所以，MEMORY适用于创建相对较小的数据表。</p>
+<p>综上，选择什么类型的存储引擎需要根据具体应用灵活选择。此外，用户可以为同一个数据库中的不同数据表选择适合的存储引擎，从而满足各白的应用性能和实际需求。总之，使用合适的存储引擎将会提高整个数据库的性能。</p>
+<h2 id="二、MySQL数据库的字符集">二、MySQL数据库的字符集</h2>
+<h3 id="2-1、MySQL字符集概述">2.1、MySQL字符集概述</h3>
+<p>针对数据的存储，MySQL提供了多种字符集；针对同一字符集内字符之间的比较，MySQL提供了与之对应的多种校对规则。其中，一个字符集对应至少一种校对规则（通常是一对多的关系），两个不同的字符集不能有相同的校对规则，而且，每个字符集都设置默认的校对规则。</p>
+<p>用户可以通过如下命令查看MySQL支持的所有字符集。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SHOW CHARACTER SET;<br></code></pre></td></tr></table></figure>
+<p>用户也可以使用系统表information_schema中的CHARACTER_SETS，命令如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mysql">USE information_schema;<br>SELECT * FRОM CHARACTER_SETS;<br></code></pre></td></tr></table></figure>
+<p>在DOS窗口或者MySQL Shell窗口执行上述命令，可以得到图4-3所示的MySOL字符集列表。</p>
+<p>从图4-3可以看出，MySQL 8.0支持41种字符集。图中的&quot;Charset&quot;列显示所有字符集的名称，&quot;Description&quot;列显示每种字符集的描述，&quot;Default collation&quot;列显示每种字符集的默认校对规则，&quot;Maxlen&quot;列显示每种字符集中的单个字符所占的最大字节数。</p>
+<p>图4-3中只列出了每种字符集的默认校对规则，但是，很多字符集包含多个校对规则，用户可以通过如下命令查看MySQL支持的所有校对规则。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SHOW COLLATION;<br></code></pre></td></tr></table></figure>
+<p>用户也可以使用系统表information_schema中的COLLATIONS，命令如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mysql">USE information_schema;<br>SELECT * FROM COLLATIONS;<br></code></pre></td></tr></table></figure>
+<p>执行上述命令后可以看到，MySQL支持的校对规则共有272个。</p>
+<p>如果需要查看某一种特定的字符集的校对规则，如utf8字符集的校对规则，可以使用如下命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SHOW COLLATION WHERE Charset=&#x27;utf8&#x27;;<br></code></pre></td></tr></table></figure>
+<p>用户也可以使用系统表information schema中的COLLATIONS，命令如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mysql">USE information_schema;<br>SELECT * FRОM COLLATIONS WHERE CHARACTER_SET_NAME=&#x27;utf8&#x27;;<br></code></pre></td></tr></table></figure>
+<p>在MS DOS窗口或者MySQL Shell窗口执行上述命令，可以得到图4-4所示的utf8字符集的校对规则。</p>
+<p>从图4-4可以看出，utf8字符集的校对规则有28个，其中，“utf8_general_ci&quot;是默认校对规则。此外，“utf8_general_ci&quot;结尾的&quot;ci&quot;表示大小写不敏感；如果是&quot;cs”，则表示大小写敏感；如果是&quot;bin”，则表示按编码值比较。</p>
+<h3 id="2-2、MySQL字符集设置">2.2、MySQL字符集设置</h3>
+<p>MySQL对于字符集的设置分为4个级别：服务器(Server)、数据库(DataBase)、数据表(Table)和连接(Connection)。</p>
+<p>用户可以查看MySQL字符集在各个级别上的默认设置，查看命令如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SHOw VARIABLES LIKE &#x27;character%’；<br></code></pre></td></tr></table></figure>
+<p>在MS DOS窗口或者MySQL Shell窗口执行上述命令，可以得到图4-5所示的当前服务器各个级别的默认字符集。</p>
+<p>用户也可以单独查看某个特定级别的字符集默认设置。例如，查看服务器级的字符集默认设置的命令如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SHOW VARIABLES LIKE &#x27;character_set_server&#x27;;<br></code></pre></td></tr></table></figure>
+<p>用户可以查看MySQL校对规则在各个级别上的默认设置，查看命令如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SHOW VARIABLES LIKE &#x27;collation%&#x27;;<br></code></pre></td></tr></table></figure>
+<p>在MS DOS窗口或者MySQL Shell窗口执行上述命令，可以得到图4-6所示的当前服务器各个级别的默认校对规则。</p>
+<p>从图4-6可以看出，MySQL对于校对规则的设置包括3个级别：服务器、数据库和连接。</p>
+<p>用户也可以单独查看某个特定级别的校对规则默认设置。例如，查看服务器级的校对规则默认设置的命令如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SHOW VARIABLES LIKE &#x27;collation_server&#x27;;<br></code></pre></td></tr></table></figure>
+<p>下面对图4-5和图4-6中的部分内容进行说明。</p>
+<p>(1) character_set_server和collation_server的值分别表示服务器的字符集和校对规则。</p>
+<p>(2) character_set_client的值表示客户端的数据使用的字符集，这个变量用来决定MySQL 怎样解释客户端发送到服务器的SQL命令。</p>
+<p>(3) character_set_connection和collation_connection的值分别表示连接层的字符集和校对规则，这两个变量用来决定MySQL怎样处理客户端发来的SQL命令。</p>
+<p>(4) character_set_database和collation_connection的值表示当前选中数据库的字符集和校对规则，创建数据库命令&quot;CREATE DATABASE&quot;有两个参数可以用来设置数据库的字符集和校对规则。</p>
+<p>(5) character_set_results的值表示查询结果的字符集，当查询结果返回的时候，这个变量用来决定发给客户端的结果中文字量的编码。</p>
+<p>(6) character_set_system的值表示系统元数据的字符集，数据库、数据表和列的定义用的都是这个字符集。这个变量的值是utf8，不需要设置。</p>
+<p>(7) character_set_filesystem的值表示文件系统的编码格式——把操作系统上的文件名转化成此变量的字符集值，即把character _ set client的字符集转换为character set _ filesystem的字符集。</p>
+<p>用户可以统一修改MySQL在各个级别上的默认字符集，例如，将各级默认字符集都设置为utf8，通常有以下两种方法。</p>
+<p>(1)修改配置文件</p>
+<p>首先，关闭MySQL服务，在MySQL安装盘符下的&quot;ProgramDatalMySQLIMySQL Server 8.0&quot;中找到文件&quot;my.ini&quot;，查找&quot; [mysql] &quot;，在它的下面将&quot;default-character-set=“改为&quot;default-character-set=utf8”，如图4-7所示。修改完成之后，将文件&quot;my.ini&quot;复制到MySOL 装盘符下的&quot;Program FilesMySQLIMySQL Server 8.0\bin&quot;目录下。</p>
+<p>其次，重启MySQL服务，再次查看默认字符集时，可以看到所有级别的默认字符集都已改为utf8。</p>
+<p>如果是单独修改某个特定级别的字符集设置，例如将服务器级的默认字符集修改为utf8，可以在文件“my.ini”中查找“[mysqld]”，在它下面添加“character-set-server=utf8”，其他操作同上。</p>
+<p>(2)运行时修改</p>
+<p>用户可以使用命令行的方式修改MySQL在各个级别上的默认字符集，命令如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SET character_set_***=字符集名称;<br></code></pre></td></tr></table></figure>
+<p>其中，&quot;***&quot;可以替换为“server”、“database”、“onnection”、“results”、“client”、“system”和“filesystem”。</p>
+<p>注意：这种方式在服务器重启之后会失效，如果想要重启后保持不变，则需要修改配置文件。</p>
+<h3 id="2-3、MySQL字符集常见问题">2.3、MySQL字符集常见问题</h3>
+<p>在数据库系统开发中，MySQL乱码一直是困扰开发者的主要问题，主要表现如下。</p>
+<p>(1)数据输入时为正常编码数据，但存入数据库后呈现乱码数据。</p>
+<p>(2)数据库中存储的是正常编码数据，但读取后的数据呈现乱码形态。</p>
+<p>我们可以从数据流向的角度，分析出现上述乱码问题的主要原因。</p>
+<p>(1)数据输入端问题。数据输入端主要包括浏览器、App界面等，各类用户终端接收数据后，对数据进行编码，然后利用网络或本地文件系统，将数据传输和存储到数据库中。用户终端对用户输入的数据进行编码时，如果选择了与数据存储端不同的编码方式，则在传输后对数据进行解码时易导致数据出现乱码。</p>
+<p>(2)网络问题。对于在线运行的数据库系统，可能因网络服务中断、网络服务质量不可靠等原因，出现数据接收不完整等现象，特别是在一些持续传输大量数据的系统中，如果接收端不对数据的完整性进行校验，会导致数据库中存储了编码不完整的数据。</p>
+<p>(3)数据存储端问题。数据存储端主要是运行在服务器或者本地系统中的数据库。数据库存储的编码涉及多个层面，主要包括连接数据库层面的编码、数据库管理系统的默认编码、数e据库层面的编码、数据表层面的编码等，各层编码规则的继承和覆盖是层层嵌套的。例如，若数据库管理系统采用Latin编码，而数据库层面未设置默认编码，则数据库层面会继承使用数据库管理系统的编码，从而导致存储中文数据时出现乱码。</p>
+<p>上述原因表明，数据库编码问题如果不进行正确分析、设计、选型及实施，在系统开发和运行维护中会出现乱码问题，乱码问题的排查和解决难度较大。因此，在现代数据库系统的开发中，数据库管理系统选型确定后，开发人员一般会结合数据库管理系统的编码特点，按照业务系统使用语言需求，选择编码范围较为广泛的编码方式。例如，在MySQL数据库系统开发中，开发人员利用UTF编码范围较大的特点，选择UTF编码作为连接、系统、库、表的编码方式，以满足系统运行时可能需要的各类语言编码需求。同时，在一些运行了多个数据库系统的服务器上，在部署系统前，需要设置数据库的编码方式和字符排序方式，以确保在同一服务器上，其他数据库使用不同编码时的兼容性。</p>
+<p>MySOL 5的一些早期的数据库版本，默认使用Latin编码，这给初学系统设计和开发人员带来极大的不便，分析和排查问题所涉及的方面较多。MySQL 8后使用的默认编码为UTF编码，对于未学习数据库编码或者对数据库了解较少的开发人员，使用MySQL时遇到乱码问题的概率降低，更方便进行数据库系统开发和调试工作。但是，结合本节学习内容，无论读者使用的数据库版本是否为MySQL 8，从系统的维护成本和可扩展性角度来看，读者还应结合业务需要，系统研究并明确数据库的编码方式，在数据库部署时，显式地使用所选的数据库编码，降低乱码出现的概率和风险。</p>
+<h2 id="三、MySQL数据库管理">三、MySQL数据库管理</h2>
+<h3 id="3-1、创建数据库">3.1、创建数据库</h3>
+<p>在MySQL中，创建数据库的语法格式如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE DATABASE|SCHEMA [IF NOT EXISTS] db_name<br>[[DEFAULT] CHARACTER SET charset_name]<br>[[DEFAULT] COLLATE collation_name];<br></code></pre></td></tr></table></figure>
+<p>说明如下。</p>
+<p>(1) CREATE DATABASE|SCHEMA是创建数据库的命令。在MySQL中，SCHEMA也指数据库。</p>
+<p>(2) IF NOT EXISTS的作用是创建的数据库名已经存在时，会给出错误信息。创建数据库时，为了避免和已有的数据库重名，可以加上IF NOT EXISTS。</p>
+<p>(3) db_name是数据库名。</p>
+<p>(4) [DEFAULT] CHARACTER SET charset_name是指为数据库设置默认字符集，其中&quot;charset_name&quot;可以替换为具体的字符集。</p>
+<p>(5) [DEFAULT] COLLATE collation_name是指为数据库的默认字符集设置默认校对规则。</p>
+<p>如果在创建数据库时，省略了上述字符集和校对规则的设置，MySQL将采用当前服务器在数据库级别上的默认字符集和默认校对规则。</p>
+<p>【例4-1】创建名称为teaching的数据库，设置默认字符集为utf8mb4，设置置默认校对规则为utf8mb4_0900_ai_ci。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE DATABASE IF NOT EXISTS teaching <br>DEFAULT CHARACTER SET utf8mb4<br>DEFAULT COLLATE utf8mb4_0900_ai_ci;<br></code></pre></td></tr></table></figure>
+<p>数据库teaching创建完成之后，默认的字符集是utf8mb4，默认的校对规则是utf8mb4_0900_ai_ci。</p>
+<h3 id="3-2、查看数据库">3.2、查看数据库</h3>
+<p>查看数据库的语法格式如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SHOw CREATE DATABASE db_name;<br></code></pre></td></tr></table></figure>
+<p>例如，查看数据库teaching，在DOS窗口或者MySQL Shell窗口执行以下命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SHOW CREATE DATABASE teaching;<br></code></pre></td></tr></table></figure>
+<p>执行上述命令后可以得到图4-8所示的结果，其中展示了数据库teaching的中创建命令和参数设置。</p>
+<p>此外，创建完数据库teaching之后，我们可以在MySQL安装盘符下的&quot;\ProgramDatal MySQLIMySQL Server 8.0 Data&quot;文件中看到以teaching命名的文件夹，该文件夹最初是空文件夹，之后在数据库中创建的数据表等相关文件会存储在该文件夹中。</p>
+<h3 id="3-3、修改数据库">3.3、修改数据库</h3>
+<p>数据库创建之后，用户可以根据需要修改数据库的参数。如果MySQL 的默认存储引擎是InnoDB，则无法修改数据库名，只能修改字符集和校对规则。</p>
+<p>修改数据库的语法格式如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mysql">ALTER DATABASE|SCHEMA db_name<br>[DEFAULT] CHARACTER SET charset_name<br>[DEFAULT] COLLATE collation_name;<br></code></pre></td></tr></table></figure>
+<p>需要注意的是，用户必须有数据库的修改权限，才能使用ALTER DATABASE命令修改数据库。</p>
+<p>【例4-2】将数据库teaching的默认字符集修改为gbk，默认校对规则修改为gbk chinese _ ci。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mysql">ALTER DATABASE teaching <br>DEFAULT CHARACTER SET gbk <br>DEFAULT COLLATE gbk_chinese_ci;<br></code></pre></td></tr></table></figure>
+<p>修改完数据库之后，我们可以通过SHOW CREATE DATABASE命令查看修改之后的相关信息。</p>
+<h3 id="3-4、删除数据库">3.4、删除数据库</h3>
+<p>删除数据库是指在数据库系统中删除已经存在的数据库，删除成功之后，原来分配的空间将被收回。如果数据库中已经包含了数据表和数据，则删除数据库时，这些内容也会被删除。因此，删除数据库之前最好先对数据库进行备份。</p>
+<p>删除数据库的语法格式如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">DROP DATABASE [IF EXISTS] db_name;<br></code></pre></td></tr></table></figure>
+<p>【例4-3】删除数据库teaching。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">DROP DATABASE IF EXISTS teaching; <br></code></pre></td></tr></table></figure>
+<h2 id="四、小结">四、小结</h2>
+<p>本章详细介绍了存储引擎的概念和MySQL中常见的存储引擎，讲解了各种存储引擎的优缺点及适合的实际应用情况；介绍了MySQL字符集和校对规则的概念及设置方法；讲解了数据库的创建、查看、修改和删除操作及实际使用时的注意事项。</p>
+<h2 id="五、参考">五、参考</h2>
+<p><a target="_blank" rel="noopener" href="https://product.dangdang.com/29379508.html">《数据库原理及应用教程（MySQL版）》</a></p>
+<p><a target="_blank" rel="noopener" href="https://product.dangdang.com/11615897847.html">《数据库系统原理 自考04735》</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="category-chain-item">数据库</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86/" class="print-no-link">#数据库原理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据库原理：数据库的创建和管理</div>
+      <div>https://kuberxy.github.io/2024/06/23/数据库原理：数据库的创建和管理/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Mr.x</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年6月23日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/06/30/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%EF%BC%9A%E8%A1%A8%E7%AE%A1%E7%90%86%E5%92%8C%E8%A1%A8%E4%B8%AD%E6%95%B0%E6%8D%AE%E6%93%8D%E7%BA%B5/" title="数据库原理：表管理和表中数据操纵">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据库原理：表管理和表中数据操纵</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/06/16/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%EF%BC%9ASQL%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E5%92%8CMySQL%E7%AE%80%E4%BB%8B/" title="数据库原理：SQL的基本概念和MySQL简介">
+                        <span class="hidden-mobile">数据库原理：SQL的基本概念和MySQL简介</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
