@@ -1,0 +1,758 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Mr.x">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="二叉排序树的性能取决于二叉排序树的结构，而二叉排序树的结构则取决于其数据集。如果数据集呈有序排序，则二叉排序树是线性的，查找的时间复杂度为O(n)O(n)O(n)；反之，如果二叉排序树的结构合理，则查找速度较快，查找的时间复杂度为O(log2n)O(log_2n)O(log2​n)。简单来说就是，树的高度越小，查找速度越快。因此，我们希望二叉排序树的高度尽可能小，而平衡二叉树就能实现这一点。 一、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构：树表的查找之平衡二叉树">
+<meta property="og:url" content="https://kuberxy.github.io/2024/04/07/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8419%EF%BC%9A%E6%A0%91%E8%A1%A8%E7%9A%84%E6%9F%A5%E6%89%BE%E4%B9%8B%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/index.html">
+<meta property="og:site_name" content="Kubxy">
+<meta property="og:description" content="二叉排序树的性能取决于二叉排序树的结构，而二叉排序树的结构则取决于其数据集。如果数据集呈有序排序，则二叉排序树是线性的，查找的时间复杂度为O(n)O(n)O(n)；反之，如果二叉排序树的结构合理，则查找速度较快，查找的时间复杂度为O(log2n)O(log_2n)O(log2​n)。简单来说就是，树的高度越小，查找速度越快。因此，我们希望二叉排序树的高度尽可能小，而平衡二叉树就能实现这一点。 一、">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240421183155204.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240421183630016.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240417085807461.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240417090850478.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240417094200370.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240420075709781.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240420102142659.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240420102323836.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240420081025269.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240420102751186.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240420102857483.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240420101724936.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240420092846950.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240420100105436.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240420100807979.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240420101308560.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240420105332235.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240420110501112.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240420110839554.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240420111902677.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20240420112255529.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91-1714197462298.jpeg">
+<meta property="article:published_time" content="2024-04-07T05:47:11.000Z">
+<meta property="article:modified_time" content="2024-04-27T06:29:26.000Z">
+<meta property="article:author" content="Mr.x">
+<meta property="article:tag" content="数据结构">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://kuberxy.github.io/img/image-20240421183155204.png">
+  
+  
+  
+  <title>数据结构：树表的查找之平衡二叉树 - Kubxy</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据结构：树表的查找之平衡二叉树"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-07 13:47" pubdate>
+          2024年4月7日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据结构：树表的查找之平衡二叉树</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>二叉排序树的性能取决于二叉排序树的结构，而二叉排序树的结构则取决于其数据集。如果数据集呈有序排序，则二叉排序树是线性的，查找的时间复杂度为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>；反之，如果二叉排序树的结构合理，则查找速度较快，查找的时间复杂度为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>l</mi><mi>o</mi><msub><mi>g</mi><mn>2</mn></msub><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(log_2n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>。简单来说就是，树的高度越小，查找速度越快。因此，我们希望二叉排序树的高度尽可能小，而平衡二叉树就能实现这一点。</p>
+<h2 id="一、定义">一、定义</h2>
+<p>平衡二叉树（Balanced Binary Tree或Height-Balanced Tree），是一种特殊的二叉排序树。它由前苏联数学家阿德尔森-维尔斯基（Adelson-Velskii）和兰迪斯（Landis）提出，所以又称AVL树。</p>
+<p>一棵平衡二叉树或者是空树，或者是具有如下特征的二叉排序树：</p>
+<ul>
+<li>左子树和右子树的深度之差的绝对值不超过1；</li>
+<li>左子树和右子树也是平衡二叉树。</li>
+</ul>
+<p>如果将二叉树中结点的平衡因子（Balance Factor，BF）定义为该结点左子树和右子树的深度之差，则平衡二叉树上所有结点的平衡因子只可能是-1、0和1。只要二叉树上有一个结点的平衡因子的绝对值大于1，则该二叉树就是不平衡的。例如，下图（a）是两棵平衡二叉树，下图（b）是两棵不平衡的二叉树。</p>
+<p><img src="/img/image-20240421183155204.png" srcset="/img/loading.gif" lazyload alt="image-20240421183155204"></p>
+<p><img src="/img/image-20240421183630016.png" srcset="/img/loading.gif" lazyload alt="image-20240421183630016"></p>
+<p>在平衡二叉树中，任何结点的左右子树的深度之差都不超过1，即它的高度和<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>l</mi><mi>o</mi><msub><mi>g</mi><mn>2</mn></msub><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(log_{2}{n})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">n</span></span><span class="mclose">)</span></span></span></span>是同数量级的（其中n为结点个数）。因此，平衡二叉树的查找性能不会出现退化现象，其查找的时间复杂度是<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>l</mi><mi>o</mi><msub><mi>g</mi><mn>2</mn></msub><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(log_{2}{n})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">n</span></span><span class="mclose">)</span></span></span></span>。</p>
+<h2 id="二、平衡调整方法">二、平衡调整方法</h2>
+<blockquote>
+<p>该如何创建一棵平衡二叉树呢？</p>
+</blockquote>
+<p>插入结点时，按照二叉排序树的逻辑进行处理，若插入结点后破坏了平衡二叉树的特性，就需要对平衡二叉树进行调整。调整方法是：找到离插入结点最近且平衡因子绝对值超过1的祖先结点，以该结点为根的子树称为最小不平衡子树，可将重新平衡的范围局限于这棵子树。</p>
+<p>我们先看一个具体的例子。假设表中关键字序列为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>12</mn><mo separator="true">,</mo><mn>24</mn><mo separator="true">,</mo><mn>37</mn><mo separator="true">,</mo><mn>90</mn><mo separator="true">,</mo><mn>53</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(12,24,37,90,53)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">12</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">24</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">37</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">90</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">53</span><span class="mclose">)</span></span></span></span>。空树和只有1个结点13的树显然都是平衡的二叉树。在插入24之后二叉树仍是平衡的，只是树根结点的平衡因子由0变为−1。</p>
+<p><img src="/img/image-20240417085807461.png" srcset="/img/loading.gif" lazyload alt="image-20240417085807461"></p>
+<p>在继续插入37之后，由于结点13的平衡因子由−1变成−2，出现了不平衡的现象。这就好比一根扁担出现一头重、一头轻的现象，若能将扁担的支撑点由13改至24，扁担的两头就平衡了。由此，可以对树做一个“左逆时针旋转”操作，令结点24为根，结点13成为它的左子树。此时，结点13和结点24的平衡因子都为0，而且仍保持二叉排序树的特性。</p>
+<p><img src="/img/image-20240417090850478.png" srcset="/img/loading.gif" lazyload alt="image-20240417090850478"></p>
+<p>在相继插入结点90、结点53之后，结点24和节点37的平衡因子都由−1变成了−2，出现了新的不平衡现象。此时，因为是结点53插在结点90的左子树上，所以不能做之前的简单调整。在这种情况下，离插入结点最近的最小不平衡子树是以结点37为根的子树。必须以结点53作为根结点，结点37成为它的左子树的根，结点90成为它的右子树的根。这好比对树做了两次“旋转”操作，先向右顺时针旋转，后向左逆时针旋转，使二叉排序树由不平衡转化为平衡。</p>
+<p><img src="/img/image-20240417094200370.png" srcset="/img/loading.gif" lazyload alt="image-20240417094200370"></p>
+<p>接下来，我们讨论一般情况，假设最小不平衡子树的根结点为A，则失去平衡后进行调整的规律可归纳为4种情况。</p>
+<h3 id="2-1、LL型">2.1、LL型</h3>
+<p>如下图，在A的左子树根结点的左子树上插入结点，A的平衡因子由1增至2，致使以A为根结点的子树失去平衡，需进行一次向右的顺时针旋转操作。</p>
+<p><img src="/img/image-20240420075709781.png" srcset="/img/loading.gif" lazyload alt="image-20240420075709781"></p>
+<p>如下，是LL型的两种具体调整示例。</p>
+<p><img src="/img/image-20240420102142659.png" srcset="/img/loading.gif" lazyload alt="image-20240420102142659"></p>
+<p><img src="/img/image-20240420102323836.png" srcset="/img/loading.gif" lazyload alt="image-20240420102323836"></p>
+<h3 id="2-2、RR型">2.2、RR型</h3>
+<p>如下图，在A的右子树根结点的右子树上插入结点，A的平衡因子由-1增至-2，致使以A为根结点的子树失去平衡，需进行一次向左的逆时针旋转操作。</p>
+<p><img src="/img/image-20240420081025269.png" srcset="/img/loading.gif" lazyload alt="image-20240420081025269"></p>
+<p>如下，是RR型的两种具体调整示例。</p>
+<p><img src="/img/image-20240420102751186.png" srcset="/img/loading.gif" lazyload alt="image-20240420102751186"></p>
+<p><img src="/img/image-20240420102857483.png" srcset="/img/loading.gif" lazyload alt="image-20240420102857483"></p>
+<h3 id="2-3、LR型">2.3、LR型</h3>
+<p>如下图，在A的左子树根节点的右子树上插入结点，A的平衡因子由1增至2，致使以A为根结点的子树失去平衡，需进行两次旋转操作。第一次向左对B及其右子树进行逆时针旋转，C转上去成为B的根，这时变成了LL型，所以第二次进行LL型的向右顺时针旋转即可恢复平衡。如果C原来有左子树，则调整C的左子树为B的右子树。</p>
+<p><img src="/img/image-20240420101724936.png" srcset="/img/loading.gif" lazyload alt="image-20240420101724936"></p>
+<p><img src="/img/image-20240420092846950.png" srcset="/img/loading.gif" lazyload alt="image-20240420092846950"></p>
+<p>如下，是LR型的三种具体调整示例。</p>
+<p><img src="/img/image-20240420100105436.png" srcset="/img/loading.gif" lazyload alt="image-20240420100105436"></p>
+<p><img src="/img/image-20240420100807979.png" srcset="/img/loading.gif" lazyload alt="image-20240420100807979"></p>
+<p><img src="/img/image-20240420101308560.png" srcset="/img/loading.gif" lazyload alt="image-20240420101308560"></p>
+<h3 id="2-4、RL型">2.4、RL型</h3>
+<p>如下图，在A的右子树根结点的左子树上插入结点，A的平衡因子由-1变成-2，致使以A为根结点的子树失去平衡，需进行两次旋转。第一次向右顺时针旋转，第二次向左逆时针旋转。</p>
+<p><img src="/img/image-20240420105332235.png" srcset="/img/loading.gif" lazyload alt="image-20240420105332235"></p>
+<p><img src="/img/image-20240420110501112.png" srcset="/img/loading.gif" lazyload alt="image-20240420110501112"></p>
+<p>如下，是RL型的三种具体调整示例。</p>
+<p><img src="/img/image-20240420110839554.png" srcset="/img/loading.gif" lazyload alt="image-20240420110839554"></p>
+<p><img src="/img/image-20240420111902677.png" srcset="/img/loading.gif" lazyload alt="image-20240420111902677"></p>
+<p><img src="/img/image-20240420112255529.png" srcset="/img/loading.gif" lazyload alt="image-20240420112255529"></p>
+<h3 id="2-5、小结">2.5、小结</h3>
+<p>上述4种情况中，LL型和RR型对称，LR型和RL型对称。旋转操作的正确性可由“保持二叉排序树的特性：中序遍历所得关键字序列自小至大有序“证明。</p>
+<p>此外，无论哪一种情况，在经过平衡调整之后，以B或C为根的新子树为平衡二叉树，而且它们的深度和插入之前以A为根的子树相同。因此，当平衡的二叉排序树因插入结点而失去平衡时，仅需对最小不平衡子树进行平衡旋转处理即可。因为经过旋转处理之后的子树深度和插入之前相同，因而不影响插入路径上所有祖先结点的平衡度。</p>
+<h2 id="三、插入">三、插入</h2>
+<p>在平衡二叉树BBT上插入一个新的数据元素e的算法步骤如下：</p>
+<ul>
+<li>若BBT为空树，则插入一个数据元素为e的新结点作为BBT的根结点，树的深度增1。</li>
+<li>若e的关键字和BBT的根结点的关键字相等，则不进行插入。</li>
+<li>若e的关键字小于BBT的根结点的关键字，且在BBT的左子树中不存在和e有相同关键字的结点，则将e插入到BBT的左子树上。插入之后左子树深度增1，分别就下列不同情况进行处理：
+<ul>
+<li>BBT的根结点的平衡因子为-1（右子树的深度大于左子树的深度）：将根结点的平衡因子更改为0，BBT的深度不变；</li>
+<li>BBT的根结点的平衡因子为0（左、右子树的深度相等）：将根结点的平衡因子更改为1，BBT的深度增1；</li>
+<li>BBT的根结点的平衡因子为1（左子树的深度大于右子树的深度）：
+<ul>
+<li>若BBT的左子树根结点的平衡因子为1，则需进行单向右旋平衡处理，并且在旋转处理之后，将根结点和其右子树根结点的平衡因子更改为0，树的深度不变；</li>
+<li>若BBT的左子树根结点的平衡因子为-1，则需进行先左后右的两次旋转平衡处理，并且在旋转处理之后，修改根结点和其左、右子树根结点的平衡因子，树的深度不变。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>若e的关键字大于BBT的根结点的关键字，且在BBT的右子树中不存在和e有相同关键字的结点，则将e插入到BBT的右子树上。插入之后右子树深度增1，分别就下列不同情况进行处理：
+<ul>
+<li>BBT的根结点的平衡因子为1（左子树的深度大于右子树的深度）：将根结点的平衡因子更改为0，BBT的深度不变；</li>
+<li>BBT的根结点的平衡因子为0（左、右子树的深度相等）：将根结点的平衡因子更改为-1，BBT的深度增1；</li>
+<li>BBT的根结点的平衡因子为-1（右子树的深度大于左子树的深度）：
+<ul>
+<li>若BBT的左子树根结点的平衡因子为-1，则需进行单向左旋平衡处理，并且在旋转处理之后，将根结点和其左子树根结点的平衡因子更改为0，树的深度不变；</li>
+<li>若BBT的左子树根结点的平衡因子为1，则需进行先右后左的两次旋转平衡处理，并且在旋转处理之后，修改根结点和其左、右子树根结点的平衡因子，树的深度不变。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="四、小结">四、小结</h2>
+<p>平衡二叉树（Binary Sort Tree），是一种特殊的二叉排序树。它是对二叉排序树进行平衡处理，确保在任何情况下二叉排序树的深度均为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>l</mi><mi>o</mi><msub><mi>g</mi><mn>2</mn></msub><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(log_{2}{n})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">n</span></span><span class="mclose">)</span></span></span></span>。在二叉排序树中，查找性能不会出现退化现象，其查找的时间复杂度是<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>l</mi><mi>o</mi><msub><mi>g</mi><mn>2</mn></msub><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(log_{2}{n})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">n</span></span><span class="mclose">)</span></span></span></span>。</p>
+<p><img src="/img/%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91-1714197462298.jpeg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h2 id="五、参考">五、参考</h2>
+<p><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26713328/">《数据结构（C语言版 第2版）》</a></p>
+<p><a target="_blank" rel="noopener" href="https://c.biancheng.net/view/3432.html">平衡二叉树（AVL树）及C语言实现 (biancheng.net)</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">数据结构</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="print-no-link">#数据结构</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据结构：树表的查找之平衡二叉树</div>
+      <div>https://kuberxy.github.io/2024/04/07/数据结构19：树表的查找之平衡二叉树/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Mr.x</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月7日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/04/14/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8420%EF%BC%9A%E6%A0%91%E8%A1%A8%E7%9A%84%E6%9F%A5%E6%89%BE%E4%B9%8BB-%E6%A0%91%E5%92%8CB+%E6%A0%91/" title="数据结构：树表的查找之B-树和B+树">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构：树表的查找之B-树和B+树</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/03/31/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8418%EF%BC%9A%E6%A0%91%E8%A1%A8%E7%9A%84%E6%9F%A5%E6%89%BE%E4%B9%8B%E4%BA%8C%E5%8F%89%E6%8E%92%E5%BA%8F%E6%A0%91/" title="数据结构：树表的查找之二叉树排序">
+                        <span class="hidden-mobile">数据结构：树表的查找之二叉树排序</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

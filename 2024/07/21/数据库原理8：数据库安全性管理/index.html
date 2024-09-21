@@ -1,0 +1,1009 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Mr.x">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="在数据库系统运维和管理过程中，为了适应和满足数据服务与共享过程中的安全性需要， DBMS需要防止数据意外丢失、恶意篡改或者泄露等数据安全性问题，确保数据在用户规定的权限范围内被合理使用，这就是数据库的安全性管理。本章将介绍数据库安全性的定义和MySQL的安全机制，重点讲述MySQL用户管理、权限管理和角色管理的操作方法。 本章学习目标：理解数据库安全性的含义及数据库安全性控制方法，能够根据数据库系">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库原理：数据库安全性管理">
+<meta property="og:url" content="https://kuberxy.github.io/2024/07/21/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%868%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E5%85%A8%E6%80%A7%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="Kubxy">
+<meta property="og:description" content="在数据库系统运维和管理过程中，为了适应和满足数据服务与共享过程中的安全性需要， DBMS需要防止数据意外丢失、恶意篡改或者泄露等数据安全性问题，确保数据在用户规定的权限范围内被合理使用，这就是数据库的安全性管理。本章将介绍数据库安全性的定义和MySQL的安全机制，重点讲述MySQL用户管理、权限管理和角色管理的操作方法。 本章学习目标：理解数据库安全性的含义及数据库安全性控制方法，能够根据数据库系">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-07-21T05:47:11.000Z">
+<meta property="article:modified_time" content="2024-09-03T03:33:15.000Z">
+<meta property="article:author" content="Mr.x">
+<meta property="article:tag" content="数据库原理">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>数据库原理：数据库安全性管理 - Kubxy</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据库原理：数据库安全性管理"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-07-21 13:47" pubdate>
+          2024年7月21日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          12k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          104 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据库原理：数据库安全性管理</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>在数据库系统运维和管理过程中，为了适应和满足数据服务与共享过程中的安全性需要， DBMS需要防止数据意外丢失、恶意篡改或者泄露等数据安全性问题，确保数据在用户规定的权限范围内被合理使用，这就是数据库的安全性管理。本章将介绍数据库安全性的定义和MySQL的安全机制，重点讲述MySQL用户管理、权限管理和角色管理的操作方法。</p>
+<p>本章学习目标：理解数据库安全性的含义及数据库安全性控制方法，能够根据数据库系统业务需求，使用SQL语句或GUI工具实现账户、权限和角色的创建与管理操作。</p>
+<h2 id="一、数据库安全性概述">一、数据库安全性概述</h2>
+<h3 id="1-1、数据库安全性的含义">1.1、数据库安全性的含义</h3>
+<p>数据库的安全性是指保护数据库以防止非法使用所造成的数据泄露、更改或破坏。数据库安全性问题主要涉及以下几个方面。</p>
+<p>(1)法律、社会和伦理方面的问题，如合法使用用户身份证号、手机号等敏感信息。</p>
+<p>(2)物理控制方面的问题，如计算机机房是否应该加锁或使用其他方法加以保护等。</p>
+<p>(3)政策方面的问题，如安全管理的组织架构及权责关系等。</p>
+<p>(4)运行方面的问题，如日志和备份文件管理方法等。</p>
+<p>(5)硬件控制方面的问题，如CPU是否提供安全性保护等。</p>
+<p>(6)操作系统安全性方面的问题，如操作系统中普通用户和管理员用户的操作权限等。</p>
+<p>(7)数据库系统本身的安全性方面的问题，如数据库用户、权限管理等。</p>
+<p>本章重点讨论数据库系统本身的安全性问题。</p>
+<h3 id="1-2、数据库安全性的一般方法">1.2、数据库安全性的一般方法</h3>
+<p>数据库安全性控制是保护数据库安全的手段，其目标是尽可能地杜绝所有可能的数据库非法使用。用户非法使用数据库情况包括编写合法的程序绕过DBMS授权机制，进而通过操作系统直接存取、修改或备份有关数据。无论是有意的还是无意的非法数据访问，都应该严格加以控制。为解决数据库数据使用的安全性问题，DBMS将复杂的安全性控制过程划分为多层安全模型。完整的DBMS安全模型包括连接层次、权限层次、操作系统层次、数据层次和日志层次，如图8-1所示。</p>
+<p>用户登录从连接层次，验证连接用户身份是否合法。权限管理从权限层次，验证合法用户是否具有执行具体操作的权限，如创建表、删除数据等。文件权限从操作系统层次，验证合法用户且具有权限的用户，是否在操作系统权限范围内合理使用文件系统。数据加密，重点验证用户是否绕过DBMS授权机制直接读取数据库中数据。安全审计，重点通过数据库日志信息，及早发现系统漏洞，或当系统出现数据安全性问题时，快速定位问题所在。</p>
+<p>实际上，安全问题并不是数据库系统独有的。在其他计算机系统中，有采用分层安全模型来保障系统安全性的。分层安全模型的设计体现了计算机系统解决问题时常用的“分治策略”。</p>
+<p>本节将重点讨论与数据库有关的用户标识和鉴定、用户存取权限控制、定义视图、文件加密、安全审计等安全性措施。</p>
+<blockquote>
+<p>用户标识和鉴定</p>
+</blockquote>
+<p>数据库系统只允许合法用户连接数据库并对数据库进行操作。用户标识和鉴定是一种用户身份验证方法，它将用户提供的用户凭证与系统内部记录的合法用户凭证进行核对，核对通过后，才允许使用数据库。常用的用户标识和鉴定方法有以下几种。</p>
+<p>(1)使用用户名或用户标识符作为用户的凭证，系统以此来鉴别用户的合法性。如果提供的用户名或用户标识符与系统合法用户名和标识符一致，则可进入下一步的核实。</p>
+<p>(2)用户标识符通常为公开或者半公开的，为了加强身份验证的效用，常将用户名(Username)与口令(Password)结合作为用户凭证，以此来判别用户身份的真伪。验证过程为：数据库中存有用户的合法用户名和口令，系统获取用户提供的用户名后，查找该用户名对应的合法口令，将查询到的合法口令与用户提供的口令进行比对，根据比对结果鉴别用户身份。为了加强口令的保密性，用户在终端上的输人隐含式地显示在屏幕上。使用用户名和口令的示例系统如图8-2所示。</p>
+<p>(3)方法(2)虽简单易行，但若口令过于简单，则容易被窃取或破解，还可附加更复杂的方法。例如，使用其他辅助设备或信息，如手机短信、IP位置信息和口令卡等，协助提升方法(2)的安全性。</p>
+<p>(4)解决方法(2)密码简单的手段是提升密码的复杂性，但同时也增加了用户记忆密码的难度。为此，人们采用电子证书将用户身份标识信息保存在U盘等物理设备中。鉴定用户身份时，用户插入U盘，数据库系统通过U盘中存储的电子证书来判断用户身份。</p>
+<p>为了获得更强的安全性，人们常将多种用户标识和鉴定方法混合使用。用户标识和鉴定是系统提供的最外层的安全保护措施。有关MySQL用户身份验证的操作方法将在8.2节中介绍。</p>
+<blockquote>
+<p>用户存取权限控制</p>
+</blockquote>
+<p>用户存取权限是指用户对于不同的数据对象（库、表、视图等）允许执行的操作权限。在数据库系统中，每个用户只能访问其有权操作的数据对象。因此，在用户建立用户账号后，系统需要为用户授予合适的权限，确保通过身份验证的合法用户按照其权限约束操作数据库。</p>
+<p>在MySQL中，权限控制是分层的，包括超级管理员级别、数据库级别、表级别、存储过程级别等，每个层次都可以配置操作权限。很多MySOL帮助文档将用户身份验证作为用户权限控制的一部分进行介绍。有关MySQL权限管理的操作方法，将在8.4节中介绍。</p>
+<blockquote>
+<p>定义视图</p>
+</blockquote>
+<p>为不同的用户定义相应视图，可以限制各个用户的访问范围。通过视图机制，系统可将需保密的数据对无权存取这些数据的用户隐藏起来。例如，如果限定User1只能对信息学院的学生进行操作，可定义一个“信息学院”的视图，然后对User1仅授权使用该视图。单纯应用视图保障数据安全的控制粒度较粗，在实际应用中，通常将视图机制与权限控制机制结合起来使用。</p>
+<blockquote>
+<p>文件加密</p>
+</blockquote>
+<p>面介绍的几种数据库安全措施，都是防止非法用户从数据库系统窃取保密数据，不能防止非法用户通过不正常渠道非法访问数据，如绕过DBMS授权机制直接访问DBMS所在操作系统、偷取存储数据的磁盘或在通信线路上窃听数据。</p>
+<p>为了防止数据窃取问题，人们可对存储在文件系统上的数据文件进行加密(Data Encryption)，基本思想是使用加密算法将原始数据（术语为明文，Plain Text)加密成为不可直接识别的格式（术语为密文，Cipher Text)。加密后的数据文件，即使被非法用户窃取，其也难以在有限时间内恢复数据的明文，从而保障了数据的安全性。</p>
+<p>除对数据库文件加密外，还可以对口令等敏感信息进行加密存储，即在数据库中保存口令加密后的密文。加密后的口令并不影响用户身份鉴定，但即使管理员查看数据库，也无法直接查看用户口令的明文，进而确保用户口令的安全性。</p>
+<blockquote>
+<p>安全审计</p>
+</blockquote>
+<p>实际的系统必然存在不同程度的安全漏洞，窃密者总尝试快速找到漏洞并破坏数据的安全性。为此，对于某些高度敏感的关键数据，可以通过数据库日志记录数据库各类操作并施加数据审计，监控数据库操作记录，分析数据库潜在的安全漏洞，或当数据库出现安全问题时，通过安全审计快速定位安全问题。有关日志管理的内容将在第10章介绍。</p>
+<h2 id="二、MySQL权限系统">二、MySQL权限系统</h2>
+<h3 id="2-1、MySQL权限管理">2.1、MySQL权限管理</h3>
+<p>MySQL权限管理包含了用户登录验证和用户权限检查两部分。</p>
+<blockquote>
+<p>用户登录验证</p>
+</blockquote>
+<p>MySQL根据用户提供的用户名、密码（口令）、访问数据库的主机信息（如访问主机的IP 地址）等信息，对照mysql.user表中记录，验证用户身份。如果用户提供的信息与mysql.user中记录完全一致，则通过身份验证；否则，将返回Access Denial错误信息。</p>
+<p>用户使用客户端程序访问MySQL数据库，客户端程序负责将用户提供的信息发送到MySQL 服务器进行验证。</p>
+<blockquote>
+<p>用户权限检查</p>
+</blockquote>
+<p>用户通过登录验证后，MySQL将对用户提交的每项数据库操作进行权限检查，判断用户是否具有足够的权限执行相应操作。</p>
+<p>权限检查涉及的mysql.user、mysql.db、mysql.tables priv、mysql.columns_priv、mysql.procs_priv表构成了MySQL权限分层结构。其中，mysql.user表记录了用户的全局权限，mysql.db 表记录了用户对某一数据库的使用权限，mysql.tables_priv、 mysql.columns_priv和mysql.procs_priv表记录了用户对某张表、某些字段及存储过程的使用权限。有关存储过程内容，将在第15章介绍，本章重点讨论除mysql.procs_priv表外的其他表。</p>
+<p>MySQL使用上述各表验证用户操作权限的过程如下。</p>
+<p>首先，查看mysql.user表中用尸名所在行是否存在与操作相匹配的全局权限，如果有，允许用户执行当前操作，终止检查；如果没有，表明用户在全局层面不具有该操作权限，但可能在数据库级别、表或字段级别具有权限，因此继续进行深层次权限检查。</p>
+<p>其次，查看mysql.db表中用户名所在行是否存在与用户操作相匹配的数据库层级权限，如果有，则允许用户执行当前操作，终止检查；如果没有，则表明用户在数据库层级不具有该操作权限，但在表或字段级别具有权限，继续进行深层次权限检查。早期的MySQL版本中包含了mysql.host 表，MySQL 8版本中默认不会生成mysq.host表，只使用mysql.db表完成数据库层面的权限检查。</p>
+<p>最后。查看mysql.tables_priv表和mysql.columns_priv表中用户名所在行是否存在与用户操作相匹配的表或字段级权限，如果有，则允许用户执行操作，终止检查；如果没有，则表明用户在表或字段层面不具有权限，拒绝用户操作。</p>
+<p>上述权限检查的示意过程如图8-3所示。</p>
+<p>灵活运用MySQL权限管理机制可以保障数据的安全性，有关MySQL权限管理相关表的结构信息，将在8.2.2小节中介绍。</p>
+<h3 id="2-2、MySQL权限管理相关表">2.2、MySQL权限管理相关表</h3>
+<blockquote>
+<p>全局权限表mysql.user</p>
+</blockquote>
+<p>mysql.user主要记录4类内容：用户身份验证相关信息、全局权限授予情况、用户安全连接认证配置、数据库资源使用约束。</p>
+<p>(1)用户身份验证相关字段</p>
+<p>与用户身份验证相关的字段包括User（主码）、Authentication_string和Host（主码）字段。其中，User字段记录了登录用户名称，Host字段记录了登录用户连接数据库时允许的主机IP地址或者名称，Authentication_string字段记录登录用户的口令的密文。MySQL 8默认使用了更为复杂的sha2加密算法，创建用户的方法将在8.3节中介绍。</p>
+<p>User和Host字段构成mysql.user表的联合主码，用于区分不同用户。因此，同一个数据库系统中可创建用户名相同但是Host不同的多条记录，这些记录代表不同用户。但是，除特殊需要外，为避免用户名称的二义性，不建议在同一个数据库系统中建立用户名相同但主机信息不同的账号。</p>
+<p>(2)全局权限授予相关字段</p>
+<p>mysql.user表中以priv结尾、类型为ENUM (‘Y’, N)的字段规定了用户的全局权限（服务器级别的权限）。这些字段取值Y代表拥有权限；N代表没有权限，为默认值。</p>
+<p>根据权限操作对象的不同，全局权限字段可划分为一般权限字段和管理权限字段。</p>
+<p>一般权限字段主要描述了对所有数据库的查找（ЅЕLЕСT)、修改数据（ІNЅЕRТ、UPDATE、DELETE等）、操作表结构(CREATE、ALTER、DROP)等权限授予情况。</p>
+<p>管理权限字段主要描述了服务器管理权限，如关闭服务器(Shutdown_priv)、创建用户(Create_user_priv)、超级权限(References_priv) 等。</p>
+<p>(3)用户安全连接认证配置字段</p>
+<p>用户安全连接认证配置字段描述了用户访问数据库时使用的信道加密手段(ssl_type、ssl_cipher)用户标识标准(x509_issuer、x509_subject)、用户身份验证插件(plugin、Authentication_string)信息。</p>
+<p>(4)数据库资源使用约束字段</p>
+<p>数据库资源使用约束字段用来限制用户对数据库资源的使用，包括每小时最大查询操作数(max_questions)、每小时最大更新操作数(max_updates)、每小时数据库最大连接数(max_connections)、最大并发连接数(max_user_connections)等字段。上述字段使用整数数值，默认值0表示不限制资源使用。</p>
+<p>在MySQL中，数据库管理员既可以在mysql.user表中限制用户对数据库资源的使用，也可以修改服务器配置文件或使用SET语句修改系统变量。但需注意，修改mysql.user中数据库资源使用约束字段并不立即生效，只有当用户下次连接数据时，修改的配置才会生效。</p>
+<blockquote>
+<p>数据库级权限表mysql.db</p>
+</blockquote>
+<p>mysql.db是MySQL数据库级别权限表。mysql.db表中包含两类信息：用户信息和数据库级别授权信息。</p>
+<p>(1)用户信息相关字段</p>
+<p>用户信息相关字段包括主机字Host、使用救据库字段Db和用户名字段User。3个字段构成mysql.Host表的联合主码。Host、Db和User中任何一个字段值的不同，代表了不同的数据库级别权限。</p>
+<p>(2)数据库级别授权相关字段</p>
+<p>mysql.db表中多个以priv、类型为ENUM (‘Y’, N)的字段决定数据库级别用户操作权限，如查找(SELECT)、修改数据(INSERT、UPDATE、DELETE 等）、表操作(CREATE、ALTER、DROP)、存储过程用(Create_routine_priv、Alter_routine_priv)等。</p>
+<blockquote>
+<p>表级权限表nysql.tables_priv</p>
+</blockquote>
+<p>mysql.tables_priv表可以对单个表及表中所有字段的使用权限进行设置。mysql.tables_priv表包含3类信息，分别是用户信息、授权信息和表级别权限信息。</p>
+<p>(1)用户信息相关字段</p>
+<p>用户信息相关字段包括主机字段Host、使用的数据库字段Db、用户名字段User和授权使用的表名称字段Table_name, 4个字段构成联合主码。</p>
+<p>(2)授权信息相关字段</p>
+<p>授权信息相关字段包括授权人字段Grantor和授权时间戳字段Timestamp。其中，Grantor表示最近一次授予该权限的授权人标识。</p>
+<p>(3)表级别权限信息相关字段</p>
+<p>表级别权限信息相关字段包括Table_priv和Column_priv字段。其中，Table_priv字段使用了集合型SET (‘Select’, Insert’, Update’, ‘Delete’, ‘Create’, ‘Drop’, ‘Grant’, References’, Index’, ‘Alter’, ‘Crea te View’, Show view’, Trigger’)，表示用户对表的操作权限。Column_priv字段使用了集合类型SET (‘Select’, Insert’, Update’, References’)，表示用户对表中字段的操作权限。</p>
+<blockquote>
+<p>字段级权限表mysql.columns_priv</p>
+</blockquote>
+<p>mysql.colmns_priv是MySOL字段级别权限表。mysql.columns_priv表包含3类信息，分别是用户信息、授权信息和字段级别具体权限信息。</p>
+<p>(1)用户信息相关字段</p>
+<p>用户信息相关字段包括主机字段Host、使用的数据库字段Db、用户名字段User、授权使用的表名称字段Table_name、授予使用表中某一字段的字段Column_name, 5个字段构成联合主码。</p>
+<p>(2)授权信息相关字段</p>
+<p>授权信息相关字段只有1个，即授权时间戳字段Timestamp。</p>
+<p>(3)字段级别权限信息相关字段</p>
+<p>字段级别权限信息关字段只有1个，即Column_priv字段。Column_priv字段使用了集合类型SET (‘Select’, Insert’, Update’, References’)，表示用户对表中字段的操作限。</p>
+<blockquote>
+<p>存储过程或函数级权限表mysql.procs_priv</p>
+</blockquote>
+<p>mysql.procs_priv是MySQL存储过程级别权限表，规定了用户执行、修改和授权存储过程或函数的权限。mysql.procs_priv包含3类信息：用户信息、授权信息、存储过程或函数级别权限信息。</p>
+<p>(1)用户信息相关字段用</p>
+<p>户信息相关字段包括主机字段Host、使用的数据库字段Db、用户名字段User、授权使用的存储过程或函数名称字段Routine_name、授予使用存储过程或函数类型字段Routine_type。其中，Rutine_type使用枚举变量ENUM (‘FUNCTION’, 'PROCEDURE)标识类型。</p>
+<p>(2)授权信息相关字段授权</p>
+<p>信息相关字段包括授权人字段Grantor和授权时间戳Timestamp。其中，Grantor表示最近一次授予当前mysql.procs_priv中相关记录表级别权限的授权人标识。</p>
+<p>(3)存储过程或函数级别具体权限相关字段</p>
+<p>存储过程或函数级别具体权限相关字段只有1个，即Proc_priv字段。Proc_priv字段使用了集类型SET (‘Execute’, ‘Alter Routine’, ‘Grant’)。</p>
+<h2 id="三、MySQL用户管理">三、MySQL用户管理</h2>
+<p>安装MySQL时，需建立root用户，该用户为数据库服务器超级管理员，具有全部权限。使用root用户可以创建普通用户。普通用户为实际开发数据库系统时使用的账号。为确保数据库系统的安全性，应避免直接使用root账号，而应根据业务需要，创建普通用户并授予相应权限。</p>
+<h3 id="3-1、添加用户">3.1、添加用户</h3>
+<p>在MySQL中，我们可以使用CREATE USER语句、系统表或MySQL Workbench创建普通用户。</p>
+<blockquote>
+<p>使用CREATE USER 语句创建普通用户</p>
+</blockquote>
+<p>使用CREATE USER语句创建普通用户的语法格式如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE USER [IF NOT EXISTS] &#x27;用户名&#x27;[@&#x27;主机地址或标识&#x27;]<br>[IDENTIFIED [WITH AUTH_PLUGIN] BY &#x27;用户口令&#x27;|RANDOM PASSWORD]<br>[WITH resouce_option [resouce_option] ...]<br>[password_option];<br></code></pre></td></tr></table></figure>
+<p>相关说明如下。</p>
+<p>(1) IF NOT EXISTS为可选参数，表示如果用户名不存在，则创建用户，否则不执行语句。</p>
+<p>(2)使用CREATE USER语句可一次性创建多个用户，不同用户的配置信息使用逗号分隔。</p>
+<p>(3)创建用户时，可指定用户访问数据库时允许的主机信息，如主机标识或名称、主机地址或特殊符号，'％’表示任意位置。如果创建用户时不提供主机信息，则MySQL使用默认的％填充用户主机信息。</p>
+<p>(4) IDENTIFIED子句使用WITH AUTH_PLUGIN指定口令加密策略。通过BY关键字指明口令明文或随机口令RАNDОM PASSWORD。MySQL可使用多种口令加密策略，如mysql_native_password、caching_sha2_password等，默认使用caching_sha2_password加密策略。</p>
+<p>(5)可选子句［WITH resource_option [resource_option]  …］使用resource_option对用户使用数据库资源进行约束，其具体格式如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mysql">MAX_QUERIES_PER_HOUR count<br>|MAX_UPDATES_PER_HOUR count<br>|MAX_CONNECTIONS_PER_HOUR count<br>|MAX_USER_CONNECTIONS count<br></code></pre></td></tr></table></figure>
+<p>上述参数的含义与mysql.user表内数据库资源使用约束参数含义相同。如果不使用［WITH resource_option [resource_option] ……]，则表示不限制用户对数据库资源的使用，即上述参数设置为0。</p>
+<p>(6)可选子句［password_option］设定口令策略，包括口令过期策略PASSWORD EXPIRE、恢复历史口令策略PASSWORD HISTORY及失败登录尝试策略FAILED_LOGIN_ATTEMPTS。如果指定［password_option］设定口令策略，则各策略处于禁用状态。password_option的具体格式如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mysql">PASSWORD EXPIRE [DEFAULT|NEVER|INTERVAL N DAY]<br>|PASSWORD HISTORY [DEFAULT|N]<br>...<br>|FAILED_LOGIN_ATTEMPTS N<br></code></pre></td></tr></table></figure>
+<p>口令策略是保障口令安全性的主要手段。很多应用中，管理员只负责提供使用一次就过期的用户口令。用户登录数据库后，必须修改口令，修改后的口令管理员无法获得。</p>
+<p>密码策略是MySQL 8主要的更新内容，读者可参照官方文档了解其他策略的实际含义。</p>
+<p>(7) CREATE USER语句还提供了其他参数，如用户锁、用户连接安全策略等信息，读者可根据需要，参考官方文档了解各参数的具体含义。</p>
+<p>下面举例说明上述参数的含义。</p>
+<p>【例8-1】创建一个只允许在MySQL所在服务器上登录的用户student，密码为student123,其他配置信息保持默认。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE USER IN NOT EXISTS &#x27;student&#x27;@&#x27;localhost&#x27;<br>IDENTIFIED BY &#x27;student123&#x27;;<br></code></pre></td></tr></table></figure>
+<p>新建用户会以记录形式添加到mysql.user表中，使用以下命令可查看该用户默认的配置信息。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SELECT * FROM mysql.user WHERE User=&#x27;student&#x27;;<br></code></pre></td></tr></table></figure>
+<p>执行上述SELECT语句后，结果显示如图8-4所示。</p>
+<p>通过查看mysql.user表中信息变化，深入体会使用CREATE USER语句创建用户时，不同配置参数的含义。</p>
+<p>【例8-2】创建两个用户，其中teacher1用户允许在任何主机访问服务器，其密码为teacher123, teacher2用户只允许在192.168.1.23地址的机器上访问服务器，其密码为随机密码。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE USER <br>&#x27;teacher1&#x27;@&#x27;%&#x27; IDENTIFIED BY &#x27;teacher123&#x27;,<br>&#x27;teacher2&#x27;@&#x27;192.168.1.23&#x27; IDENTIFIED BY RANDOM PASSWORD;<br></code></pre></td></tr></table></figure>
+<p>【例8-3】创建两个均只允许在MySQL所在服务器使用的用户teacher3和teacher4，密码分别是t3123和t4123，用户teacher3使用mysql_native_password密码加密策略，用户teacher4使用caching_sha2_password密码加密策略，两个用户每小时最大允许查询次数为60，同时，历史口令修改5次才可用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE USER<br>&#x27;teacher3&#x27;@&#x27;localhost&#x27; IDENTIFIED WITH mysql_native_password BY &#x27;t3123&#x27;,<br>&#x27;teacher4&#x27;@&#x27;localhost&#x27; IDENTIFIED WITH caching_sha2_password BY &#x27;t4123&#x27;,<br>WITH MAX_QUERIES_PER_HOUR 60<br>PASSWORD HISTORY 5;<br></code></pre></td></tr></table></figure>
+<p>例8-3表明创建用户时，可配置所有用户的服务器资源使用约束和口令过期策略。</p>
+<p>【例8-4】创建一个允许在任何主机访问数据库的用户teacher5，密码为空，用户teacher5每小时最多允许查询60次，每小时最多允许更新100次。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE USER &#x27;teacher5&#x27;<br>WITH MAX_QUERIES_PER_HOUR 60<br>     MAX_UPDATES_PER_HOUR 100;<br></code></pre></td></tr></table></figure>
+<p>上述语句创建teacher5用户时未提供任何口令，表明该用户可无口令访问数据库。注意，无口令用户从数据库管理角度看是不合理的。使用WITH子句可标识各资源使用的约束信息。有关CREATE USER语句的其他说明如下。</p>
+<p>(1)使用CREATE USER语句的用户或管理员，必须拥有系统数据库mysql的INSERT权限或全局的CREATE USER权限。</p>
+<p>(2)可以创建同名用户，但同名用户必须与不同主机信息进行绑定。</p>
+<p>(3)本节所介绍的CREATE USER语句为MySQL 8后版本支持的格式，与MySQL 5版本并不兼容。如果读者使用的是MySQL 5版本，可参照官方文档，调整上述CREATE USER语句中不兼容的部分。</p>
+<blockquote>
+<p>使用系统表创建普通用户</p>
+</blockquote>
+<p>使用CREATE USER语句创建用户将在系统表mysql.user中添加用户信息，因此，如果用户拥有mysql数据库的INSERT权限，也可直接向mysql.user表中添加记录，达到与使用CREATE USER语句创建用户同样的目的。</p>
+<p>使用mysql.user表添加用户时，需要配置一些必填字段，主要包括Host、User、Authentication_string、ssl_type、ssl_cipher、x509_issuer、x509_subject等。其中ssl_type、ssl_cipher、x509_issuer、x509_subject参数指明用户使用安全访问协议情况，在生产环境中，建议为用户配置访问的安全协议类型，以提高数据库访问安全性。在学习过程中，读者可以将ssl_type、 ssl_cipher, x509_issuer、x509_subject设置为空串，即不使用SSL安全协议。</p>
+<p>【例8-5】使用系统表创建用户teacher6，该用户允许在服务器本地登录，用户密码为t6123，访问时不适用安全协议SSL。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mysql">INSERT INTO mysql.user(Host, User, Authentication_string, ssl_type, ssl_cipher, x509_issuer, x509_subject)<br>VALUES(&#x27;localhost&#x27;, &#x27;teacher6&#x27;, sha(&#x27;t6123&#x27;), &#x27;&#x27;, &#x27;&#x27;, &#x27;&#x27;, &#x27;&#x27;);<br></code></pre></td></tr></table></figure>
+<p>系统表mysql.use的Authentication_string字段存储了口令加密后的密文，因此，插入数据时，需利用MySQL系统函数sha将口令明文转换为密文。在MySQL 8之前，使用password函数对密码加密，MySQL 8中提供了更为丰富的加密函数，如sha、sha1和sha2等，读者可查阅官方文档，根据需要选择合适的函数。</p>
+<p>执行INSERT语句后，需要使用FLUSH PRIVILEGES命令使新创建的teacher6生效，否则需要等待下次服务器重启，加载mysql.user表信息后，teacher6方可使用。</p>
+<p>在实际开发过程中，建议采用更为安全的CREATE USER语句创建用户，不建议直接使用INSERT语句向mysql.user表插入数据实现创建用户。</p>
+<h3 id="3-2、查看用户">3.2、查看用户</h3>
+<p>我们可以使用系统表mysql.user和MySQL Workbench查看已经创建的用户及用户配置信息。查询系统表mysql.user，可以获取系统用户信息和全局权限信息。</p>
+<p>【例8-6】查看teacher1的用户名、主机信息及每小时最大查询执行次数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE User, Host, max_questions<br>FROM mysql.user<br>WHERE User=&#x27;teacher1&#x27;;<br></code></pre></td></tr></table></figure>
+<p>执行结果如表8-1所示。</p>
+<h3 id="3-3、重命名用户">3.3、重命名用户</h3>
+<p>使用RENAME USER语句和MySQL Workbench可以对已有用户进行重命名。使用RENAME USER语句重命名已有用户的语法格式如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mysql">RENAME USER <br>&#x27;原用户信息&#x27; TO &#x27;新用户信息&#x27;<br>[,&#x27;原用户信息&#x27; TO &#x27;新用户信息&#x27;]<br>...<br></code></pre></td></tr></table></figure>
+<p>相关说明如下。</p>
+<p>(1)可以使用REAME USR语句一次性为多个已有用户进行重命名，不同用户使用逗号分隔。</p>
+<p>(2)使用RENAME USER语句实际上是对mysql.user表操作，因此，用户需要具有mysql数据库的UPDATE权限或服务器级别的CREATE USER权限。</p>
+<p>(3)使用’用户名’@‘主机信息’的方式重命名用户，该方式不仅可以重命名用户名称，还可以修改用户允许访问务器的主机信息。</p>
+<p>(4)如果重命名的用户为定义视图、存储过程时指定的DEFINER属性值，则MySQL会阻止用户重命名。主要原因是DEFINER属性指定视图和存储过程只能使用定义者的权限执行，重命名用户会导致这些视图和存储过程成为孤立对象。</p>
+<p>【例8-7】将已有用户teacher1重命名为teacher10，将主机信息从％修改为localhost。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">RENAME USER &#x27;teacher1&#x27;@&#x27;%&#x27; TO &#x27;teacher10&#x27;@&#x27;localhost&#x27;;<br></code></pre></td></tr></table></figure>
+<h3 id="3-4、修改用户口令">3.4、修改用户口令</h3>
+<p>使用mysqladmin命令、SET语句、ALTER语句、系统表mysql.user和MySQL Workbench可修改用户口令。</p>
+<blockquote>
+<p>使用mysqladmin命令修改用户口令</p>
+</blockquote>
+<p>在命令行中，使用mysqladmin命令可修改已有用户口令，语法格式如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">mysqladmin -u 用户名 p passowrd<br></code></pre></td></tr></table></figure>
+<p>输入上述命令后，命令行提示首先输人原密码，原密码正确输入后，提示输入新密码和确认新密码。</p>
+<p>注意：mysqladmin命令位于MySQL服务器安装路径的bin文件夹下，如果在任意文件夹下执行该命令，需将wsqladmin所在bin目录放在环境变量Path下。mysqladmin命令不属于SQL语句，不能直接在Shell、MySOL Workbench等窗口中执行。</p>
+<blockquote>
+<p>使用SET PASWWORD语句修改用户口令</p>
+</blockquote>
+<p>使用SET PASSWORD语句修改用户口令的语法格式如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SET PASSWORD [FOR &#x27;用户名&#x27;@&#x27;主机信息&#x27;]=&#x27;新密码&#x27;;<br></code></pre></td></tr></table></figure>
+<p>相关说明如下。</p>
+<p>(1)与mysqladmin命令不同，SET语句为SOL语句，可在Shell或MySQL Workbench中执行，同时，使SET语句无须输入原密码，但是要求输入的用户名和主机信息存在于mysql.user 表中。</p>
+<p>(2)如果给出了[FOR ‘用户名’@‘主机信息’]信息，则会修改指定主机信息约束下的用户名对应的口令，如果没有给出[FOR ‘用户名’@‘主机信息’]，则修改当前连接数据库用户对应的口令。</p>
+<p>(3)在已有教程中，强调使用password(‘新密码）设定新密码，MySQL 8中已经删除了password函数，用户可直接使用密码明文修改，MySQL会根据密码加密方法，对明文加密后，将密文存储在mysql.user表中对应用户的Authentication_string中。</p>
+<p>【例8-8】将主机信息为localhost、用户名为student的用户口令修改为student123。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SET PASSWORD FOR &#x27;student&#x27;@&#x27;localhost&#x27;=&#x27;student123&#x27;;<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>使用ALTER USER 语句修改用户口令</p>
+</blockquote>
+<p>在MySQL官方文档中，推荐使用ALTER USER语句修改用户口令。ALTER USER语句可用于修改CREATE USER中相关信息，读者可参照官方文档学习。这里仅介绍ALTER USER语句与修改用户口令相关的语法格式，如下所示。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">ALTER USER &#x27;用户名&#x27;@&#x27;主机信息&#x27; IDENTIFIED BY &#x27;新密码&#x27;;<br></code></pre></td></tr></table></figure>
+<p>【例8-9】将主机信息为localhost、用户名为student的用户口令修改为student123。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">ALTER USER &#x27;student&#x27;@&#x27;localhost&#x27; IDENTIFIED BY &#x27;student123&#x27;;<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>使用系统表mysql.user 修改用户口令</p>
+</blockquote>
+<p>使用UPDATE语句，修改系统表mysql.user中记录的Authentication_string字段可以更新用户密码，该操作要求用户具有mysql.user的UPDATE权限。</p>
+<p>【例8-10】将主机信息为localhost、用户名为student的用户口令修改为student123。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mysql">UPDATE mysql.user<br>SET Authentication_string=sha(&#x27;student123&#x27;)<br>WHERE User=&#x27;student&#x27; and Host=&#x27;localhost&#x27;;<br></code></pre></td></tr></table></figure>
+<p>使用UPDATE语句理论上可以修改mysql.user表中用户的身份验证信息、数据库访问资源控制信息及服务器级别授权信息等，但通常不这么做，而是使用ALTER语句以更为安全的方式修改用户信息。</p>
+<h3 id="3-4、删除用户">3.4、删除用户</h3>
+<p>当不需要某一用户时，可以删除用户信息，以提高系统安全性。在MySQL中，可以使用DROP USER语句、系统表mysql.user和MySQL Workbench来删除用户。</p>
+<blockquote>
+<p>使用DROP USER 语句删除用户</p>
+</blockquote>
+<p>使用DROP USER语句删除用户的语法格式如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mysql">DROP USER &#x27;用户名&#x27;@&#x27;主机信息&#x27;<br>[,&#x27;用户名&#x27;@&#x27;主机信息&#x27;]<br>...<br></code></pre></td></tr></table></figure>
+<p>相关说明如下。</p>
+<p>(1)使用DROP USER可以一次删除多个用户信息，不同用户信息使用逗号分隔。</p>
+<p>(2) DROP USER语句将对mysql.user表进行操作，因此，使用DROP USER语句需要具有全局的CREATE UER权限或者mysql系统数据库的DELETE权限。</p>
+<p>(3)删除用户并不会删除用户创建的库、表、视图等存储对象，但是如果删除的用户，在定义视图、存储过程时，被指定为视图或存储过程的DEFINER属性，则表明这些视图、存储过程只能使用定义者的权限执行，删除用户会导致这些视图和存储过程成为孤立对象，MySQL会阻止删除用户。</p>
+<p>【例8-11】删除主机信息为localhost、用户名为student的用户。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">DROP USER &#x27;student&#x27;@&#x27;localhost&#x27;;<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>使用系统表mysql.user 删除用户</p>
+</blockquote>
+<p>使用DELETE语句，删除系统表mysql.user中记录，可实现用户删除操作。该操作要求用户具有mysql.user表的DELETE权限。</p>
+<p>【例8-12】删除主机信息为localhost、用户名为student的用户。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mysql">DELETE FROM mysql.user<br>WHERE User=&#x27;student&#x27; AND Host=&#x27;localhost&#x27;;<br></code></pre></td></tr></table></figure>
+<p>不建议使用DELETE语句直接删除用户信息，建议使用DROP USER语句以更为安全的方式删除用户信息。</p>
+<h2 id="四、MySQL权限授予和回收">四、MySQL权限授予和回收</h2>
+<h3 id="4-1、MySQL常见权限">4.1、MySQL常见权限</h3>
+<p>在MySQL中，用户可以使用SHOW PREVILEGES语句查看当前数据库支持的权限名称(PRIVILEGE)、权限使用的环境(CONTEXT)及权限的注释信息(COMMENT)。MySQL 常见权限归纳如下。</p>
+<p>(1)管理权限。与MySQL服务器管理相关的权限，包括创建用户(CREATE USER)、查看所有数据库名称(SHOW DATABASES)、关闭数据库服务器(SHUT DOWN)、再授权(GRANT)等CONTEXT标注为Server Admin的权限。管理权限属于全局权限，不能授权给特定数据库或者表等对象。</p>
+<p>(2)数据库权限。操作数据库及数据库中所有对象的权限，包括创建数据库(CREATE)、创建存储过程(CREATE ROUTINE)、创建临时表(CREATE TEMPORARY TABLES)、删除数据表(DROP)、再授权(GRANT)等CONTEXT标注为Databases的权限。</p>
+<p>(3)数据库对象权限。操作数据表、视图、索引等数据库中特定对象的权限，包括修改数据表(ALTER)、创建数据表或索引(CREATE)、插人数据(INSERT)、删除数据(DELETE)、查询数据(SELECT)、创建视图(CREATE VIEW)、再授权(GRANT)等CONTEXT标注为Tables的权限。</p>
+<p>(4)函数或存储过程权限。操作函数和存储过程的权限，包括修改函数和存储过程(ALTER ROUNTINE)、执行函数和存储过程(EXECUTE)等CONTEXT标注为Functions和Procedures的权限。</p>
+<p>在上述权限中，不些权限是复用的，如CREATE权限，针对不同授权对象时，可表达授予或回收不同对象的创建权限。在MySQL中，ALL [PRIVILEGEJ代表了全部权限。</p>
+<h3 id="4-2、权限授予">4.2、权限授予</h3>
+<p>新建用户没有任何使用权限，需被授权后，才可操作数据库中的对象。在MySQL中，对已有用户进行授权可通过GRANT语句和MySQL Workbench来实现。使用GRANT语句授予权限的语法格式如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs mysql">GRANT <br>权限名称[(字段列表)]<br>[,权限名称[(字段列表)]]<br>...<br>ON <br>&#x27;用户名&#x27;@&#x27;主机信息&#x27;<br>[,&#x27;用户名&#x27;@&#x27;主机信息&#x27;]<br>...<br>[WITH GRANT OPTION];<br></code></pre></td></tr></table></figure>
+<p>相关说明如下。</p>
+<p>(1)可以一次性将多个权限授予用户，不同权限名称使用逗号分隔。其中，权限名称可依据业务需要，从8.4.1小节介绍的权限中选取。如果指定字段列表信息，则表明当前权限属于列（字段）级别权限。可以一次授予多列列级别权限，不同列使用逗号分隔。</p>
+<p>(2) ON子句用于指明授权级别及对象，常见形式包括：＊.＊为服务器级别权限（全局权限），表示当前权限适用于当前服务器下所有数据库中所有表，授予服务器级别权限将修改mysql.user表中记录；db_name.*为数据库级别权限，表示当前权限适用于db_name下所有数据库对象，授予数据库级别权限将修改mysql.db表中记录；db_name.table_name为表或列级别权限，表明当前权限适用于db_name.table_name，或者在指定字段列表时，权限适用于db_name.table_name上的具体字段，授予表级别权限将修改mysql.tables_priv表中记录，授予列级别权限将修改mysql.conns_priv表中记录；db_name.routine_name为存储过程级别权限，表明当前权限适用于db_nane下的存储过程routine_name，授予存储过程级别权限将修改mysql.routines_priv表中记录。上述中的table_name既可以是表名也可以是视图名称。</p>
+<p>(3) TO子句用于指明授予的用户，使用TO子句可以将权限授予多个用户。</p>
+<p>(4) WITH GRANT OPTION为可选参数，使用该参数表明授权后的用户可以将当前权限继续授予其他用户。</p>
+<p>(5)在MySQL 5.7，使用WITH语句可以限制用户访问数据库资源，如每小时执行查询次数或每小时连接数据库次数等。在MySQL 8中，GRANT语句无法限制用户使用数据库资源情况。如果需要限制服务器资源的使用，可以使用CREATE USER或ALTER USER语句来实现。</p>
+<p>(6)使用GRANT语句需要具有GRANT OPTION权限且具有授权权限的操作权限。</p>
+<p>下面举例说明上述参数的含义。</p>
+<p>【例8~13】为teacher10用户授予数据库服务器的所有使用权限(ALL)，并允许权限由teacher10授予其他用户。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mysql">GRANT ALL<br>ON *.* TO &#x27;teacher10&#x27;@&#x27;localhost&#x27;<br>WITH GRANT OPTION;<br></code></pre></td></tr></table></figure>
+<p>执行上述语句后，可查看mysql.user表中各字段变化，理解服务器级别权限授予情况。由于MySQL服务器启动时，会在内存中加载mysql.user、mysql.db、mysql.tables_priv和mysql.columns_priv等表的信息，修改这些表并不会重新加载权限，因此对用户授权后，如果需要授权直接生效，可使用FLUSH PRIVILEGE语句将修改后的权限重新加载到内存中，确保修改后的权限即时生效。</p>
+<p>【例8~14】为teacher6用户授予数据库服务器级别的查找、插入和更新数据权限(SELECT、INSERT, UPDATE)，并且不允许二次授权。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mysql">GRANT SELECT,INSERT,UPDATE<br>ON *.* TO &#x27;teacher6&#x27;@&#x27;localohst&#x27;;<br></code></pre></td></tr></table></figure>
+<p>【例8-15】为teacher4用户授予teaching数据库上对象的查找、创建数据表和插入数据权限(ЅЕLЕСT、СRЕАТ、 INSERT)，并且不允许权限由teacher4授予其他用户。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mysql">GRANT SELECT,CREATE,INSERT<br>ON teaching.* TO &#x27;teacher4&#x27;@&#x27;localhost&#x27;;<br></code></pre></td></tr></table></figure>
+<p>执行上述语句后，查看mysql.user表，可发现有关授权的字段仍标注为N，再查看mysql.db 表，可发现有关授权的字段已经标注为Y。上述过程可帮助读者理解数据库级别权限授予情况。</p>
+<p>【例8-16】为teacher3用户赋予teaching数据库上教师表t的查找、插入、更新和删除数据权限(SELECT、INSERT、UPDATE、DELETE)，并且不允许权限由teacher3授予其他用户。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mysql">GRANT SELECT,INSERT,UPDATE,DELETE<br>ON teaching.t TO &#x27;teacher3&#x27;@&#x27;localhost&#x27;;<br></code></pre></td></tr></table></figure>
+<p>执行上述语句后，查看mysql.user表，可发现有关授权的字段仍标注为N，再查看mysql.db 表，会发现没有用户名为teacher3的记录，最后查看mysql.tables_priv表中用户名为teacher3的记录，会发现有关授权字段已经标注为Y。上述过程可帮助读者理解表级别权限授予过程。</p>
+<p>【例8-17】为teacher2用户赋予teaching数据库中教师表t上tno字段和tn字段的查找数据权限(SELECT)，并且不允许权限由teacher2授予其他用户。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mysql">GRANT SELECT(tno, cn)<br>ON teaching.t TO &#x27;teacher2&#x27;@&#x27;192.168.1.23&#x27;;<br></code></pre></td></tr></table></figure>
+<p>执行上述语句后，依次查看mysql.user表、mysql.db表、mysql.tables_priv 表和mysql.columns_priv表中用户名为teahcer2的记录，理解字段级别权限授予过程。</p>
+<p>对于GRANT语句，读者需注意以下事项。</p>
+<p>(1)在MySQL 8之前，可以使用GRANT语句为不存在的用户授予权限，并在授权时指定用户的用户信息和口令，系统会自动创建用户并完成授权。MySQL 8不允许为不存在的用户授权，所以无法使用GRANT语句达到授权的同及时创建用户的目的，必须先创建用户，然后才能授权。</p>
+<p>(2)对于字段级别权限，由于只能对字段进行查询、插入和更新操作，所以字段级别权限只支持SELECT、INSERT和UPDATE权限。</p>
+<p>(3)使用GRANT语句授予不同级别的权限，将在相应的权限表中，创建或修改相应记录。</p>
+<h3 id="4-3、权限查看">4.3、权限查看</h3>
+<p>对于已有用户，可以使用SHOW GRANTS语句和MySQL Workbench查看权限授予情况。执行SHOW GRANTS语句需要具有mysql系统数据库的SELECT权限。SHOW GRANTS语句的语法格式如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SHOW GRANTS FOR &#x27;用户名&#x27;@&#x27;主机信息&#x27;;<br></code></pre></td></tr></table></figure>
+<p>【例8~188】看localhost主机上student用户的权限授予情况。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SHOW GRANTS FRO &#x27;student&#x27;@&#x27;localhost&#x27;;<br></code></pre></td></tr></table></figure>
+<p>如果要查看当前用户的权限授予情况，可以使用以下语句。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SHOW GRANTS FOR CURRENT_USER;<br></code></pre></td></tr></table></figure>
+<h3 id="4-4、权限回收">4.4、权限回收</h3>
+<p>权限回收，可使用REVOKE语句和MySQL Workbench来实现。使用REVOKE旬回收权限的语法格式如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs mysql">REVOKE 权限名称[(字段列表)]<br>[,权限名称[(字段列表)]]<br>...<br>ON 回收权限级别及对象<br>FROM<br>&#x27;用户名&#x27;@&#x27;主机信息&#x27;,<br>[,&#x27;用户名&#x27;@&#x27;主机信息&#x27;]<br>...;<br></code></pre></td></tr></table></figure>
+<p>相关说明如下。</p>
+<p>(1)通过权限名称描述要收的权限，可以使用REVOKE语句一次性回收用户多个已经授予的权限，不同的权限通过逗号分隔。如果指定字段列表信息，则表明当前回收的权限属于字段别限，列来源的表由回收权限级别和对象参数决定。</p>
+<p>(2)回收权限级次及对象参数同GRANT语句授权时使用的级别和对象。</p>
+<p>(3)通过指定’用户名’@'主机信息’回收权限的的用户信息，可以使用REVOKE语句一次性回收多个用户权限，下同用户信息使用逗号分隔。</p>
+<p>(4)使用REVOKE语句需要具有GRANT OPTION权限且具有回收权限的操作权限。</p>
+<p>【例8~19】回收localhost主机上teacher10用户对数据库中对象的DELETE权限和SELECT 权限。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mysql">REVOKE SELECT,DELETE<br>ON teaching.*<br>FROM &#x27;teacher10&#x27;@&#x27;localhost&#x27;;<br></code></pre></td></tr></table></figure>
+<p>如果回收时指定了并未授予用户的权限，系统将提示错误，为防止上述错误产生，可先通过SHOW GRANTS语句查看用户权限，然后再使用REVOKE语句回收权限。</p>
+<h3 id="4-5、权限转移">4.5、权限转移</h3>
+<p>权限转移是指用户将拥有的权限授予其他用户。使用GRANT语句中的WITH GRANT OPTION参数表明允许权限转移。</p>
+<p>【例8-20】为localhost上teacher3用户授予teaching.t上SELECT和UPDATE权限，并允许teacher3用户将上述权限转移给其他用户。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mysql">GRANT SELECT,UPDATE<br>ON teaching.t<br>TO &#x27;teacher3&#x27;@&#x27;localhost&#x27;<br>WITH GRANT OPTION;<br></code></pre></td></tr></table></figure>
+<p>执行上述语句后，可通过tables_priv表中Table_priv列信息，或者通过SHOW GRANTS语句，查看权限授予情况。</p>
+<h2 id="五、MySQL角色管理">五、MySQL角色管理</h2>
+<h3 id="5-1、MySQL角色管理概述">5.1、MySQL角色管理概述</h3>
+<h4 id="5-1-1、角色与用户的关系">5.1.1、角色与用户的关系</h4>
+<p>角色(Role)是对权限集中管理的一种机制，通常根据特定需要，将一系列权限集中在一起构成角色。因此，不同的角色就代表了不同的权限集合。</p>
+<p>使用角色可以更加方便和自然地为用户授予权限。例如，系统中包含多个权限相同的用户，使用GRANT语句为每个用户授权步骤重复且不便于权限的集中管理。如果为这些权限建立一个角色，并将角色直接赋予这些用户，则操作上更为简单，角色权限变化时也无须一一修改每个用户的权限。因此，角色可以方便管理员对用户权限的集中管理。</p>
+<p>MySQL 8及后续版本，允许使用角色授权。一个用户可以分配多个角色，一个角色也可以分配给多个用户，即用户和角色间是多对多的关系。</p>
+<h4 id="5-1-2、MySQL角色的生命周期">5.1.2、MySQL角色的生命周期</h4>
+<p>(1)创建角色。使用CREATE ROLE语句可以创建角色。</p>
+<p>(2)为角色授权。使用GRANT语句将权限授予角色。</p>
+<p>(3)将角色分配给用户。使用GRANT语句将角色分配给用户，分配语法与授权语法类似。</p>
+<p>(4)角色用户激活。使用SET DEFAULT语句激活用户角色。默认用户角色处于非激活状态。</p>
+<p>(5)角色撤销。使用REVOKE语句撤销用户已分配的角色，撤销角色与撤销权限语法类似。</p>
+<h3 id="5-2、MySQL角色创建及授权">5.2、MySQL角色创建及授权</h3>
+<h4 id="5-2-1、角色创建">5.2.1、角色创建</h4>
+<p>使用CREATE ROLE语句可创建角色，语法格式如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE ROLE <br>&#x27;角色名称&#x27;@&#x27;主机信息&#x27;<br>[,&#x27;角色名称&#x27;@&#x27;主机信息&#x27;]<br>...;<br></code></pre></td></tr></table></figure>
+<p>相关说明如下。</p>
+<p>(1)可以一次性使用CREATE ROLE语句创建多个角色。</p>
+<p>(2)使用CREATE ROLE语句需要具有全局CREATE ROLE权限或CREATE USER权限。</p>
+<p>(3)如果使用主机信息，则约束该角色的使用主机。如果不提供主机信息，则表明主机信息为％，即在任意主机上均可使用该角色。</p>
+<p>【例8-21】创建可在任意主机上使用的教师角色teacher和管理员角色administrator。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE ROLE<br>&#x27;teacher&#x27;, &#x27;administrator&#x27;;<br></code></pre></td></tr></table></figure>
+<p>【例8-22】创建可在本地主机上使用的开发者角色developer。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE ROLE<br>&#x27;developer&#x27;@&#x27;localhost&#x27;;<br></code></pre></td></tr></table></figure>
+<h4 id="5-2-2、为角色授权">5.2.2、为角色授权</h4>
+<p>使用GRANT语句将角色包含的权限赋予角色。</p>
+<p>【例8-23】为管理员角色administrator授予服务器级别全局权限。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">GRANT ALL PREVILEGE ON *.* TO administrator;<br></code></pre></td></tr></table></figure>
+<p>使用GRANT语句将权限授予角色的语法格式与使用该语句将权限授予用户的语法格式类似。</p>
+<p>【例8-24】为教师角色teacher授予teaching.sc表级别的查找SELECT、插入数据INSERT、更新数据UPDAE和删除数据DELETE权限。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mysql">GRANT SELECT,INSERT,UPDATE,DELETE<br>ON teaching.sc<br>TO &#x27;teacher&#x27;;<br></code></pre></td></tr></table></figure>
+<h3 id="5-3、MySQL角色分配及激活">5.3、MySQL角色分配及激活</h3>
+<h4 id="5-3-1、为用户分配角色">5.3.1、为用户分配角色</h4>
+<p>下面举例说明使用GRANT语句为用户分配角色的方法。</p>
+<p>【例8-25】为用户teacher2分配teacher角色。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">GRANT &#x27;teacher&#x27; TO &#x27;teacher2&#x27;;<br></code></pre></td></tr></table></figure>
+<p>使用GRANT语句为用户分配色的语法格式与使用该语句为用户授权的语法格式类似，也可以一次性将角色分配给多个用户，不同用户使用逗号分隔。</p>
+<p>【例8-26】为用户teacher3和teacher4分配teacher角色。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">GRANT &#x27;teacher&#x27; TO &#x27;teacher3&#x27;,&#x27;teacher4&#x27;;<br></code></pre></td></tr></table></figure>
+<h4 id="5-3-2、角色激活">5.3.2、角色激活</h4>
+<p>使用SET DEFAULT ROLE语句可使角色生效。</p>
+<p>【例8-27】户teacher2上的teacher角色生效。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SET DEFAULT ROLE &#x27;teacher&#x27; TO &#x27;teacher2&#x27;;<br></code></pre></td></tr></table></figure>
+<p>使用SET DEFAULT ROLE语句可一次性使用户的多个角色生效。如果需让用户的全部角色生效，可直接使用SET DEFAULT ROLE ALL。</p>
+<p>【例8-28】使用户teacher3上的所有角色生效。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SET DEFAULT ROLE ALL TO &#x27;teacher3&#x27;;<br></code></pre></td></tr></table></figure>
+<p>如果使用SET DEFAUIT ROLE语句时，不指明TO子句，则表示修改当前用户的默认角色。角色切换在诸多业务场景中较为常见，如在研究生管理系统中，老师既可以是导师角色，具有操作导师相关表的权限，同时也可以是教师角色，具有操作课程表的权限。</p>
+<h3 id="5-4、MySQL角色查看">5.4、MySQL角色查看</h3>
+<p>使用SELECT语句查询CURRENT_ROLE函数可获得当前用户的生效角色。</p>
+<p>【例8-29】查询当前用的角色。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SELECT CURRENT_ROLE();<br></code></pre></td></tr></table></figure>
+<h3 id="5-5、MySQL角色撤销">5.5、MySQL角色撤销</h3>
+<p>使用REVOKE语句可以回收已经分配给各用户的角色，回收后用户不再具有角色拥有的权限。举例如下。</p>
+<p>【例8-30】回收用户的角色teacher。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">REVOKE &#x27;teacher2&#x27; FROM &#x27;teacher&#x27;;<br></code></pre></td></tr></table></figure>
+<p>使用REVOKE语句可以一次性回收多个角色，不同角色使用逗号分隔。</p>
+<p>除使用REVOKE语句回收用户角色外，如果系统因业务需要无须再使用某一角色，可直接使用DROP ROLE语句删除角色，达到回收角色的目的。举例如下。</p>
+<p>【例8-31】删除角teacher。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">DROP ROLE &#x27;teacher&#x27;;<br></code></pre></td></tr></table></figure>
+<h2 id="六、小结">六、小结</h2>
+<p>本章介绍了数据库安全性的相关概念、控制方法及MySQL权限管理系统原理，并具体讲述了在MySQL中使用SQL语句和MysQL Workbench进行用户、权限、角色管理的操作方法。</p>
+<p>数据库安全性管理属于数据库设计和运维的相关技术。MySQL采用登录验证和权限检查模式确保数据库的安全性。其中，权限检查使用权限管理机制明确用户是否具备操作权限。MySQL使用分层权限管理机制，从高到低的权限层次分别为服务器、数据库、表、列和层次，高层次权限覆盖低层次权限。在实际数据库系统开发和运维管理中，数据库管理员应为用户授予合适层级上陈集合。MySQL 8增加了角色的概念。角色是针对特定需要而形成的权限集合，角色的使用与权限类似，但默认情况下，色处于非激活状态，用户需激活角色方可使用。但默认情况下，角色处于非激活状态，用户需激活角色方可使用。</p>
+<h2 id="七、参考">七、参考</h2>
+<p><a target="_blank" rel="noopener" href="https://product.dangdang.com/29379508.html">《数据库原理及应用教程（MySQL版）》</a></p>
+<p><a target="_blank" rel="noopener" href="https://product.dangdang.com/11615897847.html">《数据库系统原理 自考04735》</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="category-chain-item">数据库</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86/" class="print-no-link">#数据库原理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据库原理：数据库安全性管理</div>
+      <div>https://kuberxy.github.io/2024/07/21/数据库原理8：数据库安全性管理/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Mr.x</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年7月21日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/28/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%869%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6%E4%B8%8E%E5%B0%81%E9%94%81/" title="数据库原理：数据库并发控制与封锁">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据库原理：数据库并发控制与封锁</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/14/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%867%EF%BC%9A%E8%A7%86%E5%9B%BE%E5%92%8C%E7%B4%A2%E5%BC%95/" title="数据库原理：视图和索引">
+                        <span class="hidden-mobile">数据库原理：视图和索引</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
