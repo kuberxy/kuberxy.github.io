@@ -16,12 +16,12 @@
   <meta name="author" content="Mr.x">
   <meta name="keywords" content="">
   
-    <meta name="description" content="图是一种比线性表和树更为复杂的数据结构。在图结构中，结点之间的关系可以是任意的，图中任意两个数据元素之间都可能相关。 图结构在计算机科学和算法设计中有广泛的应用。例如，在社交网络分析中，可以使用图结构来表示用户之间的关系；在路线规划中，可以使用图结构来表示道路网络和城市之间的连接关系；在人工智能领域中，图结构可以用于表示知识图谱和推荐系统等。 在离散数学中，图论是专门研究图的性质的数学分支，而在数">
+    <meta name="description" content="图是一种比线性表和树更为复杂的数据结构。在图结构中，结点之间的关系可以是任意的，图中任意两个数据元素之间都可能相关。 图结构在计算机科学中有着广泛的应用。例如，在社交网络分析中，可以使用图结构来表示用户之间的关系；在路线规划中，可以使用图结构来表示道路网络和城市之间的连接关系；在人工智能领域中，图结构可以用于表示知识图谱和推荐系统等。 在离散数学中，图论是专门研究图的性质的数学分支，而在数据结构中">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据结构：图的基本概念">
 <meta property="og:url" content="https://kuberxy.github.io/2024/02/04/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8411%EF%BC%9A%E5%9B%BE%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/index.html">
 <meta property="og:site_name" content="Kubxy">
-<meta property="og:description" content="图是一种比线性表和树更为复杂的数据结构。在图结构中，结点之间的关系可以是任意的，图中任意两个数据元素之间都可能相关。 图结构在计算机科学和算法设计中有广泛的应用。例如，在社交网络分析中，可以使用图结构来表示用户之间的关系；在路线规划中，可以使用图结构来表示道路网络和城市之间的连接关系；在人工智能领域中，图结构可以用于表示知识图谱和推荐系统等。 在离散数学中，图论是专门研究图的性质的数学分支，而在数">
+<meta property="og:description" content="图是一种比线性表和树更为复杂的数据结构。在图结构中，结点之间的关系可以是任意的，图中任意两个数据元素之间都可能相关。 图结构在计算机科学中有着广泛的应用。例如，在社交网络分析中，可以使用图结构来表示用户之间的关系；在路线规划中，可以使用图结构来表示道路网络和城市之间的连接关系；在人工智能领域中，图结构可以用于表示知识图谱和推荐系统等。 在离散数学中，图论是专门研究图的性质的数学分支，而在数据结构中">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://kuberxy.github.io/img/image-20240209112148567.png">
 <meta property="og:image" content="https://kuberxy.github.io/img/image-20240209102106850.png">
@@ -41,7 +41,7 @@
 <meta property="og:image" content="https://kuberxy.github.io/img/image-20240210182857719.png">
 <meta property="og:image" content="https://kuberxy.github.io/img/%E5%9B%BE%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5.jpeg">
 <meta property="article:published_time" content="2024-02-04T05:47:11.000Z">
-<meta property="article:modified_time" content="2024-03-03T09:51:53.000Z">
+<meta property="article:modified_time" content="2024-09-22T08:21:01.000Z">
 <meta property="article:author" content="Mr.x">
 <meta property="article:tag" content="数据结构">
 <meta name="twitter:card" content="summary_large_image">
@@ -287,7 +287,7 @@
               <div class="markdown-body">
                 
                 <p>图是一种比线性表和树更为复杂的数据结构。在图结构中，结点之间的关系可以是任意的，图中任意两个数据元素之间都可能相关。</p>
-<p>图结构在计算机科学和算法设计中有广泛的应用。例如，在社交网络分析中，可以使用图结构来表示用户之间的关系；在路线规划中，可以使用图结构来表示道路网络和城市之间的连接关系；在人工智能领域中，图结构可以用于表示知识图谱和推荐系统等。</p>
+<p>图结构在计算机科学中有着广泛的应用。例如，在社交网络分析中，可以使用图结构来表示用户之间的关系；在路线规划中，可以使用图结构来表示道路网络和城市之间的连接关系；在人工智能领域中，图结构可以用于表示知识图谱和推荐系统等。</p>
 <p>在离散数学中，图论是专门研究图的性质的数学分支，而在数据结构中，则应用图论的知识讨论如何在计算机上实现图的操作，因此主要学习图的存储结构，以及若干图的操作的实现。</p>
 <h2 id="一、定义">一、定义</h2>
 <p>图（Graph）G由两个集合V和E组成，记为G=(V, E)，其中V是顶点的有穷非空集合，E是V中顶点偶对的有穷集合，这些顶点偶对称为边。V(G)和E(G)通常分别表示图G的顶点集合和边集合，E(G)可以为空集。若E(G)为空，则图G只有顶点而没有边。</p>
@@ -298,12 +298,12 @@
 <h2 id="二、基本术语">二、基本术语</h2>
 <p>下面介绍图结构中的一些基本术语（注：n表示图中顶点数目，e表示边的数目）。</p>
 <ul>
-<li>子图：假设右两个图G=(V, E)和G’=(V’, E’)，如果V’<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⊆</mo></mrow><annotation encoding="application/x-tex">\subseteq</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mrel">⊆</span></span></span></span>V且E’<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⊆</mo></mrow><annotation encoding="application/x-tex">\subseteq</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mrel">⊆</span></span></span></span>E，则称G’为G的子图。如下图所示，图（b）是图（a）的子图。</li>
+<li>子图：假设有两个图G=(V, E)和G’=(V’, E’)，如果V’<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⊆</mo></mrow><annotation encoding="application/x-tex">\subseteq</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mrel">⊆</span></span></span></span>V且E’<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⊆</mo></mrow><annotation encoding="application/x-tex">\subseteq</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mrel">⊆</span></span></span></span>E，则称G’为G的子图。如下图所示，图（b）是图（a）的子图。</li>
 </ul>
 <p><img src="/img/image-20240209102106850.png" srcset="/img/loading.gif" lazyload alt="image-20240209102106850"></p>
 <ul>
 <li>
-<p>无向完全图和有向完全图：对于无向图，若具有n(n-1)/2条边，则称为无向安全图。对于有向图，若具有n(n-1)条弧，则称为有向完全图。</p>
+<p>无向完全图和有向完全图：对于无向图，若具有n(n-1)/2条边，则称为无向完全图。对于有向图，若具有n(n-1)条弧，则称为有向完全图。</p>
 </li>
 <li>
 <p>稀疏图和稠密图：边或弧很少（如<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mo>&lt;</mo><mi>n</mi><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mn>2</mn></msub><mi>n</mi></mrow><annotation encoding="application/x-tex">e&lt;n\log_2 n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9386em;vertical-align:-0.2441em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop"><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.207em;"><span style="top:-2.4559em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2441em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span></span></span></span>）的图称为稀疏图，反之称为稠密图。</p>
