@@ -16,12 +16,12 @@
   <meta name="author" content="Mr.x">
   <meta name="keywords" content="">
   
-    <meta name="description" content="在前面我们讨论的与有关的基本概念以及二叉树的遍历，今天我们来看另一个知识点：树和森林。 一、树的存储结构 1.1、双亲表示法 双亲表示法，是以一组连续的存储单元存储树的结点。每个结点除了数据域data之外，还附设一个parent域用以指示其双亲结点的位置，其结点形式如下图所示：  这种存储结构利用了每个结点（除根以外）只有唯一双亲的性质。在这种存储结构下，求结点的双亲十分方便，也很容易求树的根，但">
+    <meta name="description" content="在前面，我们讨论了树的基本概念以及二叉树的遍历，今天我们来看另一个知识点：树和森林。 一、树的存储结构 树的存储结构有很多种形式。其中，常用的表示方法有3种：双亲表示法、孩子表示法和孩子兄弟表示法。下面分别介绍。 1.1、双亲表示法 双亲表示法，是指结点中增设了指示其双亲结点的指针域。该方法以一组连续的存储单元存放树中结点。每个结点除了数据域data之外，还附设一个parent域用以指示其双亲结点">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据结构：树和森林">
 <meta property="og:url" content="https://kuberxy.github.io/2024/01/21/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8409%EF%BC%9A%E6%A0%91%E5%92%8C%E6%A3%AE%E6%9E%97/index.html">
 <meta property="og:site_name" content="Kubxy">
-<meta property="og:description" content="在前面我们讨论的与有关的基本概念以及二叉树的遍历，今天我们来看另一个知识点：树和森林。 一、树的存储结构 1.1、双亲表示法 双亲表示法，是以一组连续的存储单元存储树的结点。每个结点除了数据域data之外，还附设一个parent域用以指示其双亲结点的位置，其结点形式如下图所示：  这种存储结构利用了每个结点（除根以外）只有唯一双亲的性质。在这种存储结构下，求结点的双亲十分方便，也很容易求树的根，但">
+<meta property="og:description" content="在前面，我们讨论了树的基本概念以及二叉树的遍历，今天我们来看另一个知识点：树和森林。 一、树的存储结构 树的存储结构有很多种形式。其中，常用的表示方法有3种：双亲表示法、孩子表示法和孩子兄弟表示法。下面分别介绍。 1.1、双亲表示法 双亲表示法，是指结点中增设了指示其双亲结点的指针域。该方法以一组连续的存储单元存放树中结点。每个结点除了数据域data之外，还附设一个parent域用以指示其双亲结点">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://kuberxy.github.io/img/image-20240207094652510.png">
 <meta property="og:image" content="https://kuberxy.github.io/img/image-20240207101305222.png">
@@ -34,9 +34,9 @@
 <meta property="og:image" content="https://kuberxy.github.io/img/image-20240207161331127.png">
 <meta property="og:image" content="https://kuberxy.github.io/img/image-20240207163305139.png">
 <meta property="og:image" content="https://kuberxy.github.io/img/image-20240207163234909.png">
-<meta property="og:image" content="https://kuberxy.github.io/img/%E6%A0%91%E5%92%8C%E6%A3%AE%E6%9E%97.jpeg">
+<meta property="og:image" content="https://kuberxy.github.io/img/%E6%A0%91%E5%92%8C%E6%A3%AE%E6%9E%97.png">
 <meta property="article:published_time" content="2024-01-21T05:47:11.000Z">
-<meta property="article:modified_time" content="2024-02-11T07:39:19.000Z">
+<meta property="article:modified_time" content="2024-09-22T06:31:23.000Z">
 <meta property="article:author" content="Mr.x">
 <meta property="article:tag" content="数据结构">
 <meta name="twitter:card" content="summary_large_image">
@@ -227,7 +227,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.1k 字
+          2.2k 字
         
       </span>
     
@@ -238,7 +238,7 @@
         
         
         
-          18 分钟
+          19 分钟
         
       </span>
     
@@ -293,32 +293,34 @@
             
               <div class="markdown-body">
                 
-                <p>在前面我们讨论的与有关的基本概念以及二叉树的遍历，今天我们来看另一个知识点：树和森林。</p>
+                <p>在前面，我们讨论了树的基本概念以及二叉树的遍历，今天我们来看另一个知识点：树和森林。</p>
 <h2 id="一、树的存储结构">一、树的存储结构</h2>
+<p>树的存储结构有很多种形式。其中，常用的表示方法有3种：双亲表示法、孩子表示法和孩子兄弟表示法。下面分别介绍。</p>
 <h3 id="1-1、双亲表示法">1.1、双亲表示法</h3>
-<p>双亲表示法，是以一组连续的存储单元存储树的结点。每个结点除了数据域data之外，还附设一个parent域用以指示其双亲结点的位置，其结点形式如下图所示：</p>
+<p>双亲表示法，是指结点中增设了指示其双亲结点的指针域。该方法以一组连续的存储单元存放树中结点。每个结点除了数据域data之外，还附设一个parent域用以指示其双亲结点的位置，其结点形式如下图所示：</p>
 <p><img src="/img/image-20240207094652510.png" srcset="/img/loading.gif" lazyload alt="image-20240207094652510"></p>
-<p>这种存储结构利用了每个结点（除根以外）只有唯一双亲的性质。在这种存储结构下，求结点的双亲十分方便，也很容易求树的根，但求结点的孩子时需要遍历整个结构。如下，为一棵树及其双亲表示的存储结构：</p>
+<p>这种存储结构利用了每个结点（除根以外）只有唯一双亲的性质。在这种存储结构下，求结点的双亲十分方便，也很容易求树的根，但求结点的孩子时需要遍历整个结构。如下图，是一棵树及其双亲表示法的存储结构：</p>
 <p><img src="/img/image-20240207101305222.png" srcset="/img/loading.gif" lazyload alt="image-20240207101305222"></p>
 <h3 id="1-2、孩子表示法">1.2、孩子表示法</h3>
-<p>由于树中每个结点可能有多棵子树，因此可用多重链表，即每个结点有多个指针域，其中每个指针指向一棵子树的根结点。此时，链表中的结点可以有如下两种形式：</p>
+<p>孩子表示法，是指结点中增设了指示其孩子结点的指针域。树中每个结点可能有多棵子树，因此可用多重链表，即每个结点有多个指针域，每个指针指向一棵子树的根结点。此时，链表中的结点可以有如下两种形式：</p>
 <p><img src="/img/image-20240207102251672.png" srcset="/img/loading.gif" lazyload alt="image-20240207102251672"></p>
-<p>若采用第一种结点格式，则多重链表中的结点是同构的，其中d为树的度。由于树中很多结点的度小于d，所以链表中有很多空链域，空间较浪费。不难推出，在一棵有n个结点、度为k的树中必有n(k−1)+1个空链域。</p>
-<p>若采用第二种结点格式，则多重链表中的结点是不同构的，其中d为结点的度，degree域的值同d。此时，虽能节约存储空间，但操作不方便。</p>
-<p>另一种办法是，把每个结点的孩子结点排列起来，看成一个线性表，且以单链表作为存储结构。这样，在一棵有n个结点的树中，就有n个孩子链表。为了便于查找，可将树中各结点的孩子链表的头指针存放在一个指针数组中。与双亲表示法相反，孩子表示法便于那些涉及孩子的操作的实现。如下，为一棵树及其孩子链表存储结构：</p>
+<p>在第一种结点形式中，多重链表中的结点是同构的，其中d为树的度。由于树中很多结点的度小于d，所以链表中有很多空链域，空间较浪费。不难推出，在一棵有n个结点、度为k的树中必有n(k−1)+1个空链域。</p>
+<p>在第二种结点形式中，多重链表中的结点不是同构的，其中d为结点的度，degree域的值同d。此时，虽能节约存储空间，但操作不方便。</p>
+<p>除了上述形式外，还有另一种形式，把每个结点的孩子结点排列起来，看成一个线性表，且以单链表作为存储结构。这样，在一棵有n个结点的树中，就有n个孩子链表。为了便于查找，可将树中各结点的孩子链表的头指针存放在一个指针数组中。</p>
+<p>与双亲表示法相反，孩子表示法便于那些涉及孩子的操作的实现。如下图，是一棵树及其孩子表示法的存储结构：</p>
 <p><img src="/img/image-20240207111133745.png" srcset="/img/loading.gif" lazyload alt="image-20240207111133745"></p>
-<p>此外，还可以把孩子表示法和双亲表示法结合起来，即将双亲表示和孩子链表合在一起。如下，为一棵树及其带双亲的孩子链表存储结构：</p>
+<p>此外，还可以把孩子表示法和双亲表示法结合起来，即将双亲表示和孩子链表合在一起。如下图，是一棵树及其带双亲的孩子链表存储结构：</p>
 <p><img src="/img/image-20240207111839184.png" srcset="/img/loading.gif" lazyload alt="image-20240207111839184"></p>
 <h3 id="1-3、孩子兄弟表示法">1.3、孩子兄弟表示法</h3>
-<p>孩子兄弟表示法又称二叉树表示法，或二叉链表表示法，即以二叉链表做树的存储结构。链表中结点的两个链域分别指向该结点的第一个孩子结点和下一个兄弟结点，分别命名为firstchild域和nextsibling域，其结点形式如下：</p>
+<p>孩子兄弟表示法，是指结点中增设了指示其孩子结点和兄弟结点的指针域。孩子兄弟表示法又称二叉树表示法，或二叉链表表示法，即以二叉链表作为树的存储结构。链表中结点的两个链域分别指向该结点的第一个孩子结点和下一个兄弟结点，分别命名为firstchild域和nextsibling域，其结点形式如下：</p>
 <p><img src="/img/image-20240207113122343.png" srcset="/img/loading.gif" lazyload alt="image-20240207113122343"></p>
 <p>在C语言中，树的孩子兄弟表示法的类型描述如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">CSNode</span> &#123;</span><br>    ElemType data;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">CSNode</span> *<span class="hljs-title">firstchild</span>, *<span class="hljs-title">nextsibling</span>;</span><br>&#125;CSNode, *CSTree;<br></code></pre></td></tr></table></figure>
-<p>利用这种存储结构便于实现各种树的操作。首先易于实现找结点孩子等的操作。例如，若要访问结点x的第i个孩子，则只要先从firstchild域找到第1个孩子结点，然后沿着孩子结点的nextsibling域连续走i−1步，便可找到x的第i个孩子。当然，如果为每个结点增设一个parent域，则同样能方便地实现查找双亲的操作。</p>
-<p>这种存储结构的优点是它和二叉树的二叉链表表示完全一样，便于将一般的树结构转换为二叉树进行处理，利用二叉树的算法来实现对树的操作。因此孩子兄弟表示法是应用较为普遍的一种树的存储表示方法。如下，为一棵树及其二叉链表存储结构：</p>
+<p>利用这种存储结构便于实现树的各种操作。首先易于实现找结点孩子等的操作。例如，若要访问结点x的第i个孩子，则只要先从firstchild域找到第1个孩子结点，然后沿着孩子结点的nextsibling域连续走i−1步，便可找到x的第i个孩子。当然，如果为每个结点增设一个parent域，则同样能方便地实现查找双亲的操作。</p>
+<p>这种存储结构的优点是，它和二叉树的二叉链表完全一样，便于将一般的树结构转换为二叉树进行处理，利用二叉树的算法来实现对树的操作。因此孩子兄弟表示法是应用较为普遍的一种树的存储表示方法。如下图，是一棵树及其二叉链表存储结构：</p>
 <p><img src="/img/image-20240207120223621.png" srcset="/img/loading.gif" lazyload alt="image-20240207120223621"></p>
 <h2 id="二、森林与二叉树的转换">二、森林与二叉树的转换</h2>
-<p>从树的二叉链表表示法可知，任何一棵和树对应的二叉树，其根结点的右子树必为空。若把森林中第二棵树的根结点看成第一棵树的根结点的兄弟，则可导出森林和二叉树的对应关系。如下，为森林与二叉树的对应关系：</p>
+<p>从树的二叉链表表示法可知，任何一棵和树对应的二叉树，其根结点的右子树必为空。若把森林中第二棵树的根结点，看成是第一棵树的根结点的兄弟，则可导出森林和二叉树的对应关系。如下图，是森林与二叉树的对应关系：</p>
 <p><img src="/img/image-20240207142955099.png" srcset="/img/loading.gif" lazyload alt="image-20240207142955099"></p>
 <h3 id="2-1、森林转换成二叉树">2.1、森林转换成二叉树</h3>
 <p>如果<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>=</mo><mo stretchy="false">{</mo><msub><mi>T</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>T</mi><mn>2</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>T</mi><mi>m</mi></msub><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">F=\{T_1,T_2,...,T_m\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">...</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">}</span></span></span></span>是森林，则可按如下规则将其转换成一棵二叉树<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mo stretchy="false">(</mo><mi>r</mi><mi>o</mi><mi>o</mi><mi>t</mi><mo separator="true">,</mo><mi>L</mi><mi>B</mi><mo separator="true">,</mo><mi>R</mi><mi>B</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">B=(root, LB, RB)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">roo</span><span class="mord mathnormal">t</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">L</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">RB</span><span class="mclose">)</span></span></span></span>：</p>
@@ -364,7 +366,7 @@
 <h2 id="四、小结">四、小结</h2>
 <p>树的存储结构有三种：双亲表示法、孩子表示法和孩子兄弟表示法，孩子兄弟表示法是常用的表示法，任意一棵树都能通过孩子兄弟表示法转换为二叉树进行存储。</p>
 <p>树、森林与二叉树之间有一个自然的对应关系，即任何一棵树或一个森林都可唯一地对应于一棵二叉树，而任何一棵二叉树也能唯一地对应于一个森林或一棵树。通过这些转换，可以利用二叉树的操作解决一般树的有关问题。</p>
-<p><img src="/img/%E6%A0%91%E5%92%8C%E6%A3%AE%E6%9E%97.jpeg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="/img/%E6%A0%91%E5%92%8C%E6%A3%AE%E6%9E%97.png" srcset="/img/loading.gif" lazyload alt="img"></p>
 <h2 id="五、参考">五、参考</h2>
 <p><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26713328/">《数据结构（C语言版 第2版）》</a></p>
 <p><a target="_blank" rel="noopener" href="https://book.douban.com/subject/10732022/">《数据结构 自考02331》</a></p>
