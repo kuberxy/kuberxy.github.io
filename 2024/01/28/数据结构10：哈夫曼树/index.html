@@ -16,12 +16,12 @@
   <meta name="author" content="Mr.x">
   <meta name="keywords" content="">
   
-    <meta name="description" content="树结构是一种应用非常广泛的结构，在一些特定的应用中，树具有一些特殊特点，利用这些特点可以解决很多工程问题。例如，我们今天要讨论的哈夫曼树就是一种应用很广的树。 一、哈夫曼树的基本概念 哈夫曼（Huffman）树又称最优二叉树，它是一棵带权路径长度最小的二叉树。哈夫曼树涉及路径、路径长度、权等概念，这些概念的具体含义如下：  路径：从树中一个结点到另一个结点之间的分支构成这两个结点之间的路径。 路径">
+    <meta name="description" content="树结构是一种应用非常广泛的结构，在一些特定的应用中，树具有一些特殊特点，利用这些特点可以解决很多工程问题。例如，我们今天要讨论的哈夫曼树，就是一种应用很广的树。 一、哈夫曼树的基本概念 哈夫曼（Huffman）树又称最优二叉树，它是一棵带权路径长度最小的二叉树。在哈夫曼树中，涉及路径、路径长度、权等概念，这些概念的具体含义如下：  路径：从树中一个结点到另一个结点之间的分支构成这两个结点之间的路径">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据结构：哈夫曼树">
 <meta property="og:url" content="https://kuberxy.github.io/2024/01/28/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8410%EF%BC%9A%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/index.html">
 <meta property="og:site_name" content="Kubxy">
-<meta property="og:description" content="树结构是一种应用非常广泛的结构，在一些特定的应用中，树具有一些特殊特点，利用这些特点可以解决很多工程问题。例如，我们今天要讨论的哈夫曼树就是一种应用很广的树。 一、哈夫曼树的基本概念 哈夫曼（Huffman）树又称最优二叉树，它是一棵带权路径长度最小的二叉树。哈夫曼树涉及路径、路径长度、权等概念，这些概念的具体含义如下：  路径：从树中一个结点到另一个结点之间的分支构成这两个结点之间的路径。 路径">
+<meta property="og:description" content="树结构是一种应用非常广泛的结构，在一些特定的应用中，树具有一些特殊特点，利用这些特点可以解决很多工程问题。例如，我们今天要讨论的哈夫曼树，就是一种应用很广的树。 一、哈夫曼树的基本概念 哈夫曼（Huffman）树又称最优二叉树，它是一棵带权路径长度最小的二叉树。在哈夫曼树中，涉及路径、路径长度、权等概念，这些概念的具体含义如下：  路径：从树中一个结点到另一个结点之间的分支构成这两个结点之间的路径">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://kuberxy.github.io/img/image-20240208100235495.png">
 <meta property="og:image" content="https://kuberxy.github.io/img/image-20240208103840158.png">
@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://kuberxy.github.io/img/image-20240208155154316.png">
 <meta property="og:image" content="https://kuberxy.github.io/img/%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91-1708050974448.jpeg">
 <meta property="article:published_time" content="2024-01-28T05:47:11.000Z">
-<meta property="article:modified_time" content="2024-09-22T07:57:35.000Z">
+<meta property="article:modified_time" content="2024-09-26T00:40:30.000Z">
 <meta property="article:author" content="Mr.x">
 <meta property="article:tag" content="数据结构">
 <meta name="twitter:card" content="summary_large_image">
@@ -209,7 +209,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.9k 字
+          4k 字
         
       </span>
     
@@ -275,9 +275,9 @@
             
               <div class="markdown-body">
                 
-                <p>树结构是一种应用非常广泛的结构，在一些特定的应用中，树具有一些特殊特点，利用这些特点可以解决很多工程问题。例如，我们今天要讨论的哈夫曼树就是一种应用很广的树。</p>
+                <p>树结构是一种应用非常广泛的结构，在一些特定的应用中，树具有一些特殊特点，利用这些特点可以解决很多工程问题。例如，我们今天要讨论的哈夫曼树，就是一种应用很广的树。</p>
 <h2 id="一、哈夫曼树的基本概念">一、哈夫曼树的基本概念</h2>
-<p>哈夫曼（Huffman）树又称最优二叉树，它是一棵带权路径长度最小的二叉树。哈夫曼树涉及路径、路径长度、权等概念，这些概念的具体含义如下：</p>
+<p>哈夫曼（Huffman）树又称最优二叉树，它是一棵带权路径长度最小的二叉树。在哈夫曼树中，涉及路径、路径长度、权等概念，这些概念的具体含义如下：</p>
 <ul>
 <li>路径：从树中一个结点到另一个结点之间的分支构成这两个结点之间的路径。</li>
 <li>路径长度：路径上的分支数目称作路径长度。</li>
@@ -288,7 +288,7 @@
 </ul>
 <p>假设有n个权值<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">{</mo><msub><mi>w</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>w</mi><mn>2</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>w</mi><mi>n</mi></msub><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\{w_1,w_2,...,w_n\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">...</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">}</span></span></span></span>，构造一棵含n个叶子结点的二叉树，每个叶子结点的权为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">w_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，其中带权路径长度（WPL）最小的二叉树就称作最优二叉树或哈夫曼树。如下图，有3棵二叉树，都含有4个叶子结点a、b、c、d，这4个叶子结点的权值分别为7、5、2、4。而这3棵二叉树的带权路径长度分别为36、46、35，其中树（c）的带权路径长度最小。可以验证，它恰为哈夫曼树，即其带权路径长度在所有权值为7、5、4、2的4个叶子结点的二叉树中居最小。</p>
 <p><img src="/img/image-20240208100235495.png" srcset="/img/loading.gif" lazyload alt="image-20240208100235495"></p>
-<p>从这个例子，可以直观地发现，在哈夫曼树中，权值越大的结点离根结点越近。根据这个特点，哈夫曼最早给出了构造哈夫曼树的方法，称哈夫曼算法。</p>
+<p>从这个例子，可以直观地发现，在哈夫曼树中，权值越大的结点离根结点越近。根据这个特点，哈夫曼最早给出了构造最优二叉树的算法，因此也被称为哈夫曼算法。</p>
 <h2 id="二、哈夫曼树的构造算法">二、哈夫曼树的构造算法</h2>
 <h3 id="2-1、构造过程">2.1、构造过程</h3>
 <p>哈夫曼树的构造过程如下：</p>
