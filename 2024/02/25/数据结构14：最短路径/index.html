@@ -16,12 +16,12 @@
   <meta name="author" content="Mr.x">
   <meta name="keywords" content="">
   
-    <meta name="description" content="在实际应用中，最短路径算法被广泛应用于网络路由、交通规划、物流配送等领域。例如，在物流管理中，通过优化整个物流体系，实现最短路径、最低成本的物流管理，可以有效降低物流成本，提高效率。因此，了解最短路径的概念和算法对于解决实际问题具有重要意义。 一、最短路径问题 假若要在计算机上建立一个交通咨询系统，则可以采用图的结构来表示实际的交通网络。如下图所示，图中顶点表示城市，边表示城市间的交通联系。例如，">
+    <meta name="description" content="在实际应用中，最短路径算法被广泛应用于网络路由、交通规划、物流配送等领域。例如，在物流管理中，通过优化整个物流体系，实现最短路径、最低成本的物流管理，可以有效降低物流成本，提高效率。因此，了解最短路径的概念和算法对于解决实际问题具有重要意义。 一、最短路径问题 如果要在计算机上建立一个交通咨询系统，则可以采用图的结构来表示实际的交通网络。如下图所示，图中顶点表示城市，边表示城市间的交通联系。例如，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据结构：最短路径">
 <meta property="og:url" content="https://kuberxy.github.io/2024/02/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8414%EF%BC%9A%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/index.html">
 <meta property="og:site_name" content="Kubxy">
-<meta property="og:description" content="在实际应用中，最短路径算法被广泛应用于网络路由、交通规划、物流配送等领域。例如，在物流管理中，通过优化整个物流体系，实现最短路径、最低成本的物流管理，可以有效降低物流成本，提高效率。因此，了解最短路径的概念和算法对于解决实际问题具有重要意义。 一、最短路径问题 假若要在计算机上建立一个交通咨询系统，则可以采用图的结构来表示实际的交通网络。如下图所示，图中顶点表示城市，边表示城市间的交通联系。例如，">
+<meta property="og:description" content="在实际应用中，最短路径算法被广泛应用于网络路由、交通规划、物流配送等领域。例如，在物流管理中，通过优化整个物流体系，实现最短路径、最低成本的物流管理，可以有效降低物流成本，提高效率。因此，了解最短路径的概念和算法对于解决实际问题具有重要意义。 一、最短路径问题 如果要在计算机上建立一个交通咨询系统，则可以采用图的结构来表示实际的交通网络。如下图所示，图中顶点表示城市，边表示城市间的交通联系。例如，">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://kuberxy.github.io/img/d02dbf546e9551c5392a6f863594b0fb.jpg">
 <meta property="og:image" content="https://kuberxy.github.io/img/image-20240316121239041.png">
@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://kuberxy.github.io/img/image-20240317152342100.png">
 <meta property="og:image" content="https://kuberxy.github.io/img/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84.jpeg">
 <meta property="article:published_time" content="2024-02-25T05:47:11.000Z">
-<meta property="article:modified_time" content="2024-03-17T08:30:06.000Z">
+<meta property="article:modified_time" content="2024-09-28T01:40:31.000Z">
 <meta property="article:author" content="Mr.x">
 <meta property="article:tag" content="数据结构">
 <meta name="twitter:card" content="summary_large_image">
@@ -279,11 +279,11 @@
                 
                 <p>在实际应用中，最短路径算法被广泛应用于网络路由、交通规划、物流配送等领域。例如，在物流管理中，通过优化整个物流体系，实现最短路径、最低成本的物流管理，可以有效降低物流成本，提高效率。因此，了解最短路径的概念和算法对于解决实际问题具有重要意义。</p>
 <h2 id="一、最短路径问题">一、最短路径问题</h2>
-<p>假若要在计算机上建立一个交通咨询系统，则可以采用图的结构来表示实际的交通网络。如下图所示，图中顶点表示城市，边表示城市间的交通联系。例如，一位旅客要从A城到B城，他希望选择一条中转次数最少的路线。</p>
+<p>如果要在计算机上建立一个交通咨询系统，则可以采用图的结构来表示实际的交通网络。如下图所示，图中顶点表示城市，边表示城市间的交通联系。例如，一位旅客要从A城到B城，他希望选择一条中转次数最少的路线。</p>
 <p><img src="/img/d02dbf546e9551c5392a6f863594b0fb.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>假设图中每一站都需要换车，则这个问题反映到图上就是要找一条从顶点A到B所含边的数目最少的路径。只需从顶点A出发对图做广度优先搜索，一旦遇到顶点B就终止。由此所得的广度优先生成树上，从根顶点A到顶点B的路径就是中转次数最少的路径，路径上A与B之间的顶点数就是中转次数，但是，这只是一类最简单的图的最短路径问题。</p>
+<p>假设图中每一站都需要换车，则这个问题反映到图结构中就是要找一条从顶点A到顶点B所含边的数目最少的路径。只需从顶点A出发对图做广度优先搜索，一旦遇到顶点B就终止。由此所得的广度优先生成树上，从根顶点A到顶点B的路径就是中转次数最少的路径，路径上A与B之间的顶点数就是中转次数。</p>
 <p>有时，对于旅客来说，可能更关心的是节省交通费用；而对于司机来说，里程和速度则是他们感兴趣的信息。为了在图上表示有关信息，可对边赋以权，权的值表示两城市间的距离，或途中所需时间，或交通费用等。此时路径长度的度量就不再是路径上边的数目，而是路径上边的权值之和。</p>
-<p>考虑到交通图的有向性，例如，汽车的上山和下山，轮船的顺水和逆水，所花费的时间或代价就不相同，所以交通网往往是用带权有向网表示。在带权有向网中，习惯上称路径上的第一个顶点为源点（Source），最后一个顶点为终点（Destination）。</p>
+<p>考虑到交通图的有向性，例如，汽车的上山和下山，轮船的顺水和逆水，所花费的时间或代价不相同，所以交通网往往是用带权有向网表示。在带权有向网中，习惯上称路径上的第一个顶点为源点（Source），最后一个顶点为终点（Destination）。</p>
 <p>最常见的最短路径问题有两种：一种是求从某个源点到其余各顶点的最短路径，另一种是求每一对顶点之间的最短路径。下面，我们将分别讨论这两种最短路径问题。</p>
 <h2 id="二、迪杰斯特拉算法">二、迪杰斯特拉算法</h2>
 <p>从某个源点到其余各顶点的最短路径，也称单源点最短路径问题。即，给定带权有向图G和源点<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">v_0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，求从<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">v_0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>到G中其余各顶点的最短路径。迪杰斯特拉（Dijkstra）提出了一个按路径长度递增的次序产生最短路径的算法，因此称为迪杰斯特拉算法。</p>
