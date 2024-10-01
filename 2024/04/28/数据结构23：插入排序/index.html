@@ -16,18 +16,18 @@
   <meta name="author" content="Mr.x">
   <meta name="keywords" content="">
   
-    <meta name="description" content="插入排序的基本思想是：每趟排序，将无序区中的一个记录按排序要求插入到有序区的适当位置上，直到整个序列有序为止。例如，打扑克牌在抓牌时要保证抓过的牌有序排列，则每抓一张牌，就插入到合适的位置，直到抓完牌为止，即可得到一个有序序列。 在有序区中寻找插入位置，可以选择不同的查找方法。根据查找方法的不同，有多种插入排序方法，本文将讨论常用的三种方法：直接插入排序、折半插入排序和希尔排序。 一、直接插入排序">
+    <meta name="description" content="插入排序的基本思想是：每趟排序，将无序区中的一个记录，按排序要求插入到有序区的适当位置上，直到整个序列有序为止。例如，在打扑克牌时，如果要保证抓到的牌有序排列，则每抓一张牌，就插入到合适的位置，直到抓完牌为止，即可得到一个有序序列。 在有序区中寻找插入位置，可以选择不同的查找方法。根据查找方法的不同，有多种插入排序方法，本文将讨论常用的三种方法：直接插入排序、折半插入排序和希尔排序。 一、直接插入">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据结构：插入排序">
 <meta property="og:url" content="https://kuberxy.github.io/2024/04/28/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8423%EF%BC%9A%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/index.html">
 <meta property="og:site_name" content="Kubxy">
-<meta property="og:description" content="插入排序的基本思想是：每趟排序，将无序区中的一个记录按排序要求插入到有序区的适当位置上，直到整个序列有序为止。例如，打扑克牌在抓牌时要保证抓过的牌有序排列，则每抓一张牌，就插入到合适的位置，直到抓完牌为止，即可得到一个有序序列。 在有序区中寻找插入位置，可以选择不同的查找方法。根据查找方法的不同，有多种插入排序方法，本文将讨论常用的三种方法：直接插入排序、折半插入排序和希尔排序。 一、直接插入排序">
+<meta property="og:description" content="插入排序的基本思想是：每趟排序，将无序区中的一个记录，按排序要求插入到有序区的适当位置上，直到整个序列有序为止。例如，在打扑克牌时，如果要保证抓到的牌有序排列，则每抓一张牌，就插入到合适的位置，直到抓完牌为止，即可得到一个有序序列。 在有序区中寻找插入位置，可以选择不同的查找方法。根据查找方法的不同，有多种插入排序方法，本文将讨论常用的三种方法：直接插入排序、折半插入排序和希尔排序。 一、直接插入">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://kuberxy.github.io/img/image-20240519084705573.png">
 <meta property="og:image" content="https://kuberxy.github.io/img/image-20240519104535998.png">
 <meta property="og:image" content="https://kuberxy.github.io/img/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F.jpeg">
 <meta property="article:published_time" content="2024-04-28T08:47:11.000Z">
-<meta property="article:modified_time" content="2024-05-27T00:11:36.000Z">
+<meta property="article:modified_time" content="2024-09-29T00:31:27.000Z">
 <meta property="article:author" content="Mr.x">
 <meta property="article:tag" content="数据结构">
 <meta name="twitter:card" content="summary_large_image">
@@ -272,10 +272,10 @@
             
               <div class="markdown-body">
                 
-                <p>插入排序的基本思想是：每趟排序，将无序区中的一个记录按排序要求插入到有序区的适当位置上，直到整个序列有序为止。例如，打扑克牌在抓牌时要保证抓过的牌有序排列，则每抓一张牌，就插入到合适的位置，直到抓完牌为止，即可得到一个有序序列。</p>
+                <p>插入排序的基本思想是：每趟排序，将无序区中的一个记录，按排序要求插入到有序区的适当位置上，直到整个序列有序为止。例如，在打扑克牌时，如果要保证抓到的牌有序排列，则每抓一张牌，就插入到合适的位置，直到抓完牌为止，即可得到一个有序序列。</p>
 <p>在有序区中寻找插入位置，可以选择不同的查找方法。根据查找方法的不同，有多种插入排序方法，本文将讨论常用的三种方法：直接插入排序、折半插入排序和希尔排序。</p>
 <h2 id="一、直接插入排序">一、直接插入排序</h2>
-<p>直接插入排序（Straight Insertion Sort）是一种最简单的排序方法，它采用采用顺序查找法查找当前待排序记录在有序区中的插入位置。</p>
+<p>直接插入排序（Straight Insertion Sort）是一种最简单的排序方法，它采用顺序查找法，寻找待排序记录在有序区中的插入位置。</p>
 <h3 id="1-1、算法步骤">1.1、算法步骤</h3>
 <p>直接插入排序的算法步骤为：</p>
 <ul>
@@ -283,7 +283,7 @@
 <li>循环n-1次，执行以下操作：
 <ul>
 <li>使用顺序查找法，在有序区r[1…i-1]中查找r[i]的插入位置</li>
-<li>将r[i]插入到表长为i-1的有序区r[1…i-1]中。</li>
+<li>将r[i]插入到表长为i-1的有序区r[1…i-1]中</li>
 </ul>
 </li>
 </ul>
@@ -307,8 +307,8 @@
 <p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>R</mi><mi>M</mi><mi>N</mi><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>2</mn></mrow><mi>n</mi></munderover><mo stretchy="false">(</mo><mi>i</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo><mo>=</mo><mfrac><mrow><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><mn>4</mn><mo stretchy="false">)</mo><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mn>2</mn></mfrac><mo>≈</mo><mfrac><msup><mi>n</mi><mn>2</mn></msup><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">RMN=\sum_{i=2}^{n} (i+1) = \frac{(n+4)(n-1)}{2} \approx \frac{n^2}{2}
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">RMN</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.9291em;vertical-align:-1.2777em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.6514em;"><span style="top:-1.8723em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">2</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.2777em;"><span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.113em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">4</span><span class="mclose">)</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.1771em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.4911em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
 <p>若待排序序列中出现各种可能排列的概率相同，则可取上述最好情况和最坏情况的平均情况。在平均情况下，直接插入排序关键字的比较次数和记录移动次数均约为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msup><mi>n</mi><mn>2</mn></msup><mn>4</mn></mfrac></mrow><annotation encoding="application/x-tex">\frac{n^2}{4}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.3629em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0179em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">4</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8913em;"><span style="top:-2.931em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>。</p>
-<p>综上，直接插入排序的时间复杂度为O(n2)。</p>
-<p>从空间上来看，直接插入排序只需要一个记录的辅助空间r[0]，所以空间复杂度为O(1)。</p>
+<p>综上，直接插入排序的时间复杂度为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>。</p>
+<p>从空间上来看，直接插入排序只需要一个辅助空间r[0]，所以空间复杂度为O(1)。</p>
 <h3 id="1-4、算法特点">1.4、算法特点</h3>
 <p>直接插入排序的特点为：</p>
 <ul>
@@ -345,9 +345,9 @@
 <li>适合初始记录无序、n较大时的情况。</li>
 </ul>
 <h2 id="三、希尔排序">三、希尔排序</h2>
-<p>希尔排序（Shell’s Sort）又称“缩小增量排序”（Diminishing Increment Sort），因D.L.希尔（D.L.Shell）于1959年提出而得名。</p>
-<p>希尔排序是对直接插入排序算法的优化。我们知道，当待排序的记录个数较少且待排序序列的关键字基本有序时，采用直接插入排序，效率会很高。希尔排序正式基于以上两点，从“减少记录个数”和“序列基本有序”两个方面对直接插入排序进行了改进。</p>
-<p>希尔排序的主要思想是采用分组插入。先将整个待排序记录序列分割成几组，对每组分别进行直接插入排序，减少参与直接插入排序的数据量，然后增加每组的数据量，重新分组。这样，当经过几次分组排序后，整个序列中的记录“基本有序”时，再对全体记录进行一次直接插入排序。希尔对记录的分组，不是简单地“逐段分割”，而是将相隔某个“增量”的记录分成一组。</p>
+<p>希尔排序（Shell’s Sort）又称“缩小增量排序”（Diminishing Increment Sort），由D.L.希尔（D.L.Shell）于1959年提出而得名。</p>
+<p>希尔排序是对直接插入排序算法的优化。当待排序的记录个数较少，且待排序序列的关键字基本有序时，采用直接插入排序，效率会很高。希尔排序正式基于以上两点，从“减少记录个数”和“序列基本有序”两个方面，对直接插入排序进行了改进。</p>
+<p>希尔排序的主要思想是分组插入。先将整个待排序记录序列分割成几组，对每个组分别进行直接插入排序，减少参与直接插入排序的数据量，然后增加每组的数据量，重新分组。这样，当经过几次分组排序后，整个序列中的记录“基本有序”时，再对全体记录进行一次直接插入排序。希尔排序对记录的分组，不是简单地“逐段分割”，而是将相隔某个“增量”的记录分成一组。</p>
 <h3 id="3-1、算法步骤">3.1、算法步骤</h3>
 <p>希尔排序的算法步骤为：</p>
 <ul>
