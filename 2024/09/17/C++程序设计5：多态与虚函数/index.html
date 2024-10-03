@@ -16,18 +16,18 @@
   <meta name="author" content="Mr.x">
   <meta name="keywords" content="">
   
-    <meta name="description" content="在面向对象程序设计思想中，多态就是不同的对象对同一信息产生不同的行为。面向对象的多态特性使得软件开发更科学、更符合人类的思维习惯，更有效地提高软件开发效率，缩短开发周期，提高软件可靠性。 一、多态概述 C++中的多态分为静态多态和动态多态。其中，静态多态是函数重载，在编译阶段就能确定调用哪个函数。动态多态是由继承产生的，指同一个属性或行为在基类及其各派生类中具有不同的语义，不同的对象根据所接收的消">
+    <meta name="description" content="在面向对象程序设计思想中，多态就是不同的对象对同一信息产生不同的行为。面向对象的多态特性使得软件开发更科学、更符合人类的思维习惯，能有效地提高软件开发效率，缩短开发周期，提高软件可靠性。 一、多态概述 C++中的多态分为静态多态和动态多态。其中，静态多态是函数重载，在编译阶段就能确定调用哪个函数。动态多态由继承产生，是指同一个属性或行为，在基类及其各派生类中具有不同的语义，不同的对象根据所接收的消">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C++程序设计：多态与虚函数">
 <meta property="og:url" content="https://kuberxy.github.io/2024/09/17/C++%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A15%EF%BC%9A%E5%A4%9A%E6%80%81%E4%B8%8E%E8%99%9A%E5%87%BD%E6%95%B0/index.html">
 <meta property="og:site_name" content="Kubxy">
-<meta property="og:description" content="在面向对象程序设计思想中，多态就是不同的对象对同一信息产生不同的行为。面向对象的多态特性使得软件开发更科学、更符合人类的思维习惯，更有效地提高软件开发效率，缩短开发周期，提高软件可靠性。 一、多态概述 C++中的多态分为静态多态和动态多态。其中，静态多态是函数重载，在编译阶段就能确定调用哪个函数。动态多态是由继承产生的，指同一个属性或行为在基类及其各派生类中具有不同的语义，不同的对象根据所接收的消">
+<meta property="og:description" content="在面向对象程序设计思想中，多态就是不同的对象对同一信息产生不同的行为。面向对象的多态特性使得软件开发更科学、更符合人类的思维习惯，能有效地提高软件开发效率，缩短开发周期，提高软件可靠性。 一、多态概述 C++中的多态分为静态多态和动态多态。其中，静态多态是函数重载，在编译阶段就能确定调用哪个函数。动态多态由继承产生，是指同一个属性或行为，在基类及其各派生类中具有不同的语义，不同的对象根据所接收的消">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://kuberxy.github.io/img/215a585e73a836de6ddd0e88406ba72d.jpg">
 <meta property="og:image" content="https://kuberxy.github.io/img/81e11261c3aaed15061b896f243ccfb5.jpg">
 <meta property="og:image" content="https://kuberxy.github.io/img/e05aee45639f294c3dd25094728681df.jpg">
 <meta property="article:published_time" content="2024-09-17T05:47:11.000Z">
-<meta property="article:modified_time" content="2024-10-02T02:37:55.000Z">
+<meta property="article:modified_time" content="2024-10-02T07:23:58.000Z">
 <meta property="article:author" content="Mr.x">
 <meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary_large_image">
@@ -272,18 +272,20 @@
             
               <div class="markdown-body">
                 
-                <p>在面向对象程序设计思想中，多态就是不同的对象对同一信息产生不同的行为。面向对象的多态特性使得软件开发更科学、更符合人类的思维习惯，更有效地提高软件开发效率，缩短开发周期，提高软件可靠性。</p>
+                <p>在面向对象程序设计思想中，多态就是不同的对象对同一信息产生不同的行为。面向对象的多态特性使得软件开发更科学、更符合人类的思维习惯，能有效地提高软件开发效率，缩短开发周期，提高软件可靠性。</p>
 <h2 id="一、多态概述">一、多态概述</h2>
-<p>C++中的多态分为静态多态和动态多态。其中，静态多态是函数重载，在编译阶段就能确定调用哪个函数。动态多态是由继承产生的，指同一个属性或行为在基类及其各派生类中具有不同的语义，不同的对象根据所接收的消息做出不同的响应，这种现象称为动态多态。例如，动物都能发出叫声，但不同的动物叫声不同，猫会“喵喵”、狗会“汪汪”，这就是多态的体现。面向对象程序设计中所说的多态通常指的是动态多态。</p>
-<p>在C++中，“消息”是指调用类的成员函数，不同的行为代表函数的不同实现方式，因此，多态的本质是函数的多种实现形态。实现多态需要满足以下3个条件。</p>
+<p>C++中的多态分为静态多态和动态多态。其中，静态多态是函数重载，在编译阶段就能确定调用哪个函数。动态多态由继承产生，是指同一个属性或行为，在基类及其各派生类中具有不同的语义，不同的对象根据所接收的消息做出不同的响应。例如，动物都能发出叫声，但不同的动物叫声不同，猫会“喵喵”、狗会“汪汪”，这就是多态的体现。</p>
+<p>面向对象程序设计中所说的多态通常指的是动态多态。在C++中，“消息”是指调用类的成员函数，不同的行为代表函数的不同实现方式，因此，多态的本质是函数的多种实现形态。实现多态需要满足以下3个条件：</p>
 <ul>
 <li>基类声明虚函数。</li>
 <li>派生类重写基类的虚函数。</li>
-<li>将基类指针指向派生类对象，通过基类指针访问虚函数。</li>
+<li>基类指针指向派生类对象，通过基类指针访问虚函数。</li>
 </ul>
 <h2 id="二、虚函数实现多态">二、虚函数实现多态</h2>
-<p>如果基类与派生类中有同名成员函数，根据类型兼容规则，当使用基类指针或基类引用操作派生类对象时，只能调用基类的同名函数。如果想要使用基类指针或基类引用调用派生类中的成员函数，就需通过虚函数解决，虚函数是实现多态的基础。本节将针对虚函数实现多态进行详细讲解。</p>
-<h3 id="2-1、虚函数实现多态">2.1、虚函数实现多态</h3>
+<p>如果基类与派生类中有同名成员函数，根据类型兼容规则，当使用基类指针或基类引用，操作派生类对象时，只能调用基类的同名函数。如果想要使用基类指针或基类引用，调用派生类中的成员函数，需要通过虚函数实现，虚函数是实现多态的基础。</p>
+<p>虚函数的作用是，让派生类对虚函数进行重新定义，它只能存在于类的继承层次结构中。若基类中声明了虚函数，并且派生类重新定义了虚函数，当使用基类指针或基类引用，操作派生类对象调用虚函数时，系统会自动调用派生类中的虚函数。</p>
+<p>接下来，将针对虚函数实现多态进行详细讲解。</p>
+<h3 id="2-1、实现多态">2.1、实现多态</h3>
 <p>虚函数的声明方式，是在成员函数的返回值类型前，添加virtual关键字，格式如下所示：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> 类名<br>&#123;<br>权限控制符:<br>  <span class="hljs-keyword">virtual</span> 函数返回值类型 函数名(参数列表);<br>  <span class="hljs-comment">// 其他成员</span><br>  ...<br>&#125;;<br></code></pre></td></tr></table></figure>
 <p>声明虚函数时，有以下几点需要注意。</p>
@@ -293,7 +295,6 @@
 <li>友元函数不能声明为虚函数，但虚函数可以作为另一个类的友元函数。</li>
 <li>虚函数只能是类的成员函数，不能将类外的普通函数声明为虚函数，即virtual关键字只能修饰类中的成员函数，不能修饰类外的普通函数</li>
 </ul>
-<p>虚函数的作用是，让派生类对虚函数进行重新定义，它只能存在于类的继承层次结构中。若类中声明了虚函数，并且派生类重新定义了虚函数，当使用基类指针或基类引用操作派生类对象调用虚函数时，系统会自动调用派生类中的虚函数。</p>
 <p>下面通过案例，演示通过虚函数实现多态，代码如下。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-comment">// 动物类Animal</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Animal</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-comment">// 声明虚函数speak()</span><br>  <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">speak</span><span class="hljs-params">()</span></span>;<br>&#125;;<br><br><span class="hljs-comment">// 类外实现虚函数speak()</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Animal::speak</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  cout&lt;&lt;<span class="hljs-string">&quot;动物叫声&quot;</span>&lt;&lt;endl;<br>&#125;<br><br><br><span class="hljs-comment">// 猫类Cat，公有继承Animal类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Cat</span>:<span class="hljs-keyword">public</span> Animal<br>&#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-comment">// 声明虚函数speak()</span><br>  <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">speak</span><span class="hljs-params">()</span></span>;<br>&#125;;<br><br><span class="hljs-comment">// 类外实现虚函数speak()</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Cat::speak</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  cout&lt;&lt;<span class="hljs-string">&quot;猫的叫声：喵喵&quot;</span>&lt;&lt;endl;<br>&#125;<br><br><br><span class="hljs-comment">// 猫类Dog，公有继承Animal类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Dog</span>:<span class="hljs-keyword">public</span> Animal<br>&#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-comment">// 声明虚函数speak()</span><br>  <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">speak</span><span class="hljs-params">()</span></span>;<br>&#125;;<br><br><span class="hljs-comment">// 类外实现虚函数speak()</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Dog::speak</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  cout&lt;&lt;<span class="hljs-string">&quot;狗的叫声：汪汪&quot;</span>&lt;&lt;endl;<br>&#125;<br><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-comment">// 创建Cat类对象cat</span><br>  Cat cat;<br>  <span class="hljs-comment">// 定义Animal类指针pA指向对象cat</span><br>  Animal *pA=&amp;cat;<br>  <span class="hljs-comment">// 通过pA调用speak()函数</span><br>  pA-&gt;<span class="hljs-built_in">speak</span>();<br><br>  <span class="hljs-comment">// 创建Dog类对象dog</span><br>  Dog dog;<br>  <span class="hljs-comment">// 定义Animal类指针pB指向对象dog</span><br>  Animal *pB=&amp;dog;<br>  <span class="hljs-comment">// 通过pB调用speak()函数</span><br>  pB-&gt;<span class="hljs-built_in">speak</span>();<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>上述代码，第5～10行代码定义了动物类Animal，该类声明了虚函数speak()。第13～16行代码在类外实现虚函数speak()。需要注意的是，在类外实现虚函数时，返回值类型前不能添加virtual关键字。</p>
@@ -301,7 +302,7 @@
 <p>第52～56行代码，在main()函数中创建Cat类对象cat，定义Animal类指针pA指向对象cat，然后通过pA调用speak()函数。第59～63行代码创建Dog类对象dog，定义Animal类指针pB指向对象dog，然后通过pB调用speak()函数。</p>
 <p>在上述代码中，pA指针调用的是Cat类的speak()函数，会输出猫的叫声；pB调用的是Dog类的speak()函数，会输出狗的叫声。基类指针调用的永远都是派生类重写的虚函数，不同的派生类对象都有自己的表现形态。</p>
 <p>需要注意的是，派生类在重写基类虚函数时，必须与基类中虚函数的原型完全一致，派生类中重写的虚函数前，即使不添加virtual关键字，也会被视为虚函数。</p>
-<h3 id="2-2、虚函数实现多态的机制">2.2、虚函数实现多态的机制</h3>
+<h3 id="2-2、实现机制">2.2、实现机制</h3>
 <p>在编写程序时，需要根据函数名、函数返回值类型、函数参数等信息正确调用函数，这个匹配过程通常称为绑定。</p>
 <p>C++提供了两种函数绑定机制：静态绑定和动态绑定。静态绑定也称为静态联编、早绑定，它是指编译器在编译时期就能确定要调用的函数。动态绑定也称为动态联编、迟绑定，它是指编译器在运行时期才能确定要调用的函数。</p>
 <p>虚函数是通过动态绑定实现多态的，当编译器在编译过程中遇到virtual关键字时，它不会对函数调用进行绑定，而是为含有虚函数的类建立一张虚函数表Vtable。在虚函数表中，编译器按照虚函数的声明顺序依次保存虚函数地址。同时，编译器会在类中添加一个隐藏的虚函数指针VPTR，指向虚函数表。在创建对象时，将虚函数指针VPTR放置在对象的起始位置，为其分配空间，并调用构造函数将其初始化为虚函数表的地址。需要注意的是，虚函数表不占用对象空间。</p>
