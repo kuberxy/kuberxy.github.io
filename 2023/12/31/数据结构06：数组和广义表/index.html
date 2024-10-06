@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://kuberxy.github.io/img/image-20240119095539126.png">
 <meta property="og:image" content="https://kuberxy.github.io/img/%E6%95%B0%E7%BB%84%E5%92%8C%E5%B9%BF%E4%B9%89%E8%A1%A8.jpeg">
 <meta property="article:published_time" content="2023-12-31T05:47:11.000Z">
-<meta property="article:modified_time" content="2024-09-26T10:24:26.000Z">
+<meta property="article:modified_time" content="2024-10-06T04:11:21.000Z">
 <meta property="article:author" content="Mr.x">
 <meta property="article:tag" content="数据结构">
 <meta name="twitter:card" content="summary_large_image">
@@ -214,7 +214,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.8k 字
+          4.4k 字
         
       </span>
     
@@ -225,7 +225,7 @@
         
         
         
-          32 分钟
+          38 分钟
         
       </span>
     
@@ -332,6 +332,18 @@
 <h4 id="1-3-3、多对角线矩阵">1.3.3、多对角线矩阵</h4>
 <p>在多对角线矩阵中，所有非零元都集中在以主对角线为中心的带状区域中，即除了主对角线上和主对角线上、下方若干条对角线上的元之外，所有其他的元皆为零，如下图所示。</p>
 <p><img src="/img/8f52d609f8153d5aef7df5bbd9ec14a8.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h3 id="1-4、稀疏矩阵的压缩存储">1.4、稀疏矩阵的压缩存储</h3>
+<p>稀疏矩阵，是指矩阵中非零元素的个数远小于矩阵元素的总数。</p>
+<p>为了节省存储单元，对于稀疏矩阵，也可用压缩存储方法，只存储非零元素。</p>
+<p>稀疏矩阵中的非零元素一般是没有规律的。在存储非零元素时，除了存储非零元素的值之外，还必须同时存储该元素的行、列位置（即下标）。因此，可用一个三元组<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>i</mi><mo separator="true">,</mo><mi>j</mi><mo separator="true">,</mo><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(i,j,a_{ij})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0361em;vertical-align:-0.2861em;"></span><span class="mopen">(</span><span class="mord mathnormal">i</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>来唯一确定一个非零元素。</p>
+<p>当用三元组来表示非零元素时，对稀疏矩阵进行压缩存储通常有两种方法：顺序存储和链式存储。链式存储一般采用的是十字链表法，结构比较复杂。这里只介绍顺序存储方式的压缩存储技术。</p>
+<h4 id="1-4-1、三元组表">1.4.1、三元组表</h4>
+<p>如果将表示稀疏矩阵非零元素的三元组按行优先的顺序排列，则可得到一个其结点均为三元组的线性表，即三元组表。</p>
+<p>为了操作方便，对稀疏矩阵的总行数、总列数以及非零元素个数均作为三元组表的辅助属性加以描述。在C语言中，三元组表的类型定义如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 假设非零元素个数的最大值为1000个</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MaxSize 1000</span><br><br><span class="hljs-comment">// 三元组类型</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>  <span class="hljs-comment">// 非零元素的行号、列号（即下标）</span><br>  <span class="hljs-type">int</span> i,j;<br>  <span class="hljs-comment">// 非零元素值</span><br>  DataType v;<br>&#125;TriTupleNode;<br><br><span class="hljs-comment">// 稀疏矩阵类型</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>  <span class="hljs-comment">// 存储三元组的数组</span><br>  TriTupleNode data[MaxSize];<br>  <span class="hljs-comment">// 矩阵的行数、列数和非零元素个数</span><br>  <span class="hljs-type">int</span> m,n,t;<br>&#125;TSMatrix;<br></code></pre></td></tr></table></figure>
+<h4 id="1-4-2、带行表的三元组表">1.4.2、带行表的三元组表</h4>
+<p>为了便于随机存取任意一行的非零元素，可在按行优先存储的三元组表中，增加一个存储每一行的第一个非零元素在三元组表中位置的数组。这样就得到稀疏矩阵的另一种存储结构——带行表的三元组表，又称为行逻辑链接的顺序表。在C语言中，其类型描述如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c">typdef <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>  TriTupleNode data[MaxSize];<br>  <span class="hljs-type">int</span> m,n,t;<br>  <span class="hljs-comment">// 每行第一个非零元素的位置表</span><br>  <span class="hljs-type">int</span> RowPos[MaxRow];<br>&#125;RLSMatrix;<br></code></pre></td></tr></table></figure>
 <h2 id="二、广义表">二、广义表</h2>
 <p>广义表，也称列表，它是线性表的推广。线性表的元素仅限于原子项，即每个数据元素只能是一个数或一个记录，如果放松对线性表的这种限制，允许它们自身具有结构，由此就产生了广义表的概念。广泛地用于人工智能等领域的表处理语言——LISP语言，把广义表作为基本的数据结构，就连程序也表示为一系列的广义表。</p>
 <h3 id="2-1、定义">2.1、定义</h3>
@@ -360,27 +372,34 @@
 <p>广义表可以是一个递归表，即广义表也可以是其本身的一个子表。例如，表E就是一个递归表。</p>
 </li>
 </ul>
-<p>由于广义表的结构比较复杂，因此其各种运算的实现，没有线性表那么简单。其中，最重要的两个运算如下。</p>
+<h3 id="2-2、基本运算">2.2、基本运算</h3>
+<p>由于广义表的结构比较复杂，因此其各种运算的实现，没有线性表那么简单。其中，最重要的几个运算如下。</p>
 <ul>
 <li>取表头GetHead(LS)：取出的表头是，非空广义表的第一个元素，它可以是一个单原子，也可以是一个子表。</li>
 <li>取表尾GetTail(LS)：取出的表尾是，除去表头之外，其余元素构成的表，即表尾一定是一个广义表。</li>
+<li>求长度Length(LS)：广义表的长度是其元素个数。</li>
+<li>求深度Depth(LS)：广义表的深度是其最大层次数减1。</li>
 </ul>
 <p>例如：</p>
 <ul>
 <li>GetHead(B)=e</li>
 <li>GetTail(B)=()</li>
+<li>Length(B)=1</li>
+<li>Depth(B)=1</li>
 <li>GetHead(D)=A</li>
 <li>GetTail(D)=(B, C)</li>
+<li>Length(D)=3</li>
+<li>Depth(D)=3</li>
 </ul>
-<p>由于(B, C)为非空广义表，则可继续分解得到：</p>
+<p>由于(B, C)为非空广义表，因此可继续分解得到：</p>
 <ul>
 <li>GetHead(B, C)=B</li>
-<li>GetTail(B, C)=©</li>
+<li>GetTail(B, C)=(C)</li>
 </ul>
 <p>这里需要注意的是，广义表( )和(( ))不同。前者为空表，长度n=0；后者长度n=1，可分解得到其表头、表尾均为空表( )。</p>
-<h3 id="2-2、存储结构">2.2、存储结构</h3>
+<h3 id="2-3、存储结构">2.3、存储结构</h3>
 <p>由于广义表中的数据元素可以有不同的结构（或是原子，或是列表），因此难以用顺序存储结构表示，通常采用链式存储结构。常用的链式存储结构有两种，头尾链表的存储结构和扩展线性链表的存储结构。</p>
-<h4 id="2-2-1、头尾链表的存储结构">2.2.1、头尾链表的存储结构</h4>
+<h4 id="2-3-1、头尾链表的存储结构">2.3.1、头尾链表的存储结构</h4>
 <p>由于广义表中的数据元素可能为原子或广义表，因此需要两种结构的结点：一种是原子结点，用以表示原子；一种是表结点，用以表示广义表。其中，一个原子结点由2个域组成：标志域和值域；一个表结点由3个域组成：标志域、指示表头的指针域和指示表尾的指针域。它们的结构如下图所示，其中tag是标志域，值为0时表示结点是原子，值为1时表示结点是子表。对于一个非空的广义表来说，它可以被分解成表头和表尾，因此，一对确定的表头和表尾可唯一确定广义表。</p>
 <p><img src="/img/image-20240119092345537.png" srcset="/img/loading.gif" lazyload alt="image-20240119092345537"></p>
 <p>在C语言中，广义表的头尾链表存储结构的类型描述如下：</p>
@@ -393,7 +412,7 @@
 <li>在这种存储结构中，易分清广义表中原子和子表所在层次。比如，在广义表D中，原子a和e在同一层次上，而b、c和d在同一层次且比a和e低一层，B和C是同一层的子表。</li>
 <li>最高层的表结点个数即为广义表的长度。</li>
 </ul>
-<h4 id="2-2-2、扩展线性链表的存储结构">2.2.2、扩展线性链表的存储结构</h4>
+<h4 id="2-3-2、扩展线性链表的存储结构">2.3.2、扩展线性链表的存储结构</h4>
 <p>在这种结构中，无论是原子结点还是表结点均由三个域组成，其结点结构如下图所示：</p>
 <p><img src="/img/image-20240119092753520.png" srcset="/img/loading.gif" lazyload alt="image-20240119092753520"></p>
 <p>前面列举的广义表的例子，它们的扩展线性链表存储结构是这样的：</p>
