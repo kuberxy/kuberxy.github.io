@@ -204,6 +204,433 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%862%EF%BC%9AKubernetes%E6%98%AF%E5%A6%82%E4%BD%95%E5%87%86%E5%A4%87%E6%8C%81%E4%B9%85%E5%8C%96%E7%9B%AE%E5%BD%95%E7%9A%84/" target="_self">
+          存储管理2：Kubernetes是如何准备持久化目录的
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%862%EF%BC%9AKubernetes%E6%98%AF%E5%A6%82%E4%BD%95%E5%87%86%E5%A4%87%E6%8C%81%E4%B9%85%E5%8C%96%E7%9B%AE%E5%BD%95%E7%9A%84/" target="_self">
+        <div>
+          我们要知道的是，所谓的容器Volume，其实就是将宿主机上的一个目录，跟容器中的一个目录绑定挂载在一起。而所谓的“持久化Volume”，指的就是宿主机上的目录具备“持久性”。即，这个目录里的内容，即不会因为容器的删除而被清理掉，也不会跟当前的宿主机绑定。这样，当容器被重启或者在其它节点上重建，它仍然能通过挂载这个Volume，访问到这些内容。 那么，在Kubernetes中又是如何准备持久化目录的
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-05 10:25" pubdate>
+              2020-10-05
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">#Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%861%EF%BC%9A%E7%90%86%E8%A7%A3PV%E3%80%81PVC%E4%BD%93%E7%B3%BB/" target="_self">
+          存储管理1：理解PV、PVC对象
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%861%EF%BC%9A%E7%90%86%E8%A7%A3PV%E3%80%81PVC%E4%BD%93%E7%B3%BB/" target="_self">
+        <div>
+          一个优秀的云计算项目自然少不了存储资源的管理。在kubernetes中，为了简化用户使用持久化存储的门槛，引入了一组叫作  Persistent Volume（PV）和Persistent Volume Claim（PVC）的 API 对象。 1.1、PV对象 PV对象用于描述集群中的存储资源。它主要定义了存储服务的访问信息（或实现细节），比如一个NFS服务的共享信息。通常情况下，PV对象是由集群
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-05 10:20" pubdate>
+              2020-10-05
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">#Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2020/10/04/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%928%EF%BC%9AOperator/" target="_self">
+          容器编排8：Operator
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/04/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%928%EF%BC%9AOperator/" target="_self">
+        <div>
+          在 Kubernetes 中，管理“有状态应用”是一个比较复杂的过程，尤其是编写 Pod 模板的时候，总有一种“在 YAML 文件里编程序”的感觉，让人很不舒服。而在 Kubernetes 生态中，还有一个相对更加灵活和编程友好的管理“有状态应用”的解决方案，它就是：Operator。接下来，我们就以 Etcd Operator 为例，讨论一下 Operator 的工作原理和编写方法。 一、Ope
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-04 09:20" pubdate>
+              2020-10-04
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">#Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2020/10/04/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%927%EF%BC%9AJob%E4%B8%8ECronJob/" target="_self">
+          容器编排7：Job与CronJob
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/04/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%927%EF%BC%9AJob%E4%B8%8ECronJob/" target="_self">
+        <div>
+          在前面的文章中，我们已经讨论Deployment、StatefulSet以及DaemonSet这三个编排对象。接下来，我们讨论另一种重要的对象：Job 一、在线业务 vs 离线业务 Deployment、StatefulSet，以及 DaemonSet 这三个编排对象，它们主要编排的都是“在线业务”，即：Long Running Task（长作业）。比如，我在前面举例时常用的 Nginx、Tomc
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-04 09:19" pubdate>
+              2020-10-04
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">#Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2020/10/04/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%926%EF%BC%9ADaemonSet/" target="_self">
+          容器编排6：DaemonSet
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/04/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%926%EF%BC%9ADaemonSet/" target="_self">
+        <div>
+          在前面的文章中，我们讨论了StatefulSet的工作原理。接下来，我们再看看容器化守护进程的意义，即：DaemonSet。 一、从滚动更新StatefulSet说起 StatefulSet 其实就是对现有典型运维业务的容器化抽象。也就是说，我们一定有方法在不使用 Kubernetes、甚至不使用容器的情况下，自己 DIY 一个类似的方案出来。但是，一旦涉及到升级、版本管理等更工程化的能力，Kub
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-04 09:19" pubdate>
+              2020-10-04
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">#Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2020/10/03/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%925%EF%BC%9A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3StatefulSet%E4%B9%8B%E9%83%A8%E7%BD%B2%E4%B8%80%E4%B8%AA%E6%9C%89%E7%8A%B6%E6%80%81%E5%BA%94%E7%94%A8/" target="_self">
+          容器编排5：深入理解StatefulSet之部署一个有状态应用
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/03/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%925%EF%BC%9A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3StatefulSet%E4%B9%8B%E9%83%A8%E7%BD%B2%E4%B8%80%E4%B8%AA%E6%9C%89%E7%8A%B6%E6%80%81%E5%BA%94%E7%94%A8/" target="_self">
+        <div>
+          在前面的文章中，我们主要讨论了StatefulSet是如何处理拓扑状态和存储状态的，以及StatefulSet的工作原理。接下来，我们通过一个实际例子，熟悉一下部署一个StatefulSet的完整流程。 一、部署MySQL主从集群的三座大山 相比于 Etcd、Cassandra 等“原生”就考虑了分布式需求的项目，MySQL 以及很多其他的数据库项目，在分布式集群的搭建上并不友好，甚至有点“原始”
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-03 08:06" pubdate>
+              2020-10-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">#Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2020/10/03/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%924%EF%BC%9A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3StatefulSet%E4%B9%8B%E5%AD%98%E5%82%A8%E7%8A%B6%E6%80%81/" target="_self">
+          容器编排4：深入理解StatefulSet之存储状态
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/03/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%924%EF%BC%9A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3StatefulSet%E4%B9%8B%E5%AD%98%E5%82%A8%E7%8A%B6%E6%80%81/" target="_self">
+        <div>
+          在前面的文章中，我们讨论了StatefulSet如何保证应用实例的拓扑状态。接下来，我们重点讨论StatefulSet如何保证应用的存储状态。 一、从PVC和PV说起 StatefulSet 对存储状态的管理，主要依赖于一个叫作 Persistent Volume Claim 的功能。 1.1、没有PVC和PV之前 我们知道，在一个 Pod 里声明 Volume，只要在 Pod 里加上 spec.
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-03 08:05" pubdate>
+              2020-10-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">#Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2020/10/03/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%923%EF%BC%9A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3StatefulSet%E4%B9%8B%E6%8B%93%E6%89%91%E7%8A%B6%E6%80%81/" target="_self">
           容器编排3：深入理解StatefulSet之拓扑状态
         </a>
@@ -381,410 +808,11 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2020/10/02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Pod%E5%AF%B9%E8%B1%A13%EF%BC%9A%E4%BD%BF%E7%94%A8%E8%BF%9B%E9%98%B6/" target="_self">
-          深入解析Pod对象3：使用进阶
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Pod%E5%AF%B9%E8%B1%A13%EF%BC%9A%E4%BD%BF%E7%94%A8%E8%BF%9B%E9%98%B6/" target="_self">
-        <div>
-          在前面的文章中，我们已经深入讨论了Pod的API对象，以及Pod和Container的关系。接下来，我们先从一种特殊的Volume开始，更加深入地理解Pod对象各个重要字段的含义。 一、Projected Volume 在 Kubernetes 中，有几种特殊的 Volume，它们存在的意义不是为了存放容器里的数据，也不是用来进行容器和宿主机之间的数据交换。这些特殊 Volume 的作用，是为容器
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-02 07:50" pubdate>
-              2020-10-02
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Kubernetes/">#Kubernetes</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2020/10/02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Pod%E5%AF%B9%E8%B1%A12%EF%BC%9A%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" target="_self">
-          深入解析Pod对象2：基本概念
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Pod%E5%AF%B9%E8%B1%A12%EF%BC%9A%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" target="_self">
-        <div>
-          在前面的文章中，我们详细讨论了Pod的实现原理和容器设计模式。接下来，我们来看看有关Pod对象的更多细节。 一、Pod VS 虚拟机 在 Kubernetes 项目中，最小的编排单位是Pod。将这个设计落实到 API 对象上后，容器（Container）就成了 Pod 属性里的一个普通的字段。此时，一个很自然的问题就是：  到底哪些字段属于 Pod 对象，而又有哪些字段属于 Container ？
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-02 07:50" pubdate>
-              2020-10-02
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Kubernetes/">#Kubernetes</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2020/10/02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Pod%E5%AF%B9%E8%B1%A11%EF%BC%9A%E6%88%91%E4%BB%AC%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81Pod/" target="_self">
-          深入解析Pod对象1：我们为什么需要Pod
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Pod%E5%AF%B9%E8%B1%A11%EF%BC%9A%E6%88%91%E4%BB%AC%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81Pod/" target="_self">
-        <div>
-          接触过kubernetes的同学，对Pod这个概念一定不陌生。它是Kubernetes项目中最小的API对象。用更专业的术语来描述：Pod，是Kubernetes项目的原子调度单位。但我们是否思考过：我们为什么需要Pod？接下来，我们就来讨论一下这个问题。 一、从进程组说起 首先，我们登录到一台 Linux 机器里，执行一条如下所示的命令： 1$ pstree -gt 这条命令的作用，是展示当前系
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-02 07:49" pubdate>
-              2020-10-02
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Kubernetes/">#Kubernetes</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2020/10/02/%E5%AE%B9%E5%99%A8%E5%9F%BA%E7%A1%804%EF%BC%9A%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86Docker/" target="_self">
-          容器基础4：重新认识Docker
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/02/%E5%AE%B9%E5%99%A8%E5%9F%BA%E7%A1%804%EF%BC%9A%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86Docker/" target="_self">
-        <div>
-          在前面的文章中，我们围绕“Namespace做隔离、Cgroups做限制、Rootfs做文件系统”对Linux容器的核心实现原理展开了详细的讨论。接下来，我们通过一个实际案例对前面的内容做一次深入的总结和扩展。 一、从一个Python应用说起 在开始实践之前，我们需要准备一台 Linux 机器，并安装 Docker。这个流程可以参考Docker官网，就不在此赘述了。 这一次，我们用 Docker
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-02 07:46" pubdate>
-              2020-10-02
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Docker/">#Docker</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2020/10/01/%E5%AE%B9%E5%99%A8%E5%9F%BA%E7%A1%803%EF%BC%9A%E7%90%86%E8%A7%A3%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/" target="_self">
-          容器基础3：理解容器镜像
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/01/%E5%AE%B9%E5%99%A8%E5%9F%BA%E7%A1%803%EF%BC%9A%E7%90%86%E8%A7%A3%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/" target="_self">
-        <div>
-          todo 一、理解Mount Namespace 如下，是一个小程序，它的作用是在创建子进程时开启指定的Namespace。 12345678910111213141516171819202122232425262728293031#define _GNU_SOURCE#include &lt;sys/mount.h&gt; #include &lt;sys/types.h&gt;#include
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-01 13:51" pubdate>
-              2020-10-01
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2020/10/01/%E5%AE%B9%E5%99%A8%E5%9F%BA%E7%A1%802%EF%BC%9A%E9%9A%94%E7%A6%BB%E4%B8%8E%E9%99%90%E5%88%B6/" target="_self">
-          容器基础2：隔离与限制
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/01/%E5%AE%B9%E5%99%A8%E5%9F%BA%E7%A1%802%EF%BC%9A%E9%9A%94%E7%A6%BB%E4%B8%8E%E9%99%90%E5%88%B6/" target="_self">
-        <div>
-          在我们真的了解容器吗这文章中，我们讨论了Linux容器中用来实现“隔离”的技术手段：Namespace。接下来，我们一起来了解一下容器的限制机制。 一、再谈隔离 我们知道，Namespace技术实际上修改了进程能够看到的计算机“视图”，即它的“视线”被操作系统做了限制，只能“看到”某些指定的内容。但对于宿主机来说，这些被“隔离”的进程跟其他进程并没有太大区别。 此外，我们需要知道的是，Docker
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-01 09:20" pubdate>
-              2020-10-01
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Docker/">#Docker</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2020/09/28/%E5%AE%B9%E5%99%A8%E5%9F%BA%E7%A1%801%EF%BC%9A%E6%88%91%E4%BB%AC%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3%E5%AE%B9%E5%99%A8%E5%90%97%EF%BC%9F/" target="_self">
-          容器基础1：我们真的了解容器吗？
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/09/28/%E5%AE%B9%E5%99%A8%E5%9F%BA%E7%A1%801%EF%BC%9A%E6%88%91%E4%BB%AC%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3%E5%AE%B9%E5%99%A8%E5%90%97%EF%BC%9F/" target="_self">
-        <div>
-          我相信但凡接触过Docker的同学，一定看到过下面这张虚拟机和容器的对比图： 在这幅图的左边，画出了虚拟机的工作原理。其中，名为Hypervisor的软件是虚拟机最主要的部分。它通过硬件虚拟化功能，模拟出运行一个操作系统所需的各种硬件，比如，CPU、内存、I/O设备等；然后，它在这些虚拟的硬件上安装一个新的操作系统，即Guest OS。这样，我们的应用程序就可以运行在这个虚拟的机器中，而它所能看到
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-28 07:55" pubdate>
-              2020-09-28
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Docker/">#Docker</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/14/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/#board">13</a><a class="page-number" href="/page/14/#board">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/#board">16</a><a class="extend next" rel="next" href="/page/16/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/14/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/#board">13</a><a class="page-number" href="/page/14/#board">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/#board">16</a><a class="page-number" href="/page/17/#board">17</a><a class="extend next" rel="next" href="/page/16/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

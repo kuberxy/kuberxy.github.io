@@ -204,6 +204,433 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C6%EF%BC%9AService%E3%80%81DNS%E4%B8%8E%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0/" target="_self">
+          容器网络6：Service、DNS与服务发现
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C6%EF%BC%9AService%E3%80%81DNS%E4%B8%8E%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0/" target="_self">
+        <div>
+          在前面的文章中，我们讨论了kubernetes的“连通性”和“隔离性”。接下来，我们重点讨论一下一个Pod是如何被访问到的？ 一、理解Service ClusterIP模式 Kubernetes 之所以需要 Service 对象，一方面是因为 Pod 的 IP 不是固定的，另一方面则是因为一组 Pod 实例之间总会有负载均衡的需求。 1.1、创建Service 一个最典型的 Service 定义，
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-07 10:48" pubdate>
+              2020-10-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">#Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C5%EF%BC%9ANetworkPolicy/" target="_self">
+          容器网络5：NetworkPolicy
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C5%EF%BC%9ANetworkPolicy/" target="_self">
+        <div>
+          在前面的文章中，我们讨论了Kubernetes的网络“连通性”。接下来，我们重点讨论Kubernetes网络的“隔离性”。 一、NetworkPolicy对象 1.1、什么是NetworkPolicy 在 Kubernetes 中，对网络隔离能力的定义，是依靠一种专门的 API 对象来描述的，即：NetworkPolicy。 Kubernetes 里的 Pod 默认都是“允许所有”（Accept
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-07 10:47" pubdate>
+              2020-10-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">#Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2020/10/06/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C4%EF%BC%9A%E8%A7%A3%E8%AF%BBKubernetes%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%96%B9%E6%A1%88/" target="_self">
+          容器网络4：解读Kubernetes三层网络方案
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/06/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C4%EF%BC%9A%E8%A7%A3%E8%AF%BBKubernetes%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%96%B9%E6%A1%88/" target="_self">
+        <div>
+          在前面的文章中，我们讨论了Flannel UDP模式和Flannel VXLAN模式这两种“隧道”网络解决方案。接下来，我们重点讨论Flannel host-gw模式和Calico这两种纯三层网络解决方案。 一、Flannel host-gw模式 Flannel host-gw 模式的工作原理非常简单，我们用一张图就可以说清楚。为了方便叙述，接下来我们会称这张图为“host-gw 示意图”。  现
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-06 08:50" pubdate>
+              2020-10-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">#Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2020/10/06/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C3%EF%BC%9AKubernetes%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E4%B8%8ECNI%E7%BD%91%E7%BB%9C%E6%8F%92%E4%BB%B6/" target="_self">
+          容器网络3：Kubernetes网络模型与CNI网络插件
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/06/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C3%EF%BC%9AKubernetes%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E4%B8%8ECNI%E7%BD%91%E7%BB%9C%E6%8F%92%E4%BB%B6/" target="_self">
+        <div>
+          在前面的文章中，我们讨论了容器间的网络通信原理。接下来，我们一起看一看Kubernetes的网络通信原理。 一、从CNI网桥说起 我们知道，Flannel UDP 模式和Flannel VXLAN模式有一个共性，那就是用户的容器都连接在 docker0 网桥上。而Flannel网络插件则会在宿主机上创建了一个特殊的设备（UDP 模式创建的是 TUN 设备，VXLAN 模式创建的则是 VTEP 设备
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-06 08:50" pubdate>
+              2020-10-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">#Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2020/10/06/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C2%EF%BC%9A%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%AE%B9%E5%99%A8%E8%B7%A8%E4%B8%BB%E6%9C%BA%E7%BD%91%E7%BB%9C/" target="_self">
+          容器网络2：深入解析容器跨主机网络
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/06/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C2%EF%BC%9A%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%AE%B9%E5%99%A8%E8%B7%A8%E4%B8%BB%E6%9C%BA%E7%BD%91%E7%BB%9C/" target="_self">
+        <div>
+          在前面的文章中，我们讨论了单机容器间通信的原理，并引出了“跨主机容器间通信问题”。接下来，我们重点讨论跨主机容器间通信的原理。 一、从Flannel项目说起 要理解容器“跨主机通信”的原理，就一定要先从 Flannel 这个项目说起。Flannel 项目是 CoreOS 公司主推的容器网络方案。事实上，Flannel 项目本身只是一个框架，真正为我们提供容器网络功能的，是 Flannel 的后端实
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-06 08:49" pubdate>
+              2020-10-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">#Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2020/10/06/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C1%EF%BC%9A%E6%B5%85%E8%B0%88%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C/" target="_self">
+          容器网络1：浅谈容器网络
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/06/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C1%EF%BC%9A%E6%B5%85%E8%B0%88%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C/" target="_self">
+        <div>
+          在前面的文章中，我们讨论了数据持久化方面的内容。接下来，我们重点讨论与容器网络相关的内容。 一、从单机容器间如何通信说起 首先，我们需要知道的是，一个 Linux 容器能看见的“网络栈”，实际上是被隔离在它自己的 Network Namespace 当中的。而这里所谓的“网络栈”，就包括了：网卡（Network Interface）、回环设备（Loopback Device）、路由表（Routin
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-06 08:49" pubdate>
+              2020-10-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">#Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%866%EF%BC%9AProjected%20Volume/" target="_self">
+          存储管理6：Projected Volume
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%866%EF%BC%9AProjected%20Volume/" target="_self">
+        <div>
+          在 Kubernetes 中，有几种特殊的 Volume，它们存在的意义不是为了存放容器里的数据，也不是用来进行容器和宿主机之间的数据交换。而是为容器提供预先定义好的数据。从容器的角度来看，这些 Volume 中的信息仿佛是被 Kubernetes“投射”（Project）到容器当中的。这正是 Projected Volume 的含义。到目前为止，Kubernetes 支持的 Projected
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-05 10:45" pubdate>
+              2020-10-05
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">#Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%865%EF%BC%9A%E5%AE%9E%E8%B7%B5Local%20PV/" target="_self">
           存储管理5：实践Local PV
         </a>
@@ -381,438 +808,11 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%862%EF%BC%9AKubernetes%E6%98%AF%E5%A6%82%E4%BD%95%E5%87%86%E5%A4%87%E6%8C%81%E4%B9%85%E5%8C%96%E7%9B%AE%E5%BD%95%E7%9A%84/" target="_self">
-          存储管理2：Kubernetes是如何准备持久化目录的
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%862%EF%BC%9AKubernetes%E6%98%AF%E5%A6%82%E4%BD%95%E5%87%86%E5%A4%87%E6%8C%81%E4%B9%85%E5%8C%96%E7%9B%AE%E5%BD%95%E7%9A%84/" target="_self">
-        <div>
-          我们要知道的是，所谓的容器Volume，其实就是将宿主机上的一个目录，跟容器中的一个目录绑定挂载在一起。而所谓的“持久化Volume”，指的就是宿主机上的目录具备“持久性”。即，这个目录里的内容，即不会因为容器的删除而被清理掉，也不会跟当前的宿主机绑定。这样，当容器被重启或者在其它节点上重建，它仍然能通过挂载这个Volume，访问到这些内容。 那么，在Kubernetes中又是如何准备持久化目录的
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-05 10:25" pubdate>
-              2020-10-05
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Kubernetes/">#Kubernetes</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%861%EF%BC%9A%E7%90%86%E8%A7%A3PV%E3%80%81PVC%E4%BD%93%E7%B3%BB/" target="_self">
-          存储管理1：理解PV、PVC对象
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%861%EF%BC%9A%E7%90%86%E8%A7%A3PV%E3%80%81PVC%E4%BD%93%E7%B3%BB/" target="_self">
-        <div>
-          一个优秀的云计算项目自然少不了存储资源的管理。在kubernetes中，为了简化用户使用持久化存储的门槛，引入了一组叫作  Persistent Volume（PV）和Persistent Volume Claim（PVC）的 API 对象。 1.1、PV对象 PV对象用于描述集群中的存储资源。它主要定义了存储服务的访问信息（或实现细节），比如一个NFS服务的共享信息。通常情况下，PV对象是由集群
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-05 10:20" pubdate>
-              2020-10-05
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Kubernetes/">#Kubernetes</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2020/10/04/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%928%EF%BC%9AOperator/" target="_self">
-          容器编排8：Operator
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/04/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%928%EF%BC%9AOperator/" target="_self">
-        <div>
-          在 Kubernetes 中，管理“有状态应用”是一个比较复杂的过程，尤其是编写 Pod 模板的时候，总有一种“在 YAML 文件里编程序”的感觉，让人很不舒服。而在 Kubernetes 生态中，还有一个相对更加灵活和编程友好的管理“有状态应用”的解决方案，它就是：Operator。接下来，我们就以 Etcd Operator 为例，讨论一下 Operator 的工作原理和编写方法。 一、Ope
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-04 09:20" pubdate>
-              2020-10-04
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Kubernetes/">#Kubernetes</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2020/10/04/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%927%EF%BC%9AJob%E4%B8%8ECronJob/" target="_self">
-          容器编排7：Job与CronJob
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/04/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%927%EF%BC%9AJob%E4%B8%8ECronJob/" target="_self">
-        <div>
-          在前面的文章中，我们已经讨论Deployment、StatefulSet以及DaemonSet这三个编排对象。接下来，我们讨论另一种重要的对象：Job 一、在线业务 vs 离线业务 Deployment、StatefulSet，以及 DaemonSet 这三个编排对象，它们主要编排的都是“在线业务”，即：Long Running Task（长作业）。比如，我在前面举例时常用的 Nginx、Tomc
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-04 09:19" pubdate>
-              2020-10-04
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Kubernetes/">#Kubernetes</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2020/10/04/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%926%EF%BC%9ADaemonSet/" target="_self">
-          容器编排6：DaemonSet
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/04/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%926%EF%BC%9ADaemonSet/" target="_self">
-        <div>
-          在前面的文章中，我们讨论了StatefulSet的工作原理。接下来，我们再看看容器化守护进程的意义，即：DaemonSet。 一、从滚动更新StatefulSet说起 StatefulSet 其实就是对现有典型运维业务的容器化抽象。也就是说，我们一定有方法在不使用 Kubernetes、甚至不使用容器的情况下，自己 DIY 一个类似的方案出来。但是，一旦涉及到升级、版本管理等更工程化的能力，Kub
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-04 09:19" pubdate>
-              2020-10-04
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Kubernetes/">#Kubernetes</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2020/10/03/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%925%EF%BC%9A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3StatefulSet%E4%B9%8B%E9%83%A8%E7%BD%B2%E4%B8%80%E4%B8%AA%E6%9C%89%E7%8A%B6%E6%80%81%E5%BA%94%E7%94%A8/" target="_self">
-          容器编排5：深入理解StatefulSet之部署一个有状态应用
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/03/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%925%EF%BC%9A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3StatefulSet%E4%B9%8B%E9%83%A8%E7%BD%B2%E4%B8%80%E4%B8%AA%E6%9C%89%E7%8A%B6%E6%80%81%E5%BA%94%E7%94%A8/" target="_self">
-        <div>
-          在前面的文章中，我们主要讨论了StatefulSet是如何处理拓扑状态和存储状态的，以及StatefulSet的工作原理。接下来，我们通过一个实际例子，熟悉一下部署一个StatefulSet的完整流程。 一、部署MySQL主从集群的三座大山 相比于 Etcd、Cassandra 等“原生”就考虑了分布式需求的项目，MySQL 以及很多其他的数据库项目，在分布式集群的搭建上并不友好，甚至有点“原始”
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-03 08:06" pubdate>
-              2020-10-03
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Kubernetes/">#Kubernetes</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2020/10/03/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%924%EF%BC%9A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3StatefulSet%E4%B9%8B%E5%AD%98%E5%82%A8%E7%8A%B6%E6%80%81/" target="_self">
-          容器编排4：深入理解StatefulSet之存储状态
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/03/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%924%EF%BC%9A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3StatefulSet%E4%B9%8B%E5%AD%98%E5%82%A8%E7%8A%B6%E6%80%81/" target="_self">
-        <div>
-          在前面的文章中，我们讨论了StatefulSet如何保证应用实例的拓扑状态。接下来，我们重点讨论StatefulSet如何保证应用的存储状态。 一、从PVC和PV说起 StatefulSet 对存储状态的管理，主要依赖于一个叫作 Persistent Volume Claim 的功能。 1.1、没有PVC和PV之前 我们知道，在一个 Pod 里声明 Volume，只要在 Pod 里加上 spec.
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-03 08:05" pubdate>
-              2020-10-03
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Kubernetes/">#Kubernetes</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/13/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/#board">12</a><a class="page-number" href="/page/13/#board">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/#board">15</a><a class="page-number" href="/page/16/#board">16</a><a class="extend next" rel="next" href="/page/15/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/13/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/#board">12</a><a class="page-number" href="/page/13/#board">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/#board">15</a><a class="page-number" href="/page/16/#board">16</a><a class="page-number" href="/page/17/#board">17</a><a class="extend next" rel="next" href="/page/15/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 
