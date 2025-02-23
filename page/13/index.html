@@ -204,555 +204,6 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2020/12/06/%E9%99%90%E6%B5%81%E8%AF%A5%E6%80%8E%E4%B9%88%E5%81%9A/" target="_self">
-          限流该怎么做
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/12/06/%E9%99%90%E6%B5%81%E8%AF%A5%E6%80%8E%E4%B9%88%E5%81%9A/" target="_self">
-        <div>
-          限流的核心在于：能“限”在被限制对象的能力上限附近。简单来说就是，设定的阈值要接近被限制对象的能力。一方面，如果阈值过高，限流形同虚设，达不到相应的效果；另一方面，如果阈值过低，频繁触发干预，就会造成误伤。最终都会导致很差的用户体验。因此：   首先，要明确限流对象   然后，要获得被限制对象的能力上限   其次，要制定干预流量的策略   最后，就是限流方案的选择与实现   一、确定限流对象 大体
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-12-06 13:04" pubdate>
-              2020-12-06
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E7%B3%BB%E7%BB%9F%E5%AE%B9%E9%87%8F/" class="category-chain-item">系统容量</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E9%99%90%E6%B5%81/">#限流</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2020/12/06/%E6%B5%85%E8%B0%88%E5%B8%B8%E7%94%A8%E9%99%90%E6%B5%81%E7%AD%96%E7%95%A5/" target="_self">
-          浅谈常用限流策略
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/12/06/%E6%B5%85%E8%B0%88%E5%B8%B8%E7%94%A8%E9%99%90%E6%B5%81%E7%AD%96%E7%95%A5/" target="_self">
-        <div>
-          在实际的应用场景中，常用的限流策略可以概括为一个词：两窗两桶。其中，两窗是指固定窗口和滑动窗口；两桶是指漏桶和令牌桶。 一、固定窗口 固定窗口，是指设定一个固定的统计周期（比如，30秒或1分钟），然后通过累加计数器对每个周期内的流量进行统计。在一个周期内，如果流量达到了设定的阈值，就进行流量干预，直到进入下一个统计周期，计数器清零，流量接收恢复正常。该策略可以用如下示意图来理解：  二、滑动窗口
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-12-06 10:16" pubdate>
-              2020-12-06
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E7%B3%BB%E7%BB%9F%E5%AE%B9%E9%87%8F/" class="category-chain-item">系统容量</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E9%99%90%E6%B5%81%E7%AD%96%E7%95%A5/">#限流策略</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2020/10/13/%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A65%EF%BC%9AGPU%E7%AE%A1%E7%90%86%E4%B8%8EDevice-Plugin%E6%9C%BA%E5%88%B6/" target="_self">
-          作业调度5：GPU管理与Device Plugin机制
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/13/%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A65%EF%BC%9AGPU%E7%AE%A1%E7%90%86%E4%B8%8EDevice-Plugin%E6%9C%BA%E5%88%B6/" target="_self">
-        <div>
-          todo 一、从人工智能说起 2016 年，随着 AlphaGo 的走红和 TensorFlow 项目的异军突起，一场名为 AI 的技术革命迅速从学术界蔓延到了工业界，所谓的 AI 元年，就此拉开帷幕。 当然，机器学习或者说人工智能，并不是什么新鲜的概念。而这次热潮的背后，云计算服务的普及与成熟，以及算力的巨大提升，其实正是将人工智能从象牙塔带到工业界的一个重要推手。 而与之相对应的，从 2016
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-13 08:17" pubdate>
-              2020-10-13
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Kubernetes/">#Kubernetes</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2020/10/13/%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A64%EF%BC%9AKubernetes%E9%BB%98%E8%AE%A4%E8%B0%83%E5%BA%A6%E5%99%A8%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7%E4%B8%8E%E6%8A%A2%E5%8D%A0%E6%9C%BA%E5%88%B6/" target="_self">
-          作业调度4：Kubernetes默认调度器的优先级与抢占机制
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/13/%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A64%EF%BC%9AKubernetes%E9%BB%98%E8%AE%A4%E8%B0%83%E5%BA%A6%E5%99%A8%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7%E4%B8%8E%E6%8A%A2%E5%8D%A0%E6%9C%BA%E5%88%B6/" target="_self">
-        <div>
-          在前面的文章中，我们讨论了Kubernetes默认调度器的主要调度算法的工作原理。接下来，我们来看一下Kubernetes默认调度器的另一个重要机制：优先级（Priority）和抢占机制（Preemption）。 一、从Pod调度失败说起 首先需要明确的是，优先级和抢占机制，解决的是 Pod 调度失败时该怎么办的问题。 正常情况下，当一个 Pod 调度失败后，它就会被暂时“搁置”起来，直到 Pod
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-13 08:16" pubdate>
-              2020-10-13
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Kubernetes/">#Kubernetes</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2020/10/13/%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A63%EF%BC%9AKubernetes%E9%BB%98%E8%AE%A4%E8%B0%83%E5%BA%A6%E5%99%A8%E7%9A%84%E8%B0%83%E5%BA%A6%E7%AD%96%E7%95%A5/" target="_self">
-          作业调度3：Kubernetes默认调度器的调度策略
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/13/%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A63%EF%BC%9AKubernetes%E9%BB%98%E8%AE%A4%E8%B0%83%E5%BA%A6%E5%99%A8%E7%9A%84%E8%B0%83%E5%BA%A6%E7%AD%96%E7%95%A5/" target="_self">
-        <div>
-          在前面的文章中，我们讨论了Kubernete默认调度器的设计以及走向。接下来，我们重点讨论Predicates和Priorities这两个重要的调度过程。 一、理解Predicates的工作原理 首先，我们一起看看 Predicates。 Predicates 在调度过程中的作用，可以理解为 Filter，即：它按照调度策略，从当前集群的所有节点中，“过滤”出一系列符合条件的节点。这些节点，都是可
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-13 08:15" pubdate>
-              2020-10-13
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Kubernetes/">#Kubernetes</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2020/10/13/%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A62%EF%BC%9AKubernetes%E7%9A%84%E9%BB%98%E8%AE%A4%E8%B0%83%E5%BA%A6%E5%99%A8/" target="_self">
-          作业调度2：Kubernetes的默认调度器
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/13/%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A62%EF%BC%9AKubernetes%E7%9A%84%E9%BB%98%E8%AE%A4%E8%B0%83%E5%BA%A6%E5%99%A8/" target="_self">
-        <div>
-          在前面的文章中，我们主要讨论了 Kubernetes 里关于资源模型的设计。接下来，我们来讨论一下 Kubernetes 的默认调度器（default scheduler）。 一、默认调度器的设计 1.1、从默认调度器的职责说起 在 Kubernetes 项目中，默认调度器的主要职责，就是为一个新创建出来的 Pod，寻找一个最合适的节点（Node）。而这里“最合适”的含义，包括两层：  从集群所有
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-13 08:14" pubdate>
-              2020-10-13
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A6/">#作业调度</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2020/10/13/%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A61%EF%BC%9AKubernetes%E7%9A%84%E8%B5%84%E6%BA%90%E6%A8%A1%E5%9E%8B/" target="_self">
-          作业调度1：Kubernetes的资源模型
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/13/%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A61%EF%BC%9AKubernetes%E7%9A%84%E8%B5%84%E6%BA%90%E6%A8%A1%E5%9E%8B/" target="_self">
-        <div>
-          作为一个编排与管理容器集群的项目，Kubernetes 为用户提供的基础设施能力，不仅包括了对应用的定义和描述，还包括了对应用的资源管理和调度。接下来，我们重点讨论后面这部分内容。 一、从Kubernetes的资源模型说起 1.1、两种资源类型 我们知道，在 Kubernetes 里，Pod 是最小的原子调度单位。这也就意味着，所有跟调度和资源管理相关的属性都应该属于 Pod 对象的字段。而这其中
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-13 08:14" pubdate>
-              2020-10-13
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A6/">#作业调度</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2020/10/10/GoReplay%E5%85%A5%E9%97%A8/" target="_self">
-          GoReplay入门
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/10/GoReplay%E5%85%A5%E9%97%A8/" target="_self">
-        <div>
-          随着应用功能的不断增加，测试它所需的工作量也会成倍增加。GoReplay则为我们提供了一个简单而快速的测试方法，即重用现有流量进行测试。它能够记录和分析应用程序的流量，且不会对应用程序造成影响。 一、简介 GoReplay，又称Gor，是一个采用Golang编写的、开源的HTTP实时流量捕获和重放工具。通过它可以完成流量复制、负载测试、流量监控和流量分析等工作。它以守护进程（而不是Proxy）的形
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-10 16:05" pubdate>
-              2020-10-10
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%B5%81%E9%87%8F%E5%A4%8D%E5%88%B6/" class="category-chain-item">流量复制</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Gor/">#Gor</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2020/10/08/%E6%80%8E%E6%A0%B7%E5%88%B6%E5%AE%9A%E4%B8%80%E4%BB%BD%E7%A7%91%E5%AD%A6%E7%9A%84%E8%B7%91%E6%AD%A5%E6%96%B9%E6%A1%88%EF%BC%9F/" target="_self">
-          怎样制定一份科学的跑步方案？
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/08/%E6%80%8E%E6%A0%B7%E5%88%B6%E5%AE%9A%E4%B8%80%E4%BB%BD%E7%A7%91%E5%AD%A6%E7%9A%84%E8%B7%91%E6%AD%A5%E6%96%B9%E6%A1%88%EF%BC%9F/" target="_self">
-        <div>
-          todo 一、体脂率（跑步训练的启动指标） 1.1、什么是体脂率 体脂率是指体内的脂肪占体重总数的百分比。 比如，男性的体脂率高于26%就属于肥胖，如果能维持在14%左右就可以在腹部看到肌肉。女性的体脂率高于32%就属于肥胖，如果能维持在23%左右就能看到肌肉线条。 1.2、体脂率的作用 体脂率不仅是判断身体是否肥胖的参考指标，而且还是能否开始跑步的参考指标。当男性的体脂率低于26%、女性的体脂率
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-08 16:55" pubdate>
-              2020-10-08
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E7%B2%BE%E5%8A%9B%E7%AE%A1%E7%90%86/" class="category-chain-item">精力管理</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E8%B7%91%E6%AD%A5/">#跑步</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
         <a href="/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C8%EF%BC%9AService%E4%B8%8EIngress/" target="_self">
           容器网络8：Service与Ingress
         </a>
@@ -808,11 +259,560 @@
     </article>
   </div>
 
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C7%EF%BC%9A%E4%BB%8E%E5%A4%96%E9%83%A8%E8%AE%BF%E9%97%AEService/" target="_self">
+          容器网络7：从外部访问Service
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C7%EF%BC%9A%E4%BB%8E%E5%A4%96%E9%83%A8%E8%AE%BF%E9%97%AEService/" target="_self">
+        <div>
+          在前面的文章中，我们讨论了Kubernetes内部的Pod之间如何互相访问。接下来，我们重点讨论如何从外部访问Kubernetes内部的Pod。 一、NodePort 通过前面的讲解，我们应该能够明白这样一个事实：Service 的访问信息在 Kubernetes 集群之外，其实是无效的。这其实也容易理解：所谓 Service 的访问入口，其实就是每台宿主机上由 kube-proxy 生成的 ip
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-07 10:49" pubdate>
+              2020-10-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">#Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C6%EF%BC%9AService%E3%80%81DNS%E4%B8%8E%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0/" target="_self">
+          容器网络6：Service、DNS与服务发现
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C6%EF%BC%9AService%E3%80%81DNS%E4%B8%8E%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0/" target="_self">
+        <div>
+          在前面的文章中，我们讨论了kubernetes的“连通性”和“隔离性”。接下来，我们重点讨论一下一个Pod是如何被访问到的？ 一、理解Service ClusterIP模式 Kubernetes 之所以需要 Service 对象，一方面是因为 Pod 的 IP 不是固定的，另一方面则是因为一组 Pod 实例之间总会有负载均衡的需求。 1.1、创建Service 一个最典型的 Service 定义，
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-07 10:48" pubdate>
+              2020-10-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">#Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C5%EF%BC%9ANetworkPolicy/" target="_self">
+          容器网络5：NetworkPolicy
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/07/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C5%EF%BC%9ANetworkPolicy/" target="_self">
+        <div>
+          在前面的文章中，我们讨论了Kubernetes的网络“连通性”。接下来，我们重点讨论Kubernetes网络的“隔离性”。 一、NetworkPolicy对象 1.1、什么是NetworkPolicy 在 Kubernetes 中，对网络隔离能力的定义，是依靠一种专门的 API 对象来描述的，即：NetworkPolicy。 Kubernetes 里的 Pod 默认都是“允许所有”（Accept
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-07 10:47" pubdate>
+              2020-10-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">#Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2020/10/06/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C4%EF%BC%9A%E8%A7%A3%E8%AF%BBKubernetes%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%96%B9%E6%A1%88/" target="_self">
+          容器网络4：解读Kubernetes三层网络方案
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/06/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C4%EF%BC%9A%E8%A7%A3%E8%AF%BBKubernetes%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%96%B9%E6%A1%88/" target="_self">
+        <div>
+          在前面的文章中，我们讨论了Flannel UDP模式和Flannel VXLAN模式这两种“隧道”网络解决方案。接下来，我们重点讨论Flannel host-gw模式和Calico这两种纯三层网络解决方案。 一、Flannel host-gw模式 Flannel host-gw 模式的工作原理非常简单，我们用一张图就可以说清楚。为了方便叙述，接下来我们会称这张图为“host-gw 示意图”。  现
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-06 08:50" pubdate>
+              2020-10-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">#Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2020/10/06/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C3%EF%BC%9AKubernetes%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E4%B8%8ECNI%E7%BD%91%E7%BB%9C%E6%8F%92%E4%BB%B6/" target="_self">
+          容器网络3：Kubernetes网络模型与CNI网络插件
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/06/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C3%EF%BC%9AKubernetes%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E4%B8%8ECNI%E7%BD%91%E7%BB%9C%E6%8F%92%E4%BB%B6/" target="_self">
+        <div>
+          在前面的文章中，我们讨论了容器间的网络通信原理。接下来，我们一起看一看Kubernetes的网络通信原理。 一、从CNI网桥说起 我们知道，Flannel UDP 模式和Flannel VXLAN模式有一个共性，那就是用户的容器都连接在 docker0 网桥上。而Flannel网络插件则会在宿主机上创建了一个特殊的设备（UDP 模式创建的是 TUN 设备，VXLAN 模式创建的则是 VTEP 设备
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-06 08:50" pubdate>
+              2020-10-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">#Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2020/10/06/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C2%EF%BC%9A%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%AE%B9%E5%99%A8%E8%B7%A8%E4%B8%BB%E6%9C%BA%E7%BD%91%E7%BB%9C/" target="_self">
+          容器网络2：深入解析容器跨主机网络
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/06/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C2%EF%BC%9A%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%AE%B9%E5%99%A8%E8%B7%A8%E4%B8%BB%E6%9C%BA%E7%BD%91%E7%BB%9C/" target="_self">
+        <div>
+          在前面的文章中，我们讨论了单机容器间通信的原理，并引出了“跨主机容器间通信问题”。接下来，我们重点讨论跨主机容器间通信的原理。 一、从Flannel项目说起 要理解容器“跨主机通信”的原理，就一定要先从 Flannel 这个项目说起。Flannel 项目是 CoreOS 公司主推的容器网络方案。事实上，Flannel 项目本身只是一个框架，真正为我们提供容器网络功能的，是 Flannel 的后端实
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-06 08:49" pubdate>
+              2020-10-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">#Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2020/10/06/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C1%EF%BC%9A%E6%B5%85%E8%B0%88%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C/" target="_self">
+          容器网络1：浅谈容器网络
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/06/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C1%EF%BC%9A%E6%B5%85%E8%B0%88%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C/" target="_self">
+        <div>
+          在前面的文章中，我们讨论了数据持久化方面的内容。接下来，我们重点讨论与容器网络相关的内容。 一、从单机容器间如何通信说起 首先，我们需要知道的是，一个 Linux 容器能看见的“网络栈”，实际上是被隔离在它自己的 Network Namespace 当中的。而这里所谓的“网络栈”，就包括了：网卡（Network Interface）、回环设备（Loopback Device）、路由表（Routin
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-06 08:49" pubdate>
+              2020-10-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">#Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%866%EF%BC%9AProjected%20Volume/" target="_self">
+          存储管理6：Projected Volume
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%866%EF%BC%9AProjected%20Volume/" target="_self">
+        <div>
+          在 Kubernetes 中，有几种特殊的 Volume，它们存在的意义不是为了存放容器里的数据，也不是用来进行容器和宿主机之间的数据交换。而是为容器提供预先定义好的数据。从容器的角度来看，这些 Volume 中的信息仿佛是被 Kubernetes“投射”（Project）到容器当中的。这正是 Projected Volume 的含义。到目前为止，Kubernetes 支持的 Projected
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-05 10:45" pubdate>
+              2020-10-05
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">#Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%865%EF%BC%9A%E5%AE%9E%E8%B7%B5Local%20PV/" target="_self">
+          存储管理5：实践Local PV
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/05/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%865%EF%BC%9A%E5%AE%9E%E8%B7%B5Local%20PV/" target="_self">
+        <div>
+          在开始使用 Local Persistent Volume 之前，我们首先需要在集群里配置好磁盘或者块设备。在公有云上，这个操作等同于给虚拟机额外挂载一个磁盘，比如 GCE 的 Local SSD 类型的磁盘就是一个典型例子。而在我们部署的私有环境中，有两种办法来完成这个步骤。   第一种，当然就是给宿主机挂载并格式化一个可用的本地磁盘，这也是最常规的操作；   第二种，对于实验环境，你其实可以在
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-05 10:40" pubdate>
+              2020-10-05
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kubernetes/">#Kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/12/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/#board">11</a><a class="page-number" href="/page/12/#board">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/#board">14</a><a class="page-number" href="/page/15/#board">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/#board">17</a><a class="extend next" rel="next" href="/page/14/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/12/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/#board">11</a><a class="page-number" href="/page/12/#board">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/#board">14</a><a class="page-number" href="/page/15/#board">15</a><a class="page-number" href="/page/16/#board">16</a><a class="extend next" rel="next" href="/page/14/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

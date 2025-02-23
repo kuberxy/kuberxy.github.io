@@ -16,12 +16,12 @@
   <meta name="author" content="Mr.x">
   <meta name="keywords" content="">
   
-    <meta name="description" content="todo 一、计算机网络基本概念 二、计算机网络结构 三、数据交换技术 计算机网络的目的是实现多台主机间的数据交换。最简单的计算机网络只有两台计算机和连接它们的一条链路，即两个结点和一条链路，这时不需要交换。如果有多台计算机需要通信，就需要利用交换技术实现它们之间一对一的通信。 常见的数据交换技术有三种：电路交换（circuit switching）、报文交换（message switching）">
+    <meta name="description" content="todo 一、计算机网络基本概念 1.1、计算机网络的定义 计算机网络是利用通信设备与通信链路（或通信网络），互连位置不同、功能自洽的计算机系统，并遵循一定的规则实现计算机系统之间信息交换。简单来说，计算机网络是互连的、自洽的计算机的集合。 “自洽”是指互连的计算机系统彼此独立，不存在主从或者控制与被控制的关系。 “互连”是指利用通信链路连接相互独立的计算机系统。 1.2、协议的定义 协议是计算机">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算机网络原理：计算机网络概述">
 <meta property="og:url" content="https://kuberxy.github.io/2024/11/03/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%8601%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%A6%82%E8%BF%B0/index.html">
 <meta property="og:site_name" content="Kubxy">
-<meta property="og:description" content="todo 一、计算机网络基本概念 二、计算机网络结构 三、数据交换技术 计算机网络的目的是实现多台主机间的数据交换。最简单的计算机网络只有两台计算机和连接它们的一条链路，即两个结点和一条链路，这时不需要交换。如果有多台计算机需要通信，就需要利用交换技术实现它们之间一对一的通信。 常见的数据交换技术有三种：电路交换（circuit switching）、报文交换（message switching）">
+<meta property="og:description" content="todo 一、计算机网络基本概念 1.1、计算机网络的定义 计算机网络是利用通信设备与通信链路（或通信网络），互连位置不同、功能自洽的计算机系统，并遵循一定的规则实现计算机系统之间信息交换。简单来说，计算机网络是互连的、自洽的计算机的集合。 “自洽”是指互连的计算机系统彼此独立，不存在主从或者控制与被控制的关系。 “互连”是指利用通信链路连接相互独立的计算机系统。 1.2、协议的定义 协议是计算机">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://kuberxy.github.io/img/77c893193e1d7326294e4139a2c65e21.jpg">
 <meta property="og:image" content="https://kuberxy.github.io/img/8b3357c8fc0a1c8dbb1a30dc98a52354.jpg">
@@ -42,9 +42,10 @@
 <meta property="og:image" content="https://kuberxy.github.io/img/f13322978ea2b7c7bce7d7ca27390fb5.jpg">
 <meta property="og:image" content="https://kuberxy.github.io/img/8b045002f7f961309dc1dc8fcfeed181.jpg">
 <meta property="og:image" content="https://kuberxy.github.io/img/a43b1d97a92272d856d6e0b3e0ec05b6.jpg">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20250215114111899.png">
 <meta property="og:image" content="https://kuberxy.github.io/img/e1446bc232ebab903536edde862d354a.jpg">
 <meta property="article:published_time" content="2024-11-03T05:47:11.000Z">
-<meta property="article:modified_time" content="2024-11-09T06:53:44.000Z">
+<meta property="article:modified_time" content="2025-02-15T09:36:11.000Z">
 <meta property="article:author" content="Mr.x">
 <meta property="article:tag" content="计算机网络原理">
 <meta name="twitter:card" content="summary_large_image">
@@ -223,7 +224,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          11k 字
+          17k 字
         
       </span>
     
@@ -234,7 +235,7 @@
         
         
         
-          90 分钟
+          141 分钟
         
       </span>
     
@@ -290,12 +291,153 @@
               <div class="markdown-body">
                 
                 <p>todo</p>
-<h2 id="一、计算机网络基本概念">一、计算机网络基本概念</h2>
-<h2 id="二、计算机网络结构">二、计算机网络结构</h2>
-<h2 id="三、数据交换技术">三、数据交换技术</h2>
+<h1>一、计算机网络基本概念</h1>
+<h2 id="1-1、计算机网络的定义">1.1、计算机网络的定义</h2>
+<p>计算机网络是利用通信设备与通信链路（或通信网络），互连位置不同、功能自洽的计算机系统，并遵循一定的规则实现计算机系统之间信息交换。简单来说，计算机网络是互连的、自洽的计算机的集合。</p>
+<p>“自洽”是指互连的计算机系统彼此独立，不存在主从或者控制与被控制的关系。</p>
+<p>“互连”是指利用通信链路连接相互独立的计算机系统。</p>
+<h2 id="1-2、协议的定义">1.2、协议的定义</h2>
+<p>协议是计算机网络中的实体在进行数据交换的过程中必须遵循的一些规则或约定。</p>
+<p>协议约定了实体之间交换的信息类型、信息各部分的含义、信息交换顺序以及收到特定信息或出现异常时应采取的行为。</p>
+<p>任何一个协议都包含了三个要素：语法、语义、时序。</p>
+<ul>
+<li>语法：定义实体之间交换信息的格式与结构，或者定义实体之间传输信号的电平等。</li>
+<li>语义：定义实体之间交换的信息中需要发送（或包含）哪些控制信息，这些信息的具体含义，以及针对不同含义的控制信息，接收端应如何响应。此外，还需要定义彼此采用何种差错编码、以及采取何种差错处理机制等。</li>
+<li>时序：也称为同步，定义实体之间交换信息的顺序以及如何匹配或适应彼此的速度。</li>
+</ul>
+<h2 id="1-3、计算机网络的功能">1.3、计算机网络的功能</h2>
+<p>计算机网络的主要功能是资源共享，包括硬件资源共享、软件资源共享和信息资源共享。</p>
+<h2 id="1-4、计算机网络的分类">1.4、计算机网络的分类</h2>
+<p>目前最大的计算机网络就是Internet（或称因特网），按不同的分类标准可以将网络划分不同的类型。</p>
+<h3 id="1-4-1、按覆盖范围">1.4.1、按覆盖范围</h3>
+<ul>
+<li>
+<p>个域网（PAN）。个域网通常是由个人设备通过无线通信技术构成小范围的网络，实现个人设备间的数据传输。个域网通常覆盖范围在1～10m。</p>
+</li>
+<li>
+<p>局域网（LAN）。局域网通常部署在办公室、办公楼、厂区、校园等局部区域内，采用高速有线或无线链路连接主机，实现局部范围内高速数据传输。局域网通常覆盖范围在10m ~ 1km。</p>
+</li>
+<li>
+<p>城域网（MAN）。城域网是指覆盖一个城市范围的网络，覆盖范围通常在5~50km。</p>
+</li>
+<li>
+<p>广域网（WAN）。广域网覆盖范围在几十到几千千米，通常跨越更大的地理空间，可以实现异地局域网或城域网的互联。</p>
+</li>
+</ul>
+<h3 id="1-4-2、按拓扑结构">1.4.2、按拓扑结构</h3>
+<p>网络拓扑是指网络中的主机、网络设备间的物理连接关系与布局。</p>
+<p>按拓扑结构，计算机网络可以分为总线型拓扑结构、星形拓扑结构、环形拓扑结构、树形拓扑结构、网状拓扑结构和混合拓扑结构。</p>
+<p>（1）总线型拓扑结构</p>
+<p>总线型扑结构网络采用一条广播信道作为公共传输介质，称为总线，所有结点均与总线连接，结点间的通信均通过共享的总线进行。由于总线是一条广播信道，所以任一结点通过总线发送数据时，其他结点都会接收到承载这些数据的信号。</p>
+<p>总线型拓扑结构的优点是：</p>
+<ul>
+<li>
+<p>所需要的电缆数量少。</p>
+</li>
+<li>
+<p>结构简单。</p>
+</li>
+<li>
+<p>易于扩展。</p>
+</li>
+</ul>
+<p>总线型拓扑结构的缺点是：</p>
+<ul>
+<li>通信范围受限。</li>
+<li>故障诊断与隔离较困难。</li>
+<li>容易产生冲突。</li>
+</ul>
+<p>（2）星形拓扑结构</p>
+<p>星形拓扑结构网络包括一个中央结点，网络中的主机通过点对点通信链路与中央结点连接。中央结点通常是集线器、交换机等设备，主机之间的通信都需要通过中央结点进行。</p>
+<p>星线型拓扑结构的优点是：</p>
+<ul>
+<li>易于监控与管理</li>
+<li>故障诊断与隔离容易</li>
+</ul>
+<p>星线型拓扑结构的缺点是：</p>
+<ul>
+<li>中央结点是网络的瓶颈，一旦故障，全网瘫痪。</li>
+<li>网络规模受限于中央结点的端口数量。</li>
+</ul>
+<p>（3）环形拓扑结构</p>
+<p>环形拓扑结构网络利用通信链路将所有结点连接成一个闭合的环。环中的数据传输通常是单向（也可以双向）传输，每个结点可以从环中接收数据，并向环中进一步转发数据。</p>
+<p>环形拓扑结构的优点是：</p>
+<ul>
+<li>所需电缆长度短。</li>
+<li>可以使用光纤。</li>
+<li>易于避免冲突。</li>
+</ul>
+<p>环形拓扑结构的缺点是：</p>
+<ul>
+<li>某结点的故障容易引起全网瘫痪。</li>
+<li>新结点的加入或撤出过程比较麻烦。</li>
+<li>存在等待时间问题。</li>
+</ul>
+<p>（4）树形拓扑结构</p>
+<p>树形拓扑结构网络以看作是总线型拓扑或星形拓扑网络的扩展。目前，很多局域网都采用这种拓扑结构。</p>
+<p>树形拓扑结构的优点是：</p>
+<ul>
+<li>易于扩展</li>
+<li>故障隔离容易</li>
+</ul>
+<p>树形拓扑结构的缺点是：</p>
+<ul>
+<li>对根结点的可靠性要求高，一旦根结点故障，则可能导致网络大范围无法通信。</li>
+</ul>
+<p>（5）网状拓扑结构</p>
+<p>网状拓扑结构中的结点通过多条链路与不同的结点直接连接。</p>
+<p>网状拓扑结构网络的优点是：</p>
+<ul>
+<li>网络可靠性高。</li>
+<li>一条或多条链路故障时，网络仍然可联通。</li>
+</ul>
+<p>网状拓扑结构网络的缺点是：</p>
+<ul>
+<li>网络结构复杂。</li>
+<li>造价成本高。</li>
+<li>选路协议复杂。</li>
+</ul>
+<p>（6）混合拓扑结构</p>
+<p>混合拓扑结构网络是由两种以上简单拓扑结构网络混合连接而成的网络。绝大多数实际网络的拓扑都属于混合拓扑结构。</p>
+<p>混合拓扑结构网络的优点是：</p>
+<ul>
+<li>易于扩展，可以构建不同规模网络。</li>
+<li>可根据需要优选网络结构。</li>
+</ul>
+<p>混合拓扑结构网络的缺点是：</p>
+<ul>
+<li>网络结构复杂。</li>
+<li>管理与维护复杂。</li>
+</ul>
+<h3 id="1-4-3、按数据交换方式">1.4.3、按数据交换方式</h3>
+<p>数据交换是指网络通过彼此互连结点间的数据转接，实现将数据从发送结点送达目的结点的过程和技术。按网络所采用的数据交换技术，计算机网络可以分为电路交换网络、报文交换网络和分组交换网络。</p>
+<h3 id="1-4-4、按网络用户属性">1.4.4、按网络用户属性</h3>
+<ul>
+<li>
+<p>公用网。公用网是指由国家或企业出资建设，面向公众提供收费或免费服务的网络，用户只要按规定缴纳费用都可以接入网络，使用网络设施与服务。</p>
+</li>
+<li>
+<p>私有网。私有网是指由某个组织出资建设，专门面向该组织内部业务提供网络传输服务，不向公众开放的网络。</p>
+</li>
+</ul>
+<h2 id="1-5、计算机网络与因特网发展简史">1.5、计算机网络与因特网发展简史</h2>
+<p>ARPAnet是第一个分组交换计算机网络，也是当今因特网的祖先。</p>
+<p>1972年，ARPAnet 开发了第一个主机到主机的协议，网络控制协议(NCP)。Ray Tomlinson为ARPAnet编写了第一个电子邮件程序。</p>
+<p>20世纪70年代早期与中期，除了ARPAnet之外，还陆续诞生了许多其他分组交换网络，例如ALOHAnet、Telenet 等。Norman Abramson在研制分组无线电网络ALOHAnet 时，设计了第一个多路访问控制协议 ALOHA。Met-calle与Boggs研制了基于有线共享广播链路的以太网，奠定了当今局域网技术的基础。到20世纪70年代末期ARPAnet已连接大约200台主机，公共因特网已现雏形。</p>
+<p>到20世纪80年代，公共因特网上连接的主机数量达到100000台。1986年，创建了 NSFNET。在此期间，TCP/IP 协议簇逐渐成熟，并于1983年1月1日正式部署，替代了NCP。</p>
+<p>20世纪90年代，万维网应用诞生。</p>
+<p>从2000年开始，因特网进入爆发式发展时期。</p>
+<h1>二、计算机网络结构</h1>
+<h2 id="2-1、网络边缘">2.1、网络边缘</h2>
+<p>连接到网络上的计算机、服务器、智能手机、智能传感器、智能家电等称为主机或端系。这些端系统位于网络的最边缘，因此，连接到网络上的所有端系统构成了网络边缘。网络边缘上的端系统运行分布式网络应用，在端系统之间进行数据交换，实现应用目的。</p>
+<h2 id="2-2、接入网络">2.2、接入网络</h2>
+<p>接入网络是实现网络边缘的端系统与网络核心连接与接入的网络。常见的接人网络技术句括电话拨号接入、非对称数字用户线路ADSL、混合光纤同轴电缆HFC接入网络、局域网和移动接入网络。</p>
+<h2 id="2-3、网络核心">2.3、网络核心</h2>
+<p>网络核心是由通信链路互连的分组交换设备构成的网络，作用是实现网络边缘中主机之间的数据中继与转发。</p>
+<h1>三、数据交换技术</h1>
 <p>计算机网络的目的是实现多台主机间的数据交换。最简单的计算机网络只有两台计算机和连接它们的一条链路，即两个结点和一条链路，这时不需要交换。如果有多台计算机需要通信，就需要利用交换技术实现它们之间一对一的通信。</p>
 <p>常见的数据交换技术有三种：电路交换（circuit switching）、报文交换（message switching）和分组交换（packet switching）。基于这三种交换技术构建的网络分别称之为电路交换网络、报文交换网络和分组交换网络。</p>
-<h3 id="电路交换">电路交换</h3>
+<h2 id="3-1、电路交换">3.1、电路交换</h2>
 <p>电路交换源于电话网。如下图所示：</p>
 <p><img src="/img/77c893193e1d7326294e4139a2c65e21.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
 <p>图（a）表示两部电话只需要用一对电线就能够互相连接。图（b）表示若有五部电话要两两相连，则需要10对电线。显然， 当电话数量很大时，这种连接方法需要的电线数量会很大（与电话数量的平方成正比）。为了解决这个问题，可以使用一个中间设备将这些电话连接起来，如图（c）所示。这个中间设备就是电话交换机。每一部电话都连接到交换机上，交换机就像一个有多个开关的开关器（当然，实际的工作原理是非常复杂的），可以将需要通信的任意两部电话的电话线路按需接通，从而大大减少了电线数量。当电话的数量进一步增多时，就要使用很多彼此连接起来的交换机来完成全网的交换任务。用这样的方法，就构成了覆盖全世界的电话网。</p>
@@ -303,13 +445,13 @@
 <p><img src="/img/8b3357c8fc0a1c8dbb1a30dc98a52354.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
 <p>这里应当注意的是，用户线归电话用户专用，而交换机之间拥有大量话路的中继线则是许多用户共享的，正在通话的用户只占用了其中的一个话路。在通话的全部时间内，通话的两个用户始终占用端到端的通信资源 。例如，上图中电话A和电话B之间的通路共经过了4个交换机，而电话C和电话D在同一个交换机的地理覆盖范围中，因此这两部电话之间建立的连接不需要经过其他的交换机。这也就是说，在电话A和电话B的通话过程中，它们始终占用这条已建立的物理通路，就像把电话A和电话B直接用一对电话线连接起来一样。通话完毕（挂机）后，电话A和电话B的连接断开，原来被占用的交换机之间的话路又可以为其他用户使用。</p>
 <p>当使用电路交换来传送计算机数据时，其线路的传输效率往往很低。这是因为计算机数据是突发式地出现在传输线路上的，线路真正用来传送数据的时间往往不到10%甚至1%。即，已被用户占用的通信线路在绝大部分时间里都是空闲的。例如，当用户阅读终端屏幕上的信息或用键盘输入和编辑一份文件时，或计算机正在进行处理而结果尚未返回时，宝贵的通信线路资源并未被利用而是白白被浪费了。</p>
-<h3 id="报文交换">报文交换</h3>
+<h2 id="3-2、报文交换">3.2、报文交换</h2>
 <p>在20世纪40年代，电报通信采用了基于存储转发原理的报文交换（Message Switching）。在报文交换中心，一份份电报被接收，并穿成纸带。操作员以每份报文为单位，撕下纸带，根据报文的目的站地址，拿到相应的发报机转发出去。这种报文交换的时延较长，从几分钟到几小时不等。</p>
 <p>报文交换也称为消息交换，其工作过程是：发送方把要发送的信息附加上发送、接收主机的地址及其他控制信息，构成一个完整的报文(Message)，然后以报文为单位在交换网络的各结点之间以存储——转发的方式传送，直至送达目的主机。如下图，展示了有2台分组交换机和3个链路构成的某条路径上的报文交换，在整个传输过程中，每个报文在穿越网络时都不被分割。图中的交换机是存储——转发报文交换机，它们必须接收一个完整的报文，然后才能把报文转发到某个输出链路上。</p>
 <p><img src="/img/image-20241103110455980.png" srcset="/img/loading.gif" lazyload alt="image-20241103110455980"></p>
 <p>报文交换不需要事先建立连接，发送方组装好报文之后即可将其发给相邻的交换结点，交换结点收到整个报文并且检查无误后，暂时存储报文，然后利用路由选择找出下一个接收结点的地址，再把整个报文转发给下一个结点。交换结点的这种接收、暂存、转发的工作方式，就称为“存储——转发”交换方式。只有当报文被转发时才占用相应的信道，不存在电路交换中通信双方空闲时信道也要被占用的情况。因此，相对电路交换信道而言，报文交换线路利用率高。</p>
 <p>在报文交换网络中，交换结点需要缓冲存储，报文需要排队，因此会导致报文的延迟时间变长并且不固定，对于实时通信而言容易出现不能满足速度要求的情况。当结点收到的报文过多而存储空间不够或者输出链路被占用不能及时转发时，就不得不丢弃报文，这也是报文交换的缺点。</p>
-<h3 id="分组交换">分组交换</h3>
+<h2 id="3-3、分组交换">3.3、分组交换</h2>
 <p>计算机网络采用的是分组交换技术。通常，我们把要发送的整块数据称为一个报文 （Message）。分组交换的工作过程是，发送报文前先把一个较长的报文划分成多个较小的等长数据段，同时在每一个数据段的前面加上由必要的控制信息组成的首部 （Header），构成多个分组 （Packet），然后将分组通过通信链路直接发送给分组交换机 （Packet Switch），分组交换机收到一个分组，先将分组暂时存储下来，再检查其首部，按照首部中的目的地址查找转发表 ，找到合适的接口转发出去，把分组交给下一个分组交换机。这样，一步一步经过多个分组交换机把分组转发到最终的目的计算机。</p>
 <p><img src="/img/886de2f27ba5240b9f5b340162bd1b32.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
 <p>接下来，我们以下图为例，说明分组交换机转发分组的过程。</p>
@@ -358,7 +500,7 @@
 <p>分组交换也带来一些新的问题。例如，分组交换机在转发分组时需要花费一定的时间，这就会造成时延，各分组必须携带的控制信息也造成了一定的开销（Overhead）。此外，由于分组交换不像电路交换那样通过建立连接来保证通信时所需的各种资源，因而无法确保通信时端到端的带宽，在通信量较大时可能造成网络拥塞。</p>
 <p><img src="/img/653cf7bc03e00cf510ab475e6dcff3d3.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
 <p>如上图所示，每个分组交换机有多条链路与之相连。对于每条相连的链路，该分组交换机有一个输出缓存（也称为输出队列），用于存储分组交换机准备发往那条链路的分组。该输出缓存在分组交换中起着重要的作用。如果到达的分组需要从某条链路转发出去，但该链路正忙于传输其他分组，则分组必须在该输出缓存中等待（即排队）。当一个分组到达时发现输出缓存已满，将发生分组丢失，即到达的分组或已经排队的分组将被丢弃。当网络中有大量分组需要从某条链路转发时就可能出现这种分组丢失的情况，这时我们说网络发生了拥塞。</p>
-<h3 id="小结">小结</h3>
+<h2 id="3-4、小结">3.4、小结</h2>
 <p>下图，是电路交换、报文交换和分组交换的主要区别。</p>
 <p><img src="/img/8c6210e22c8375300c420c20658be8e7.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
 <p>图中的A和D分别是源点和终点，B和C是在A和D之间的中间结点，P1～P4表示4个分组。图的下方归纳了三种交换方式在数据传送阶段的主要特点。</p>
@@ -368,14 +510,14 @@
 <li>分组交换。单个分组（这只是整个报文的一部分）传送到相邻结点，存储下来后查找转发表，转发到下一个结点。（注：分组交换机的输出接口和输入接口能够并行工作，当输出接口在发送一个分组时，其输入接口可以接收下一个分组）</li>
 </ul>
 <p>从上图可以看出，若要连续传送大量的数据，且其传送时间远大于连接建立时间，则电路交换的传输速率较高。报文交换和分组交换不需要预先分配传输带宽，在传送突发数据时可提高整个网络的信道利用率。由于一个分组的长度往往远小于整个报文的长度，因此分组交换比报文交换的时延小。将发送的报文划分成小的分组，除了有减小转发时延的好处外，还可以避免过长的报文长时间占用链路，同时也有利于进行差错控制。</p>
-<h2 id="四、计算机网络性能">四、计算机网络性能</h2>
+<h1>四、计算机网络性能</h1>
 <p>性能指标从不同的角度来度量计算机网络的性能。下面介绍最常用的7个性能指标。</p>
-<h3 id="速率">速率</h3>
+<h2 id="4-1、速率">4.1、速率</h2>
 <p>速率就是数据的传送速率，也称为数据率（Data Rate）或比特率（Bit Rate）。如下图所示，计算机将待发送的信息转换成二进制数（一个二进制数称为一个“比特”），二进制数最终被转换成数字信号在线路上传输。</p>
 <p><img src="/img/5f29eeefb22310cbd954bd661747d864.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
 <p>在网络技术中，速率的单位是bit/s（比特每秒，有时也写为bps，即bit per second，每秒传输的比特数量）。当速率较高时，就可以用kbit/s（k=<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><msup><mn>0</mn><mn>3</mn></msup></mrow><annotation encoding="application/x-tex">10^3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span></span></span></span>=千）、Mbit/s（M=<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><msup><mn>0</mn><mn>6</mn></msup></mrow><annotation encoding="application/x-tex">10^6</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">6</span></span></span></span></span></span></span></span></span></span></span>=兆）、Gbit/s（G=<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><msup><mn>0</mn><mn>9</mn></msup></mrow><annotation encoding="application/x-tex">10^9</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">9</span></span></span></span></span></span></span></span></span></span></span>=吉）或Tbit/s（T=<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><msup><mn>0</mn><mn>12</mn></msup></mrow><annotation encoding="application/x-tex">10^{12}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">12</span></span></span></span></span></span></span></span></span></span></span></span>=太）。在日常生活中，人们习惯用更简洁但不严谨的说法来描述速率，如100M以太网，省略了单位中的bit/s，它的意思是速率为100Mbit/s的以太网。</p>
 <p>计算机中的数据量往往用字节作为度量的单位，1个字节（Byte，B）代表8个比特（bit）。这里需要注意的是，“千”、“兆”和“吉”等英文缩写所代表的数值。在存储领域，“千字节”的“千”用大写K表示，它等于<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>10</mn></msup></mrow><annotation encoding="application/x-tex">2^{10}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">10</span></span></span></span></span></span></span></span></span></span></span></span>，即1024，而不是<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><msup><mn>0</mn><mn>3</mn></msup></mrow><annotation encoding="application/x-tex">10^3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span></span></span></span>。这也就说是，在表示计算机中的数据量时，1MB或1GB也并非表示<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><msup><mn>0</mn><mn>6</mn></msup></mrow><annotation encoding="application/x-tex">10^6</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">6</span></span></span></span></span></span></span></span></span></span></span>或<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><msup><mn>0</mn><mn>9</mn></msup></mrow><annotation encoding="application/x-tex">10^9</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">9</span></span></span></span></span></span></span></span></span></span></span>个字节，而是表示<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>20</mn></msup></mrow><annotation encoding="application/x-tex">2^{20}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">20</span></span></span></span></span></span></span></span></span></span></span></span>（1048576）或<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><msup><mn>0</mn><mn>30</mn></msup></mrow><annotation encoding="application/x-tex">10^{30}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">30</span></span></span></span></span></span></span></span></span></span></span></span>（1073741824）个字节。而在通信领域，“千字节”的“千”用小写k表示，它等于，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><msup><mn>0</mn><mn>3</mn></msup></mrow><annotation encoding="application/x-tex">10^3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span></span></span></span>即1000，而不是1024。</p>
-<h3 id="带宽">带宽</h3>
+<h2 id="4-2、带宽">4.2、带宽</h2>
 <p>“带宽”（Bandwidth）有以下两种不同的含义。</p>
 <ul>
 <li>
@@ -388,19 +530,19 @@
 <p>“带宽”的这两种含义之间有着密切的关系。一条通信线路，其“频带宽度”越宽，那它传输数据的“最高数据率”也就越高。</p>
 <p>目前主流的便携式计算机，其网卡能够支持10Mbit/s、100Mbit/s、1000Mbit/s这3个速率。如下图所示，当计算机网卡连接交换机后，从“本地连接 状态”对话框可以看到，其速率为100Mbps，说明该网卡的最高数据率是每秒传输100M比特。</p>
 <p><img src="/img/3a9bb4d3bc74dab38c80a5f5a664a53c.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<h3 id="吞吐量">吞吐量</h3>
+<h2 id="4-3、吞吐量">4.3、吞吐量</h2>
 <p>吞吐量（Throughput）也称为吞吐率，表示在单位时间内通过某个网络（或接口）的数据量。</p>
 <p>吞吐量包括全部上传和下载的流量。经常用于对现实世界中的网络进行测量，以便人们了解到底有多少数据量能够通过网络。如下图所示，计算机A同时浏览网页、在线看电影、向FTP服务器上传文件。其访问网页的下载速率为30kbit/s，播放视频的下载速率为40kbit/s，向FTP服务器上传文件的速率为20kbit/s，计算机A的吞吐量就是全部上传和下载速率的总和，即30+40+20=90（kbit/s）。</p>
 <p><img src="/img/efeedf9795930553d3b89d3aafb0879f.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
 <p>吞吐量受网络带宽或网络额定速率限制。如果计算机的网卡连接的是交换机，网卡就可以工作在全双工模式下，即能够同时接收和发送数据。网卡工作在100Mbit/s的全双工模式下，其最大吞吐量为200Mbit/s。如果计算机的网卡连接的是集线器，网卡就只能工作在半双工模式下，即不能同时发送和接收数据。网卡工作在100Mbit/s的半双工模式下，其最大吞吐量为100Mbit/s。</p>
 <p>注：吞吐量有时还可用每秒传送的字节数或帧数来表示。</p>
-<h3 id="时延">时延</h3>
+<h2 id="4-4、时延">4.4、时延</h2>
 <p>时延（Delay或Latency）也称为延迟或迟延，是指数据（一个报文或分组，甚至比特）从网络的一端传送到另一端所需要的时间。网络中的时延是由四个不同的部分组成的：</p>
 <p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>总时延</mtext><mo>=</mo><mtext>发送时延</mtext><mo>+</mo><mtext>传输时延</mtext><mo>+</mo><mtext>排队时延</mtext><mo>+</mo><mtext>处理时延</mtext></mrow><annotation encoding="application/x-tex">总时延=发送时延+传输时延+排队时延+处理时延
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">总时延</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord cjk_fallback">发送时延</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord cjk_fallback">传输时延</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord cjk_fallback">排队时延</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">处理时延</span></span></span></span></span></p>
 <p>接下来，以下图中的计算机A给计算机B发送数据为例，来说明网络中的每个部分的时延。</p>
 <p><img src="/img/58d3536fa72db1e4fec802d823c83148.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<h4 id="发送时延">发送时延</h4>
+<h3 id="4-4-1、发送时延">4.4.1、发送时延</h3>
 <p>发送时延（Transmission Delay），是指主机或路由器将一个分组的所有比特发送到通信线路上所需要的时间，也就是从待发送分组的第一个比特算起，到该分组的最后一个比特发送到线路上所需要的时间。</p>
 <p><img src="/img/ae0813ced46af578821ff98dc341b892.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
 <p>发送时延的计算公式为：</p>
@@ -413,7 +555,7 @@
 </blockquote>
 <p>如果计算机能够访问Internet，可以使用ping命令测试到Internet上某个网站的数据包往返时延。如下图所示，ping 9.9.9.9，参数l（英文L的小写）用来指定数据包的大小。可以看到数据包为64字节的往返时延比1400字节的往返时延少1ms，这个差距就是因为发送时延不同产生的。</p>
 <p><img src="/img/5410a682ed4c38008ebd83e206655394.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<h4 id="传播时延">传播时延</h4>
+<h3 id="4-4-2、传播时延">4.4.2、传播时延</h3>
 <p>传播时延（Propagation Delay），是指电磁波在信道中传播一定距离所花费的时间，也就是从从待发送分组的最后一个比特发送到线路上算起，到该分组的最后一比特到达路由器接口所需要的时间。</p>
 <p><img src="/img/f96d9c5b4028722682af55e4ea712403.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
 <p>传播时延的计算公式为：</p>
@@ -421,13 +563,13 @@
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">传播时延</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.2963em;vertical-align:-0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord cjk_fallback">电磁波在信道上的传播速率（</span><span class="mord mathnormal">m</span><span class="mord">/</span><span class="mord mathnormal">s</span><span class="mord cjk_fallback">）</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord cjk_fallback">信道长度（</span><span class="mord mathnormal">m</span><span class="mord cjk_fallback">）</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
 <p>电磁波在自由空间的传播速率是光速，即<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3.0</mn><mo>×</mo><mn>1</mn><msup><mn>0</mn><mn>5</mn></msup><mi>k</mi><mi>m</mi><mi mathvariant="normal">/</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">3.0×10^5km/s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">3.0</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span><span class="mord mathnormal">km</span><span class="mord">/</span><span class="mord mathnormal">s</span></span></span></span>。电磁波在网络传输媒体中的传播速率比在自由空间要略低一些：在铜线电缆中的传播速率约为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2.3</mn><mo>×</mo><mn>1</mn><msup><mn>0</mn><mn>5</mn></msup><mi>k</mi><mi>m</mi><mi mathvariant="normal">/</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">2.3×10^5km/s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">2.3</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span><span class="mord mathnormal">km</span><span class="mord">/</span><span class="mord mathnormal">s</span></span></span></span>，在光纤中的传播速率约为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2.0</mn><mo>×</mo><mn>1</mn><msup><mn>0</mn><mn>5</mn></msup><mi>k</mi><mi>m</mi><mi mathvariant="normal">/</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">2.0×10^5km/s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">2.0</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span><span class="mord mathnormal">km</span><span class="mord">/</span><span class="mord mathnormal">s</span></span></span></span>。例如，在1000km长的光纤线路上，产生的传播时延大约为5ms。</p>
 <p>注：电磁波在指定介质中的传播速率是固定的，从公式可以看出，信道长度固定了，传播时延也就固定了。</p>
-<h4 id="排队时延">排队时延</h4>
+<h3 id="4-4-3、排队时延">4.4.3、排队时延</h3>
 <p>排队时延，是指分组在路由器的输入队列和输出队列中排队所花费的时间。分组在网络中传输时，要经过许多的路由器。分组在进入路由器后，要先在输入队列中排队等待处理。在路由器确定了转发接口后，还要在输出队列中排队等待转发，这就产生了排队时延。</p>
 <p><img src="/img/1b30f886695d86759e2d340af3ecef69.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
 <p>排队时延的长短往往取决于网络当时的通信量。当网络的通信量很大时，会发生队列溢出，使分组丢失，这相当于排队时延为无穷大。</p>
-<h4 id="处理时延">处理时延</h4>
+<h3 id="4-4-4、处理时延">4.4.4、处理时延</h3>
 <p>处理时延，是指主机或路由器处理分组所花费的时间。主机或路由器在收到数据包时，要花费一定时间进行处理，如分析数据包的首部、进行首部差错检验，查找路由表为数据包选定转发出口等，这就产生了处理时延。</p>
-<h3 id="时延带宽积">时延带宽积</h3>
+<h2 id="4-5、时延带宽积">4.5、时延带宽积</h2>
 <p>时延带宽积，指的是链路的传播时延与链路带宽的乘积，也即：</p>
 <p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>时延带宽积</mtext><mo>=</mo><mtext>传播时延</mtext><mo>∗</mo><mtext>带宽</mtext></mrow><annotation encoding="application/x-tex">时延带宽积 = 传播时延 * 带宽
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">时延带宽积</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">传播时延</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">带宽</span></span></span></span></span></p>
@@ -438,12 +580,12 @@
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">时延带宽积</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">20</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8641em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">3</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">10</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8641em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">6</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8641em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span></span><span class="mord mathnormal">bi</span><span class="mord mathnormal">t</span></span></span></span></span></p>
 <p>这表示，若发送端连续发送数据，则在发送的第一个比特即将达到终点时，发送端就已经发送了20万个比特，而这20万个比特都正在链路上向前移动。因此，链路的时延带宽积又称为以比特为单位的链路长度。</p>
 <p>不难看出，管道中的比特数表示从发送端发出的但尚未达到接收端的比特。对于一条正在传送数据的链路，只有在代表链路的管道都充满比特时，链路才得到了充分的利用。</p>
-<h3 id="往返时间">往返时间</h3>
+<h2 id="4-6、往返时间">4.6、往返时间</h2>
 <p>往返时间（Round-Trip Time，RTT），表示发送端从发送数据开始，到发送端接收到来自接收端的确认（接收端收到数据后立即发送确认），总共经历的时间。显然，在互联网中，往返时间包括了各中间结点转发数据时的发送时延、排队时延、处理时延以及数据的传播时延。</p>
 <p>使用ping命令可以显示往返时间。如下图所示，分别ping网关、国内的网站和美国的网站，能看到每一个数据包的往返时间和统计的平均往返时间。从图中可以看出，途经的路由器越多距离越远，往返时间也会越长。（注：通常情况下，内网中的计算机互ping，往返时间小于10ms，如果大于10ms，就要安装抓包工具分析网络中的数据包是否有恶意的广播包，以找到发广播包的计算机）</p>
 <p><img src="/img/f13322978ea2b7c7bce7d7ca27390fb5.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
 <p>往返时间带宽积可以用来计算当发送端连续发送数据时，接收端如发现有错误，立即向发送端发送通知使发送端停止，发送端在这段时间发送的比特量。例如，假设某段链路的往返时间为40ms，带宽为10Mb/s，假定数据的接收方及时发现了差错，并告知发送方，使发送方立即停止发送，但这时发送方也已经发送了40万个比特。</p>
-<h3 id="利用率">利用率</h3>
+<h2 id="4-7、利用率">4.7、利用率</h2>
 <p>利用率有信道利用率和网络利用率两种。信道利用率指某信道有百分之几的时间是被利用的（有数据通过）。完全空闲的信道的利用率是零。网络利用率则是全网络的信道利用率的加权平均值。</p>
 <p>信道利用率并非越高越好。这是因为，根据排队论，当某信道的利用率增大时，该信道引起的时延也就迅速增加。这和高速公路的情况有些相似。当高速公路上的车流量很大时，由于某些地方会出现堵塞，因此行车所需的时间就会增大。网络也有类似的情况。当网络的通信量很少时，网络产生的时延并不大；但在网络通信量不断增大的情况下，由于分组在网络结点（路由器或结点交换机）进行处理时需要排队等候，因此网络引起的时延就会增大。如果令<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">D_0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>表示网络空闲时的时延，D表示网络当前的时延，那么在适当的假定条件下，可以用下面的简单公式来表示D、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">D_0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>和利用率U之间的关系：</p>
 <p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>D</mi><mo>=</mo><mfrac><msub><mi>D</mi><mn>0</mn></msub><mrow><mn>1</mn><mo>−</mo><mi>U</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">D = \frac{D_0}{1-U}
@@ -451,48 +593,104 @@
 <p>这里U的数值在0到1之间。当网络利用率达到其容量的1/2时，时延就要加倍。特别值得注意的就是，当网络利用率接近最大值1时，网络的时延就趋于无穷大。因此我们必须有这样的概念：信道利用率或网络利用率过高会产生非常大的时延。也就是说，一定不要让信道或网络的利用率接近于1。下图所示为时延与利用率的关系。因此，一些拥有较大主干网的ISP通常会把信道利用率控制在50%以下，一旦超过就要准备扩容，增大线路的带宽。</p>
 <p><img src="/img/8b045002f7f961309dc1dc8fcfeed181.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
 <p>注：信道利用率也不能太低，这会使宝贵的通信资源被白白浪费。</p>
-<h3 id="丢包率">丢包率</h3>
+<h2 id="4-8、丢包率">4.8、丢包率</h2>
 <p>丢包率，也称分组丢失率，是指在一定的时间范围内，分组在传输过程中丢失的分组数量与总的分组数量的比率。即</p>
 <p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>丢包率</mtext><mo>=</mo><mfrac><mtext>丢失的分组数</mtext><mtext>总分组数</mtext></mfrac></mrow><annotation encoding="application/x-tex">丢包率 = \frac{丢失的分组数}{总分组数}
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">丢包率</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0463em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord cjk_fallback">总分组数</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord cjk_fallback">丢失的分组数</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
 <p>丢包率具体可分为接口丢包率、结点丢包率、链路丢包率、路径丢包率、网络丢包率等。</p>
 <p>在计算机网络中，分组丢失主要有两种情况。一种情况是分组在传输过程出现了比特级差错，被结点丢弃。另一种情况就是当分组到达一台队列已满的分组交换机时，由于没有空间来存储这些分组，分组交换机就会将到达的分组或已经排队的分组丢弃。由于分组交换不像电路交换那样，通过建立连接来保证通信时所需的各种资源，因而无法确保通信时端到端所需的带宽，在通信量较大时就可能造成网络拥塞，导致分组交换机的队列溢出和分组丢失。这是现代计算机网络中分组丢失最主要的原因。</p>
 <p>丢包率反映了网络的拥塞情况。一般无拥塞时路径丢包率为0，轻度拥塞时丢包率为1%～4%，严重拥塞时丢包率为5%～15%。具有较高丢包率的网络通常无法使网络应用正常工作。丢包率是网络运维人员非常关心的一个网络性能指标，但普通用户往往并不关心这个指标，因为他们通常感觉不到网络丢包。大多数网络应用底层所使用的通信软件会为用户提供可靠的传输服务，它们会自动重传丢失的分组并自动调整发送速率进行网络拥塞控制。在网络发生拥塞，丢包率较高时，用户感觉到的往往是网络时延变大，“网速”变慢，而不是信息的丢失。</p>
-<h2 id="五、计算机网络体系结构">五、计算机网络体系结构</h2>
-<p>在计算机网络的术语中，计算机网络的层次结构模型与各层协议的集合称为计算机网络的体系结构（Architecture）。简单来说，计算机网络的体系结构就是计算机网络及其部件所应完成的功能的精确定义。这些功能究竟是用何种硬件或软件实现的，则是一个遵循这种体系结构的实现（Implementation）问题。体系结构是抽象的，实现则是具体的，是真正在运行的计算机硬件和软件。</p>
+<h1>五、计算机网络体系结构</h1>
+<p>计算机网络体系结构（Architecture）是计算机网络的层次结构模型与各层协议的集合。简单来说，计算机网络的体系结构就是计算机网络及其部件所应完成的功能的精确定义。这些功能究竟是用何种硬件或软件实现的，则是一个遵循这种体系结构的实现（Implementation）问题。体系结构是抽象的，实现则是具体的，是真正在运行的计算机硬件和软件。</p>
+<h2 id="5-1、计算机网络分层体系结构">5.1、计算机网络分层体系结构</h2>
 <p>1974年，美国的IBM公司宣布了它研制的系统网络体系结构（System Network Architecture，SNA），这是世界上第一个网络体系结构。此后，许多公司纷纷提出各自的网络体系结构。这些网络体系结构的共同点是都采用层次结构模型，但层次划分和功能分配均不相同。</p>
 <p>为了使不同体系结构的计算机网络都能互连，国际标准化组织（International Standard Organization，ISO）于1977年成立了专门机构研究该问题。不久，他们就提出一个试图使各种计算机在世界范围内互连成网的标准框架，即著名的开放系统互连参考模型<br>
 （Open Systems Interconnection ReferenceModel，OSI/RM），简称为OSI。“开放”是指只要遵循OSI标准，一个系统就可以和位于世界上任何地方的、也遵循这一标准的其他任何系统进行通信。该模型是一个七层协议的体系结构，如下图（a）所示。</p>
-<p><img src="/img/a43b1d97a92272d856d6e0b3e0ec05b6.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>在OSI模型之前，TCP/IP协议簇就已经在运行，并逐步演变成TCP/IP参考模型，如上图（b）所示。到了20世纪90年代初期，虽然整套的OSI国际标准都已经制定出来了，但这时互联网已抢先在全世界覆盖了相当大的范围，因此得到最广泛应用的不是法律上的国际标准<br>
+<p>在OSI模型之前，TCP/IP协议簇就已经在运行，并逐步演变成TCP/IP参考模型，如下图（b）所示。到了20世纪90年代初期，虽然整套的OSI国际标准都已经制定出来了，但这时互联网已抢先在全世界覆盖了相当大的范围，因此得到最广泛应用的不是法律上的国际标准<br>
 OSI，而是非国际标准TCP/IP。于是，TCP/IP就被称为事实上的国际标准。</p>
-<p>OSI的七层协议体系结构概念清楚，理论也较完整，但它既复杂又不实用。TCP/IP是一个四层协议体系结构，它包含应用层、运输层、网际层和网络接口层。不过从实质上讲，TCP/IP只有上面的三层，因为最下面的网络接口层并没有什么具体内容。TCP/IP体系结构虽然简单，却得到了非常广泛的应用。因此我们在学习计算机网络原理时往往采取折中的办法，即综合OSI和TCP/IP的优点，采用一种只有五层协议的原理体系结构，如上图（c）所示。</p>
-<p>现在结合互联网的情况，自上而下地、非常简要地介绍一下各层的主要功能。</p>
-<p>（1）应用层</p>
-<p>应用层（Application Layer）是原理体系结构中的最高层。应用层的任务是通过应用进程间的交互来完成特定的网络应用。</p>
-<p>应用层协议定义的是应用进程间通信和交互的规则。不同的网络应用需要不同的应用层协议，互联网中的应用层协议很多，如支持万维网应用的HTTP、支持电子邮件的SMTP，支持文件传送的FTP等。</p>
-<p>我们将应用层交互的数据单元称为报文（Message）。</p>
-<p>（2）运输层</p>
-<p>运输层（Transport Layer，或翻译为传输层）的任务是为两台主机中互相通信的进程提供通用的数据传输服务。应用进程使用该服务传送应用层报文。</p>
-<p>所谓通用，是指并不针对某个特定网络应用，多种应用可以使用同一个运输层服务。由于一台主机可同时运行多个进程，因此运输层有复用和分用的功能。复用就是多个应用层进程同时使用下层运输层的服务，分用则是运输层把收到的信息分别交付上层应用层中的相应进程。</p>
-<p>互联网中主要有以下两个运输层协议。</p>
+<p>OSI的七层协议体系结构概念清楚，理论也较完整，但它既复杂又不实用。TCP/IP是一个四层协议体系结构，它包含应用层、运输层、网际层和网络接口层。不过从实质上讲，TCP/IP只有上面的三层，因为最下面的网络接口层并没有什么具体内容。TCP/IP体系结构虽然简单，却得到了非常广泛的应用。因此我们在学习计算机网络原理时往往采取折中的办法，即综合OSI和TCP/IP的优点，采用一种只有五层协议的原理体系结构，如下图（c）所示。</p>
+<p><img src="/img/a43b1d97a92272d856d6e0b3e0ec05b6.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h2 id="5-2、OSI参考模型">5.2、OSI参考模型</h2>
+<p>负责制定国际标准的国际标准化组织 ISO参考了IBM的SNA和其他计算机厂商的网络体系结构，提出了开放系统互连(Open System Interconnection)参考模型，简称 OSI参考模型，按照这个标准设计建成的计算机网络中的设备都可以互相通信。</p>
+<p>OSI 参考模型将整个计算机网络的通信功能分为7 层，由低层至高层分别是：物理层、数据链路层、网络层、传输层、会话层、表示层、应用层。每一层都有特定的功能，并且上一层会使用下一层所提供的服务，完成本层的功能。</p>
+<p>在OSI参考模型中，各层的数据并不是从一端的第N层直接送到另一端的对等层，第N层接收第 N+1 层的协议数据单元(PDU)，按第N层协议进行封装，构成第N层 PDU，再通过层间接口传递给第 N-1层，依此类推，最后，数据链路层 PDU（通常称为数据帧）传递给最底的物理层。数据在垂直的层次中自上而下地逐层传递直至物理层，在物理层的两个端点进行物理通信，这种通信称为实通信。由于对等层通信并不是直接进行，因而称为虚拟通信。端系统（比如PC主机）实现的是OSI参考模型的全部7个层次的功能，中间系统（比如路由器）通常只实现物理层、数据链路层和网络层功能。因此，OSI 参考模型的物理层、数据链路层和网络层为结点到结点层，传输层、会话层、表示层和应用层称为端到端层。</p>
+<p>在OSI参考模型的 7 层中，1~3 层主要是完成数据交换和数据传输，称之为网络低层；5~7层主要是完成信息处理服务的功能，称之为网络高层；低层与高层之间由第4层衔接。接下来，自下而上地简要介绍一下，OSI参考模型中各层的主要功能。</p>
+<blockquote>
+<p>物理层</p>
+</blockquote>
+<p>物理层的主要功能是在传输介质上实现无结构比特流传输。所谓无结构比特流是指不关心比特流实际代表的信息内容，只关心如何将0和1这些比特以合适的信号传送到目的地，因此，物理层要实现信号编码功能。</p>
+<p>物理层的另一项主要任务就是规定数据终端设备(DTE)与数据通信设备(DCE)之间接口的相关特性，主要包括机械、电气、功能和规程4个方面的特性。</p>
 <ul>
-<li>传输控制协议（Transmission Control Protocol，TCP）——提供面向连接的、可靠的数据传输服务，其数据传输的单位是报文段。</li>
-<li>用户数据报协议（User Datagram Protocol，UDP）——提供无连接的、尽最大努力（Best-Effort）的数据传输服务（不保证数据传输的可靠性），其数据传输的单位是用户数据报。</li>
+<li>机械特性也叫物理特性，说明硬件连接接口的机械特点，如接口的形状、尺寸、插脚的数量和排列方式等；</li>
+<li>电气特性规定了在物理连接上，导线的电气连接及有关电路的特性，如信号的电平大小、接收器和发送器电路特性的说明、信号的识别、最大传输速率的说明等；</li>
+<li>功能特性说明物理接口各条信号线的用途，如接口信号线的功能分类等;</li>
+<li>规程特性指明利用接口传输比特流的全过程及各项用于传输的事件发生的合法顺序，包括事件的执行顺序和数据传输方式，即在物理连接建立、维持和交换信息时，收发双方在各自电路上的动作序列。</li>
 </ul>
-<p>（3）网络层</p>
-<p>网络层（Network Layer）负责为分组交换网络中的不同主机提供通信服务。在发送数据时，网络层把运输层产生的报文段或用户数据报封装成分组进行传送。在TCP/IP体系中，由于网络层使用IP，因此分组也叫作IP数据报，或直接称为IP分组。</p>
-<p>网络层的一个重要任务就是选择合适的路由（Route），将源主机运输层传下来的分组，通过网络中的路由器的转发（通常要经过多个路由器的转发），最后送达目的主机。</p>
-<p>互联网是由大量的异构（Heterogeneous）网络通过路由器（Router）相互连接而成的。互联网主要的网络层协议是无连接的网际协议（InternetProtocol，IP）和许多种路由选择协议，因此互联网的网络层也叫作网际层或IP层。</p>
-<p>注：不要将运输层的“用户数据报”和网络层的“IP数据报”弄混。无论在哪一层传送的数据单元，习惯上都可笼统地用“分组”来表示。在阅读国外文献时，特别要注意“packet”往往可指代任何一层传送的数据单元。</p>
-<p>（4）数据链路层</p>
-<p>数据链路层（Data Link Layer），简称为链路层，其任务是将分组从链路的一端传送到另一端。</p>
-<p>计算机网络由主机、路由器和连接它们的链路组成，从源主机发送到目的主机的分组必须在一段一段的链路上传送。数据链路层传送的数据单元称为帧（Frame）。因此，数据链路层的任务实际上是，在相邻结点之间（主机和路由器之间或两个路由器之间）的链路上，传送以帧为单位的数据。</p>
-<p>链路层的每一帧由数据和必要的控制信息（如同步信息、差错控制等）组成。在接收数据时，控制信息使接收端能够知道一个帧从哪个比特开始和到哪个比特结束。控制信息还可用于接收端检测所收到的帧中有无差错。如发现有差错，数据链路层应该丢弃有差错的帧，以免继续传送下去白白浪费网络资源。</p>
-<p>（5）物理层</p>
-<p>物理层（Physical Layer）是原理体系结构的最底层，完成计算机网络中最基础的任务，即在传输媒体上传送比特流，将数据链路层帧中的每个比特从一个结点通过传输媒体传送到下一个结点。</p>
-<p>物理层传送数据的单位是比特。发送方发送1（或0）时，接收方应当收到1（或0）而不是0（或1）。因此物理层要考虑用多大的电压代表“1”或“0”，以及接收方如何识别出发送方所发送的比特。物理层还要考虑所采用的传输媒体的类型，如双绞线、同轴电缆、光缆等，以及与传输媒体之间的接口。</p>
-<p>注：传递信息所使用的一些物理传输媒体本身是在物理层之下的，因此也有人把物理传输媒体当作第0层。</p>
+<p>典型的物理层协议包括 RS-232c、RS-449以及其他网络通信标准中有关物理层的协议等。</p>
+<blockquote>
+<p>数据链路层</p>
+</blockquote>
+<p>数据链路层的主要功能是实现在相邻结点之间数据可靠而有效的传输。数据在物理介质内传输过程，不能保证没有任何错误发生。为了能实现有效的差错控制，就采用了一种“帧”为单位的数据块传输方式。要采用帧格式传输，就必须有相应的帧同步技术，这就是数据链路层的“成帧”（也称为“帧同步”）功能，包括定义帧的格式、类型、成帧的方等。有了“帧”的存在，就可以将差错控制技术应用在数据帧中，例如，将数据码后面附加一定位数的循环码，从而实现数据链路层的差错控制功能。</p>
+<p>数据链路层还可以实现相邻结点通信的流量控制。某些数据通信网络的数据链路层还提供连接管理功能，即通信前建立数据链路，通信结束后释放数据链路，这种数据链路的建立、维持和释放过程称为链路管理。</p>
+<p>数据链路层的另一个重要功能是寻址，即用来确保每一帧都能准确地传送到正确的接收方，接收方也应该知道发送方的地址，这在使用广播介质的网络中尤为重要，比如计算机局域网中广泛采用 MAC地址。多路访问技术也是数据链路层实现的功能，例如，采用广播信道的数据通信网络的ALOHA协议、CSMA/CD等。</p>
+<blockquote>
+<p>网络层</p>
+</blockquote>
+<p>网络层解决的核心问题是如何将分组通过交换网络传送至目的主机，因此，网络层的主要功能是数据转发与路由。</p>
+<p>在交换网络中，信息从源结点出发要经过若干个中继结点的存储转发后，才能到达目的结点。这样一个包括源结点、中继结点、目的结点的集合称为从源结点到目的结点的路径。一般在两个结点之间都会有多条路径选择，这种路由选择是网络要完成的主要功能之一。</p>
+<p>当网络设备，比如路由器，从一个接口收到数据分组时，需要根据已掌握的路由信息将其转发到合适的接口并向下一个结点发送，直至送达目的结点。</p>
+<p>此外，网络层还要对进入交换网络的通信量加以控制，以避免通信量过大造成交换网络性能下降。</p>
+<p>当然，和数据链路层类似，网络层也要具备寻址功能，确保分组可以被正确传输到目的主机。比如Internet 网络中的IP地址。</p>
+<blockquote>
+<p>传输层</p>
+</blockquote>
+<p>传输层是第一个端到端的层次，也是进程到进程的层次。</p>
+<p>数据的通信表面上看是在两台主机之间进行，但实质上是发生在两个主机的进程之间。OSI 参考模型的前三层（自下而上）可组成公共网络，被很多设备共享，并且计算机——交换结点（典型的交换结点是路由器、交换机等）、交换结点——交换结点是按照“接力”方式传送的。为了防止传送途中报文的丢失，两个主机的进程之间需要实现端到端控制。</p>
+<p>因此，传输层的功能主要包括复用／分解（区分发送和接收主机上的进程）、端到端的可靠数据传输、连接控制、流量控制和拥塞控制机制等。</p>
+<blockquote>
+<p>会话层</p>
+</blockquote>
+<p>会话层是指用户的连接，通过在两台计算机间建立、管理和终止通信来完成对话。会话层的主要功能：</p>
+<ul>
+<li>
+<p>在建立会话时核实双方身份是否有权参加会话；</p>
+</li>
+<li>
+<p>确定双方支付通信费用；</p>
+</li>
+<li>
+<p>双方在各种选择功能方面（如全双工还是半双工通信）取得一致；</p>
+</li>
+<li>
+<p>在会话建立以后，需要对进程间的对话进行管理与控制。例如，对话过程中某个环节出了故障，会话层在可能条件下必须保存这个对话的数据，使数据不丢失，如不能保留，那么终止这个对话，并重新开始。</p>
+</li>
+</ul>
+<p>在实际的网络中，会话层的功能已经被应用层所覆盖，很少单独存在。</p>
+<blockquote>
+<p>表示层</p>
+</blockquote>
+<p>表示层主要用于处理应用实体间交换数据的语法，其目的是解决格式和数据表示的差别，从而为应用层提供一个一致的数据格式，使字符、格式等有差异的设备之间相互通信。</p>
+<p>除此之外，表示层还可以实现文本压缩／解压缩、数据加密／解密、字符编码的转换等功能。</p>
+<p>这一层的功能在某些实际数据通信网络中是由应用层来实现的，而且表示层不独立存在。</p>
+<blockquote>
+<p>应用层</p>
+</blockquote>
+<p>应用层与提供给用户的网络服务相关，这些服务非常丰富，包括文件传送、电子邮件、P2P应用等。应用层为用户提供了一个使用网络应用的“接口”。</p>
+<h2 id="5-3、TCP-IP参考模型">5.3、TCP/IP参考模型</h2>
+<p>在实际应用的网络中，几乎没有严格按照OSI参考模型构建的。OSI参考模型的重要意义在于它是一种计算机网络的理论体系结构，是目前学习、讨论计算机网络的一种工具，能够从理论上很好地解释网络概念、层次与通信过程，是学习计算机网络必须学习和掌握的内容。</p>
+<p>作为最大、最重要的计算机网络——因特网的体系结构则可以用TCP/IP参考模型进行描述。TCP/IP参考模型包括4层，通常每—层封装的数据包采用不同的名称，如下图所示。</p>
+<p><img src="/img/image-20250215114111899.png" srcset="/img/loading.gif" lazyload alt="image-20250215114111899"></p>
+<p>下面介绍 TCP/IP参考模型各层的主要功能及主要协议。</p>
+<p>（1）应用层</p>
+<p>TCP/IP参考模型将 OSI 参考模型中会话层和表示层的功能合并到了应用层来实现。在Internet上常见的一些网络应用大多在这一层，用户通过应用层来使用 Internet 提供的各种服务，例如，WWW服务、文件传输、电子邮件等。每一种应用都使用了相应的协议来将用户的数据（网页、文件、电子邮件等）按照协议定义的格式进行封装，以便达到对应的控制功能，然后再利用下一层即传输层的协议进行传输，例如，WWW 服务的应用层协议是HTTP、文件传输的应用层协议是FTP、电子邮件应用层协议包括 SMTP和POP3 等。每一个应用层协议一般都会使用到两个传输层协议进行数据传输：面向连接的传输控制协议TCP和无连接的用户数据报协议UDP。</p>
+<p>（2）传输层</p>
+<p>当应用层的程序将用户数据按照特定应用层协议封装好后，接下来就由传输层的协议负责把这些数据传输到接收方主机上对等的应用层程序。传输层协议为运行在不同主机上的进程提供了一种逻辑通信机制，之所以叫作逻辑通信，是因为两个进程之间的通信就像所在的两个主机存在直接连接一样。其实，两个主机可能相距很远，两者的物理连接可能经过了多个交换机／路由器，传输路径可能由不同类型的物理链路组成。利用这种逻辑通信机制，两个进程可以不用考虑两者之间的物理连接方式而实现发送／接收消息。传输层协议可以解决（如果需要）诸如端到端可靠性，保证数据按照正确的顺序到达等问题。实际上，传输层负责在网络层和应用层之间传递消息，丝毫不会涉及消息如何在网络中传输，这个任务交给下面的网络互联层去解决。TCP/IP参考模型的传输层主要包括面向连接、提供可靠数据流传输的传输控制协议TCP和无连接不提供可靠数据传输的用户数据报协议 UDP。</p>
+<p>（3）网络互联层</p>
+<p>网络互联层是整个TCP/IP参考模型的核心，主要解决把数据分组发往目的网络或主机的问题。在这个过程中，要为分组的传输选择相应的路径（路由选择），完成分组的转发，提供网络层寻址——IP地址。网络互联层除了需要完成路由的功能外，也可以完成将不同类型的网络（异构网）互连的任务。在 TCP/IP参考模型中，网络互联层的核心协议是IP，负责定义分组的格式和传输。IP是无连接不可靠网络协议，因此，IP分组到达的顺序和发送的顺序可能不同，并且可能存在分组丢失现象。网络互联层还包括互联网控制报文协议ICMP、互联网多播组管理协议IGMP以及路由协议，如BGP、OSPF和RIP等。</p>
+<p>（4）网络接口层</p>
+<p>实际上，TCP/IP 参考模型没有真正描述这一层的实现，只是要求能够提供给其上层——网络互联层一个访问接口，以便在其上传递IP分组。由于这一层未被定义，所以其具体的实现方法将随着网络类型的不同而不同。实际上，这一层对应OSI参考模型中的数据链路层和物理层，网络层 IP分组在这一层被封装到底层网络的链路层数据帧中，并最终以比特流形式在物理介质上进行传输。</p>
+<h2 id="5-4、五层参考模型">5.4、五层参考模型</h2>
+<p>对比TCP/IP参考模型与OSI参考模型，TCP/IP参考模型缺少OSI参考模型中功能比较少的表示层和会话层，而 TCP/IP 参考模型的网络接口层则相当于合并了 OSI 参考模型的数据链路层和物理层。结合这两个参考模型，可以提出综合理论需求与实际网络的五层参考模型，包括物理层、数据链路层、网络层、传输层与应用层，各层功能基本与 OSI 参考模型对应。这是近年来，在描述计算机网络中最常用、最接近实际网络的参考模型。</p>
 <p>接下来，我们通过下图，说明应用进程的数据在各层之间传递过程中所经历的变化。</p>
 <p><img src="/img/e1446bc232ebab903536edde862d354a.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
 <p>这里假定两台主机通过一台路由器连接起来，主机1的应用进程AP1向主机2的应用进程AP2传送数据，其过程如下：</p>
@@ -510,7 +708,47 @@ OSI，而是非国际标准TCP/IP。于是，TCP/IP就被称为事实上的国�
 </ul>
 <p>可以用一个简单例子来比喻上述过程。有一封信从最高层向下传，每经过一层就包上一个新的信封，写上必要的地址信息。包有多个信封的信件传送到目的站后，从第1层起，每层拆开一个信封后把信封中的信交给它的上一层。传到最高层后，发信人所发的信被交给收信人。</p>
 <p>虽然应用进程数据要经过上图所示的复杂过程才能送到目的站的应用进程，但这些过程对用户来说都被屏蔽掉了，以致看上去就好像是。应用进程AP1直接把数据交给了应用进程AP2。同理，任何两个同样的层次（如两个系统的第4层）之间，看上去也如同上图中的水平虚线所示的那样，将数据（即数据单元加上控制信息）直接传递给了对方。这就是所谓的“对等层（Peer Layers）”之间的通信。</p>
-<h2 id="六、参考">六、参考</h2>
+<h2 id="5-5、相关术语">5.5、相关术语</h2>
+<p>OSI 参考模型中每一层的真正功能是为其上一层提供服务。例如，N层的实体为(N+1)层的实体提供服务，N 层的服务则需要使用(N-1)层以及更低层提供的功能服务。下面介绍OSI参考模型中常用的几个术语。</p>
+<blockquote>
+<p>数据单元</p>
+</blockquote>
+<p>在层的实体之间传送的比特组称为数据单元。在对等层之间传送数据单元是按照本层协议进行的，因此，这时的数据单元称为协议数据单元（PDU）。</p>
+<p>图1.14显示出了层间数据单元的传送过程，其中 PDU 是协议数据单元，SDU 是服务数据单元，PCI 是协议控制信息，通常作为PDU的首部。 (N+1)-PDU 在越过N+1和N层的边界之后，变换为N-SDU (N层把(N+1)-PDU看成为N-SDU)。N层在N-SDU上加上N-PCI，则成为N-PDU。在N-PDU和(N+1)-PDU 之间并非是一对应的关系。如果N层认为有必要，可以把(N+1)-PDU 拆成几个单位，加上PCI 后成为多个N-PDU，或者可以把多个(N+1)-PDU 合并起来，形成一个N-PDU。</p>
+<p>到达目的站的 N-PDU，在送往(N+1)层之前要把 N-PCI去掉。在层间通信中 PCI 相当于报头，即首部，如图1.14所示。在源点逐层增加新的 PCI，到达目的地之后则逐层去掉，使得原来的信息结构得以恢复。</p>
+<p>值得指出的是，PDU 在不同层往往有不同的叫法，如在物理层称为位流或比特流，在数据链路层称为帧，在网络层中称为分组或包，在传输层中称为数据段或报文段，在应用层中称为报文等。</p>
+<blockquote>
+<p>服务访问点</p>
+</blockquote>
+<p>相邻层间的服务是通过其接口面上的服务访问点(Service Access Point, SAP)进行的，N层SAP就是(N+1)层可以访问N层的地方。每个SAP都有一个唯一的地址号码。</p>
+<blockquote>
+<p>服务原语</p>
+</blockquote>
+<p>第N层向(N+1)层提供服务，或第(N+1)层请求N层提供服务，都是用一组原语(Primitive)描述的。OSI参考模型的原语有4类，分别如下。</p>
+<ul>
+<li>
+<p>请求(Request) ：用户实体请求服务做某种工作。</p>
+</li>
+<li>
+<p>指示(Indication) ：用户实体被告知某件事发生。</p>
+</li>
+<li>
+<p>响应(Response：用户实体表示对某件事的响应。</p>
+</li>
+<li>
+<p>证实(Confirm) ：用户实体收到关于它的请求的答复。</p>
+</li>
+</ul>
+<p>这4类原语的图解形式如图1.15所示。在通信过程的3个阶段中，每个阶段都可能到一些或全部原语。</p>
+<p>图1.15说明系统A中N+1 层用户和系统B中N+1 层用户之间建立通信联系时4种类型原语的应用。首先，系统A中N+1用户发出请求原语，调用本系统 N服务提供者的一些程序，于是N服务提供者向对方发送一个或一组N-PDU。当系统B的N服务提供者收到N-PDU之后，向本系统的 N+1 用户发出指示原语，说明系统B的N+1用户需要调用一些程序，或者N服务提供者已经在同级服务访问点调用了一个程序。</p>
+<p>响应原语是由系统 B的N+1用户发出的，这个响应原语是对N层协议的一个指令，以完成原来由指示原语调用的程序。N层协议产生一个 PDU，传送至系统A的N层。系统A的N服务提供者发出证实原语，表示在服务访问点已经完成了由请求原语调用的程序。证实和响应可以是确认也可以否认，这取决于具体情况。</p>
+<blockquote>
+<p>面向连接的服务和无连接的服务</p>
+</blockquote>
+<p>在分层的体系结构中，层向上层提供服务通常有两种形式：面向连接的服务和无连的服务。</p>
+<p>面向连接的服务以电话系统最为典型，要和某人通话，拿起电话——拨号码——接通——通话——挂断。某一方欲传送数据，首先给出对方的全称地址，并请求建立连接，当双方同意后，双方之间的通信链路就建立起来。第二步是传送数据，通常以分组为单位，按序传送，不再标称地址，只标称所建立的链路号，并由收方对收到的分组予以确认，称为可靠传送方式；不确认则称为不可靠传送方式。第三步当数据传送结束后，拆除链路。</p>
+<p>无连接的服务没有建立和拆除链路的过程，例如，邮政系统的用户在发送信件之前并不需要与收信方进行任何消息交换。无连接的服务又称为数据报(Datagram)服务，要求每一分组信息带有全称地址，独立选择路径，其到达目的地的顺序也是不定的，到达目的地后还要重新对分组进行排序。</p>
+<h1>六、参考</h1>
 <p><a target="_blank" rel="noopener" href="https://www.dedao.cn/ebook/detail?id=6JvkYVNn8NXVry5MeG6Z9RALK2dxJ3Gdd2w7olBEmjgakz1DPvYObQ4qpQdZqme9">计算机网络教程（第6版·微课版）</a></p>
 <p><a target="_blank" rel="noopener" href="https://product.dangdang.com/29274044.html">计算机网络原理创新教程</a></p>
 <p><a target="_blank" rel="noopener" href="https://product.dangdang.com/11846567948.html">计算机网络原理 自考04741</a></p>
@@ -614,8 +852,8 @@ OSI，而是非国际标准TCP/IP。于是，TCP/IP就被称为事实上的国�
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/10/07/aboutme/" title="aboutme">
-                        <span class="hidden-mobile">aboutme</span>
+                      <a href="/2024/08/18/C++%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A101%EF%BC%9A%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/" title="C++程序设计：基础入门">
+                        <span class="hidden-mobile">C++程序设计：基础入门</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

@@ -16,75 +16,20 @@
   <meta name="author" content="Mr.x">
   <meta name="keywords" content="">
   
-    <meta name="description" content="本章讨论网络层及网络互连问题，也就是讨论多个网络通过路由器互连成为一个互连网络的各种问题。在介绍网络层提供的两种不同服务后，我们开始讲解本章的核心内容——网际协议（IP），这是本书的一项重点内容。只有较深入地掌握了网际协议的相关知识，才能理解互联网是怎样工作的。本章讨论互联网几种常用的路由选择协议、网络层的关键设备路由器及虚拟专用网（VPN）和网络地址转换（NAT），介绍IP多播、移动IP、下一代">
+    <meta name="description" content="todo 一、计算机网络应用体系结构 二、网络应用通信基本原理 三、域名系统（DNS） 四、万维网（WWW） 五、Internet电子邮件 六、FTP 七、P2P应用 基于客户&#x2F;服务器体系结构的应用，它们要求有总是在运行着的基础设施服务器，如DNS服务器、万维网服务器、邮件服务器等。与这些应用不同，基于P2P体系结构的应用是对等方之间直接进行通信，而且对等方主要运行于间断连接的主机上，如个人计算机">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算机网络原理：网络层">
 <meta property="og:url" content="https://kuberxy.github.io/2024/11/24/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%8604%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%B1%82/index.html">
 <meta property="og:site_name" content="Kubxy">
-<meta property="og:description" content="本章讨论网络层及网络互连问题，也就是讨论多个网络通过路由器互连成为一个互连网络的各种问题。在介绍网络层提供的两种不同服务后，我们开始讲解本章的核心内容——网际协议（IP），这是本书的一项重点内容。只有较深入地掌握了网际协议的相关知识，才能理解互联网是怎样工作的。本章讨论互联网几种常用的路由选择协议、网络层的关键设备路由器及虚拟专用网（VPN）和网络地址转换（NAT），介绍IP多播、移动IP、下一代">
+<meta property="og:description" content="todo 一、计算机网络应用体系结构 二、网络应用通信基本原理 三、域名系统（DNS） 四、万维网（WWW） 五、Internet电子邮件 六、FTP 七、P2P应用 基于客户&#x2F;服务器体系结构的应用，它们要求有总是在运行着的基础设施服务器，如DNS服务器、万维网服务器、邮件服务器等。与这些应用不同，基于P2P体系结构的应用是对等方之间直接进行通信，而且对等方主要运行于间断连接的主机上，如个人计算机">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://kuberxy.github.io/img/c8b2008ac92e14da000d30db123c54bd.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/293d904e2b95a28557868c8aae6e6563.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/fe74db5e692e6b6718b95a820a137b87.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/e286f6c49b17a391cd27089e0ec678b8.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/9c4284c666fcb2a5502e0ffb9fa77865.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/b8936e6bab01c8d937a74e3c6f521e74.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/96b50ec8c8fe08bc4c4020b19ec20131.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/8aa5dc29278449322333e0f7708948bf.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/4eb032d79e32b84e1fddb3c2d3489571.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/27f1386cb4716245ac44a4fd6d8fb0da.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/a7fc28a6eaa540af7cc1080aceec5d50.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/ba320b67cdd2dfa559c7d997f02754e4.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/3775ae2f6a9860416676a21ba7f321ca.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/d32d69a7be8b340f63768e8a2e02cc95.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/2126d0ff367b576a9415d14bad74c9c3.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/a5e2f6cbde0ea822ff2a9ceda6c5ae81.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/416e4c75bb697c3d860c4f61a15f9554.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/7c8226b27f621aeb6174ba63265f4127.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/7236a64c5e365dc118d7b39d659811d6.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/ede36fa4c6c794a0d4b00fd7ae6f6112.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/f9596184c41ec2ce1da6eae582a3d8d5.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/1d15b79632be01ae465153781dab219b.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/663368202a4aa922eb8b0aa53f4f45aa.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/7d6d55d38c047591f1abb4f4e81047eb.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/ebd3b711b3cbcc9c23d037af3f052b3e.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/48d0e03232998119da857ed1aa24a8ec.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/704542abd62662cc8d6a35cae3b2bfc2.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/46bf875ece8abf733dd39c593b19633c.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/cc7871e0b0b233e7c711bb433a6e6a22.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/c829b4e481d5b3316e52013fa0cb9874.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/7b53f3074574a5c3ad9c6b15129f64db.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/10a18cce11387e10265193d2b97481a5.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/af520186197946ecdc8342df25843834.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/6f63bfd344b03e61acfecdc509132171.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/7280712a5437ed573fb762d6798c9271.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/4a61d4d97bda720166d002f271ae2c61.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/7b2d64a9996a9474270d2cd7adf3aa5d.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/194adb1fb46e23adaabe04714aa06a15.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/79cb05f6045b50f60f2129eeba2e39c9.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/image-20241119080159016.png">
-<meta property="og:image" content="https://kuberxy.github.io/img/68122852d9c0d5a9675607ca7ff419a0.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/37c17e7ff0bcc9d5ee81aa2e081f6a0c.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/ff13e88b6bd147cdbbf8041a659bf2e1.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/7221d07fb12c880f2a3e5237d08ca5c8.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/6dfcb23465f2fbbeaf9346cc1fd625ad.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/image-20241120083210357.png">
-<meta property="og:image" content="https://kuberxy.github.io/img/49983fe57f40fa798f4a50fb8bc4ff70.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/6fa38444aceaf205217da7e9d01e37fa.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/f14cc82d9435d951def6a287bd87b6ed.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/7d5fbb88e0880773d9c637ef383f7d73.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/66e35dd02ef9af6243c644ce33594bd4.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/9e6822f6bf3153088b0afc25f57eb047.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/1aa1217784df9742ac36f02c27b330f6.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/100837a41040e16ffb500c1b6731cd37.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/361f86b96cc236304586fe70266ea7b7.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/96a761981e9502f8d69a55ffff084667.jpg">
-<meta property="article:published_time" content="2024-11-24T06:47:11.000Z">
-<meta property="article:modified_time" content="2024-12-01T08:37:53.000Z">
+<meta property="og:image" content="https://kuberxy.github.io/img/1391352f1fcd8726be044835fbcfeffd.jpg">
+<meta property="article:published_time" content="2024-11-24T05:47:11.000Z">
+<meta property="article:modified_time" content="2025-02-23T01:28:36.000Z">
 <meta property="article:author" content="Mr.x">
 <meta property="article:tag" content="计算机网络原理">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://kuberxy.github.io/img/c8b2008ac92e14da000d30db123c54bd.jpg">
+<meta name="twitter:image" content="https://kuberxy.github.io/img/1391352f1fcd8726be044835fbcfeffd.jpg">
   
   
   
@@ -247,7 +192,7 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-11-24 14:47" pubdate>
+        <time datetime="2024-11-24 13:47" pubdate>
           2024年11月24日 下午
         </time>
       </span>
@@ -259,7 +204,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          42k 字
+          3.2k 字
         
       </span>
     
@@ -270,7 +215,7 @@
         
         
         
-          353 分钟
+          27 分钟
         
       </span>
     
@@ -325,656 +270,57 @@
             
               <div class="markdown-body">
                 
-                <p>本章讨论网络层及网络互连问题，也就是讨论多个网络通过路由器互连成为一个互连网络的各种问题。在介绍网络层提供的两种不同服务后，我们开始讲解本章的核心内容——网际协议（IP），这是本书的一项重点内容。只有较深入地掌握了网际协议的相关知识，才能理解互联网是怎样工作的。本章讨论互联网几种常用的路由选择协议、网络层的关键设备路由器及虚拟专用网（VPN）和网络地址转换（NAT），介绍IP多播、移动IP、下一代网际协议IPv6和IP增强技术MPLS，最后简单介绍当前网络领域最热门和最具发展前途的技术之一——软件定义网络（SDN）的基本思想。</p>
-<h2 id="一、网络层概述">一、网络层概述</h2>
-<p>网络层关注的是如何将分组从源主机沿着网络路径送达目的主机。为了将分组送达目的主机，可能沿路要经过许多中间路由器。为此，网络层必须知道整个网络的拓扑结构，并且在拓扑结构中选择适当的转发路径。同时，网络层还必须仔细地选择路由器，以避免发生某些通信链路或路由器负载过重，而其他链路和路由器空闲的情况。因此，网络中的每台主机和路由器都必须具有网络层功能，而网络层最核心的功能就是分组转发和路由选择。</p>
-<h3 id="1-1、分组转发和路由选择">1.1、分组转发和路由选择</h3>
-<p>网络层的主要任务就是将分组从源主机传送到目的主机，可以将该任务细分为网络层的两种重要的功能。</p>
-<h4 id="1-1-1、分组转发">1.1.1、分组转发</h4>
-<p>当一个分组到达某路由器的一条输入链路时，该路由器必须将该分组转发到适当的输出链路。为此，每个路由器中需要有一个转发表（Forwarding Table），路由器在转发分组时，要根据到达分组首部中的转发标识在转发表中查询。查询该转发表的结果指出了该分组将被转发的路由器的链路接口。分组首部中的转发标识可能是该分组的目的地址或该分组所属连接的指示，这取决于具体的网络层协议。</p>
-<h4 id="1-1-2、路由选择">1.1.2、路由选择</h4>
-<p>当分组从发送方流向接收方时，网络层必须决定这些分组所采用的路由或路径，这就是路由选择（Routing）。路由选择的结果就是生成供分组转发使用的转发表。下图揭示了路由选择和分组转发的重要关系。</p>
-<p><img src="/img/c8b2008ac92e14da000d30db123c54bd.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>路由选择可以是集中式的（例如，在某个网控中心执行，并向每个路由器下达选路信息），也可以是分布式的。路由选择可以是人工的（由网络操作员直接配置转发表），也可以是自动的。分布式自动路由选择要求在每台路由器上运行路由选择协议，每台路由器互相交换路由信息并各自计算路由。实际上，路由选择直接生成的是路由表<br>
-（Routing Table），然后由路由表生成最终的转发表。路由表和转发表在用途和实现细节上有些不同，但我们在讨论路由选择的原理时不进行区分。</p>
-<p>我们可以把网络层在逻辑上分解为两个互相作用的部分，即数据平面（也常被称为转发平面）和控制平面。分组转发直接作用于传输的数据，属于数据平面，而路由选择是用来控制路由器的转发决策，属于控制平面。</p>
-<h3 id="1-2、虚电路和数据报">1.2、虚电路和数据报</h3>
-<p>网络层可以为用户提供面向连接的服务，也可以提供无连接的服务，但在迄今为止的所有主要的计算机网络体系结构中，网络层或提供主机到主机的无连接服务，或提供主机到主机的面向连接服务，而不同时提供这两种服务。在网络层提供面向连接服务的计算机网络被称为虚电路网络（Virtual-Circuit Network），而在网络层提供无连接服务的计算机网络被称为数据报网络（Datagram Network）。在计算机网络领域，网络层应该向运输层提供怎样的服务（“面向连接”还是“无连接”）曾引起长期的争论。</p>
-<p>有些人认为应当借鉴电信网的成功经验，让网络负责可靠交付。大家知道，传统电信网的主要业务是提供电话服务。电信网使用昂贵的程控交换机（其软件也非常复杂），用面向连接 的通信方式，使电信网络能够向用户（实际上就是电话机）提供可靠传输服务。因此他们认为，计算机网络也应模仿打电话所使用的面向连接的通信方式。当两台计算机进行通信时，应当先建立连接（在分组交换中是建立一条虚电路 ），以保证双方通信所需的一切网络资源。然后双方沿着已建立的虚电路发送分组。这样的分组的首部不需要填写完整的目的地址，而只需要填写这条虚电路的编号（一个不大的整数），因而减少了分组的开销。这种通信方式如果再使用可靠传输的网络协议，就可使所发送的分组无差错按序到达终点，当然也不丢失、不重复。在通信结束后要释放建立的虚电路。</p>
-<p>下图（a）是虚电路网络提供面向连接服务的示意图。主机H1 和H2 之间交换的分组都必须在事先建立的虚电路上传送。</p>
-<p><img src="/img/293d904e2b95a28557868c8aae6e6563.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>但互联网的先驱者却认为，电信网提供的端到端可靠传输服务对电话业务无疑是很合适的，因为电信网的终端（电话机）非常简单，没有智能，无差错处理能力，电信网必须负责把用户电话机产生的话音信号可靠地传送到对方的电话机，使还原后的话音质量符合技术规范的要求。但计算机网络的端系统是有智能的计算机。计算机有很强的差错处理能力（这点和电话机有本质上的差别），因此，互联网在设计上就采用了和电信网完全不同的思路。</p>
-<p>互联网采用的设计思路是这样的：网络层向上只提供简单灵活的、无连接的、尽最大努力（Best Effort）交付的数据报服务 。网络在发送分组时不需要先建立连接。每一个分组（也就是IP数据报）独立发送，与其前后的分组无关（不进行编号）。网络层不提供服务质量 （Quality of Service，QoS）的承诺 。也就是说，所传送的分组可能出错、丢失、重复和失序（即不按序到达终点），当然也不保证分组交付的时限。由于传输网络不提供端到端的可靠传输服务，因此网络中的路由器可以做得比较简单，而且价格低廉（与电信网的交换机相比较）。如果两个主机（即端系统）中的进程之间需要进行可靠通信，那么就由位于网络边缘的主机中的运输层负责（包括差错处理、流量控制等）。互联网的这种设计思想被称为“端到端原则 （End-to-End Arguments）”，即将复杂的网络处理功能置于互联网边缘，而将相对简单的、尽最大努力的分组交付功能置于互联网核心。采用这种设计思路的好处是，网络的造价大大降低，运行方式灵活，能够适应多种应用。互联网能够发展到今日的规模，充分证明了当初采用这种设计思路的正确性。</p>
-<p>上图（b）给出了数据报网络提供无连接服务的示意图。主机H1 向H2 发送的分组各自独立地选择路由，并且在传送的过程中还可能丢失。每个分组携带目的主机完整的地址信息。</p>
-<p>下表归纳了虚电路网络与数据报网络的对比。</p>
-<p><img src="/img/fe74db5e692e6b6718b95a820a137b87.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>数据报网络在互联网中取得了巨大的成功，但作为互联网底层物理网络的很多广域分组交换网却都是虚电路网络，如曾经的X.25网络和逐渐过时的帧中继（Frame Relay，FR）网络、异步传输模式（Asynchronous Transfer Mode，ATM）网络。随着互联网多媒体应用需求的迅速增长，人们越来越关注如何让网络提供更好的服务质量，并且把目光再次投向了虚电路技术。例如，目前在互联网核心骨干网中广泛应用的多协议标签交换 （Multi-protocol Label Switching，MPLS）技术将虚电路的一些特点与数据报的灵活性和健壮性进行了结合。鉴于TCP/IP体系结构的互联网是一种数据报网络，本章主要的讨论都围绕网络层如何传送IP数据报这个主题，但在本节我们有必要简要地介绍一下虚电路网络的基本原理。</p>
-<h3 id="1-3、虚电路网络">1.3、虚电路网络</h3>
-<h3 id="1-4、异构网络互联">1.4、异构网络互联</h3>
-<p>在全世界范围内把数以百万计的网络互连起来，并使它们能够互相通信，这样的任务非常复杂，其中有许多问题需要解决，涉及不同的寻址方案、不同的最大分组长度、不同的网络接入机制、不同的超时控制、不同的差错恢复方法、不同的状态报告方法、不同的路由选择技术、不同的用户接入控制、不同的服务（面向连接服务和无连接服务）、不同的管理与控制方式等。</p>
-<blockquote>
-<p>能不能让大家都使用相同的网络？这样可使网络互连变得比较简单。</p>
-</blockquote>
-<p>答案是不行。因为用户的需求是多种多样的，没有一种单一的网络能够适应所有用户的需求。另外，网络技术是不断发展的，网络的制造厂家也要经常推出新的网络，以在竞争中求生存。因此市场上总是有很多种不同性能、不同网络协议的网络，供不同的用户选用。</p>
-<p>从一般的概念来讲，将网络互相连接起来要使用一些中间设备。根据中间设备所在的层次，可以将中间设备分为以下四种。</p>
-<ul>
-<li>物理层使用的中间设备叫作转发器（Repeater）。</li>
-<li>数据链路层使用的中间设备叫作网桥或桥接器（Bridge）。</li>
-<li>网络层使用的中间设备叫作路由器（Router）。</li>
-<li>在网络层以上使用的中间设备叫作网关（Gateway），用网关连接两个不兼容的系统需要在高层进行协议的转换。</li>
-</ul>
-<p>当中间设备是转发器或网桥时，互连仅仅是把一个网络扩大了，从网络层的角度看，这仍然是一个网络，因此一般并不称之为网络互连。网关主要用于高层协议转换，比较复杂，使用场合较少。因此现在我们讨论网络互连时，都是指用路由器进行网络互连和路由选择。路由器其实就是一台专用计算机，用来在互联网中进行路由选择。由于历史的原因，许多有关TCP/IP的文献曾经把网络层使用的路由器称为网关（在本书中，有时也这样用）。对此请读者加以注意。</p>
-<p>TCP/IP体系在网络互连上采用的做法是在网络层（即IP层）使用标准化协议，但相互连接的网络可以是异构的。下图（a）表示有许多计算机网络通过一些路由器互连。由于参加互连的计算机网络都使用相同的IP，因此可以把互连以后的计算机网络看成下图（b）所示的一个虚拟互连网络 。</p>
-<p><img src="/img/e286f6c49b17a391cd27089e0ec678b8.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>所谓虚拟互连网络也就是逻辑互连网络，它的意思就是互连起来的各种物理网络的异构性是客观存在的，但是我们利用IP可以使这些性能各异的网络在网络层上看起来好像是一个统一的网络 。有时，为了避免歧义，我们把互连的底层网络称为物理网络 。这种使用IP的虚拟互连网络可简称为IP网 （IP网是虚拟的，但平常不必每次都强调“虚拟”二字）。当今世界最大的IP网就是互联网。使用IP网的好处是，讨论在这种虚拟的IP网上的主机的通信，就好像讨论在单个网络上的通信一样，这些主机看不见互连的各网络的具体异构细节（如具体的编址方案、路由选择协议等），因而特别方便。</p>
-<p>当很多异构网络通过路由器互连起来时，如果所有的网络都使用相同的IP，那么在网络层讨论问题就显得很方便。现在用一个例子来说明。</p>
-<p><img src="/img/9c4284c666fcb2a5502e0ffb9fa77865.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>在上图所示的互联网中的源主机H1 要把一个IP数据报发送给目的主机H2 。根据第1章中讲过的分组交换的存储转发概念，主机H1 先要查找自己的路由表，看目的主机是否就在本网络上。如是，则不需要经过任何路由器，直接交付 ，任务就完成了。如不是，则必须把IP数据报发送给某个路由器（上图中的R1 ）。R1 在查找了自己的路由表后，知道应当把数据报转发给R2 进行间接交付 。这样一直转发下去，最后路由器R5 知道自己和H2 连接在同一个网络上，不需要再使用别的路由器转发了，于是就把数据报直接交付 目的主机H2 。</p>
-<p>上图中画出了源主机、目的主机及各路由器的协议栈。我们注意到，主机的协议栈共有5层，但路由器在转发数据报时仅用到协议栈的下3层。上图中还画出了数据在各协议栈中流动的方向（用灰色粗箭头表示）。我们还可注意到，R4 和R5 之间使用了卫星链路，而R5 所连接的是个无线局域网。在R1 到R4 之间的3个网络则可以是任意类型的网络。总之，这里强调的是，互联网可以由多种异构网络互连组成 。</p>
-<p>上图中的协议栈中的数字1～5分别表示物理层、数据链路层、网络层、运输层和应用层。如果我们只从网络层考虑问题，那么就可以把IP数据报想象成在网络层中传送，如下图所示。这样就不必画出许多完整的协议栈，使问题的讨论更加简单。</p>
-<p><img src="/img/b8936e6bab01c8d937a74e3c6f521e74.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<h3 id="1-5、路由器的工作原理">1.5、路由器的工作原理</h3>
-<h4 id="1-5-1、路由器的构成">1.5.1、路由器的构成</h4>
-<p>路由器是一种具有多个输入端口和多个输出端口的专用计算机，其任务是转发分组。路由器从某个输入端口收到分组后，按照分组要去的目的地（即目的网络），把该分组从某个合适的输出端口转发给下一跳路由器。下一跳路由器也按照这种方法处理分组，直到该分组到达终点为止。路由器转发分组正是网络层的主要工作。</p>
-<p>如下图给出了典型的路由器的结构。</p>
-<p><img src="/img/96b50ec8c8fe08bc4c4020b19ec20131.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>可以看出，整个路由器可划分为两大部分：路由选择部分和分组转发部分。</p>
-<p>路由选择部分属于控制平面，其核心构件是路由选择处理机。路由选择处理机的任务是根据所选定的路由选择协议构造出路由表，同时经常或定期和相邻路由器交换路由信息，不断地更新和维护路由表。</p>
-<p>分组转发部分是本节所要讨论的主题，它属于数据平面，由三部分组成：一组输入端口 、交换结构 和一组输出端口 （注意，这里的端口就是硬件接口）。下面分别讨论各个部分。</p>
-<h5 id="1-5-1-1、输入端口">1.5.1.1、输入端口</h5>
-<p>请注意，“转发”和“路由选择”是有区别的。在互联网中，“转发 ”就是路由器根据转发表把收到的IP数据报从路由器合适的端口发出去。“转发”仅涉及一个路由器。“路由选择 ”则涉及很多路由器，因为路由表是许多路由器协同工作的结果。这些路由器按照复杂的路由选择算法，得出整个网络的拓扑变化情况，因而能够动态地改变所选择的路由，并由此构造出整个路由表。路由表一般仅包含从目的网络到下一跳（用IP地址表示）的映射，而转发表是依据路由表计算出来的。转发表必须包含完成转发功能所必需的信息。这就是说，转发表的每一行必须包含要到达的目的网络与相应输出端口和某些MAC地址信息（如下一跳的以太网地址）的映射关系。将转发表和路由表用不同的数据结构实现会带来一些好处，这是因为在转发分组时，转发表的结构应当使查找过程最优化，路由表则需要对网络拓扑变化的计算最优化。路由表总是用软件实现的，但转发表可用特殊的硬件来实现。请读者注意，在讨论路由选择的原理时，我们往往不去区分转发表和路由表，笼统地使用路由表这一名词 。</p>
-<p>在前面的路由器结构图中，路由器的输入端口和输出端口部分都各有三个方框，分别代表物理层、数据链路层和网络层的处理模块。物理层进行比特的接收。数据链路层则按照链路层协议接收传送分组的帧。在把帧的首部和尾部剥去后，分组就被送入网络层的处理模块。若分组的接收者是路由器自己，则将其交给相应的上层协议去处理，当这些分组是路由器之间交换路由信息的分组（如RIP分组或OSPF分组等）时，则把这种分组送交路由器的路由选择部分中的路由选择处理机。否则，网络层处理模块按照分组首部中的目的地址查找转发表，根据得出的结果，分组经过交换结构到达合适的输出端口。一个路由器的输入端口和输出端口就做在路由器的线路接口卡 上。</p>
-<p>输入端口的查找和转发功能在路由器的交换功能中是最重要的。为了使交换功能分散化，往往把复制的转发表放在每一个输入端口中，如前面的路由器结构图的虚线箭头所示。路由选择处理机负责对各转发表的副本进行更新。这些副本常称为“影子副本 （ShadowCopy）”。分散化交换可以避免在路由器中的某一点上出现瓶颈。</p>
-<p>以上介绍的查找转发表和转发分组的概念虽然并不复杂，但具体实现并不容易。问题就在于路由器必须以很高的速率转发分组。最理想的情况是输入端口的处理速率能够跟上线路把分组传送到路由器的速率。这种速率称为线速 （Line Speed或WireSpeed）。可以粗略地估算一下。设线路是OC-48链路，即速率2.5 Gbit/s。若分组长度为256字节，那么线速就应当达到每秒能够处理100万以上的分组。现在常用Mpps（Million Packet Per Second，百万分组每秒）为单位来说明一个路由器对收到的分组的处理速率。在路由器的设计中，怎样提高查找转发表的速率是一个十分重要的研究课题。</p>
-<p>当一个分组正在查找转发表时，从这个输入端口又收到另一个分组，后到的分组就必须排队等待，因而产生了一定的时延。下图所示为输入端口对线路上收到的分组的处理。</p>
-<p><img src="/img/8aa5dc29278449322333e0f7708948bf.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<h5 id="1-5-1-2、交换结构">1.5.1.2、交换结构</h5>
-<p>交换结构 （Switching Fabric）又称为交换组织 ，是路由器的关键构件，它将某个输入端口进入的分组根据查表的结果从一个合适的输出端口转发出去。交换结构的速率对于路由器的性能是至关重要的。如果交换结构的速率跟不上输入端口分组的到达速率，分组会因为等待交换而在输入队列中排队。因此，人们对交换结构进行了大量研究，以提高路由器的转发速度。下图是三种基本交换结构的示意图。</p>
-<p><img src="/img/4eb032d79e32b84e1fddb3c2d3489571.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>最早使用的路由器就是普通的计算机，用计算机的CPU作为路由器的路由选择处理机。路由器的输入端口和输出端口的功能和普通计算机的I/O设备一样，这时的路由器实际上就是一台安装了多个网络接口卡的计算机。路由器的某个输入端口收到一个分组时，就用中断方式通知路由选择处理机，然后分组从输入端口被复制到存储器中。路由选择处理机从分组首部提取目的地址，查找路由表，再将分组复制到合适的输出端口的缓存中。采用这种方式分组要两次经过系统的总线（一次写和一次读）。若存储器的带宽（读或写）相当于每秒m 个分组，那么路由器的交换速率（即分组从输入端口传送到输出端口的速率）一定小于m /2分组每秒。这是因为存储器对分组的读和写需要花费同一个数量级的时间。</p>
-<p>许多现代的低端路由器也通过存储器进行交换，上图（a）表示分组通过存储器进行交换，与早期的路由器的区别就是目的地址的查找和分组在存储器中的缓存都是在输入端口中进行的。Cisco公司的Catalyst 8500系列路由器和Bay Network公司的Accelar 1200系列路由器采用的就是共享存储器的方式。</p>
-<p>上图（b）是通过总线进行交换的示意图。采用这种方式时，分组从输入端口通过共享的总线直接传送到合适的输出端口，而不需要路由选择处理机的干预。但是，由于总线是共享的，因此在同一时间只能有一个分组在总线上传送。当分组到达输入端口时，若总线忙（总线正在传送另一个分组），则分组不能通过交换结构，要在输入端口排队等待。因为每一个要转发的分组都要通过这一条总线，路由器的转发带宽显然受到总线速率的限制，要想实现无阻塞交换，交换总线的速率要大于所有输入端口速率的总和。现在的技术已经可以将总线的带宽提高到每秒吉比特，因此许多路由器产品都采用这种通过总线的交换方式。例如，Cisco公司的Catalyst 1900系列路由器就使用了带宽达到1 Gbit/s的总线，而Catalyst 5000系列的背板总线带宽已达32 Gbit/s。</p>
-<p>上图（c）所示的是通过纵横交换结构 （Crossbar Switch Fabric）进行交换。这种交换结构常称为互连网络（Interconnection Network），它有2N 条纵横交叉的总线，可以使N 个输入端口和N 个输出端口相连接。通过控制相应的交叉结点，可使水平总线和垂直总线接通或断开，将分组转发到合适的输出端口。输入端口收到一个分组时，就将它发送到与该输入端口相连的水平总线上。若通向所要转发的输出端口的垂直总线是空闲的，则在这个交叉结点将垂直总线与水平总线接通，然后将该分组转发到该输出端口。但若该垂直总线已被占用（有另一个分组正在转发到同一个输出端口），则后到达的分组必须在输入端口排队。采用这种交换方式的路由器的例子是Cisco公司的12000系列路由器，它使用的纵横交换结构的速率高达60 Gbit/s。</p>
-<h5 id="1-5-1-3、输出端口">1.5.1.3、输出端口</h5>
-<p>我们再来观察在输出端口上的情况，如下图所示。</p>
-<p><img src="/img/27f1386cb4716245ac44a4fd6d8fb0da.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>输出端口从交换结构接收分组，然后把它们发送到路由器外面的线路上。网络层的处理模块中设有一个缓冲区，实际上它就是一个队列。当交换结构传送过来的分组的速率超过输出链路的发送速率时，来不及发送的分组就必须暂时存放在这个队列中。数据链路层处理模块把分组加上链路层的首部和尾部，交给物理层发送到外部线路。</p>
-<p>从以上的讨论可以看出，分组在路由器的输入端口和输出端口都可能会排队等候处理，提高路由器查表和交换的性能可以避免分组在输入端口排队。若分组处理的速率赶不上分组进入队列的速率，则队列的存储空间最终必定减少到零，后面再进入队列的分组由于没有存储空间而只能被丢弃。以前我们提到过的分组丢失就发生在路由器中的输入或输出队列产生溢出的时候。当然，设备或线路出故障也可能使分组丢失，但这种情况比较少见。</p>
-<p>随着传输带宽的不断增长，对路由器的性能要求也在不断提高。通过物理器件性能的提高和路由器体系结构的不断改进，现代路由器的性能已得到了大幅度的提升。路由器从最初使用通用功能器件到现在大量使用专用器件，如网络处理器（Network Processor，NP），其体系结构的发展也经过了4个阶段：单机集中式总线结构、单机分布式共享总线结构、单机分布式纵横交换结构和多机互连的集群结构。</p>
-<h4 id="1-5-2、路由器与交换机的比较">1.5.2、路由器与交换机的比较</h4>
-<p>交换机（这里指的是二层交换机）的最大优点是即插即用，并具有相对高的分组过滤和转发速度。即插即用是因为主机完全感觉不到交换机的存在（即对主机“透明”），网络管理员也无须进行特殊配置就可用它组网。转发速度快是因为交换机只需处理通过第二层传送上来的分组，而路由器还必须处理通过第三层传送上来的帧。</p>
-<p>交换机的缺点也是非常明显的：由于MAC地址是平坦的，一个大型交换机网络要求交换机维护大的MAC地址表，也将要求在主机中维护大的ARP表，MAC地址的自学习过程和ARP会产生和处理大量广播。交换机对广播风暴不提供任何保护措施，如果一台主机失去控制不断发送大量的以太网广播帧，交换机将会转发所有这些帧，导致整个以太网崩溃。另外，交换机网络的逻辑拓扑结构被限制为一棵生成树，即使在物理上存在冗余链路，也不可能为每对主机提供最佳路径。</p>
-<p>路由器的优缺点正好与交换机相反。其优点是能提供更加智能的路由选择，并能隔离广播域。在路由器互连的网络中，网络拓扑不再被限制为一棵生成树，并且可以通过路由选择协议为源和目的之间在多条冗余路径中选择一条最佳的路径。由于路由器的网络寻址是层次的（不像MAC寻址那样是平面的），因此无须在路由表中维护所有主机的信息。路由器不会无目的地转发广播分组，因此能为第二层的广播风暴提供隔离保护功能。</p>
-<p>与交换机相比，路由器的缺点之一就是路由器不是即插即用的。网络管理员要为路由器的每个接口小心地配置IP地址，用户需要在他们的主机中配置默认路由器的IP地址。另外，路由器对每个分组的处理时间通常比交换机更长，因为要进行从第一层到第三层的各种处理，包括比较复杂的最长前缀匹配，以及将IP数据报从一个数据链路层帧中取出再放入另一个数据链路层帧这些烦琐的处理。</p>
-<blockquote>
-<p>既然交换机和路由器各有优缺点，那么什么时候应该用交换机、什么时候应该用路由器呢？</p>
-</blockquote>
-<p>包含几百台主机的小网络用交换机就足够了，因为它们不需要任何IP地址的配置就可以连接这些主机，并提供高性能的数据交换。包含几千台主机的更大的网络通常要使用路由器（除了交换机之外）将整个网络划分成多个局域网，并构成一个互连网络。这时，路由器提供更健壮的流量隔离和对广播风暴的控制，并在网络的主机之间使用更“智能”的路由选择。</p>
-<h4 id="1-5-3、三层交换机">1.5.3、三层交换机</h4>
-<p>需要说明的是，现在广泛应用于局域网环境中的被称为“三层交换机 ”的设备在逻辑上就是一个路由器和支持VLAN的二层交换机的集成体，如下图所示。</p>
-<p><img src="/img/a7fc28a6eaa540af7cc1080aceec5d50.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>三层交换机可以很方便地直接将多个VLAN在IP层（第三层）进行互连。三层交换机通常不具有广域网接口，主要用于在局域网环境中互连同构的以太网，并起到隔离广播域的作用。由于三层交换机所处理的都是封装在以太网帧中的IP数据报，可以对处理算法进行很多特殊的优化并尽量用硬件来实现，因此其转发分组的速度比传统路由器要快。</p>
-<p>这里简要介绍一种常用的三层交换机实现技术的基本原理。当一台主机通过三层交换机与另一个VLAN中的主机进行通信时，三层交换机在处理它们之间的第一个IP数据报时，完全与一个普通路由器一样，要根据目的IP地址使用最长前缀匹配算法查找路由表，获得下一跳IP地址，并使用ARP获取下一跳IP地址对应的MAC地址，然后将IP数据报转发出去。但三层交换机会将目的IP地址与下一跳MAC地址的映射关系记录在高速缓存中，当后续IP数据报到达时就不再通过最长前缀匹配算法查找路由表了，而是根据目的IP地址直接从缓存中查找相应的下一跳MAC地址，并用自己的出口MAC地址和查找到的下一跳MAC地址直接替换包含该IP数据报的以太网帧的源和目的MAC地址（三层交换机连接的都是以太网），直接在第二层将帧转发出去。查找缓存、替换MAC地址全部由硬件完成，因此速度非常快，几乎没有第三层的处理（但要查看目的IP地址）。这就是所谓的“一次路由，多次转发/交换”。要注意的是，主机在上述过程中完全感觉不到三层交换机和普通路由器的区别。</p>
-<p>虽然三层交换机的转发性能比普通路由器要高，但其通常接口类型单一（一般就是以太网接口），支持的路由选择协议也较少。而路由器则不同，它的设计初衷就是互连不同类型的异构网络，如局域网与广域网之间的连接、不同协议的网络之间的连接等，因此路由器的接口类型非常丰富。下图所示的是具有28个千兆以太网接口的华为三层交换机S5700。</p>
-<p><img src="/img/ba320b67cdd2dfa559c7d997f02754e4.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>在实际应用中，典型的做法是，处于同一个局域网中的各个子网的互连及局域网中VLAN间的路由，用三层交换机来代替普通路由器，实现广播域的隔离。而只有局域网与广域网互连，或广域网之间互连时才使用普通路由器。</p>
-<p>在逻辑上三层交换机就是路由器，“三层交换机”只不过是一类路由器产品的商业名称。在本书其他地方，为避免混淆，我们使用术语“路由器”而不使用“三层交换机”，若不特别说明，“交换机”指的就是“二层交换机”，即工作在数据链路层的分组交换机。实际上现在很多商业路由器设备都已经模块化了，用户可以根据自己的需要在一个设备中配置二层交换模块、三层交换模块和各种网络接口模块。下图所示的是具有多种模块的华为核心路由器NE20。</p>
-<p><img src="/img/3775ae2f6a9860416676a21ba7f321ca.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<h2 id="二、网际协议（IP）与地址解析协议（ARP）">二、网际协议（IP）与地址解析协议（ARP）</h2>
-<p>网际协议（IP，又称互联网协议）是TCP/IP体系中两个最主要的协议之一，也是最重要的互联网标准协议之一。与IP配套使用的主要还有以下三个协议：</p>
-<ul>
-<li>地址解析协议 （Address Resolution Protocol，ARP ）；</li>
-<li>互联网控制报文协议 （Internet Control Message Protocol，ICMP ）；</li>
-<li>互联网组管理协议 （Internet Group Management Protocol，IGMP ）。</li>
-</ul>
-<p>下图所示为这三个协议和IP的关系。在网络层中，ARP在最下面，因为IP经常要使用这个协议。ICMP和IGMP在这一层的上部，因为它们要使用IP。这三个协议将在后面陆续介绍。由于IP是用来使互连起来的许多计算机网络能够进行通信的，因此TCP/IP体系中的网络层常常称为网际层（Internet Layer），或IP层。</p>
-<p><img src="/img/d32d69a7be8b340f63768e8a2e02cc95.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<h3 id="2-1、IP地址及编址方式">2.1、IP地址及编址方式</h3>
-<p>在TCP/IP体系中，IP地址是一个最基本的概念。任何连接在互联网上的设备，必须拥有IP地址才能和互联网上的其他设备通信。</p>
-<p>整个互联网就是一个单一的逻辑网络 。IP地址就是给互联网上的每一个主机（或路由器）的每一个接口分配一个在全世界范围内唯一的32位的标识符。IP地址现在由互联网名称与号码分配机构 （InternetCorporation for Assigned Names and Numbers，ICANN）进行分配。ICANN是总部设在美国加利福尼亚州的一个非营利性国际组织，是在美国商务部的提议下于1998年10月成立的，负责IP地址的分配、协议标识符的指派、顶级域名的管理及根域名服务器的管理等。但美国政府机构于2014年3月14日宣布放弃对ICANN的管理权，这标志着互联网全球共治时代的到来。</p>
-<p>为了提高可读性，我们常常把32位的IP地址中的每8位用其等效的十进制数字表示，并在这些数字之间加上一个点。这就叫作点分十进制记法 （Dotted Decimal Notation），如下图所示。显然，128.11.3.31比10000000 00001011 00000011 00011111读起来要方便得多。</p>
-<p><img src="/img/2126d0ff367b576a9415d14bad74c9c3.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>结构化的IP地址使我们可以在互联网上很方便地寻址。IP地址的编址方式决定了IP地址的结构，共经过了三个历史阶段。这三个阶段如下所述。</p>
+                <p>todo</p>
+<h1>一、计算机网络应用体系结构</h1>
+<h1>二、网络应用通信基本原理</h1>
+<h1>三、域名系统（DNS）</h1>
+<h1>四、万维网（WWW）</h1>
+<h1>五、Internet电子邮件</h1>
+<h1>六、FTP</h1>
+<h1>七、P2P应用</h1>
+<p>基于客户/服务器体系结构的应用，它们要求有总是在运行着的基础设施服务器，如DNS服务器、万维网服务器、邮件服务器等。与这些应用不同，基于P2P体系结构的应用是对等方之间直接进行通信，而且对等方主要运行于间断连接的主机上，如个人计算机，而不是运行于24h连续开机的服务器上。</p>
+<p>目前，在互联网上流行的P2P应用主要包括P2P文件共享、即时通信、P2P流媒体、分布式存储等。在这里我们仅以P2P文件共享为例来简单介绍P2P的应用。文件共享应用实际上有两个基本的问题要解决：如何查找到你需要的文件，以及如何从拥有该文件的主机下载该文件。这里我们仅讨论后一个问题，即P2P文件分发（从文件拥有者角度看是将一个文件分发给多个对等方）。</p>
+<h2 id="7-1、P2P文件分发">7.1、P2P文件分发</h2>
+<p>我们通过一个简单的例子来说明P2P方式在文件分发应用中的优势。该任务是将主机H1 中的一个长度为L 的大文件分发给其余七台主机。假设文件传输的瓶颈是各主机的上载速率，再假定所有主机的上载速率都是R 。对于客户/服务器方式，主机H1 为服务器，而其他主机为客户。显然主机H1 要依次把文件发送给所有其他主机，所需的时间是7L /R 。可见采用客户/服务器方式，文件分发时间随客户机的数量呈线性增长。因此，基于客户/服务器方式的应用在面对大量用户访问时，服务器要承受极大的负担，并且消耗大量的服务器带宽。</p>
+<p>在P2P文件分发中，每个对等方都能在收到文件后再将该文件分发给其余对等方，从而协助主机H1 进行分发，这样就大大缩短了文件分发的时间。例如，可以在3L /R 时间内就把长度为L 的文件分发给所有七台主机：</p>
 <ul>
 <li>
-<p>分类编址。这是最基本的编址方法，在1981年就通过了相应的标准协议。</p>
+<p>第1个L /R 时间，H1 →H2 ；</p>
 </li>
 <li>
-<p>划分子网。这是对最基本的编址方法的改进，其标准RFC 950在1985年通过。</p>
+<p>第2个L /R 时间，H1 →H3 ，H2 →H4 ；</p>
 </li>
 <li>
-<p>无分类编址。这是目前互联网所使用的编址方法。1993年提出后很快就得到推广应用。</p>
+<p>第3个L /R 时间，H1 →H5 ，H2 →H6 ，H3 →H7 ，H4 →H8 。</p>
 </li>
 </ul>
-<p>虽然前两种编址方式已成为历史（RFC 1812），但由于很多文献和资料都还使用传统的分类IP地址，因此我们在这里还要从分类编址讲起。</p>
-<h4 id="2-1-1、分类编址">2.1.1、分类编址</h4>
-<p>分类编址方式将IP地址划分为若干个固定类，每一类地址都由两个固定长度的字段组成。其中第一个字段是网络号 （Net-id），它标志主机（或路由器）所连接到的网络。一个网络号在整个互联网范围内必须是唯一的。第二个字段是主机号 （Host-id），它标志该主机（或路由器）。一个主机号在它前面的网络号所指明的网络范围内必须是唯一的。由此可见，一个IP地址在整个互联网范围内是唯一的 。</p>
-<p>这种两级的IP地址可以记为</p>
-<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>I</mi><mi>P</mi><mtext>地址</mtext><mo>:</mo><mo>:</mo><mo>=</mo><mo stretchy="false">{</mo><mo>&lt;</mo><mtext>网络号</mtext><mo>&gt;</mo><mo separator="true">,</mo><mo>&lt;</mo><mtext>主机号</mtext><mo>&gt;</mo><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">IP地址::=\{&lt;网络号&gt;, &lt;主机号&gt;\}
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord cjk_fallback">地址</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">::=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">网络号</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.1944em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">主机号</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mclose">}</span></span></span></span></span></p>
-<p>其中的符号“::=”表示“定义为”。</p>
-<p>这种两级编址方式的好处：第一，IP地址管理机构在分配IP地址时只分配网络号 （第一级），而剩下的主机号（第二级）则由得到该网络号的单位自行分配。这样就方便了IP地址的管理；第二，路由器仅根据目的主机所连接的网络号来转发分组 （而不考虑目的主机号），这样就可以使路由表中的项目数大幅度减少，从而缩减了路由表所占的存储空间及查找路由表的时间 。</p>
-<blockquote>
-<p>但是总共32位的IP地址到底应该拿出多少位作为网络号呢？</p>
-</blockquote>
-<p>分类编址方式设计了适用于不同规模网络的编址方案。下图给出了各类IP地址的网络号字段和主机号字段，这里A类、B类和C类地址都是单播地址（一对一通信），是最常用的，分别用于大、中、小3种规模的网络。</p>
-<p><img src="/img/a5e2f6cbde0ea822ff2a9ceda6c5ae81.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>从上图可以得出以下结论。</p>
+<p>可以证明采用这种基本的P2P分发方式，文件分发时间随对等方数量呈对数增长。显然，每个对等方都参与了文件的分发，它们既是服务的请求者，也是服务的提供者。参加的对等方越多，服务的提供者也就越多。因此，P2P方式比客户/服务器方式具有更好的可扩展性。</p>
+<p>实际上，通过分片 ，即把文件划分为很多等长的小数据块进行分发，可以进一步加快文件分发的速度。因为一个对等方不必等整个文件全部收完就可以将该文件的部分数据块分发给其余对等方，这提高了文件分发的并行性。这就是说，对每一台需要下载文件的主机来说，不仅可以从多个对等方下载数据块，而且可以同时给多个对等方上载数据块。下图说明了这种情况。可以看出，数据块的传送途径不仅有A→B，A→C，A→D，而且有B→C，B→D，C→B，C→D，D→B，D→C。</p>
+<p><img src="/img/1391352f1fcd8726be044835fbcfeffd.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>巧妙地设计分发算法可以大大提高整个系统文件分发的效率。在一个实际的P2P文件分发系统中，任意两个拥有不同数据块的对等方之间都可能互相传送数据块，并且不断有对等方加入或离开。下载某个文件的人越多，拥有该文件数据块的对等方就越多，新加入的对等方就可以从更多的对等方下载该文件，因此有可能更快地下载完整的大文件。这就是为什么使用P2P文件分发软件的用户会有“下载的人越多，下载速度越快”的体验。由于对等方随时都有可能离开，为避免所有下载同一文件的对等方都缺少同一数据块，对等方通常会优先下载“稀有”数据块（拥有该数据块的对等方少），因此每个文件的数据块下载顺序具有随机性。</p>
+<h1>八、Socket编程基础</h1>
+<p>典型的网络应用是由一对程序（即客户程序和服务器程序）组成的，分别位于两个不同的端系统中。当运行这两个程序时，便创建了一个客户进程和一个服务器进程，同时它们通过从套接字读出或写入数据，完成彼此之间的通信。</p>
+<p>开发者创建一个网络应用时，其主任务就是编写客户程序和服务器程序的代码。网络应用程序可分为两类：实现标准协议的网络应用和专用网络应用。</p>
 <ul>
-<li>
-<p>A类、B类和C类地址的网络号字段（在上图中这个字段是灰色的）分别为1、2和3字节长，而在网络号字段的最前面有1～3位的类别位 ，其数值分别规定为0、10和110。</p>
-</li>
-<li>
-<p>A类、B类和C类地址的主机号字段分别为3、2和1字节长。</p>
-</li>
-<li>
-<p>D类地址（前4位是1110）用于多播（一对多通信）。</p>
-</li>
-<li>
-<p>E类地址（前4位是1111）保留为以后使用。</p>
-</li>
+<li>实现标准协议的网络应用的应用层协议遵循某个或某些标准，如RFC 定义的标准或某种其他标准，客户程序和服务器程序必须遵守标准所规定的规则。这类网络应用的客户程序和服务器程序可以分别由不同组织或人员开发，一个开发者编写的客户程序可以与另一个开发者编写的服务器程序进行正常通信，因为两者都遵守同一标准的各种规则。例如，一个组织开发的 Web 浏览器，可以与另一组织开发的 Web 服务器进行正常通信与交互，因为彼此共同遵守HTTP协议标准。事实上，大多数标准网络应用的客户程序和服务器程序通常都是由不同的程序员甚至是不同组织单独开发的。</li>
+<li>专用网络应用是针对某组织或个人的特殊需求编写的网络应用程序。这类应用的应用层协议是专门设计的，没有公开发布在 RFC 中，没有成为标准，只在小范围内甚至只在某个网络应用中使用。专用网络应用的开发通常要求开发者（或开发团队）同时完成应用的客户程序和服务器程序的编写，因为这类应用没有实现一个开放（或标准）的应用层协议，其他开发者将不能开发出和该应用程序交互的代码。显然，要想了解网络应用程序是如何编写的，需要同时理解客户程序和服务器程序的编写。</li>
 </ul>
-<p>对于任意一个给定的IP地址，我们都可以通过该地址的前几位判断其类别，并准确地计算出其网络号和主机号。这对路由器根据目的网络号转发IP数据报是非常重要的。</p>
-<p>由于主机IP地址中的网络号由所连接的网络决定，因此IP地址实际上标志的是一个主机（或路由器）和一条链路的接口。当一个主机通过两个网卡同时连接到两个网络上时，该主机就必须同时具有两个相应的IP地址，其网络号必须是不同的。这种主机称为多归属主机（Multihomed Host）。由于一个路由器至少应当连接到两个网络，因此一个路由器至少应当有两个不同的IP地址。</p>
-<h4 id="2-1-2、划分子网">2.1.2、划分子网</h4>
-<p>分类编址方式表面上看起来非常合理，但在实际应用中随着中小规模网络的迅速增长暴露出了明显的问题。一个C类地址空间仅能容纳254台主机（有两个地址用于特殊目的），对于许多组织的网络来说太小了。因此，很多组织申请B类地址。然而一个B类地址空间又太大了，可容纳65534台主机，导致大量的地址空间被浪费。例如，一个拥有1000台主机的组织，显然需要申请一个B类地址，这就会导致超过64000个地址不能被其他组织使用。随着加入互联网的组织数量的迅速增加，IP地址面临被分配完的危险。</p>
-<p>为了解决上述问题，IETF提出了划分子网 的编址改进方案。该方案从网络的主机号中借用不定长的若干位作为子网号（Subnet-id），当然主机号也就相应减少了同样的位数。于是两级IP地址就变为三级 IP地址：网络号、子网号和主机号。可以用以下记法来表示：</p>
-<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>I</mi><mi>P</mi><mtext>地址</mtext><mo>:</mo><mo>:</mo><mo>=</mo><mo stretchy="false">{</mo><mo>&lt;</mo><mtext>网络号</mtext><mo>&gt;</mo><mo separator="true">,</mo><mo>&lt;</mo><mtext>子网号</mtext><mo>&gt;</mo><mo separator="true">,</mo><mo>&lt;</mo><mtext>主机号</mtext><mo>&gt;</mo><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">IP地址::=\{&lt;网络号&gt;,&lt;子网号&gt;,&lt;主机号&gt;\}
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord cjk_fallback">地址</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">::=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">网络号</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.1944em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">子网号</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.1944em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">主机号</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mclose">}</span></span></span></span></span></p>
-<p>划分子网的编址方法大大减少了对A类、B类地址空间的浪费，因为可以将大的A类、B类地址空间划分给多个组织使用。</p>
-<h4 id="2-1-3、无分类编址">2.1.3、无分类编址</h4>
-<p>划分子网在一定程度上缓解了互联网在发展中遇到的困难，但是数量巨大的C类地址因为地址空间太小并没有得到充分使用，而互联网的IP地址仍在加速消耗，整个IPv4的地址空间面临全部耗尽的威胁。为此，IETF又提出采用无分类编址 的方法来解决IP地址紧张的问题，同时还专门成立IPv6工作组负责研究新版本IP以彻底解决IP地址耗尽问题。</p>
-<p>1993年，IETF发布了无类别域间路由选择 （Classless Inter-Domain Routing，CIDR）（CIDR的读音是“sider”）的RFC文档：RFC 1517～1519和1520。CIDR消除了传统的A类、B类和C类地址，以及划分子网的概念 ，因而可以更加有效地分配IPv4的地址空间，并且在新的IPv6使用之前允许互联网的规模继续增长。</p>
-<p>CIDR把32位的IP地址划分为两个部分。前面的部分是不定长的“网络前缀 ”（Network Prefix）（或简称为“前缀 ”），代替分类编址中的“网络号”来指明网络，后面的部分则用来指明主机。因此CIDR使IP地址从三级编址（划分子网）又回到了两级编址，但这已是无分类的两级编址 。它的记法是：</p>
-<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>I</mi><mi>P</mi><mtext>地址</mtext><mo>:</mo><mo>:</mo><mo>=</mo><mo stretchy="false">{</mo><mo>&lt;</mo><mtext>网络前缀</mtext><mo>&gt;</mo><mo separator="true">,</mo><mo>&lt;</mo><mtext>主机号</mtext><mo>&gt;</mo><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">IP地址::=\{&lt;网络前缀&gt;,&lt;主机号&gt;\}
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord cjk_fallback">地址</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">::=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">网络前缀</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.1944em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">主机号</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mclose">}</span></span></span></span></span></p>
-<p>请注意，虽然无分类编址的IP地址形式上与分类编址的两级结构好像一样，但这里的网络前缀是不定长的。在分类编址中，给定一个IP地址，就确定了它的网络号和主机号。但在无分类编址中，由于网络前缀不定长，IP地址本身并不能确定其网络前缀和主机号。为此，CIDR采用了与IP地址配合使用的32位地址掩码 （Address Mask）。地址掩码由前面连续的一串1和后面连续的一串0组成，1的个数就是网络前缀的长度。最初，地址掩码被用于划分子网，用来表示可变长子网号部分的长度，被称为子网掩码 。虽然CIDR已不再使用子网，但人们已习惯使用子网掩码 这一名词，因此CIDR使用的地址掩码也可继续称为子网掩码 。</p>
-<p>对应分类IP地址中A类地址的默认地址掩码是255.0.0.0，B类地址的默认地址掩码是255.255.0.0，C类地址的默认地址掩码是255.255.255.0。</p>
-<p>使用路由器互连起来的每个网络都有唯一的网络前缀（即网络号），并用主机号为全0的IP地址来表示该网络的IP地址。 使用子网掩码的好处就是计算机能非常方便地利用子网掩码计算一个IP地址的网络地址：只要对子网掩码和IP地址进行逐位的“与 ”运算（AND），就能立即得出其所在网络的地址（主机号全为0的地址）。</p>
-<blockquote>
-<p>例1：已知IP地址是141.14.72.24，所在网络的子网掩码是255.255.192.0。试求其网络地址。</p>
-</blockquote>
-<p>子网掩码是11111111 11111111 11000000 00000000。请注意，掩码的前两个字节都是全1，因此网络地址的前两个字节可写为141.14。子网掩码的第四字节是全0，因此网络地址的第四字节是0。可见本题仅需对地址中的第三字节进行计算。我们只要把IP地址和子网掩码的第三字节用二进制表示，就可以很容易地得出网络地址，如下图所示。</p>
-<p><img src="/img/416e4c75bb697c3d860c4f61a15f9554.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<blockquote>
-<p>例2：在例1中，若子网掩码改为255.255.224.0，试求网络地址，并讨论所得结果。</p>
-</blockquote>
-<p>用同样方法，可以得出网络地址是141.14.64.0，和上例的结果完全一样，如下图所示。</p>
-<p><img src="/img/7c8226b27f621aeb6174ba63265f4127.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>上面两个例子说明，同样的IP地址和不同的子网掩码可以得出相同的网络地址。但是，不同的子网掩码的效果是不同的。虽然上面两个例子中的网络的地址空间的起始地址是一样的，但最大地址是不一样的，各自容纳的最大主机数都是不一样的。因此，子网掩码是一个网络的重要属性。在每个主机的网络连接属性中不仅要配置主机的IP地址，还要配置所在网络的子网掩码。</p>
-<p>CIDR还使用“斜线记法 ”（Slash Notation），或称为CIDR记法 ，即在IP地址后面加上斜线“/”，然后写上网络前缀所占的位数。例如，/20表示该IP地址的地址掩码是11111111 11111111 1111000000000000（255.255.240.0）。斜线记法中，斜线后面的数字就是地址掩码中1的个数 。</p>
-<p>在CIDR中，网络前缀不仅可以用来表示某个网络的网络地址，还可以用来表示连续的IP地址块。这就是使用“网络前缀”这一名称而不继续使用“网络号”的原因。CIDR把网络前缀都相同 的连续的IP地址组成一个“CIDR地址块 ”。我们只要知道CIDR地址块中的任何一个地址，就可以知道这个地址块的起始地址（即最小地址）和最大地址，以及地址块中的地址数。例如，已知IP地址128.14.35.7/20是某CIDR地址块中的一个地址，现在把它写成二进制表示，其中的前20位是网络前缀（用粗体和下画线表示），而前缀后面的12位是主机号：</p>
-<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mn>128.14.35.7</mn><mi mathvariant="normal">/</mi><mn>20</mn><mo>=</mo><mn>10000000</mn><mspace width="1em"/><mn>00001110</mn><mspace width="1em"/><mn>00100011</mn><mspace width="1em"/><mn>00000111</mn></mrow><annotation encoding="application/x-tex">128.14.35.7/20=10000000 \quad 00001110 \quad 00100011 \quad 00000111
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">128.14.35.7/20</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">10000000</span><span class="mspace" style="margin-right:1em;"></span><span class="mord">00001110</span><span class="mspace" style="margin-right:1em;"></span><span class="mord">00100011</span><span class="mspace" style="margin-right:1em;"></span><span class="mord">00000111</span></span></span></span></span></p>
-<p>这个地址所在的地址块中的最小地址和最大地址可以很方便地得出：</p>
-<p><img src="/img/7236a64c5e365dc118d7b39d659811d6.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>不难看出，这个地址块共有<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>12</mn></msup></mrow><annotation encoding="application/x-tex">2^{12}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">12</span></span></span></span></span></span></span></span></span></span></span></span> 个地址（每一个CIDR地址块中的地址数一定是2的整数次幂）。我们可以用地址块中的最小地址和网络前缀的位数指明这个地址块。例如，上面的地址块可记为128.14.32.0/20。在不需要指出地址块的起始地址时，也可把这样的地址块简称为“/20地址块”。</p>
-<p>因此斜线记法除了表示一个IP地址外，还提供了其他一些重要信息。例如，地址192.199.170.82/27不仅表示IP地址是192.199.170.82，还表示这个地址块的网络前缀有27位，地址块包含32个IP地址。通过简单计算还可得出，这个地址块的最小地址是192.199.170.64，最大地址是192.199.170.95。具体的计算方法是这样的：找出地址掩码中1和0的交界处 在地址中的哪一个字节，现在是第四字节。因此只要把这一个字节 用二进制表示，写成01010010，取其前3位（这3位加上前3个字节的24位等于前缀的27位），再把后面5位都写成0，即01000000 ，等于十进制的64，这就找出了地址块的最小地址；再把地址的第四字节的最后5位都置1，即01011111 ，等于十进制的95，这就找出了地址块中的最大地址。</p>
-<h4 id="2-1-4、不指派给接口的特殊IP地址">2.1.4、不指派给接口的特殊IP地址</h4>
-<p>虽然CIDR废弃了分类编址中的A、B、C类地址，但D类和E类地址仍然用于特殊目的不能指派给主机或路由器的接口。D类地址为多播地址，只能作为目的地址使用。而E类地址为保留地址，供日后使用。</p>
-<p>除此之外，网络前缀和主机号全为0或全为1的地址一般也不能指派给接口，在分配地址时要特别注意这一点。通常全0表示“这个 （this）”，例如，网络前缀为全0的IP地址通常表示“本网络 ”。而全1往往表示“所有的 （all）”，例如，全1的主机号字段表示该网络上的所有主机。</p>
-<p>另外，网络前缀为127（即01111111）的地址保留作为环回测试 （Loopback Test）地址，用于本主机进程之间的通信。若主机发送一个目的地址为环回地址（如127.0.0.1）的IP数据报，则由本主机中的协议软件处理数据报中的数据，而不会把数据报发送到任何网络。目的地址为环回地址的IP数据报永远不会出现在任何网络上。</p>
-<p>下表列出了一般不指派给接口的特殊IP地址，这些地址只能在特定的情况下使用。</p>
-<p><img src="/img/ede36fa4c6c794a0d4b00fd7ae6f6112.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>这里要说明的是，2000年，RFC 3021（建议标准）提出了一种仅用于点对点链路的31位网络前缀。为了节省IP地址资源，点对点链路（如使用PPP的串行线路）可以不受表4-3的限制，使用“/31”网络前缀（该网络仅有两个IP地址），主机号为0或1的IP地址可以指派给点对点链路两端的路由器接口。这个使用“/31”网络前缀的特殊网络不支持定向广播，即主机号为全1的IP地址不再表示该网络的广播地址。</p>
-<h4 id="2-1-5、IP地址的分配">2.1.5、IP地址的分配</h4>
-<p>下图所示的是使用CIDR编址的互联网中的IP地址实例。</p>
-<p><img src="/img/f9596184c41ec2ce1da6eae582a3d8d5.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>在图中有以下几点需要注意。</p>
-<ul>
-<li>
-<p>用路由器互连起来的每个网络有唯一的网络前缀，网络前缀是用一个IP地址和一个子网掩码共同确定的，可以用简单明了的CIDR记法来表示。主机号为全0的IP地址常表示该网络的网络地址。</p>
-</li>
-<li>
-<p>各网络的子网掩码可以不同，即网络前缀的长度可以不同，因此各自的地址空间大小也不相同。上图中LAN1 、LAN3 的地址空间大小为256，LAN2 的地址空间大小为512，而N1 、N2 和N3 的地址空间大小只有4。</p>
-</li>
-<li>
-<p>连接在同一个网络上的主机或路由器的IP地址的网络前缀必须与该网络的网络前缀一样。主机号全为0和全为1的IP地址有特殊用途，不能分配给主机或路由器使用。</p>
-</li>
-<li>
-<p>用网桥（它只在链路层工作）互连的网段仍然是一个物理网络，只能有一个网络地址或网络前缀。</p>
-</li>
-<li>
-<p>由于路由器总是连接多个网络，因此其具有两个或两个以上的IP地址，即路由器的每一个接口都有一个不同网络前缀的IP地址。</p>
-</li>
-<li>
-<p>为主机和路由器接口配置IP地址时，必须要配置相应的子网掩码（在上图中省略了）。</p>
-</li>
-<li>
-<p>当两个路由器通过点对点链路直接相连时（例如，使用PPP的串行线路。注意，不是一条直接连接两个路由器以太网接口的以太网链路），在连线两端的接口处，可以分配也可以不分配IP地址。如分配了IP地址，则这一段连线就构成了一种只包含一段线路的特殊“网络”（如图中的N1 、N2 和N3 ）。之所以叫作“网络”，是因为它有IP地址。过去最常用的方法是使用“/30”网络前缀，但这样就需要占用4个IP地址。对于这种仅由一段连线构成的特殊“网络”，为了节省IP地址资源，现在可以采用两种方法：一是使用“/31”，即仅用于点对点链路的31位网络前缀；二是不分配IP地址，将这样的特殊网络作为无编号网络 （Unnumbered Network）或匿名网络 （Anonymous Network）。但这两种方法目前并不是所有设备都支持。</p>
-</li>
-</ul>
-<p>使用CIDR的一个好处就是可以更加有效地分配IPv4的地址空间，可根据客户的需要分配适当大小的CIDR地址块。然而在使用分类编址方式时，向一个组织分配IP地址，就只能以/8、/16或/24为单位来分配，很不灵活。</p>
-<blockquote>
-<p>例：假定某ISP已拥有地址块206.0.64.0/18。某大学从该ISP获得地址块206.0.68.0/22，并需要分配给各系。若一系有500台主机，二系有250台主机，三系和四系各有100台主机，试给每个系分配CIDR地址块。若一系和二系还需要将所得地址块各自平均分配给4个实验室，三系和四系需要将所得地址块各自平均分配给2个实验室，请给出最后各CIDR地址块的网络前缀。</p>
-</blockquote>
-<p>在分配IP地址时，主机号全为0或全为1的特殊地址是不能分配给主机的，因此一系至少需要502个地址，而2的9次幂（即512）大于且最接近502，其地址块主机号需要9位，即需要一个网络前缀为23位的地址块（/23地址块）。与之类似，二系需要一个/24地址块，三系和四系各需要一个/25地址块。</p>
-<p>划分地址的方法并不唯一，答案也不唯一。这里以先划分大的地址块，再划分小的地址块为例求解。如下图所示，先将地址块206.0.68.0/22的第23位拿出来将地址块划分为两个/23地址块，第23位为“0”的地址块206.0.68.0/23分配给一系，为“1”的地址块206.0.70.0/23用于继续划分。这样，第23位和第24位为“10”的地址块206.0.70.0/24分配给二系，第23～25位为“110”的地址块206.0.71.0/25分配给三系，第23～25位为“111”的地址块206.0.71.128/25分配给四系。</p>
-<p><img src="/img/1d15b79632be01ae465153781dab219b.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>若一系将所得地址块206.0.68.0/23再平均分配给4个实验室，则需要将地址块的第24位和第25位拿出来，用“00”“01”“10”“11”将原来的/23地址块划分为4个/25地址块。其他系的地址块划分方法与此类似。最后结果如下图所示。</p>
-<p><img src="/img/663368202a4aa922eb8b0aa53f4f45aa.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<h3 id="2-2、IP地址与物理地址">2.2、IP地址与物理地址</h3>
-<p>在学习IP地址时，很重要的一点就是弄懂主机的IP地址与物理地址 （也称为硬件地址 ）的区别。</p>
-<p>互联网是由路由器将一些物理网络互连而成的逻辑网络。从源主机发送的分组在到达目的主机之前可能要经过许多不同的物理网络，在逻辑的互联网层次上，主机和路由器使用它们的逻辑地址标识，而在具体的物理网络层次上，主机和路由器必须使用它们的物理地址标识。</p>
-<p>下图说明了IP地址与物理地址的区别。</p>
-<p><img src="/img/7d6d55d38c047591f1abb4f4e81047eb.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>从层次的角度看，物理地址是数据链路层或物理网络使用的地址 ，而IP地址是网络层及以上各层使用的地址，是一种逻辑地址 （称IP地址是逻辑地址是因为IP地址是用软件实现的）。下面我们以局域网为例来说明IP地址与物理地址的关系。</p>
-<p>在发送数据时，数据从高层传递到低层，然后才到通信链路上传输。使用IP地址的IP数据报一旦被交给了数据链路层，就被封装成MAC帧。MAC帧在传送时使用的源地址和目的地址都是物理地址，这两个物理地址都写在MAC帧的首部中。</p>
-<p>连接在通信链路上的设备（主机或路由器）在接收MAC帧时，其根据是MAC帧首部中的物理地址。在数据链路层看不见隐藏在MAC帧的数据中的IP地址。只有在剥去MAC帧的首部和尾部，把MAC层的数据上交给网络层后，网络层才能在IP数据报的首部中找到源IP地址和目的IP地址。</p>
-<p>总之，IP地址放在IP数据报的首部，而物理地址则放在MAC帧的首部。在网络层和网络层以上使用的是IP地址，而数据链路层使用的是物理地址。在上图中，在IP数据报被放入数据链路层的MAC帧中以后，整个IP数据报就成为MAC帧的数据，因而在数据链路层看不见数据报的IP地址。</p>
-<p>下图（a）所示为三个局域网用两个路由器R1 和R2 互连起来。现在主机H1 要和主机H2 通信。这两个主机的IP地址分别是IP1 和IP2 ，而它们的物理地址分别为HA1 和HA2 （HA表示Hardware Address）。通信的路径是H1 →R1 →R2 →H2 。路由器R1 因同时连接到两个局域网上，因此它有两个物理地址，即HA3 和HA4 。同理，路由器R2 也有两个物理地址HA5 和HA6 。</p>
-<p><img src="/img/ebd3b711b3cbcc9c23d037af3f052b3e.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>上图（b）特别强调了IP地址与物理地址的区别。下表归纳了这种区别。</p>
-<p><img src="/img/48d0e03232998119da857ed1aa24a8ec.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>这里要强调以下几点。</p>
-<ul>
-<li>
-<p>在IP层抽象的互联网上只能看到IP数据报 。虽然IP数据报要经过路由器R1 和R2 的两次转发，但在它的首部中的源地址和目的地址始终 分别是IP1 和IP2 。上图（b）中的数据报上写的“从IP1 到IP2 ”就表示前者是源地址而后者是目的地址。数据报中间经过的两个路由器的IP地址并不出现在IP数据报的首部中。</p>
-</li>
-<li>
-<p>虽然IP数据报首部有源IP地址，但路由器只根据目的IP地址转发IP数据报。</p>
-</li>
-<li>
-<p>在局域网的链路层，只能看见MAC帧 。IP数据报被封装在MAC帧中。MAC帧在不同网络上传送时，其首部中的源地址和目的地址会发生变化。开始在H1 到R1 间传送时，MAC帧首部中写的是从物理地址HA1 发送到物理地址HA3 ，路由器R1 收到此MAC帧后，在转发时要改变首部中的源地址和目的地址，将它们换成从物理地址HA4 发送到物理地址HA5 。路由器R2 收到此帧后，再改变一次MAC帧的首部，填入从HA6 发送到HA2 ，然后在R2 到H2 之间传送。MAC帧的首部的这种变化，在上面的IP层上也是看不见的。</p>
-</li>
-<li>
-<p>尽管互连在一起的网络的物理地址体系可以各不相同，但IP层抽象的互联网屏蔽了下层这些很复杂的细节。只要我们在网络层上讨论问题，就能够使用统一的、逻辑的IP地址研究主机和主机或路由器之间的通信 。上述的“屏蔽”概念是一个很有用、很普遍的基本概念。例如，计算机中广泛使用的图形用户界面使得用户只用鼠标就能让计算机完成很多任务。实际上计算机要完成这些任务必须执行很多条指令，但这些复杂的过程全都被设计良好的图形用户界面屏蔽掉了，用户看不见这些复杂过程。</p>
-</li>
-</ul>
-<p>以上这些概念是异构网络互连的精髓所在，读者务必仔细思考和掌握。</p>
-<h3 id="2-3、地址解析协议">2.3、地址解析协议</h3>
-<p>在实际应用中，我们经常会遇到这样的问题：已经知道了一个机器（主机或路由器）的IP地址，需要找出其相应的物理地址。地址解析协议就是用来解决这样的问题的。</p>
-<p>我们知道，网络层使用的是IP地址，但在具体物理网络的链路上传送数据帧时，最终还是必须使用该物理网络的物理地址。IP地址和下面物理网络的物理地址之间由于格式不同而不存在简单的映射关系（例如，IP地址有32位，而局域网的物理地址是48位）。此外，一个物理网络上可能经常会有新的主机加入，或撤走一些主机。更换网络适配器也会使主机的物理地址改变。在支持硬件广播的局域网中可以使用地址解析协议（Address Resolution Protocol，ARP）来解决IP地址与物理地址的动态映射问题。</p>
-<p>使用ARP的每一个主机都设有一个ARP高速缓存 （ARP Cache），里面有本局域网上 的各主机和路由器的IP地址到物理地址的映射表，这些都是该主机目前知道的一些地址。那么主机怎样知道这些地址呢？</p>
-<p>我们可以通过下面的例子来说明。</p>
-<p><img src="/img/704542abd62662cc8d6a35cae3b2bfc2.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>主机A要向本局域网 上的某个主机B发送IP数据报时，会先在其ARP高速缓存中查看有无主机B的IP地址。如有，主机A就在ARP高速缓存中查出其对应的物理地址，再把这个物理地址写入MAC帧，然后通过局域网把该MAC帧发往此物理地址。</p>
-<p>主机A也有可能查不到主机B的IP地址。原因可能是主机B才入网，也可能是主机A刚刚加电，其高速缓存还是空的。在这种情况下，主机A就自动运行ARP，然后按以下步骤找出主机B的物理地址。</p>
-<ul>
-<li>ARP进程在本局域网上广播发送一个ARP请求分组，该分组被直接封装在数据链路层广播帧中（具体格式可参阅RFC 826）。上图（a）所示为主机A广播发送ARP请求分组。ARP请求分组的主要内容：“我的IP地址是209.0.0.5，物理地址是00-00-C0-15-AD-18。我想知道IP地址为209.0.0.6的主机的物理地址。”</li>
-<li>在本局域网上的所有主机上运行的ARP进程都收到此ARP请求分组。</li>
-<li>主机B在ARP请求分组中见到自己的IP地址，就向主机A发送ARP响应分组，并写入自己的物理地址，而其余的所有主机都不理睬这个ARP请求分组，如上图（b）所示。ARP响应分组的主要内容：“我的IP地址是209.0.0.6，物理地址是08-00-2B-00-EE-0A。”请注意，虽然ARP请求分组是数据链路层的广播，但ARP响应分组是普通的数据链路层单播，即从一个源地址发送到一个目的地址。</li>
-<li>主机A收到主机B的ARP响应分组后，就在其ARP高速缓存中写入主机B的IP地址到物理地址的映射。</li>
-</ul>
-<p>当主机A向B发送数据报时，很可能以后不久主机B还要向A发送数据报，因而主机B也可能要向A发送ARP请求分组。为了减少网络上的通信量，主机A在发送其ARP请求分组时，就把自己的IP地址到物理地址的映射写入ARP请求分组。主机B收到A的ARP请求分组时，就把主机A的这一地址映射写入自己的ARP高速缓存。以后主机B向A发送数据报时就很方便了。</p>
-<p>可见ARP高速缓存非常有用。如果不使用ARP高速缓存，那么任何一个主机只要进行一次通信，就必须在网络上用广播方式发送ARP请求分组，这就增大了网络的开销。ARP把已经得到的地址映射保存在高速缓存中，这就使得该主机下次再和具有同样目的地址的主机通信时，可以直接从高速缓存中找到所需的物理地址，而不必再用广播方式发送ARP请求分组。</p>
-<p>ARP高速缓存中的每一个地址映射项目都设置有生存时间 （如10～20min）。超过生存时间的项目会被从高速缓存中删除掉。设置这种地址映射项目的生存时间是很重要的。下面设想一种情况。主机A和B通信。A的ARP高速缓存里保存有B的物理地址，但B的网络适配器突然坏了，B立即更换了一块，因此B的物理地址就改变了。假定A还要和B继续通信。A在其ARP高速缓存中查找到B原先的物理地址，并使用该物理地址向B发送数据帧。但B原先的物理地址已经失效了，因此A无法找到B。过了一段不长的时间，A的ARP高速缓存中删除了B原先的物理地址（因为它的生存时间到了），于是A重新广播发送ARP请求分组，又找到了B。</p>
-<p>请注意，ARP用于解决同一个局域网上 的主机或路由器的IP地址和物理地址的映射问题。如果所要找的主机和源主机不在同一个局域网上，例如，在图4-16中，主机H1 就无法解析出主机H2 的物理地址（实际上主机H1 也不需要知道主机H2 的物理地址）。主机H1 发送给H2 的IP数据报首先需要通过与主机H1 连接在同一个局域网上的路由器R1 来转发。因此主机H1 这时需要把路由器R1 的IP地址IP3 解析为物理地址HA3 ，以便把IP数据报传送到路由器R1 。然后，R1 从转发表中找出了下一跳路由器R2 ，同时使用ARP解析出R2 的物理地址HA5 。于是IP数据报被按照物理地址HA5 转发到路由器R2 。路由器R2 在转发这个IP数据报时用类似方法解析出目的主机H2 的物理地址HA2 ，使IP数据报最终交付主机H2 。</p>
-<p>从IP地址到物理地址的解析是自动进行的，主机的用户对这种地址解析过程是不知道的。只要主机或路由器要和本网络上的另一个已知IP地址的主机或路由器通信，ARP就会自动地把这个IP地址解析为链路层所需要的物理地址。</p>
-<blockquote>
-<p>既然在网络链路上传送的帧最终是按照物理地址找到目的主机的，那么为什么我们不直接使用物理地址进行通信，而是要使用逻辑的IP地址并调用ARP来寻找出相应的物理地址呢？</p>
-</blockquote>
-<p>全世界存在着各式各样的网络，它们使用不同形式的物理地址 。要使这些异构网络能够互相通信就必须进行非常复杂的物理地址转换工作 ，由用户或用户主机来完成这项工作几乎是不可能的。统一的IP地址把这个复杂问题解决了。连接到互联网的主机只需拥有统一的IP地址，它们之间的通信就像连接在同一个网络上那样简单方便。由于调用ARP的复杂过程都是由计算机软件自动进行的，并不需要用户参与，因此，在虚拟的IP网上用IP地址进行通信给广大的计算机用户带来了很大的方便。</p>
-<p>实际上，ARP可使用在不同类型的物理网络上，支持不同类型的高层协议（不仅仅是IP）。ARP分组的格式如图4-18所示，可支持不同长度的硬件地址和协议地址。这里“发送方”是指发送请求分组或响应分组的一方，“目标”是指接收请求分组或响应分组的一方。对于ARP请求分组，目标硬件地址字段的值为0，表示发送方不知道目标的硬件地址。注意，ARP是被直接封装在数据链路层帧（如以太网帧）中进行传输的，而不需要经过IP的封装。</p>
-<p><img src="/img/46bf875ece8abf733dd39c593b19633c.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>ARP除了能进行物理地址解析外，还可以用来在局域网中实现IP地址冲突检测。很多系统在配置完IP地址后，会自动向本网络广播目标协议地址为本主机IP地址的ARP请求分组。若收到了ARP响应分组，则说明IP地址产生了冲突（本网络中有其他主机已在使用该IP地址），系统会提示用户IP地址冲突，需要重新配置IP地址。</p>
-<h3 id="2-4、IP数据报的格式">2.4、IP数据报的格式</h3>
-<p>IP数据报的格式能够说明IP都具有什么功能。在TCP/IP的标准中，各种数据格式常常以32位（即4字节）为单位来描述。图4-19是IP数据报的完整格式。</p>
-<p><img src="/img/cc7871e0b0b233e7c711bb433a6e6a22.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>从图4-19中可以看出，一个IP数据报由首部和数据部分组成。首部的前一部分是固定部分，共20字节，是所有IP数据报必须具有的。首部的固定部分的后面可变部分是一些选项字段，其长度是可变的。下面介绍首部各字段的意义。</p>
-<h4 id="2-4-1、IP数据报首部的固定部分中的各字段">2.4.1、IP数据报首部的固定部分中的各字段</h4>
-<p>版本：占4位，指IP的版本。通信双方使用的IP的版本必须一致。目前广泛使用的IP版本号为4（即IPv4）。</p>
-<p>首部长度：占4位，可表示的最大十进制数值是15。请注意，这个字段的数值的单位是32位（4字节），因此，IP的首部长度为1111时（即十进制的15），就达到最大值60字节。当IP分组的首部长度不是4字节的整数倍时，必须利用最后的填充字段加以填充。因此数据部分总在4字节的整数倍处开始，这对实现IP较为方便。最常用的首部长度就是20字节（即首部长度为0101），这时不使用任何选项。</p>
-<p>区分服务 ：占8位，用来获得更好的服务。这个字段在旧标准中叫作服务类型（Type Of Service，TOS） ，但实际上一直没有被使用过。1998年，IETF把这个字段改名为区分服务（DifferentiatedServices，DS） 。在一般的情况下都不使用这个字段（RFC 2474，RFC 3168）。</p>
-<p>总长度：指首部和数据部分长度之和，单位为字节。总长度字段为16位，因此数据报的最大长度为216-1=65535字节。</p>
-<p>在IP层下面的每一种数据链路层都有自己的帧格式，包括帧格式中的数据字段的最大长度 ，这称为最大传送单元 （Maximum Transfer Unit，MTU）。当一个IP数据报被封装成链路层的帧时，此数据报的总长度（即首部加上数据部分）一定不能超过下面的数据链路层的MTU。</p>
-<p>虽然使用尽可能长的数据报能使传输效率提高，但由于以太网的普遍应用，实际使用的数据报长度很少超过1500字节。为了不使IP数据报的传输效率降低，有关IP的标准文档规定，所有主机和路由器必须能够处理的IP数据报长度不得小于576字节。当数据报长度超过网络所容许的MTU时，过长的数据报要分片后才能在网络上传送（见后面的“片偏移”字段）。这时数据报首部中的“总长度”字段不是指未分片前的数据报长度，而是指分片后的每一个分片 的首部长度与数据部分长度的总和。</p>
-<p>标识（Identification）：占16位。IP软件在存储器中维持一个计数器，每产生一个数据报，计数器就加1，并将此值赋给标识字段。但这个“标识”并不是序号，因为IP是无连接服务，数据报不存在按序接收的问题。当数据报由于长度超过网络的MTU而必须分片时，这个标识字段的值就被复制到所有的数据报片的标识字段中。相同的标识字段的值使分片后的各数据报片最后能在目的站被正确地重装成原来的数据报。</p>
-<p>标志（Flag）：占3位，但目前只有2位有意义。</p>
-<p>标志字段中的最低位记为MF（More Fragment）。MF=1表示后面“还有分片”。MF=0表示这已是若干数据报片中的最后一个。</p>
-<p>标志字段中间的一位记为DF （Don’t Fragment），意思是“不能分片 ”。只有当DF=0时才允许分片。若路由器收到的数据报DF=1，但数据报长度超过了输出链路的MTU，路由器则会丢弃该数据报，并向源点发送一个ICMP终点不可达差错报告。</p>
-<p>片偏移 ：占13位。片偏移指出：较长的分组分片后某片在原分组中的相对位置。也就是说，相对于用户数据字段的起点，该片从何处开始。片偏移以8字节为偏移单位。这就是说，每个分片的长度一定是8字节（64位）的整数倍。</p>
-<blockquote>
-<p>例：一数据报的总长度为3820字节，其数据部分长度为3800字节（使用固定首部），需要分片为长度不超过1420字节的数据报片。由于固定首部长度为20字节，因此每个数据报片的数据部分长度不能超过1400字节。于是分为三个数据报片，其数据部分的长度分别为1400、1400和1000字节。原始数据报首部被复制为各数据报片的首部，但必须修改有关字段的值。下图所示为分片结果（请注意片偏移的数值）。</p>
-</blockquote>
-<p><img src="/img/c829b4e481d5b3316e52013fa0cb9874.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>下表列出了上例中数据报首部中与分片有关的字段中的数值，其中标识字段的值是任意给定的（12345）。具有相同标识的数据报片在目的站就可无误地重装成原始数据报。</p>
-<p><img src="/img/7b53f3074574a5c3ad9c6b15129f64db.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>现在假定数据报片2经过某个网络时还需要再进行分片，即划分为数据报片2-1（携带数据800字节）和数据报片2-2（携带数据600字节）。那么这两个数据报片的总长度、标识、MF、DF和片偏移分别为：820，12345，1，0，175；620，12345，1，0，275。</p>
-<p>注：IP数据报在传送中可能被多次分片，但分片的数据报仅在目的主机才被重装为原来的数据报。</p>
-<p>生存时间 ：占8位。生存时间字段常用的英文缩写是TTL（Time To Live），指出数据报在网络中的寿命 。这个字段由发出数据报的源点设置。其目的是防止路由错误的数据报无限制地在互联网中兜圈子（例如，从路由器R1 转发到R2 ，再转发到R3 ，然后又转发回到R1 ），白白消耗网络资源。最初的设计是以秒作为TTL值的单位。每经过一个路由器，就把TTL值减去数据报在路由器消耗掉的一段时间。当TTL值减为零时，就丢弃这个数据报。</p>
-<p>后来TTL字段的功能 改为“跳数限制 ”（但名称不变）。路由器在转发数据报之前就把TTL值减1。若TTL值减小到零，就丢弃这个数据报，不再转发。因此，现在TTL值的单位不再是秒，而是跳数 。TTL字段的意义是指明数据报在互联网中至多可经过多少个路由器。显然，数据报能在互联网中经过的路由器的最大数值是255。若把TTL字段的初始值设置为1，就表示这个数据报只能在本局域网中传送。因为这个数据报一传送到局域网上的某个路由器，在被转发之前TTL值就减为零，显然会被这个路由器丢弃。</p>
-<p>协议：占8位。协议字段指出此数据报携带的数据来自何种协议，使目的主机的IP层知道应将数据部分上交给哪个处理过程。常用的一些协议和相应的协议字段值如下。</p>
-<p><img src="/img/10a18cce11387e10265193d2b97481a5.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>首部检验和 ：占16位。这个字段只检验数据报的首部 ，不检验数据部分 。数据报每经过一个路由器，路由器都要重新计算一下首部检验和（一些字段，如生存时间、标志、片偏移等都可能发生变化）。不检验数据部分可减少计算的工作量。为了进一步减小计算首部检验和的工作量，IP首部的检验和不采用复杂的CRC编码，而采用下面的简单计算方法。在发送方，先把IP数据报首部划分为许多16位字的序列，并把检验和字段置零。用反码算术运算把所有16位字相加后，将得到的和的反码写入首部检验和字段。接收方收到数据报后，将首部的所有16位字再使用反码算术运算相加一次。将得到的和取反码，即得出接收方首部检验和的计算结果。若首部未发生任何变化，则此结果必为0，于是就保留这个数据报；否则即认为出差错，并将此数据报丢弃。</p>
-<p><img src="/img/af520186197946ecdc8342df25843834.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>图4-21说明了这一过程。</p>
-<p><img src="/img/6f63bfd344b03e61acfecdc509132171.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>该检验和的计算方法不仅用于IP，还用于后面将要介绍的UDP和TCP等协议，常被称为互联网检验和 （Internet Checksum）。这种检验和的检错性能虽然不如CRC，但更易用软件实现。图4-22是一个计算互联网检验和的具体例子。</p>
-<p>源地址：占32位。</p>
-<p>目的地址：占32位。</p>
-<h4 id="2-4-2、IP数据报首部的可变部分">2.4.2、IP数据报首部的可变部分</h4>
-<p>IP首部的可变部分就是一个选项字段。选项字段用来支持排错、测量及安全等措施，内容很丰富。此字段的长度可变，从1字节到40字节不等，取决于所选择的项目。某些项目只需要1字节，只包括1字节的选项代码，但还有些选项需要多个字节。这些选项一个个拼接起来，中间不需要有分隔符，最后用全0的填充字段补齐为4字节的整数倍。</p>
-<p>增加首部的可变部分是为了增加IP数据报的功能，但这也使得IP数据报的首部长度成为可变的。这就增加了每一个路由器处理数据报的开销。实际上这些选项很少被使用。新的IP版本IPv6就把IP数据报的首部长度做成了固定的。因此，这里不再继续讨论这些选项的细节。有兴趣的读者可参阅RFC 791。</p>
-<h3 id="2-5、IP数据报的转发">2.5、IP数据报的转发</h3>
-<h4 id="2-5-1、路由表">2.5.1、路由表</h4>
-<p>我们知道路由器是根据路由表转发IP数据报的，一个IP路由表到底包含哪些主要的信息呢？下图（a）是一个路由表的简单例子。</p>
-<p><img src="/img/7280712a5437ed573fb762d6798c9271.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>有四个网络通过三个路由器连接在一起。每一个网络上都可能有成千上万个主机。可以想象，若按目的地址来制作路由表，则所得出的路由表就会过于庞大（如果每一个网络有1万台主机，四个网络就有4万台主机，因而每一个路由表就有4万个项目，也就是4万行。每一行对应于一个主机 ）。但若按目的主机所在网络的地址 来制作路由表，那么每一个路由器中的路由表就只包含4个项目（即只有4行，每一行对应于一个网络 ）。以路由器R2 的路由表为例，由于R2 同时连接在网络2和网络3上，因此只要目的主机在这两个网络上，就可通过接口0或接口1由路由器R2 直接交付（当然还要利用ARP才能找到这些主机相应的物理地址），不需要下一跳路由器的地址。若目的主机在网络1中，则下一跳路由器应为R1 ，其IP地址为128.0.2.7。由于路由器R2 和R1 同时连接在网络2上，因此从路由器R2 通过接口0把分组转发到路由器R1 是很容易的。同理，若目的主机在网络4中，则路由器R2 应把分组转发给IP地址为128.0.3.1的路由器R3 。注意，用一个IP地址并不能准确标识一个网络，因此路由表中除了目的网络地址外还要有一个地址掩码（合起来等价于一个网络前缀）。</p>
-<p>上图（a）所示的整个网络拓扑可简化为上图（b）所示的链路。使用这样的简化图，可以使我们不用关心某个网络内部的具体拓扑及有多少台计算机连接在该网络上，因为这些与分组转发问题并没有什么关系。这样的简化图强调了在互联网上转发数据报时，是从一个路由器转发到下一个路由器 。</p>
-<p>由于路由器是根据路由表中的目的网络地址来确定下一跳路由器的，因此有以下结论。</p>
-<ul>
-<li>IP数据报最终一定可以找到目的主机所在目的网络上的路由器（可能要通过多次的间接交付）。</li>
-<li>只有最后一个路由器才试图向目的主机进行直接交付。</li>
-</ul>
-<p>路由器还可采用默认路由 （Default Route），以减少路由表所占用的空间和搜索路由表所用的时间。这种转发方式在一个网络只有很少的对外连接时是很有用的（例如，在互联网的ISP层次结构的边缘）。默认路由在主机发送IP数据报时往往更能显示出优点。我们在前面已经讲过，主机在发送每一个IP数据报时都要查找自己的路由表。如果一个主机连接的网络只有一个路由器和互联网连接，那么在这种情况下使用默认路由是非常合适的。如下图所示，连接在网络N1 上的主机H的路由表只需要3个项目。第一个项目就是到本网络主机的路由，其目的网络就是本网络N1 ，因而不需要路由器转发，而是直接交付。第二个项目是到网络N2 的路由，对应的下一跳路由器是R2 。第三个项目就是默认路由 。只要目的网络不是N1 和N2 ，就一律选择默认路由，把数据报先间接交付路由器R1 ，让R1 再转发给下一个路由器，一直转发到目的网络上的路由器，最后进行直接交付。实际上当我们在主机的网络连接属性中配置默认路由器时，就是在主机的路由表中增加了一条默认路由。</p>
-<p><img src="/img/4a61d4d97bda720166d002f271ae2c61.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<h4 id="2-5-2、IP数据报的转发流程">2.5.2、IP数据报的转发流程</h4>
-<p>我们用下面的例题来说明IP数据报是如何被转发到目的主机的。</p>
-<blockquote>
-<p>已知下图所示的互联网，以及路由器R1 的路由表。现在主机H1 发送一IP数据报，其目的地址是128.30.33.138。试讨论路由器R1 收到此数据报后查找路由表的过程。</p>
-</blockquote>
-<p><img src="/img/7b2d64a9996a9474270d2cd7adf3aa5d.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>主机H1 发送数据报的目的地址是H2 的IP地址128.30.33.138。主机H1 首先要进行的操作是把本网络的子网掩码255.255.255.128与该数据报的目的地址128.30.33.138逐位相“与 ”（即逐位进行AND操作），得出128.30.33.128，它不等于H1 的网络地址（128.30.33.0）。这说明H2 与H1 不在同一个网络上。因此H1 不能把数据报直接交付H2 ，而必须先传送给网络上的默认路由器R1 ，由R1 来转发。注意，主机H1 的网络配置信息中有IP地址、子网掩码和默认路由器等信息。</p>
-<p>路由器R1 在收到此数据报后，先找路由表中的第一行，看看这一行的网络地址和该分组的网络地址是否匹配，也就是用这一行（网络1）的子网掩码255.255.255.128和收到的分组的目的地址128.30.33.138逐位相“与”，得出128.30.33.128，然后和这一行给出的目的网络地址进行比较。比较的结果是不一致（即不匹配）。</p>
-<p>用同样方法继续往下找第二行。用第二行的子网掩码255.255.255.128和该分组的目的地址128.30.33.138逐位相“与”，结果也是128.30.33.128。但这个结果和第二行的目的网络地址相匹配，说明这个网络（网络2）就是收到的数据报所要寻找的目的网络。于是不需要再找下一个路由器进行间接交付了。R1 把分组从接口1直接交付主机H2 （它们在一个网络上）。</p>
-<p>我们总结一下路由器转发IP数据报的基本过程。</p>
-<ul>
-<li>从收到的数据报首部提取目的IP地址D。</li>
-<li>先判断是否为直接交付。对与路由器直接相连的网络逐个进行检查：用各网络的掩码和D 逐位相“与 ”，看结果是否和相应的网络地址匹配。若匹配，则把分组直接交付（当然还需要把D 转换成物理地址，把数据报封装成帧发送出去），转发任务结束；否则间接交付，执行下一步。</li>
-<li>对路由表中的每一行（目的网络地址，掩码，下一跳，接口），用其中的掩码和D 逐位相“与 ”，其结果为N 。若N 与该行的网络地址匹配，则把数据报传送给该行指明的下一跳路由器；否则执行下一步。</li>
-<li>若路由表中有一条默认路由，则把数据报传送给路由表中所指明的默认路由器；否则执行下一步。</li>
-<li>报告转发数据报出错。</li>
-</ul>
-<p>这里我们应当强调，IP数据报的首部中没有地方可以用来指明“下一跳路由器的IP地址”。在IP数据报的首部写上的IP地址是源IP地址和目的IP地址，而没有中间经过的路由器的IP地址。既然IP数据报中没有下一跳路由器的IP地址，那么待转发的数据报又怎样找到下一跳路由器呢？</p>
-<p>当路由器收到一个待转发的数据报时，在从路由表得出下一跳路由器的IP地址后，不是把这个地址填入IP数据报，而是送交下层的网络接口软件。网络接口软件负责把下一跳路由器的IP地址转换成物理地址（使用ARP），并将此物理地址放在链路层的MAC帧的首部，然后根据这个物理地址找到下一跳路由器。由此可见，当发送一连串的数据报时，上述的这种查找路由表、计算物理地址、写入MAC帧的首部等过程，将不断地重复进行，造成了一定的开销。</p>
-<p>那么，能不能在路由表中不使用IP地址而直接使用物理地址呢？不行。我们一定要清楚，使用逻辑的IP地址，本来就是为了隐蔽各种底层网络的复杂性，便于分析和研究问题，这就不可避免地要付出些代价，例如，在选择路由时多了一些开销。反过来，如果在路由表中直接使用物理地址，那就会带来更多的麻烦。</p>
-<h4 id="2-5-3、路由聚合">2.5.3、路由聚合</h4>
-<p>路由表的每一行对应一个网络，随着互联网迅速发展，越来越多的网络连接到互联网，路由表的表项将会越来越多，路由器查找路由表的时间也会越来越长。采用路由聚合 （Route Aggregation）可有效缓解这个问题。路由聚合又称为地址聚合， 可以将路由表中的某些路由相同的表项合并。</p>
-<p>如下图所示，对于路由器R2 来说，到网络1、网络2、网络3和网络4的下一跳路由器都是R1 ，而这四个网络的地址空间正好可以合并成一个CIDR地址块，因此在路由表中完全可以用一个网络前缀140.23.7.0/24来指示这四个网络的路由。为简洁起见，这里的路由表省略了接口，并用网络前缀的CIDR记法来代替目的网络地址与子网掩码。</p>
-<p><img src="/img/194adb1fb46e23adaabe04714aa06a15.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>实际上这种地址聚合可以不断进行下去，多个路由相同的小的CIDR地址块可以聚合成大的地址块，大的地址块还可以聚合成更大的地址块，如上图中的R3 路由表。如果合理地按照互联网ISP的层次结构来分配IP地址，利用路由聚合可以大大减少路由表的表项。靠近互联网边缘的路由器使用较长的网络前缀转发数据报，而靠近互联网核心的路由器使用较短的网络前缀转发数据报。在1994年和1995年，由于未使用CIDR，互联网核心路由器的一个路由表就会超过7万项，而使用CIDR后，在1996年，核心路由器的路由表项目减少为3万多个。</p>
-<h4 id="2-5-4、最长前缀匹配">2.5.4、最长前缀匹配</h4>
-<p>在使用CIDR时，由于采用了路由聚合，路由表中可能存在多个有包含关系的地址块前缀，这时在查找路由表时可能会得到不止一个匹配结果。这就带来一个问题：我们应当从这些匹配结果中选择哪一条路由呢？</p>
-<p>正确的答案是，应当从匹配结果中选择具有最长网络前缀的路由 。这叫作最长前缀匹配 （Longest-Prefix Matching）。这是因为网络前缀越长，其地址块就越小，因而路由就越具体。最长前缀匹配又称为最长匹配 或最佳匹配 。为了说明最长前缀匹配的概念，我们仍以图4-26为例。如果在网络4和路由器R2 之间存在一条直接连接的链路，则为了获得一条更近的路由，在R2 的路由表中可以增加一条直接到网络4的项目，其网络前缀为140.23.7.192/26。这时，到网络4的目的地址在路由表中就会有两个匹配项，路由器会选择最长匹配项，并将数据报直接转发到网络4。</p>
-<p>另外，通过最长前缀匹配可以很方便地实现特定主机路由和默认路由 。</p>
-<p>虽然我们绝大多数情况下希望能根据大的目的地址块来转发IP数据报，但有时会有这样一种特殊情况，即需要对特定的目的主机指明一个路由。这种路由叫作特定主机路由 。采用特定主机路由便于网络管理人员控制网络和测试网络。我们也可在需要考虑某种安全问题时采用这种特定主机路由。在对网络的连接或路由表进行排错时，指明到某一个主机的特殊路由就十分有用。采用最长前缀匹配很容易实现特定主机路由，只需要在路由表中加入一条前缀为“特定主机IP地址/32”的表项即可，因为只有目的地址为该特定主机的数据报才能与该表项最长前缀匹配，所以不会影响任何其他数据报的转发。</p>
-<p>采用最长前缀匹配，默认路由 可以用网络前缀0.0.0.0/0来表示，因为该网络前缀的长度为0，任何IP地址都能和它匹配，前提是路由表中没有任何其他项目可以匹配。</p>
-<p>但最长前缀匹配算法也有一个缺点，就是查找路由表花费的时间变长了，因为要遍历整个路由表才能找到最长匹配的前缀项。人们一直都在积极研究提高路由表查找速度的算法，并已提出了很多性能较好的算法。</p>
-<h2 id="三、互联网控制报文协议（ICMP）">三、互联网控制报文协议（ICMP）</h2>
-<p>为了更有效地转发IP数据报和提高交付成功率，网际层使用了互联网控制报文协议 （Internet Control Message Protocol，ICMP）（也翻译为网际控制报文协议）。ICMP允许主机或路由器报告差错情况和提供有关异常情况的报告。ICMP是互联网的标准协议（RFC 792）。</p>
-<h3 id="3-1、ICMP报文的格式">3.1、ICMP报文的格式</h3>
-<p>ICMP报文作为IP数据报的数据部分，加上数据报的首部，组成IP数据报发送出去。但通常我们把ICMP作为IP层的协议，而不是高层协议，因为它配合IP一起完成网络层功能。ICMP报文的格式如下图所示。</p>
-<p><img src="/img/79cb05f6045b50f60f2129eeba2e39c9.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>ICMP报文的前四个字节具有统一的格式，共有三个字段，即类型、代码和检验和。接着的四个字节的内容与ICMP报文的类型有关。最后面是数据部分，其长度取决于ICMP报文的类型。</p>
-<h3 id="3-1、ICMP报文的种类">3.1、ICMP报文的种类</h3>
-<p>ICMP报文可分成两种，即ICMP差错报告报文和ICMP询问报文。下表列出了几种常用的ICMP报文。</p>
-<p><img src="/img/image-20241119080159016.png" srcset="/img/loading.gif" lazyload alt="image-20241119080159016"></p>
-<p>由于“信息请求与应答”“地址掩码请求与应答”“路由器请求与通告”和“源点抑制”已不再使用（RFC 6633），因此这些报文没有出现在上表中。</p>
-<p>CMP报文的代码字段用于进一步区分某种类型中的几种不同的情况。检验和字段用来检验整个ICMP报文。IP数据报的首部检验和并不检验IP数据报的内容，因此不能保证经过传输的ICMP报文无差错。</p>
-<h4 id="3-1-1、ICMP差错报告报文">3.1.1、ICMP差错报告报文</h4>
-<p>（1）终点不可达：路由器或主机不能交付数据报时，就向源点发送终点不可达报文。其具体可再根据ICMP的代码字段细分为目的网络不可达、目的主机不可达、目的协议不可达、目的端口不可达、目的网络未知、目的主机未知以及需要分片但DF置位等。</p>
-<p>（2）超时：TTL超时或分片重装超时。路由器收到一个IP数据报时，若目的地址不是自己，会将其TTL值减1再转发出去，但当TTL值减为零时（收到TTL值为1的IP数据报），除丢弃该数据报外，还要向源点发送超时报文。另外，终点若在预先规定的时间内不能收到一个数据报的全部数据报片，就会把已收到的数据报片都丢弃，并向源点发送超时报文。</p>
-<p>（3）参数问题：当路由器或目的主机收到的数据报的首部中有的字段的值不正确时，路由器或目的主机就丢弃该数据报，并向源点发送参数问题报文。</p>
-<p>（4）路由重定向：路由器把路由重定向报文发送给主机，让主机知道下次应将数据报发送给另外的路由器（提供一条更好的路由）。</p>
-<p>下面对路由重定向报文进行简短的解释。我们知道，互联网的主机中也要有一个路由表。主机要发送数据报时，首先查找自己的路由表，看应当从哪一个接口把数据报发送出去。在互联网中，主机的数量远大于路由器的数量，出于效率考虑，这些主机不和连接在网络上的路由器定期交换路由信息。主机刚开始工作时，一般都会在路由表中设置一个默认路由器的IP地址。不管数据报要发送到哪个目的地址，一律先将数据报传送给网络上的这个默认路由器，而这个默认路由器知道到每一个目的网络的最佳路由（通过和其他路由器交换路由信息）。如果默认路由器发现主机发往某个目的地址的数据报的最佳路由不应当经过默认路由器而应当经过网络上的另一个路由器R，默认路由器就用路由重定向报文把这个情况告诉主机。于是，该主机在其路由表中增加一项：到某某目的地址应经过路由器R（而不是默认路由器）。</p>
-<p>所有的ICMP差错报告报文中的数据字段都具有同样的格式，如下图所示。</p>
-<p><img src="/img/68122852d9c0d5a9675607ca7ff419a0.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>把收到的需要进行差错报告的IP数据报的首部和其数据部分的前8个字节提取出来，作为ICMP差错报告报文的数据字段，再加上相应的ICMP差错报告报文的前8个字节，就构成了ICMP差错报告报文。提取收到的IP数据报的数据部分的前8个字节是为了得到运输层的端口号（对于TCP和UDP），以及运输层报文的发送序号（对于TCP）。这些信息对源点通知高层协议是有用的。整个ICMP报文作为IP数据报的数据部分发送给源点。</p>
-<p>下面是不应发送ICMP差错报告报文的几种情况。</p>
-<ul>
-<li>对ICMP差错报告报文不再发送ICMP差错报告报文。</li>
-<li>对第一个分片的数据报片的所有后续数据报片都不发送ICMP差错报告报文。</li>
-<li>对具有多播地址的数据报都不发送ICMP差错报告报文。</li>
-<li>对具有特殊地址（如127.0.0.0或0.0.0.0）的数据报不发送ICMP差错报告报文。</li>
-</ul>
-<h4 id="3-1-2、ICMP询问报文">3.1.2、ICMP询问报文</h4>
-<p>常用的ICMP询问报文有两类。</p>
-<p>（1）回送请求和回送应答： ICMP回送请求报文是由主机或路由器向一个特定的目的主机发出的询问，收到此报文的主机必须给源主机或路由器发送ICMP回送应答报文，将ICMP回送请求报文携带的数据原封不动送回去。这种报文用来测试目的站是否可达及了解其有关状态。</p>
-<p>（2）时间戳请求和时间戳应答： ICMP时间戳请求报文用于请某个主机或路由器应答当前的日期和时间。ICMP时间戳应答报文中有一个32位的字段，其中写入的整数代表从1900年1月1日起到当前时刻一共有多少秒。这种报文可用来进行时钟同步和测量时间。</p>
-<h3 id="3-2、ICMP的应用举例">3.2、ICMP的应用举例</h3>
-<h4 id="3-2-1、ping">3.2.1、ping</h4>
-<p>ICMP的一个重要应用就是分组网间探测（Packet Internet Groper，PING），用来测试两个主机之间的连通性。PING使用了ICMP回送请求和回送应答报文。PING是应用层直接使用网络层ICMP的一个例子。它没有通过运输层的TCP或UDP。</p>
-<p>如下图，给出了从南京的一台PC到新浪网的邮件服务器的连通性的测试结果。</p>
-<p><img src="/img/37c17e7ff0bcc9d5ee81aa2e081f6a0c.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>PC一连发出四个ICMP回送请求报文。如果邮件服务器正常工作而且响应这个ICMP回送请求报文（有的主机为了防止恶意攻击通过设置防火墙拒绝接收或响应这种报文），那么它就发回ICMP回送应答报文。通过记录发送报文和接收报文的时间，很容易得出往返时间。最后显示出的是统计结果：发送到哪个机器（IP地址），发送的、收到的和丢失的分组数（但不给出分组丢失的原因），往返时间的最小值、最大值和平均值。从得到的结果可以看出，第三个测试分组丢失了。</p>
-<h4 id="3-2-2、traceroute">3.2.2、traceroute</h4>
-<p>另一个非常有用的应用是traceroute（这是UNIX操作系统中的名字），它用来跟踪一个分组从源点到终点的路径。在Windows操作系统中这个命令是tracert。下面简单介绍这个程序的工作原理。</p>
-<p>traceroute从源主机向目的主机发送一连串IP数据报，数据报中封装的是无法交付的UDP用户数据报。第一个数据报P1 的TTL值设置为1。当P1 到达路径上的第一个路由器R1 时，路由器R1 先收下它，接着把TTL值减1。由于TTL值等于零了，R1 就把P1 丢弃了，并向源主机发送一个ICMP超时差错报告报文。</p>
-<p>源主机接着发送第二个数据报P2 ，并把TTL值设置为2。P2 先到达路由器R1 ，R1 收下后把TTL值减1再转发给路由器R2 。R2 收到P2 时TTL值为1，但减1后TTL值变为零了，R2 就丢弃P2 ，并向源主机发送一个ICMP超时差错报告报文。这样一直继续下去。当最后一个数据报刚刚到达目的主机时，数据报的TTL值是1。主机不转发数据报，也不把TTL值减1。但因IP数据报中封装的是运输层的无法交付的UDP用户数据报，故目的主机要向源主机发送ICMP终点不可达报文。当源主机收到ICMP终点不可达报文时，就知道数据报已到达目的主机，于是停止继续发送。</p>
-<p>这样，源主机达到了自己的目的，因为这些路由器和最后目的主机发来的ICMP报文正好给出了源主机想知道的路由信息——到达目的主机所经过的路由器的IP地址，以及到达其中的每一个路由器的往返时间。与traceroute的实现稍有不同，Windows命令tracert在探测路由时发送的是ICMP回送请求报文而不是UDP用户数据报。</p>
-<p>如下图，是从南京的一台PC向新浪网的邮件服务器发出tracert命令后所获得的结果。</p>
-<p><img src="/img/ff13e88b6bd147cdbbf8041a659bf2e1.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>图中每一行有三个时间，是因为对应于每一个TTL值，源主机要发送三次同样的IP数据报。</p>
-<p>我们还应注意到，从原则上讲，IP数据报经过的路由器越多，所花费的时间也会越多，但从上图可看出，有时正好相反。这是因为互联网的拥塞程度随时都在变化，也很难预料。因此，完全有这样的可能：经过更多的路由器反而花费更少的时间。</p>
-<p>最后需要说明的是，为了防止网络设备被恶意用户探测或攻击，一些主机或路由器被设置为不接收或不响应ICMP回送请求报文，因此在互联网中在使用ping命令或tracert命令测试目的主机连通性时有可能会超时，但并不代表网络不通。</p>
-<h2 id="四、互联网的路由选择协议">四、互联网的路由选择协议</h2>
-<h3 id="4-1、路由选择协议的基本概念">4.1、路由选择协议的基本概念</h3>
-<h4 id="4-1-1、理想的路由选择算法">4.1.1、理想的路由选择算法</h4>
-<p>路由选择协议的核心就是路由选择算法，即需要何种算法来获得路由表中的各项。一个理想的路由选择算法应具有如下一些特点。</p>
-<ul>
-<li>算法必须是正确的和完整的。这里，“正确”的含义是，沿着各路由表所指引的路由，分组一定能够最终到达的目的网络和目的主机。</li>
-<li>算法在计算上应简单。路由选择的计算不应使网络通信量增加太多的额外开销。</li>
-<li>算法应能适应通信量和网络拓扑的变化 ，也就是说，要有自适应性 。当网络中的通信量发生变化时，算法能自适应地改变路由以均衡各链路的负载。当某个或某些结点、链路发生故障不能工作，或者修理好了再投入运行时，算法也能及时地改变路由。</li>
-<li>算法应具有稳定性。在网络通信量和网络拓扑相对稳定的情况下，路由选择算法应收敛于一个可以接受的解，而不应使得出的路由不停地变化。</li>
-<li>算法应是公平的。路由选择算法应对所有用户（除对少数优先级高的用户）都是平等的。例如，若仅仅使某一对用户的端到端时延为最小，却不考虑其他的广大用户，这就明显地不符合公平性的要求。</li>
-<li>算法应是最佳的 。路由选择算法应当能够找出最好的路由，使得分组平均时延最小而网络的吞吐量最大。虽然我们希望得到“最佳”的算法，但这并不总是最重要的。对于某些网络，网络的可靠性有时要比最小的分组平均时延或最大吞吐量更加重要。因此，所谓 “最佳 ”只是在特定要求下得出的较为合理的选择 。</li>
-</ul>
-<p>一个实际的路由选择算法，应尽可能接近于理想的算法。在不同的应用条件下，对以上提出的6个方面也可有不同的侧重。</p>
-<p>为了研究路由选择算法，经常会利用图论将计算机网络抽象为一个由若干结点和边组成的图（Graph），结点表示路由器，而边表示路由器之间的链路，如下图所示。边的权值可用来表示费用、距离、时延、带宽等链路代价。路由选择算法的任务就是计算从某个结点到所有其他结点的最短路径。</p>
-<p><img src="/img/7221d07fb12c880f2a3e5237d08ca5c8.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>应当指出，路由选择是个非常复杂的问题，因为它需要网络中的所有结点协调工作。其次，路由选择的环境往往是不断变化的，而这种变化有时无法事先知道，例如，网络中出了某些故障。此外，当网络发生拥塞时，就特别需要能缓解这种拥塞的路由选择策略，但恰在这种条件下，很难从网络中的各结点获得所需的路由选择信息。</p>
-<p>倘若从路由选择算法能否随网络的通信量或拓扑自适应地进行调整变化来划分，可将路由选择划分为两大类，即静态路由选择 与动态路由选择 。静态路由选择也叫作非自适应路由选择 ，其特点是简单和开销较小，但不能及时适应网络状态的变化。对于很简单的小网络，完全可以采用静态路由选择，人工配置每一条路由。动态路由选择也叫作自适应路由选择 ，其特点是能较好地适应网络状态的变化，但实现起来较为复杂，开销也比较大。因此，动态路由选择适用于较复杂的大网络。</p>
-<h4 id="4-1-2、分层次的路由选择协议">4.1.2、分层次的路由选择协议</h4>
-<p>互联网采用的路由选择协议主要是自适应的（即动态的）分布式路由选择协议。互联网采用分层次的路由选择协议，主要有以下两个原因。</p>
-<ul>
-<li>
-<p>互联网的规模非常大，现在就已经有几百万个路由器互连在一起。如果让所有的路由器知道所有的网络应怎样到达，则路由表将非常大，处理起来也太花时间。而所有这些路由器之间交换路由信息所需的带宽就会使互联网的通信链路饱和。</p>
-</li>
-<li>
-<p>许多单位不愿意外界了解自己单位网络的布局细节和本部门所采用的路由选择协议（这属于本部门内部的事情），但同时还希望连接到互联网上。</p>
-</li>
-</ul>
-<p>为此，整个互联网被划分为许多较小的自治系统（Autonomous System，AS）。AS是在单一的技术管理下的一组路由器，而这些路由器使用一种AS内部的路由选择协议和共同的度量，以确定分组在该AS内的路由，同时还使用一种AS之间的路由选择协议，以确定分组在AS之间的路由。</p>
-<p>在目前的互联网中，一个大的ISP就是一个自治系统。这样，互联网就把路由选择协议划分为两大类。</p>
-<ul>
-<li>
-<p>内部网关协议 （Interior Gateway Protocol，IGP ）：在一个自治系统内部使用的路由选择协议，与互联网中的其他自治系统选用什么路由选择协议无关。目前这类路由选择协议很多，如RIP和OSPF等。</p>
-</li>
-<li>
-<p>外部网关协议 （External Gateway Protocol，EGP ）：若源主机和目的主机处在不同的自治系统中（这两个自治系统可能使用不同的内部网关协议），就需要在自治系统之间进行路由选择，使用一种协议将路由信息从一个自治系统传递到另一个自治系统中，这样的协议就是外部网关协议。目前互联网使用的外部网关协议就是BGP的版本4（BGP-4）。</p>
-</li>
-</ul>
-<p>自治系统之间的路由选择也叫作域间路由选择 （Interdomain Routing），而自治系统内部的路由选择叫作域内路由选择 （IntradomainRouting）。</p>
-<p>如下图是两个自治系统互连在一起的示意图。</p>
-<p><img src="/img/6dfcb23465f2fbbeaf9346cc1fd625ad.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>每个自治系统自己决定在本自治系统内部运行哪一个内部路由选择协议（例如，可以是RIP，也可以是OSPF）。但每个自治系统都有一个或多个路由器（图中的路由器R1 和R2 ），除运行本系统的内部路由选择协议外，还要运行自治系统间的路由选择协议（BGP-4）。</p>
-<p>这里我们要指出，互联网的早期RFC文档中未使用“路由器”而是使用“网关”这一名词，但是在新的RFC文档中改为使用“路由器”这一名词。为便于读者查阅RFC文档，本书将根据情况有时也使用“网关”这一名词，以便和RFC的提法一致。</p>
-<p>总之，使用分层次的路由选择方法，可将互联网的路由选择协议划分如下。</p>
-<ul>
-<li>
-<p>内部网关协议：具体的协议有多种，如RIP和OSPF等。</p>
-</li>
-<li>
-<p>外部网关协议：目前使用的协议就是BGP。</p>
-</li>
-</ul>
-<p>下面对这两类协议分别进行介绍。</p>
-<h3 id="4-2、路由信息协议">4.2、路由信息协议</h3>
-<p>路由信息协议 （Routing Information Protocol，RIP）是内部网关协议中最先得到广泛使用的协议之一（RFC 1058）。RIP是一种分布式的基于距离向量的路由选择协议 ，是互联网的标准协议，其最大优点就是简单。</p>
-<h4 id="4-2-1、距离向量路由选择算法">4.2.1、距离向量路由选择算法</h4>
-<p>距离向量 （Distance Vector，DV）路由选择算法的要点如下。</p>
-<ul>
-<li>
-<p>每个结点维护一个距离向量 （一组距离 记录），记录本结点到所有目的结点的（最短）距离（目前已知的最短路径长度）。初始每个结点仅知道与相邻结点之间的距离并建立距离向量，然后向相邻结点 广播自己的距离向量。</p>
-</li>
-<li>
-<p>当与相邻结点的距离发生变化，或收到相邻结点发送的距离向量时，结点根据到相邻结点的距离以及相邻结点到目的结点的距离选择一条到目的结点距离最短的路径，计算到每个目的结点的最短距离 ，并更新自己的距离向量。</p>
-</li>
-<li>
-<p>当距离向量 发生变化时，结点向相邻结点 广播自己的距离向量。注意：后面的RIP的具体实现还会周期性广播距离向量。</p>
-</li>
-</ul>
-<p>由于每一个结点都要维护从它自己到每一个目的结点的距离记录，即距离向量，相邻结点间交换的也是各自的距离向量，最后各自要根据相邻结点的距离向量来更新自己的距离向量，因此这类路由选择算法被称为距离向量路由选择算法（简称距离向量算法）。</p>
-<p>这里要强调一点：每个结点在刚刚开始工作时， 只知道到相邻结点的距离。接着，每个结点也只和数目非常有限的 相邻结点交换并更新路由信息。但经过若干次的更新后，所有的结点最终都会知道到达任何一个结点的最短距离，即算法得到收敛 （Convergence）。这里“收敛”就是通过多次迭代所有的结点都得到正确的路由选择信息的过程。</p>
-<p>上面给出的距离向量算法的基础就是Bellman-Ford算法（或Ford-Fulkerson算法）。算法的收敛性依赖于以下结论。</p>
-<p>设X是结点A到B的最短路径上的一个结点。若把路径A→B拆成两段路径A→X和X→B，则A→X和X→B也分别是结点A到X和结点X到B的最短路径。</p>
-<p>使用距离向量算法的每一个路由器都要维护从它自己到每一个目的网络的距离记录，具体方法就是在路由表中增加一个度量字段来记录到所有目的网络的“距离”。不同的具体路由选择协议对“距离”有各自的定义，但它总是表示到目的网络的最低路径代价。虽然使用距离向量算法的路由选择协议不只有RIP，但RIP是其中最著名的一个。下面介绍RIP的基本原理。</p>
-<h4 id="4-2-2、RIP的基本原理">4.2.2、RIP的基本原理</h4>
-<p>首先，RIP将到某个网络的路径“距离 ”定义为该路径所经过的路由器数加1。即路由器到直接连接的网络的距离为1，到非直接连接的网络的距离为到该网络最短路径的距离。例如，在下图中，路由器R1 到网络1或网络2的距离都是1（直接连接），而到网络3的距离是2，到网络4的距离是3。</p>
-<p><img src="/img/image-20241120083210357.png" srcset="/img/loading.gif" lazyload alt="image-20241120083210357"></p>
-<p>RIP的“距离”也称为“跳数”（Hop Count），因为每经过一个路由器，跳数就加1。RIP认为好的路由就是通过的路由器的数目少，即“距离短”。RIP允许一条路径最多包含15个路由器。因此“距离”等于16即相当于不可达。可见RIP只适用于小型互联网。</p>
-<p>RIP是一种迭代的分布式路由选择算法，每一个路由器都要不断地和其他一些路由器交换路由信息，其具有以下特点：每个路由器仅向相邻路由器通告路由信息，通告的是每个路由器自己的路由表信息，并且要周期性（或当路由表发生变化时）通告。</p>
-<p>RIP的基本工作过程如下。</p>
-<ul>
-<li>
-<p>路由器每隔大约30s周期性地向所有相邻路由器发送路由更新报文（包含到所有已知网络的距离和下一跳路由器），并接收每一个相邻路由器发送过来的路由更新报文。</p>
-</li>
-<li>
-<p>对地址为X 的相邻路由器发来的路由更新报文，先修改此报文中的所有项目：把“下一跳”字段中的地址都改为X ，并把所有的“距离”字段的值加1（见解释1）。每一个项目都有三个关键数据，即目的网络N 、距离d 、下一跳路由器X 。</p>
-</li>
-<li>
-<p>对修改后的路由更新报文中的每一个项目进行以下处理。</p>
-<ul>
-<li>若原来的路由表中没有目的网络N ，则把该项目添加到路由表中（见解释2）；否则，查看路由表中目的网络为N 的表项的下一跳路由器地址。</li>
-<li>若下一跳路由器地址是X ，则用收到的项目替换原路由表中的项目（见解释3）；否则（即这个项目是到目的网络N ，但下一跳路由器不是X ）查看收到的项目的距离d 。</li>
-<li>若收到的项目中的距离d 小于路由表中的距离，则进行更新（见解释4）；否则什么也不做（见解释5）。</li>
-</ul>
-</li>
-<li>
-<p>若一段时间（默认是180s）没有收到某条路由项目的更新报文（见解释6），则把该路由项目记为无效，即把距离置为16（距离为16表示不可达）；若再过一段时间，如120s，还没有收到该路由项目的更新报文，则将该路由项目从路由表中删除。</p>
-</li>
-<li>
-<p>若路由表发生变化，不必等到周期更新时间 ，立即向所有相邻路由器发送路由更新报文（即触发更新 ，见解释7）。</p>
-</li>
-</ul>
-<p>解释1：这样做是为了便于进行本路由表的更新。假设从位于地址X 的相邻 路由器发来的RIP报文的某一个项目是“Net2，3，Y ”，意思是“我经过路由器Y 到网络Net2的距离是3”，那么本路由器就可推断出“我经过X 到网络Net2的距离应为3+1=4”。于是，本路由器就把收到的RIP报文的这一个项目修改为“Net2，4，X ”，在下一步和路由表中原有项目进行比较时使用（只有比较后才能知道是否需要更新）。读者可注意到，收到的项目中的Y 对本路由器是没有用的，因为Y 不是本路由器的下一跳路由器地址。</p>
-<p>解释2：表明这是新的目的网络，应当加入路由表。例如，本路由表中没有到目的网络Net2的路由，那么在路由表中就要加入新的项目“Net2，4，X ”。</p>
-<p>解释3：为什么要替换呢？因为这是最新的消息，要以最新的消息为准。到目的网络的距离有可能增大或减小，但也可能没有改变。例如，不管原来路由表中的项目是“Net2，3，X ”还是“Net2，5，X ”，都要更新为现在的“Net2，4，X ”。</p>
-<p>解释4：例如，若路由表中已有项目“Net2，5，P ”，就要将其更新为“Net2，4，X ”。因为到网络Net2的距离原来是5，现在减到4，更短了。</p>
-<p>解释5：若距离更大了，显然不应更新；若距离不变，更新后得不到好处，因此也不更新。</p>
-<p>解释6：通过与相邻路由器的周期性交互来发现网络拓扑的变化，如路由器或链路的失效。</p>
-<p>解释7：若仅是周期性发送更新报文，协议也可以收敛，但会增大出现循环路由问题的概率（将在后面讨论）。</p>
-<p>RIP让一个自治系统中的所有路由器都和自己的相邻路由器定期交换路由信息。路由器在刚刚开始工作时，只知道到直接连接的网络的距离。通过不断与相邻路由器交换路由信息并更新路由表，最终每一个路由器到每一个目的网络的路由都是最短的（即跳数最少）。</p>
-<p>下图所示的简单例子说明了RIP的收敛过程。</p>
-<p><img src="/img/49983fe57f40fa798f4a50fb8bc4ff70.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>各路由器开始仅知道到直接连接的网络的距离。接着，各路由器都向其相邻路由器广播RIP报文，即广播路由表中的信息。假定路由器R2 先收到了路由器R1 和R3 的路由信息，然后就更新自己的路由表。更新后的路由表再发送给路由器R1 和R3 。路由器R1 和R3 分别再进行更新。这个例子非常简单，所以三个路由器中的路由表很快就全部更新完毕。实际的更新过程可能和上图有所不同，因为RIP报文的交互具有随机性，但最终都能收敛到同样的结果。</p>
-<h4 id="4-2-3、坏消息传播得慢">4.2.3、坏消息传播得慢</h4>
-<p>RIP有一个特点，就是当一个路由器发现了更短的路由时，这种更新信息传播得很快，但是当网络出现故障时，要经过比较长的时间才能将此信息传送到所有的路由器。</p>
-<p>我们可以用个简单例子来说明。设三个网络通过两个路由器互连起来：路由器R1 连接网络1和网络2，而路由器R2 连接网络2和网络3。假定各路由器都已建立了各自的路由表。现在假定路由器R1 到网络1的链路出了故障，如下图所示。</p>
-<p><img src="/img/6fa38444aceaf205217da7e9d01e37fa.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>这时，网络2和网络3都无法通过R1 到达网络1。于是路由器R1 就把到网络1的距离改为16（表示网络1不可达），并把这个更新信息发送给R2 。但是，R2 收到这个更新信息之前可能已经将自己的路由表发送给了R1 ，其中有一个项目是“我可以经过R1 到达网络1，距离是2”。得出这条项目的根据是R1 到网络1的距离是1，而R2 到R1 的距离是1。R1 收到R2 的更新报文后，误以为可经过R2 到达网络1，于是也错误地以为“我可以经过R2 到达网络1，距离是3”，然后把这个更新信息发送给R2 。同理，R2 随后发布自己的路由更新信息：“我可以经过R1 到达网络1，距离是4。”这样不断更新下去，直到R1 和R2 到网络1的距离都增大到16时（如果RIP不定义16为无穷大，则该过程会一直进行下去），R1 和R2 才知道网络1是不可达的。RIP的这一特点叫作：好消息传播得快，而坏消息传播得慢 。网络故障信息的传播往往需要较长的时间（如数分钟）。这是RIP的主要缺点之一。</p>
-<p>该问题又称为循环路由问题 或无穷计数问题 ，这是距离向量算法的一个固有问题。我们可以采取多种措施降低出现该问题的概率或减小该问题带来的危害。例如，限制最大距离为15（16表示不可达）；当路由表发生变化时就立即发送更新报文（即“触发更新”），而不仅是周期性发送；让路由器记录收到某特定路由信息的接口，不让同一路由信息再通过此接口向反方向传送（“水平分割”方法）等。但这些措施都无法彻底解决该问题，因为在距离向量算法中，每个路由器都缺少到目的网络的整个路径的完整信息，无法判断所选的路由是否出现了环路。</p>
-<p>总之，RIP最大的优点就是实现简单，路由器开销较小 。但RIP的缺点也较多：首先，RIP限制了网络的规模，它能使用的最大距离为15（16表示不可达）；其次，路由器之间交换的路由信息是路由器中的完整路由表，因而随着网络规模的扩大，开销也会增加；最后，“坏消息传播得慢”，使更新过程的收敛时间过长。因此，规模较大的网络不应使用该协议。目前在规模较小的网络中，使用RIP的仍占多数。</p>
-<p>RIP的第二个版本RIP2（RFC 2453）支持可变长子网掩码和CIDR。此外，RIP2还提供简单的鉴别过程并使用多播 而不是广播 向所有相邻路由器发送路由更新报文。</p>
-<p>RIP和RIP2都使用运输层的UDP进行传送（使用的UDP端口是520）。</p>
-<h3 id="4-3、开放最短路径优先">4.3、开放最短路径优先</h3>
-<p>开放最短路径优先 （Open Shortest Path First，OSPF）。它是为克服RIP的缺点在1989年被开发出来的。OSPF的基本原理很简单，但其具体实现却非常复杂。“开放 ”表明OSPF不是受某一家厂商控制，而是公开发表的。“最短路径优先 ”是指使用了迪科斯彻（Dijkstra）提出的最短路径算法 。OSPF的第二个版本OSPF2已成为互联网标准协议（RFC 2328）。</p>
-<p>请注意：OSPF只是一个协议的名字，它并不表示其他的路由选择协议不是 “最短路径优先 ”。实际上，所有在自治系统内部使用的路由选择协议（包括RIP）都是要寻找一条“最短”的路径。</p>
-<p>OSPF最主要的特征就是使用链路状态（Link State，LS）路由选择算法（简称链路状态算法），而不是像RIP那样的距离向量路由选择算法。</p>
-<h4 id="4-3-1、链路状态路由选择算法">4.3.1、链路状态路由选择算法</h4>
-<p>链路状态算法与距离向量算法的基本原理非常不同，其要点如下。</p>
-<ul>
-<li>
-<p>每个路由器都能够感知它的本地“链路状态”，即本路由器都和哪些网络相连，与哪些路由器相邻，以及它们之间链路的“度量”（Metric）。这个“度量”作为链路的权值，可用来表示费用、距离、时延、带宽等链路代价。这些都由网络管理人员来决定，因此较为灵活。</p>
-</li>
-<li>
-<p>当本地链路状态发生变化时 ，路由器用洪泛法向所有路由器 广播该链路状态变化信息。洪泛法 （Flooding）就是路由器通过所有输出端口向所有相邻的路由器发送信息，而每一个相邻路由器又再将此信息发往其所有的相邻路由器（但不再发送给刚刚发来信息的那个路由器）。这样，最终整个区域中所有的路由器都得到了这个信息的一个副本。我们应注意，距离向量算法和RIP是仅仅向自己的相邻路由器发送信息。</p>
-</li>
-<li>
-<p>每个路由器都可以收到所有其他路由器广播的链路状态信息并建立全网的拓扑结构图 （在OSPF中被称为链路状态数据库）。因此，每一个路由器都知道全网共有多少个网络和路由器，以及哪些路由器是相连的、链路的度量是多少，等等。然后使用最短路径算法计算到所有目的网络的最短路径（最低代价路径），并以此生成自己的路由表。我们注意到，距离向量算法和RIP的每一个路由器虽然知道到所有的网络的距离及下一跳路由器，但却不知道全网的拓扑结构图 （只有到了下一跳路由器，才能知道再下一跳应当怎样走）。</p>
-</li>
-<li>
-<p>由于路由表是根据全网拓扑生成的，链路状态算法没有距离向量算法“坏消息传播得慢”的问题。</p>
-</li>
-</ul>
-<h4 id="4-3-2、OSPF的基本原理">4.3.2、OSPF的基本原理</h4>
-<p>链路状态算法既可以分布式实现，即每个路由器各自根据收集的全网拓扑生成自己的路由表，也可以采用集中方式，由专门的网络控制器收集全网拓扑生成路由表，再下发给各路由器。OSPF采用的是分布式方法，每个路由器各自收集全网拓扑并计算路由表。采用分布式链路状态算法的知名路由协议除OSPF外，还有IS-IS（Intermediate System-to-Intermediate System，中间系统到中间系统）内部网关路由协议，这里仅介绍OSPF的基本要点。</p>
-<p>在OSPF中，所有的路由器都需要维护一个链路状态数据库 （Link-State Database），这个数据库实际上就是全网的拓扑结构图 。这个拓扑结构图在全网范围内是一致的 （这称为链路状态数据库的同步 ）。一个路由器刚开始工作时，可以从相邻路由器批量快速获得初始的链路状态数据库，然后在网络运行的过程中，只要某个路由器的链路状态发生变化，它就用洪泛法向全网广播链路状态变化，因此OSPF的链路状态数据库能较快更新，OSPF的更新过程收敛得快 是其重要优点。</p>
-<p>为保证协议的可靠性，除了链路状态发生变化时 ，OSPF路由器也会周期性 地向自治系统中所有路由器洪泛链路状态信息，但周期要比RIP长得多（至少30min），更长的周期可确保洪泛不会在网络上产生太大的通信量。要知道，RIP必须依赖相邻路由器间周期性频繁地发送路由更新报文来及时发现网络拓扑的变化（如相邻路由器的失效）。</p>
-<p>OSPF允许同时使用到同一个目的网络的多条相同代价的路径，将流量分配给这几条路径。这叫作多路径间的负载平衡 （LoadBalancing）。在代价相同的多条路径上分配流量是流量工程中的简单形式。RIP只能找出到某个网络的一条路径。</p>
-<p>另外，所有在OSPF路由器之间交换的分组（如链路状态更新分组）都具有鉴别的功能，因而保证了仅在可信赖的路由器之间交换链路状态信息。</p>
-<p>为了使OSPF能够用于规模很大的网络，OSPF可以把一个自治系统再划分为若干个更小的范围，即区域 （Area），进行层次路由。划分区域的好处就是把利用洪泛法交换链路状态信息的范围局限于每一个区域而不是整个自治系统，这就减少了整个网络上的通信量。在一个区域内部的路由器只知道本区域的完整网络拓扑，而不知道其他区域的完整网络拓扑。如下图所示的就是一个自治系统划分为四个区域，每一个区域都有一个32位的区域标识符（用点分十进制表示）。</p>
-<p><img src="/img/f14cc82d9435d951def6a287bd87b6ed.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>为了使每一个区域能够和本区域以外的区域进行通信，OSPF使用层次结构的区域划分 。在上层的区域叫作主干区域 （BackboneArea）。主干区域的标识符规定为0.0.0.0。在主干区域内的路由器叫作主干路由器 （Backbone Router），如R3 、R4 、R5 、R6 和R7 。有些主干路由器同时也是区域边界路由器 （Area Border Router），如R3 、R4 和R7 。显然每一个区域至少应当有一个区域边界路由器。主干区域的作用是连通非主干区域，所有非主干区域之间的通信必须经过主干区域。区域边界路由器 要对非主干区域内的路由信息进行汇总 （Summary），再通告到主干区域中。例如，路由器R3 通过收集0.0.0.1区域的链路状态信息计算出到该区域中所有网络的最短路径及路径代价，然后将网络汇总链路状态信息 （即到该区域所有网络的路径代价）洪泛到主干区域中，就好像这些网络直接连接在路由器R3 上一样。这样，所有主干路由器虽然不知道0.0.0.1区域内部的具体网络拓扑，但能够计算出通过主干区域到该区域网络的最短路径。同样，R3 也要把从主干区域获得的到其他区域的网络汇总链路状态信息通告到0.0.0.1区域的所有内部路由器。主干区域内还要有一个路由器专门和本自治系统外的其他自治系统交换路由信息。这样的路由器叫作自治系统边界路由器。</p>
-<p>采用层次结构的区域划分使交换的信息种类增多了，同时也使OSPF更加复杂了。另外，即使两个非主干区域直接相连，它们之间的通信也必须经过主干区域，因此区域划分可能导致协议不能在整个自治系统中获得最优路径。虽然如此，区域划分却能使每一个区域内部交换路由信息的流量大大减小，使OSPF能够用于规模很大的自治系统。</p>
-<h4 id="4-3-3、OSPF分组">4.3.3、OSPF分组</h4>
-<p>OSPF共有以下五种分组类型。</p>
-<ul>
-<li>问候（Hello）分组，用来发现和维持邻站的可达性。</li>
-<li>数据库描述（Database Description）分组，向邻站给出自己的链路状态数据库中的所有链路状态摘要信息。</li>
-<li>链路状态请求（Link State Request）分组，向对方请求发送某些链路状态项目的详细信息。</li>
-<li>链路状态更新（Link State Update）分组，用洪泛法对全网更新链路状态。这种分组是最复杂的，也是OSPF的核心部分。路由器使用这种分组将其链路状态通知邻站。链路状态更新分组共有五种不同的链路状态（RFC 2328），这里从略。</li>
-<li>链路状态确认（Link State Acknowledgment）分组，即对链路更新分组进行确认。</li>
-</ul>
-<p>OSPF分组不用UDP而是直接用IP数据报传送（其IP数据报首部的协议字段值为89）。OSPF构成的IP数据报很短。这样做可减少路由信息的流量。数据报很短的另一好处是不必将长的数据报分片传送。分片传送的数据报只要丢失一个数据报片，就无法组装成原来的数据报，导致整个数据报必须重传。</p>
-<p>OSPF规定，每两个相邻路由器每隔10s要交换一次问候分组。这样就能确知哪些邻站是可达的。对相邻路由器来说，“可达”是最基本的要求，因为只有可达邻站的链路状态信息才存入链路状态数据库（路由表就是根据链路状态数据库计算出来的）。在正常情况下，网络中传送的绝大多数OSPF分组都是问候分组。若有40s没有收到某个相邻路由器发来的问候分组，则可认为该相邻路由器是不可达的，应立即修改链路状态数据库，并重新计算路由表。与OSPF不同，RIP依赖相邻路由器间周期性发送路由更新报文来发现网络拓扑的变化，而没有使用专门的问候分组。</p>
-<p>其他的四种分组都是用来进行链路状态数据库的同步的。所谓同步 就是指不同路由器的链路状态数据库的内容是一样的。两个同步的路由器叫作“完全邻接的 ”（Fully Adjacent）路由器。不是完全邻接的路由器表明它们虽然在物理上是相邻的，但其链路状态数据库并没有达到一致。</p>
-<p>当一个路由器刚开始工作时，它只能通过问候分组得知它有哪些相邻的路由器在工作，以及到相邻路由器的链路代价。如果所有的路由器都把自己的本地链路状态信息对全网广播，那么各路由器只要将这些链路状态信息综合起来就可得出链路状态数据库。但这样做开销太大，因此OSPF采用下面的办法。</p>
-<p>OSPF让每一个路由器用数据库描述分组和相邻路由器交换本数据库中已有的链路状态摘要信息。链路状态摘要信息主要是指出有哪些路由器的链路状态信息（及其序号）已经写入了数据库。与相邻路由器交换数据库描述分组后，路由器就使用链路状态请求分组向对方请求发送自己所缺少的某些链路状态项目的详细信息。通过一系列的这种分组交换，全网同步的链路数据库就建立了。</p>
-<p>在网络运行的过程中，只要一个路由器的链路状态发生变化，该路由器就要用洪泛法向全网广播链路状态更新分组。OSPF使用的是可靠的洪泛法，其要点如下图所示。</p>
-<p><img src="/img/7d5fbb88e0880773d9c637ef383f7d73.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>设路由器R用洪泛法发出链路状态更新分组。图中用一些小的实心箭头表示该分组。第一次先发给相邻的三个路由器。这三个路由器将收到的分组再进行转发时，要将其上游路由器除外。可靠的洪泛法是在收到更新分组后要发送确认（确认并不洪泛，每个路由器仅向上游邻居发送确认）。图中的空心箭头表示确认分组。</p>
-<p>为了确保链路状态数据库与全网的状态保持一致，OSPF还规定每隔一段时间，如30min，要刷新一次数据库中的链路状态。</p>
-<p>由于一个路由器的链路状态只涉及与相邻路由器的连通状态，与整个互联网的规模并无直接关系，同时，将自治系统划分为小的区域可有效限制链路状态广播的范围，因此，当互联网规模很大时，OSPF要比RIP好得多。由于OSPF没有“坏消息传播得慢”的问题，据统计，其响应网络变化的时间小于100ms。</p>
-<p>若N 个路由器连接在一个以太网上，则每个路由器要向其他(N -1)个路由器发送链路状态信息，因而共有<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>N</mi><mo>−</mo><mn>1</mn><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">(N -1)^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span> 个链路状态要在这个以太网上传送。OSPF对这种多点接入的局域网采用了指定路由器 （Designated Router）的方法，使广播的信息量大大减少。指定路由器代表该局域网上所有的链路向连接到该网络上的各路由器发送状态信息。</p>
-<h3 id="4-4、边界网关协议">4.4、边界网关协议</h3>
-<p>1989年，新的外部网关协议——边界网关协议（Border Gateway Protocol，BGP）公布。为简单起见，后面我们把BGP-4都简写为BGP。现在的BGP-4是互联网草案标准协议（RFC 4271～RFC 4278）。</p>
-<h4 id="4-4-1、为什么需要BGP">4.4.1、为什么需要BGP</h4>
-<p>我们首先应当弄清：在不同AS之间的路由选择为什么不能使用前面讨论过的内部网关协议，如RIP或OSPF？</p>
-<p>我们知道，内部网关协议（如RIP或OSPF）主要是设法使数据报在一个AS中尽可能有效地从源站传送到目的站。在一个AS内部也不需要考虑其他方面的策略。然而BGP使用的环境与此不同。不使用内部网关协议主要有以下两个原因。</p>
-<p>（1）互联网的规模太大，使AS之间路由选择非常困难 。连接在互联网主干网上的路由器，必须对任何有效的IP地址都能在路由表中找到匹配的目的网络。目前在互联网的主干网路由器中，一个路由表的项目数早已超过了5万个。例如，如果使用链路状态算法，则每一个路由器必须维持一个很大的链路状态数据库。对于这样大的主干网，用Dijkstra算法计算最短路径花费的时间也太长。另外，由于AS各自运行自己选定的内部路由选择协议，并使用本AS指明的路径度量，因此，当一条路径通过几个不同AS时，要想对这样的路径计算出有意义的代价是不太可能的。例如，对某AS来说，代价为1000可能表示路由比较长；但对另一AS来说，代价为1000却可能表示不可接受的坏路由。因此，对于AS之间的路由选择，要用“代价”作为度量来寻找最佳路由也是很不现实的。比较合理的做法是在AS之间交换可达性 信息（即“可到达”或“不可到达”）。例如，告诉相邻路由器：“到达目的网络N 可经过ASx ”。</p>
-<p>（2）AS之间的路由选择必须考虑有关策略 。由于相互连接的网络的性能相差很大，根据最短距离（即最少跳数）找出来的路径可能并不合适，还有的路径使用代价很高或很不安全。还有一种情况，如AS1 要发送数据报给AS2 ，本来最好是经过AS3 ，但AS3 不愿意让这些数据报通过自己的网络，因为“这是他们的事情，和我们没有关系”。但是，AS3 愿意让某些相邻AS的数据报通过自己的网络，特别是那些付了服务费的AS。因此，AS之间的路由选择协议应当允许使用多种路由选择策略。这些策略包含政治、安全或经济方面的考虑。例如，我国国内的站点在互相传送数据报时不应经过国外兜圈子，特别是，不要经过某些对我国的安全有威胁的国家。这些策略都是由网络管理人员对每一个路由器进行设置的，但这些策略并不是AS之间的路由选择协议本身。还可举出一些策略的例子，如“仅在到达下列这些地址时才经过ASx ”“ASx 和ASy 相比时应优先通过ASx ”等。显然，使用这些策略是为了找出较好的路径而不是最佳路径。</p>
-<p>由于上述情况，BGP只是力求寻找一条能够到达目的网络且比较好 的路由（不能兜圈子），而并非要寻找一条最佳路由，重要的是能根据策略进行路由选择 。</p>
-<h4 id="4-4-2、BGP的基本原理">4.4.2、BGP的基本原理</h4>
-<p>BGP是一个非常复杂的协议，在这里仅介绍其基本的工作原理。</p>
-<p>与RIP和OSPF都不同，BGP采用的是路径向量 （Path Vector，PV）路由选择算法（简称路径向量算法）。该算法的基本思想：相邻结点间互相通告自己到所有目的地的路径信息，该路径信息包括路径经过的结点列表，各结点根据获得的路径信息选择一条到目的地经过结点数最少且不存在环路的路径 。路径向量算法与距离向量算法非常相似，不同之处在于：通告的路由信息不是到目的地的距离而是到目的地的路径信息（路径向量），由于路径信息包含所经过的所有结点的标识，可以避免选择循环路由，因此没有距离向量算法“坏消息传播得慢”的问题。</p>
-<p>在配置BGP时，每一个AS的管理员要选择至少一个路由器作为该AS的“BGP发言人 ”。BGP发言人负责在AS间交换路由信息。BGP发言人往往配置在AS边界路由器上 。</p>
-<p>一个BGP发言人与其他AS的BGP发言人要交换路由信息，就要先建立TCP连接（端口号为179），然后在此连接上交换BGP报文以建立BGP会话 （Session），利用BGP会话交换路由信息，如增加新的路由、撤销过时的路由，以及报告出差错的情况等。TCP连接能提供可靠的传输服务。使用TCP连接交换路由信息的两个BGP发言人，彼此成为对方的邻居 （Neighbor）或对等方 （Peer）。但请注意，BGP对等方并不一定在物理上是相邻的（连接在同一个物理网络中）。</p>
-<p>下图表示BGP发言人和AS的关系。图中画出了三个AS中的五个BGP发言人。每一个BGP发言人除了必须运行BGP外，还必须运行该AS所使用的内部网关协议，如OSPF或RIP。内部网关协议为BGP发言人提供AS内部的路由信息。<br>
-<img src="/img/66e35dd02ef9af6243c644ce33594bd4.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>实际上为了将BGP发言人获得的AS之外的网络可达性信息分发给AS内的所有路由器（包括同一AS另一端的BGP发言人），通常BGP发言人还需通过BGP会话与AS内部的每个路由器进行通信，虽然OSPF或RIP等内部网关协议也可以完成这项工作，但BGP对话更加高效。为了区别两种不同用途的BGP会话，我们将两个AS之间的BGP会话称为外部BGP会话 （external BGP Session，eBGP会话 ），而将同一AS内部路由器之间的BGP会话称为内部BGP会话 （internal BGP Session，iBGP会话 ）。例如，上图中，R1 通过iBGP会话将其利用eBGP获得的其他AS的网络可达性信息分发给AS1 中的其他路由器，包括AS另一端的边界路由器R4 。AS内部的各路由器将通过iBGP获得的外部路由信息和通过内部网关协议得到的路由信息进行合并，生成最终的路由表。</p>
-<p>BGP所交换的网络可达性信息主要是到达某个网络（用网络前缀表示）所要经过的一系列AS。在BGP发言人互相交换了网络可达性信息后，各BGP发言人就根据所采用的策略从收到的路由信息中找出到达各AS的较好路由。下图表示上图的AS1中的一个BGP发言人构造出的AS连通图，它是树形结构，不存在回路。</p>
-<p><img src="/img/9e6822f6bf3153088b0afc25f57eb047.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>下图给出了一个BGP发言人交换路径向量的例子。AS2 的BGP发言人通知主干网的BGP发言人：“要到达网络N1 、N2 、N3 和N4 可经过AS2 ”。主干网BGP发言人收到该通知后，就发出通知：“要到达网络N1 、N2 、N3 和N4 可经过AS1 、AS2 ”。</p>
-<p><img src="/img/1aa1217784df9742ac36f02c27b330f6.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>BGP交换路由信息的结点数量级是自治系统数 的量级，远小于整个互联网的网络数 。因此要在许多自治系统之间 寻找一条较好的路径不会耗费太多的时间。</p>
-<p>BGP支持CIDR，交换的路由信息包括目的网络前缀、下一跳路由器（AS边界路由器），以及到达该目的网络所要经过的各个自治系统序列。由于使用了路径向量的信息，很容易避免产生兜圈子的路由。如果一个BGP发言人收到了其他BGP发言人发来的路径通知，它就要检查一下本自治系统是否在此通知的路径中。如果在这条路径中，就不能采用这条路径（因为会兜圈子）。因此BGP很容易解决距离向量路由选择算法中的“坏消息传播得慢”这一问题。</p>
-<p>由于路由信息包含经过的每个自治系统的标识符，策略的加入很方便。例如，不选择经过某个敌对国家自治系统的路径，不向某个自治系统通告到某个网络的路径，等等。</p>
-<p>在BGP刚刚运行时，BGP对等方之间要交换整个BGP路由表，但以后只需要在发生变化时更新有变化的部分。这样做对节省网络带宽和减少路由器的处理开销都有好处。</p>
-<h4 id="4-4-3、BGP报文">4.4.3、BGP报文</h4>
-<p>BGP-4使用以下四种报文。</p>
-<p>（1）OPEN（打开）报文：用来与另一个BGP发言人建立对等关系，使通信初始化。</p>
-<p>（2）UPDATE（更新）报文：用来通告某一路由的信息，以及列出要撤销的多条路由。</p>
-<p>（3）KEEPALIVE（保活）报文：用来周期性地证实对等方的连通性。</p>
-<p>（4）NOTIFICATION（通知）报文：用来发送检测到的差错。</p>
-<p>在RFC 2918中增加了ROUTE-REFRESH报文，用来请求对等方重新通告。</p>
-<p>若一个BGP发言人想与另一个AS的BGP发言人建立对等关系，就需要向对方发送OPEN报文，如果对方接受这种对等关系，就用KEEPALIVE报文响应。这样，两个BGP发言人的对等关系就建立了。</p>
-<p>一旦对等关系建立了，就要继续维持这种关系。双方中的每一方都需要确信对方是存在的，且一直在保持这种对等关系。为此，这两个BGP发言人彼此要周期性地交换KEEPALIVE报文（一般每隔30s）。KEEPALIVE报文只有19字节长，不会造成网络上太大的开销。</p>
-<p>UPDATE报文是BGP的核心内容。BGP发言人可以用UPDATE报文撤销它以前曾经通知过的路由，也可以宣布增加新的路由。撤销路由可以一次撤销许多条，但增加新路由时，每个UPDATE报文只能增加一条。</p>
-<h2 id="五、虚拟专用网与网络地址转换">五、虚拟专用网与网络地址转换</h2>
-<h3 id="5-1、VPN">5.1、VPN</h3>
-<p>由于IP地址的紧缺，一个机构能够申请到的IP地址数往往远小于本机构所拥有的主机数。考虑到互联网并不很安全，一个机构内也并不需要把所有的主机接入外部的互联网。实际上，在许多情况下，很多主机主要还是和本机构内的其他主机通信（例如，大型商场或宾馆中有很多用于营业和管理的计算机，显然这些计算机并不都需要和互联网相连）。假定在一个机构内部的计算机通信也采用TCP/IP，那么从原则上讲，这些仅在机构内部使用的计算机就可以由本机构自行分配 IP地址。这就是说，让这些计算机使用仅在本机构内有效的IP地址（这种地址称为本地地址 ），而不需要向互联网的管理机构申请全球唯一的IP地址（这种地址称为全球地址 ）。这样就可以大大地节约宝贵的全球IP地址资源。</p>
-<p>但是，如果任意选择一些IP地址作为本地地址，那么在某些情况下可能会引起麻烦。例如，有时机构内部的某台主机需要和互联网连接，那么这种仅在内部使用的本地地址就有可能和互联网中某个IP地址重合，出现地址的二义性问题。</p>
-<p>为了解决这一问题，RFC 1918指明了一些专用地址 （Private Address）。这些地址只能用于一个机构的内部通信，而不能用于和互联网上的主机通信。换言之，专用地址只能用作本地地址而不能用作全球地址。在互联网中的所有路由器对目的地址是专用地址的数据报一律不进行转发 。RFC 1918指明的专用地址如下。</p>
-<p>（1）10.0.0.0到10.255.255.255（或记为10/8，又称为24位块）。</p>
-<p>（2）172.16.0.0到172.31.255.255（或记为172.16/12，又称为20位块）。</p>
-<p>（3）192.168.0.0到192.168.255.255（或记为192.168/16，又称为16位块）。</p>
-<p>采用这样的专用地址的互连网络称为专用互联网 或本地互联网， 或更简单些，就叫作专用网 。显然，全世界可能有很多专用网具有相同的专用地址，但这并不会引起麻烦，因为这些专用地址仅在本机构内部使用。专用地址也叫作可重用地址 （Reusable Address）。</p>
-<p>有时一个很大的机构有许多部门分布在相距很远的一些场所，而在每一个场所都有自己的专用网。假定这些分布在不同场所的专用网需要经常进行通信。这时，可以采取两种方法。第一种方法是租用电信公司的通信线路为本机构专用。这种方法的好处是简单方便，但线路的租金太高。第二种方法是利用公用的互联网作为本机构各专用网之间的通信载体，这样的专用网又称为虚拟专用网 （Virtual Private Network，VPN）。</p>
-<p>之所以称为“专用网”，是因为这种网络被本机构的主机用于机构内部的通信，而不是用于和网络外非本机构的主机通信。如果专用网不同网点之间的通信必须经过公用的互联网，但又有保密的要求，那么所有通过互联网传送的数据都必须加密 。“虚拟”表示“好像是”，但实际上并不是，因为并没有使用专线而是通过公用的互联网来连接分散在各场所（Site）的本地网络。VPN只是在效果上和真正的专用网一样。一个机构要构建自己的VPN就必须为它的每一个场所购买专门的硬件和软件，并进行配置，使每一个场所的VPN系统都知道其他场所的地址。</p>
-<p>如下图以两个场所为例，说明如何使用隧道技术 实现虚拟专用网。</p>
-<p><img src="/img/100837a41040e16ffb500c1b6731cd37.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>假定某个机构在两个相隔较远的场所A和B建立了专用网，其网络地址分别为专用地址10.1.0.0和10.2.0.0。现在这两个场所需要通过公用的互联网构成一个VPN。显然，每一个场所至少要有一个路由器具有合法的全球IP地址，如上图（a）中的路由器R1 和R2 。这两个路由器和互联网的接口地址必须是合法的全球IP地址。路由器R1 和R2 与专用网内部网络的接口地址则是专用网的本地地址。</p>
-<p>场所A和B内部的通信量都不经过互联网，但如果场所A的主机X要和场所B的主机Y通信，就必须经过路由器R1 和R2 。主机X向主机Y发送的IP数据报的源地址是10.1.0.1，而目的地址是10.2.0.3。这个数据报先作为本机构的内部数据报从X发送到与互联网连接的路由器R1 。路由器R1 收到内部数据报后，发现其目的网络必须通过互联网才能到达，就对整个内部数据报进行加密（这样就保证了内部数据报的安全），然后重新加上数据报的首部，将其封装成在互联网上发送的外部数据报，其源地址是路由器R1 的全球地址125.1.2.3，而目的地址是路由器R2 的全球地址194.4.5.6。路由器R2 收到数据报后将其数据部分取出进行解密，恢复出原来的内部数据报（目的地址是10.2.0.3），交付主机Y。可见，虽然X向Y发送的数据报通过了公用的互联网，但在效果上就好像是在本部门的专用网上传送一样。如果主机Y要向X发送数据报，那么所经过的步骤也是类似的。</p>
-<p>请注意，数据报从R1 传送到R2 可能要经过互联网中的很多个网络和路由器。但从逻辑上看，R1 到R2 之间好像是一条直通的点对点链路，上图（a）中的“隧道”就是这个意思。这种隧道技术在计算机网络中经常会用到。将一个IP数据报直接封装到另一个IP数据报中进行传输的这种隧道技术被称为IP-in-IP隧道技术 。但由于VPN要保证传输数据的安全性，原始的IP数据报通常要先加密再被封装传输。例如，IPsec就支持这种方式。</p>
-<p>还有一种类型的VPN，就是远程接入 VPN（Remote Access VPN）。我们知道，有的公司可能并没有分布在不同场所的部门，但却有很多流动员工在外地工作。公司需要和他们保持联系，有时要开电话会议。远程接入VPN可以满足这种需求。在外地工作的员工只要在任何地点接入互联网，运行驻留在员工PC中的VPN软件，在员工PC和公司的主机之间建立VPN隧道，即可访问专用网中的资源。由于外地员工与公司通信的内容是保密的，员工感觉好像是在使用公司内部的本地网络。</p>
-<h3 id="5-2、NAT">5.2、NAT</h3>
-<p>虽然互联网采用了无分类编址、动态分配IP地址等措施来减缓IP地址空间耗尽的速度，但由于互联网用户的激增，特别是小型办公室网络和家庭网络接入互联网的需求不断增加，IP地址空间耗尽的危险仍然没有解除。1994年被提出的网络地址转换 （Network Address Translation，NAT）方法再次缓解了这个问题。NAT能使大量使用内部专用地址的专用网用户共享少量外部全球地址来访问互联网上的主机和资源。这种方法需要在专用网连接到互联网的路由器上运行NAT软件。运行NAT软件的路由器叫作NAT路由器，它至少有一个有效的外部全球地址IPG 。这样，所有使用本地地址的主机在和外界通信时都要在NAT路由器上将其本地地址转换成IPG 。</p>
-<p>最基本的地址转换方法如下图所示。</p>
-<p><img src="/img/361f86b96cc236304586fe70266ea7b7.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>当内部主机X用其本地地址IPX 和互联网上的主机Y通信时，它所发送的数据报必须经过NAT路由器。NAT路由器从全球地址池中为主机X分配一个临时的全球地址IPG ，并记录在NAT转发表中，然后将数据报的源地址IPX 转换成全球地址IPG ，但目的地址IPY 保持不变，然后将数据报发送到互联网。当NAT路由器从互联网收到主机Y发回的数据报时，根据NAT转换表，NAT路由器知道这个数据报是要发送给主机X的，因此NAT路由器将目的地址IPG 转换为IPX ，将数据报转发给最终的内部主机X。</p>
-<p>但以上基本方法存在一个问题：如果NAT路由器具有N 个全球IP地址，那么至多只有N 个内网主机能够同时和互联网上的主机通信。为支持更多主机同时访问外网，有些NAT路由器利用报文中的其他字段来区分使用同一外部地址的多对通信。这些字段包括协议、目的地址，甚至运输层的端口号等。</p>
-<p>例如，可以将内网主机访问的外网主机的IP地址也记录在NAT转发表中，然后为多个访问不同外部主机的内部主机分配同一个全球IP地址。NAT路由器接收到外网主机的响应数据报时，通过源IP地址和目的IP地址查找NAT转发表中的内网专用地址。这时，同时访问同一外网主机的内网主机数不能超过NAT路由器的全球地址数目。</p>
-<p>由于绝大多数网络应用都使用运输层协议TCP或UDP来传送数据，因此还可以利用运输层的端口号来区分不同的报文，甚至将端口号和IP地址一起进行转换。这样，用一个全球IP地址就可以使多个拥有本地地址的主机同时和互联网上的主机通信。这种将端口号和IP地址一起转换的技术叫作网络地址与端口号转换 （Network Address and Port Translation，NAPT），但人们仍习惯将其称为NAT。</p>
-<p>下图说明了NAPT的基本工作原理。</p>
-<p><img src="/img/96a761981e9502f8d69a55ffff084667.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>NAPT路由器收到来自内网主机10.65.19.3、源端口号为3356的运输层分组时，不仅将内部IP地址转换为外部IP地址210.24.46.5，还将源端口号转换为一个新的端口号5001（由NAPT路由器动态分配）。由于端口号字段有16比特，因此一个外部IP地址可支持60000多对内部主机与外部主机的通信。</p>
-<p>实际应用的NAT路由器基本上都具有NAPT功能，并且具体的地址转换细节比上面介绍的还要复杂一些。另外，NAT转换表也可以由人工静态配置，即静态 NAT，这样内网地址与外网地址的转换是固定的。而由NAT路由器动态建立内外网地址转换关系的方法被称为动态 NAT。若不加说明，NAT通常指的就是动态NAT。</p>
-<p>现在很多家庭使用一种被称为路由器的小型设备将多台计算机连接在互联网上。实际上这种家用小型路由器就是NAT路由器（并且都具有NAPT功能），但并不像我们前面介绍的路由器一样运行路由选择协议。这种家庭设备往往集成了NAT路由器、以太网交换机、无线接入点等多种功能。</p>
-<p>NAT的出现大大缓解了IP地址极度紧张的局面，并且NAT对外网屏蔽了内部主机的网络地址，能为专用网的主机提供一定的安全保护。</p>
-<p>NAT对网络应用并不是完全透明的，会对一些网络应用产生影响。动态NAT的一个重要特点就是通信需要由内部发起，因此拥有内部专用地址的主机不能直接充当互联网服务器。试想，互联网上的某台主机要发起通信，访问一台位于NAT后的内网主机，当IP数据报到达NAT路由器时，NAT路由器不知道应当把目的IP地址转换成哪一个内网主机的IP地址。而一些P2P网络应用需要外网主机主动与内网主机进行通信，在网络地址转换时会遇到问题，需要网络应用自己使用一些特殊的NAT穿越技术来解决该问题。另外，也可以采用静态NAT技术，即NAT转换表由人工静态配置，这样内网地址与外网地址的转换是固定的，从而实现外部网络对内部网络中某些特定设备（如服务器）的访问。但静态NAT就不再具有节省IP地址和屏蔽内网主机的作用了。</p>
-<h2 id="六、参考">六、参考</h2>
+<p>网络应用进程通信时需要通过API接口请求底层协议的服务（如传输层服务），目前在Internet 中应用最广泛的网络应用编程接口就是 Socket API。无论是客户进程还是服务器进程，都需要创建 Socket，实现底层协议接口，从而可以通过Socket 将数据发送出去或接收进来。</p>
+<h2 id="8-1、Socket的基本类型">8.1、Socket的基本类型</h2>
+<p>应用进程可以根据需要，创建不同类型的 Socket和不同的底层协议接口，当然也就使用了不同底层协议提供的不同类型的服务。应用进程面向 TCP/IP 协议栈的Socket接口模型如下图所示。</p>
+<p>网络应用进程可以创建3种类型的 Socket：数据报类型套接字 SOCK_DGRAM、流式套接字SOCK_STREAM和原始套接字SOCK_RAW。其中，SOCK_DGRAM面向传输层 UDP 接口；SOCK_STREAM面向传输层TCP接口； SOCK_RAW 面向网络层协议（如IP、ICMP）接口。</p>
+<p>前两类套接字均是面向传输层的接口，比较容易理解，而原始套接字比较特殊，“绕”过了传输层，是面向网络层的接口。原始套接字的创建有权限限制，例如，在 Linux 操作系统中，具有 root 权限的用户才能创建原始套接字。通过原始套接字，应用进程可以实现—些特殊的功能，如收发 ICMP报文等。</p>
+<h2 id="8-2、典型的Socket-API函数">8.2、典型的Socket API函数</h2>
+<p>Socket为开发人员提供了开发C/S 网络应用的途径与架构，具体形式为一组Socket API 函数。在编写客户程序和服务器程序时，需要调用不同的 Socket API 函数，实现创建套接字、发送数据、接收数据等功能。典型的Socket API函数如下。</p>
+<h2 id="8-3、Socket-API函数调用过程">8.3、Socket API函数调用过程</h2>
+<p>在开发 C/S 架构网络应用程序时，需要根据应用特点和需求等选择使用传输层 TCP 或UDP。</p>
+<p>TCP 提供面向连接、可靠的字节流传输服务，选择使用 TCP 的网络应用程序，无须处理数据丢失等问题，从而使得应用程序设计相对简单。基于 TCP 客户与服务器的典型Socke API函数调用过程如下图所示。</p>
+<p>服务器程序运行后，调用 socket（）函数创建 SOCK _ STREAM 类型的主套接字 ms；调用bind（）函绑定本地端点地址；调用 listen（）函数置主套接字 ms 为监听模式；调用 accept ( )数通过主套接字 ms 接收客户连接请求，并阻塞服务器进程，直到有客户连接请求到达accept（）函数调用成功，返回（创建）连接套接字ss.</p>
+<p>客户程序在服务器程序运行后执行，创建了本地sOCK STREAM类型的套接字cs后调用 connect（）函数请求与服务器建立 TCP 连接，connect（）函数调用成功，表明 TCP连接建立成功。接下客户程序与服务器程序通过调用 send（）和 recv（）函数，实现数据发送与接收。通信结束后，客户程序通过调用 close（）函数，释放套接字 cs；服务器程序通过调用close（）函数，释放套接字 ss，从而关闭 TCP 连接。服务器程序继续调用 accept)函数，通主套接2s接收一个客户连接请求。通常情况下，服务器程序不会关闭主套接字 ms,为服务器还要继续为其他客户提供服务：</p>
+<p>服务器器端在调用 accept（）函数时，通常阻塞服务器进程，等待客户的连接请求，一日客户连接请求到达，accept（）函数会返回（创建）个新的套接字 Ss, sS 是真正与客户建TCP 连接的。服务器与客户的通信是通过与特定客户连接的ss 进行的，当与该客户通信结市；可调用 closes（）函数关闭与客户通信的 Ss。服务器通常通过无限循环机制，继续用 accept（）函数继续等待新的客户连接请求，周而复始。当然，服务器也可以通过并发机制，如多线程机，实现并发的服务器，实现在与个（些）客户通信的同时继续接收新的客连请</p>
+<p>UDP 提供无连接可靠的数据报传输服务，选择使用 UDP 的网络应用程序，不能依UDP实现可靠数据传输。应用程序或者容许 UDP 的不可靠数据传输特点（例如，多媒体应可以允一定比例的数据丢失），或者应用程序在应用层自己解决可靠性问题。基于UDP 与服务器邈型SoceAI函数调用过程如图2.22所方</p>
+<p>服务器程序运行后，调用 socket)函数创建 SOCK DGRAM 类型的套接字 ums：调用bind（）函数绑定本地端点地址。客户程序运行后，创建本地 SOCK DGRAM 类型的套接ucs。接下：客户程序与服务器程序通过调用 sendto（）和recvfrom（）函数，实现数据发送与羹接收。通信结束后，客户程序通过调用 close（）函数，释放夿字ucs：服务器程序继续调片recvfrom（）函数，通过套接字 ums 接收下一个客户发送过来的数据报。通常情况下，服务器程序不会关闭套接字ums。</p>
+<h1>九、参考</h1>
 <p><a target="_blank" rel="noopener" href="https://www.dedao.cn/ebook/detail?id=6JvkYVNn8NXVry5MeG6Z9RALK2dxJ3Gdd2w7olBEmjgakz1DPvYObQ4qpQdZqme9">计算机网络教程（第6版·微课版）</a></p>
 <p><a target="_blank" rel="noopener" href="https://product.dangdang.com/29274044.html">计算机网络原理创新教程</a></p>
 <p><a target="_blank" rel="noopener" href="https://product.dangdang.com/11846567948.html">计算机网络原理 自考04741</a></p>
@@ -1078,8 +424,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%8603%EF%BC%9A%E8%BF%90%E8%BE%93%E5%B1%82/" title="计算机网络原理：运输层">
-                        <span class="hidden-mobile">计算机网络原理：运输层</span>
+                      <a href="/2024/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%8603%EF%BC%9A%E4%BC%A0%E8%BE%93%E5%B1%82/" title="计算机网络原理：传输层">
+                        <span class="hidden-mobile">计算机网络原理：传输层</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

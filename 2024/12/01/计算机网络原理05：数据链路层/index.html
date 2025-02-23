@@ -16,58 +16,20 @@
   <meta name="author" content="Mr.x">
   <meta name="keywords" content="">
   
-    <meta name="description" content="todo 数据链路层属于计算机网络的低层。数据链路层使用的信道主要有以下两种类型。 （1）点对点信道。这种信道使用一对一的点对点通信方式。 （2）广播信道 。这种信道使用一对多的广播通信方式，因此过程比较复杂。广播信道上可以连接多个计算机，因此必须使用共享信道协议来协调这些计算机的数据发送。 在这一章，我们首先介绍点对点信道所要讨论的基本问题，以及在这种信道上最常用的点对点协议；然后讨论信道共享技">
+    <meta name="description" content="todo 一、计算机网络应用体系结构 二、网络应用通信基本原理 三、域名系统（DNS） 四、万维网（WWW） 五、Internet电子邮件 六、FTP 七、P2P应用 基于客户&#x2F;服务器体系结构的应用，它们要求有总是在运行着的基础设施服务器，如DNS服务器、万维网服务器、邮件服务器等。与这些应用不同，基于P2P体系结构的应用是对等方之间直接进行通信，而且对等方主要运行于间断连接的主机上，如个人计算机">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算机网络原理：数据链路层">
 <meta property="og:url" content="https://kuberxy.github.io/2024/12/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%8605%EF%BC%9A%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/index.html">
 <meta property="og:site_name" content="Kubxy">
-<meta property="og:description" content="todo 数据链路层属于计算机网络的低层。数据链路层使用的信道主要有以下两种类型。 （1）点对点信道。这种信道使用一对一的点对点通信方式。 （2）广播信道 。这种信道使用一对多的广播通信方式，因此过程比较复杂。广播信道上可以连接多个计算机，因此必须使用共享信道协议来协调这些计算机的数据发送。 在这一章，我们首先介绍点对点信道所要讨论的基本问题，以及在这种信道上最常用的点对点协议；然后讨论信道共享技">
+<meta property="og:description" content="todo 一、计算机网络应用体系结构 二、网络应用通信基本原理 三、域名系统（DNS） 四、万维网（WWW） 五、Internet电子邮件 六、FTP 七、P2P应用 基于客户&#x2F;服务器体系结构的应用，它们要求有总是在运行着的基础设施服务器，如DNS服务器、万维网服务器、邮件服务器等。与这些应用不同，基于P2P体系结构的应用是对等方之间直接进行通信，而且对等方主要运行于间断连接的主机上，如个人计算机">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://kuberxy.github.io/img/21debdbca9b5f67653d2ba2c0d582a0f.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/a9918c104de90c9e8c43a4ad52f5ca41.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/cd1b58a7f31d48385900303d1dd69640.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/f48a55f4936d2b30ccebecabe9fb4496.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/bcf027009e9fe324fd7fe225d8e23a05.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/4f80270636b897cc8000f0b35a8e1055.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/0fbdc6c9a9394337bb494d8d6d1c5128.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/127aeac660d06cb6e05264f3a31f6d73.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/1f269250379067501c33db8d71077297.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/326e8580024f3bf51b6e1111c1340aa2.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/ec20a60a4e25ae295a22574d3cc16fac.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/97ac9101f24171f55601d1459be40141.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/e5493ee1a83f8338ce5605081d05748b.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/cec8edf6859e66bd9ddfd83721163c66.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/263bc14dc4559f119b5cc1392d0d16b0.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/456a0790a21ffad3fe27aa86ea579e8c.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/2e0c321c6233394b356397b0336ac86e.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/3319c41f3b7f582de52a5d62e0b32a9b.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/8544749879ff5039c272e97ef1dbeca5.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/68ca1a5033361aff13ce8ffe0d9ad859.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/de9a0f291c794ffb7f6a4942412cfcfb.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/39521d4cbb85ba69630b1acfa66194f4.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/17e09409f61b4a1d9df5efff1a29aeea.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/9d77ca540a251f9207a6f457f13ea816.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/5fcadd02f94fd1efaf16a390291b74f6.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/cdbd3f722489ef8852f134ffaeb16ccf.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/4346cc6109aef6fb32cdd7cdfe4f50c3.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/c6a35b75d62c4d6bd1eda724f92c570b.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/c9be7650dde188aa04846b51ee4e74f0.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/f2c23040916fa307968efd76163438c6.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/884dc3e71514f467385a8294c8a6ddf6.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/cca90491105f94c9ed0c5440eb5ce031.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/66d5c009e6d2c2ad0ed6bced784577fb.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/aa9783cc733c7d727faba8015944b0f2.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/b33b9d6e00a0b35bc373171d6bbbe6ec.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/281aa95174a10e1c279b2a6f1dddf4b7.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/b13b23ae73ec17e00ee33e692a70045f.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/d0bfe9921cc4bc21951e637509ee1554.jpg">
-<meta property="og:image" content="https://kuberxy.github.io/img/6611edf10ea76ee585a94519890f273b.jpg">
-<meta property="article:published_time" content="2024-12-01T03:47:11.000Z">
-<meta property="article:modified_time" content="2024-12-11T00:09:33.000Z">
+<meta property="og:image" content="https://kuberxy.github.io/img/1391352f1fcd8726be044835fbcfeffd.jpg">
+<meta property="article:published_time" content="2024-12-01T05:47:11.000Z">
+<meta property="article:modified_time" content="2025-02-23T01:29:28.000Z">
 <meta property="article:author" content="Mr.x">
 <meta property="article:tag" content="计算机网络原理">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://kuberxy.github.io/img/21debdbca9b5f67653d2ba2c0d582a0f.jpg">
+<meta name="twitter:image" content="https://kuberxy.github.io/img/1391352f1fcd8726be044835fbcfeffd.jpg">
   
   
   
@@ -230,8 +192,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-12-01 11:47" pubdate>
-          2024年12月1日 中午
+        <time datetime="2024-12-01 13:47" pubdate>
+          2024年12月1日 下午
         </time>
       </span>
     
@@ -242,7 +204,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          34k 字
+          3.2k 字
         
       </span>
     
@@ -253,7 +215,7 @@
         
         
         
-          283 分钟
+          27 分钟
         
       </span>
     
@@ -309,442 +271,56 @@
               <div class="markdown-body">
                 
                 <p>todo</p>
-<p>数据链路层属于计算机网络的低层。数据链路层使用的信道主要有以下两种类型。</p>
-<p>（1）点对点信道。这种信道使用一对一的点对点通信方式。</p>
-<p>（2）广播信道 。这种信道使用一对多的广播通信方式，因此过程比较复杂。广播信道上可以连接多个计算机，因此必须使用共享信道协议来协调这些计算机的数据发送。</p>
-<p>在这一章，我们首先介绍点对点信道所要讨论的基本问题，以及在这种信道上最常用的点对点协议；然后讨论信道共享技术和共享式以太网，以及数据链路层的分组交换设备网桥和以太网交换机；最后讨论无线局域网的基本原理并从接入互联网的角度对蜂窝移动通信系统进行简要介绍。</p>
-<p>本章最重要的内容如下。</p>
-<p>（1）数据链路层的三个重要问题：封装成帧、差错检测和可靠传输。<br>
-（2）互联网点对点协议实例。<br>
-（3）广播信道的特点和媒体接入控制的概念，以及以太网的媒体接入控制协议CSMA/CD。<br>
-（4）适配器、转发器、集线器、网桥、以太网交换机的作用及使用场合，特别是网桥和以太网交换机的工作原理。<br>
-（5）无线局域网的组成和CSMA/CA协议的要点。</p>
-<h2 id="一、使用点对点信道的数据链路层">一、使用点对点信道的数据链路层</h2>
-<h3 id="1-1、数据链路层所处的地址">1.1、数据链路层所处的地址</h3>
-<p>下面看一下两个主机通过互联网进行通信时数据链路层所处的地位，如下图所示。</p>
-<p><img src="/img/21debdbca9b5f67653d2ba2c0d582a0f.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>上图（a）表示用户主机H1 通过电话线上网，中间经过3个路由器（R1 、R2 和R3 ）连接到远程主机H2 。所经过的网络可以有多种，如电话网、局域网和广域网。当主机H1 向H2 发送数据时，从协议的层次上看，数据的流动如上图（b）所示。主机H1 和H2 都有完整的5层协议栈，但路由器在转发分组时使用的协议栈只用到下面的3层。数据进入路由器后先从物理层上到网络层，在转发表中找到下一跳的地址后，再下到物理层转发出去。因此，数据从主机H1 传送到主机H2 需要在路径中各结点的协议栈中向上和向下流动多次，如上图中的灰色粗箭头所示。</p>
-<p>然而当我们专门研究数据链路层的问题时，在许多情况下我们可以只关心协议栈中水平方向的各数据链路层。于是，当主机H1 向主机H2 发送数据时，我们可以想象数据就是在数据链路层从左向右水平传送，如图3-2中从左到右的灰色粗箭头所示，即通过这样的链路：H1 的链路层→R1 的链路层→R2 的链路层→R3 的链路层→H2 的链路层。</p>
-<p><img src="/img/a9918c104de90c9e8c43a4ad52f5ca41.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>上图指出，从数据链路层来看，主机H1 到H2 的通信可以看成由4段不同的链路层通信组成，即H1 →R1 、R1 →R2 、R2 →R3 和R3 →H2 。这4段不同的链路层通信可能采用不同的数据链路层协议。</p>
-<h3 id="1-2、数据链路和帧">1.2、数据链路和帧</h3>
-<p>我们在这里要明确一下，“链路”和“数据链路”并不是一回事。</p>
-<p>链路 （Link）就是从一个结点到相邻结点 的一段物理线路，中间没有任何其他的交换结点。在进行数据通信时，两台计算机之间的通信路径往往包含许多段这样的链路。可见链路只是一条路径的组成部分。</p>
-<p>数据链路 （Data Link）则是另一个概念。当需要在一条线路上传送数据时，除了必须有一条物理线路外，还必须有一些通信协议来控制这些数据的传输。把实现这些协议的硬件和软件加到链路上，就构成了数据链路。这样的数据链路就不再是简单的物理链路而是逻辑链路了。现在最常用的方法是使用网络适配器 （如拨号上网使用拨号适配器 、通过以太网上网使用局域网适配器 ）来实现这些协议。一般的适配器都包括了数据链路层和物理层这两层的功能。</p>
-<p>早期的数据通信协议曾叫作通信规程 （Procedure）。因此在数据链路层，规程和协议是同义语。</p>
-<p>下面再介绍数据链路层的协议数据单元——帧 （Frame）。</p>
-<p>数据链路层把网络层交下来的数据构成帧 发送到链路上，以及把接收到的帧 中的数据取出并上交给网络层。在互联网中，网络层协议数据单元就是IP数据报（或简称为数据报 、分组 或包 ）。</p>
-<p>为了把主要精力放在点对点信道的数据链路层协议上，我们采用下图（a）所示的三层模型。在这种三层模型中，不管在哪一段链路上的通信（主机和路由器之间或两个路由器之间），我们都将其看成结点和结点的通信，如下图（a）中的结点A和结点B，而每个结点只考虑下三层——网络层、数据链路层和物理层。</p>
-<p><img src="/img/cd1b58a7f31d48385900303d1dd69640.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>点对点信道的数据链路层通信的主要步骤如下。</p>
+<h1>一、计算机网络应用体系结构</h1>
+<h1>二、网络应用通信基本原理</h1>
+<h1>三、域名系统（DNS）</h1>
+<h1>四、万维网（WWW）</h1>
+<h1>五、Internet电子邮件</h1>
+<h1>六、FTP</h1>
+<h1>七、P2P应用</h1>
+<p>基于客户/服务器体系结构的应用，它们要求有总是在运行着的基础设施服务器，如DNS服务器、万维网服务器、邮件服务器等。与这些应用不同，基于P2P体系结构的应用是对等方之间直接进行通信，而且对等方主要运行于间断连接的主机上，如个人计算机，而不是运行于24h连续开机的服务器上。</p>
+<p>目前，在互联网上流行的P2P应用主要包括P2P文件共享、即时通信、P2P流媒体、分布式存储等。在这里我们仅以P2P文件共享为例来简单介绍P2P的应用。文件共享应用实际上有两个基本的问题要解决：如何查找到你需要的文件，以及如何从拥有该文件的主机下载该文件。这里我们仅讨论后一个问题，即P2P文件分发（从文件拥有者角度看是将一个文件分发给多个对等方）。</p>
+<h2 id="7-1、P2P文件分发">7.1、P2P文件分发</h2>
+<p>我们通过一个简单的例子来说明P2P方式在文件分发应用中的优势。该任务是将主机H1 中的一个长度为L 的大文件分发给其余七台主机。假设文件传输的瓶颈是各主机的上载速率，再假定所有主机的上载速率都是R 。对于客户/服务器方式，主机H1 为服务器，而其他主机为客户。显然主机H1 要依次把文件发送给所有其他主机，所需的时间是7L /R 。可见采用客户/服务器方式，文件分发时间随客户机的数量呈线性增长。因此，基于客户/服务器方式的应用在面对大量用户访问时，服务器要承受极大的负担，并且消耗大量的服务器带宽。</p>
+<p>在P2P文件分发中，每个对等方都能在收到文件后再将该文件分发给其余对等方，从而协助主机H1 进行分发，这样就大大缩短了文件分发的时间。例如，可以在3L /R 时间内就把长度为L 的文件分发给所有七台主机：</p>
 <ul>
 <li>
-<p>结点A的数据链路层把网络层交下来的IP数据报添加首部和尾部封装成帧。</p>
+<p>第1个L /R 时间，H1 →H2 ；</p>
 </li>
 <li>
-<p>结点A把封装好的帧发送给结点B的数据链路层。</p>
+<p>第2个L /R 时间，H1 →H3 ，H2 →H4 ；</p>
 </li>
 <li>
-<p>若结点B的数据链路层收到的帧无差错，则结点B的数据链路层从收到的帧中提取出IP数据报上交给上面的网络层，否则丢弃这个帧。</p>
+<p>第3个L /R 时间，H1 →H5 ，H2 →H6 ，H3 →H7 ，H4 →H8 。</p>
 </li>
 </ul>
-<p>数据链路层不必考虑物理层实现比特传输的细节。我们甚至可以更简单地设想好像是 沿着两个数据链路层之间的水平方向把帧直接发送给对方，如上图（b）所示。</p>
-<h3 id="1-3、封装成帧">1.3、封装成帧</h3>
-<p>数据链路层以帧为单位传输和处理数据。网络层的IP数据报必须向下传送到数据链路层，成为帧的数据部分，同时它的前面和后面分别添加上首部和尾部，被封装成一个完整的帧。帧的长度等于帧的数据部分长度加上帧首部和帧尾部的长度。数据链路层必须使用物理层提供的服务来传输一个一个的帧。物理层将数据链路层交来的数据以比特流的形式在物理链路上传输。因此，数据链路层的接收方为了能以帧为单位处理接收的数据，必须正确识别每个帧的开始和结束，即进行帧定界。</p>
-<p>首部和尾部的作用之一就是进行帧定界，同时它们包含必要的控制信息。在发送帧时，是从帧首部开始发送的。各种数据链路层协议都对帧首部和帧尾部的格式有明确的规定。虽然，为了提高帧的传输效率，应当使帧的数据部分的长度尽可能大些，但考虑到差错控制等多种因素，每一种链路层协议都规定了帧的数据部分长度的上限，即最大传送单元 （Maximum Transfer Unit，MTU）。下图所示为帧的数据部分长度不能超过规定的MTU数值。</p>
-<p><img src="/img/f48a55f4936d2b30ccebecabe9fb4496.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>实现帧定界有多种方法。一种简单的方法就是在传输的帧和帧之间插入时间间隔，就好像在英文单词间插入空格一样。例如，我们后面将要讨论的以太网就采用了这种方法。</p>
-<p>不过，并不是所有的物理层传输服务都会保证数据链路层发送帧的时间间隔。某些物理层会将传输的帧之间的间隔“挤掉”，也有可能在一个帧的中间插入时间间隔。因此，该方法不一定适用于所有场合。例如，物理链路采用面向字节的异步传输方式时，字节之间的时间间隔就不是固定的。</p>
-<p>除此之外，还可以在帧的首部设一个帧长度字段来定位一个帧的结束和下一个帧的开始。但如果帧长度字段在传输中出现差错，会导致后面一系列帧无法正确定界，因此该方法在数据链路层较少使用。</p>
-<p>一种常用的实现帧定界的方法是在每个帧的开始处和结束处添加特殊的帧定界标志（帧定界符），标记一个帧的开始或结束。帧开始标志和帧结束标志可以不同也可以相同，如下图所示。</p>
-<p><img src="/img/bcf027009e9fe324fd7fe225d8e23a05.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>当物理链路提供的是面向字符的传输服务时（物理链路以字符为单位传输数据），可以使用某个特殊的不可打印的控制字符作为帧定界符 。我们知道，ASCII码是7位编码，128个ASCII码中可打印的有95个，而不可打印的控制字符有33个。</p>
-<p>由于帧开始标志和帧结束标志使用专门的控制字符，因此所传输的数据中不能出现与之相同的字节，否则就会出现帧定界错误。当传送的是文本文件中的数据时（文本文件中的字符都是从键盘上输入的），帧的数据部分显然不会出现不可打印的帧定界符。但当数据部分是非ASCII码文本的数据时（如二进制代码的计算机程序或图像等），情况就不同了。如果数据中的某个字节的二进制代码恰好和帧定界符一样，如下图所示，接收方的数据链路层就会错误地“找到帧的边界”，而收下不完整的帧。</p>
-<p><img src="/img/4f80270636b897cc8000f0b35a8e1055.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>我们希望数据链路层提供的是一种“透明传输”的服务，即对上层交给的传输数据没有任何限制，就好像数据链路层不存在一样。上图所示的帧的传输显然就不是透明传输，因为要发送的数据中不能出现帧定界符。</p>
-<p>为了实现透明传输，对于面向字符的物理链路，可以使用一种称为字节填充 （Byte Stuffing）或字符填充 （Character Stuffing）的方法。该方法的基本原理如下图所示，发送端的数据链路层在数据中出现的标记字符（与帧定界符相同的字符）前面插入一个转义字符 （如特殊的控制字符“ESC”），而接收端的数据链路层不会将转义字符后面出现的标记字符解释为帧定界符，并且会在将数据送往网络层之前删除这个插入的转义字符。如果转义字符也出现在数据当中，那么解决方法仍然是在转义字符的前面插入一个转义字符。因此，当接收端收到连续的两个转义字符时，就删除前面的一个。后面将要介绍的PPP所使用的字节填充具体方法比下图所示的基本方法稍微复杂一些。</p>
-<p><img src="/img/0fbdc6c9a9394337bb494d8d6d1c5128.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>当物理链路提供的是面向比特的传输服务时（物理链路传送连续的比特流），帧定界符可以使用某个特殊的比特组合，如PPP所使用的“01111110”。由于帧的长度不再要求必须是整数个字节，因此可以采用开销更小的比特填充 （Bit Stuffing）来实现透明传输。</p>
-<p>下图以PPP采用的零比特填充法 来说明比特填充是如何实现透明传输的。在发送端，先扫描整个信息字段（通常是用硬件实现，但也可用软件实现，只是会慢些）。只要发现有5个连续1，则立即填入一个0。经过这种零比特填充的数据，就可以保证在信息字段中不会出现6个连续1。接收端在收到一个帧时，先找到帧定界符以确定一个帧的边界，再用硬件对其中的比特流进行扫描。每当发现5个连续1时，就把这5个连续1后的一个0删除，以还原数据比特流，如下图所示。这样就保证了透明传输：所传送的数据比特流可以包含任意组合的比特模式，而不会引起对帧边界的判断错误。</p>
-<p><img src="/img/127aeac660d06cb6e05264f3a31f6d73.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<h3 id="1-4、差错检测">1.4、差错检测</h3>
-<p>现实的通信链路都不会是理想的，比特在传输过程中可能会产生差错：1可能会变成0，而0也可能变成1。这就叫作比特差错。比特差错是传输差错中的一种。本小节所说的“差错”，如无特殊说明，就是指比特差错。</p>
-<p>在一段时间内，传输错误的比特数与所传输比特总数的比率称为误码率 （Bit Error Rate，BER）。例如，误码率为10-10 ，表示平均每传送1010 个比特就会出现一个比特的差错。误码率与信噪比有很大的关系。如果设法提高信噪比，就可以使误码率减小。实际的通信链路并非理想的，它不可能使误码率下降到零。因此，为了保证接收到的数据是正确的，计算机网络在传输数据时，必须采用某种差错检测措施。虽然各种差错检测技术的具体方法差别很大，但它们的基本原理是一样的。</p>
-<p>如下图所示为利用差错检测码 （Error-Detecting Code，EDC）实现差错检测的基本原理。</p>
-<p><img src="/img/1f269250379067501c33db8d71077297.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>为了使接收方能检测出接收的数据中是否出现了差错，发送方需要采用某种差错检测算法f ，用发送的数据D 计算出差错检测码EDC =f (D )，并将EDC 随数据一起发送给接收方。接收方通过同样的算法计算接收数据D’ 的差错检测码f (D’ )，如果接收到的差错检测码EDC’ ≠f (D’ )，则可以判断传输的数据中出现了差错，即检测出差错。要注意的是，接收方未检测出差错并不代表传输的数据中一定没有出现差错，但出现差错的概率非常小。一般而言，为了提高差错检测的检错率，可以使用更长的差错检测码和更复杂的算法，当然这也会导致更大的开销。</p>
-<p>在数据链路层，为了便于硬件检测差错，通常会在帧的尾部设置一个差错检验字段存放整个帧（包含首部和数据）的差错检测码，这个差错检验字段常称为帧检验序列 （Frame Check Sequence，FCS）。因此，要在数据链路层进行差错检验，就必须把数据划分为帧，每一帧都加上差错检测码，一帧接一帧地传送，然后在接收方逐帧进行差错检验。</p>
-<p>在数据链路层通常使用循环冗余检验 （Cyclic Redundancy Check，CRC）技术进行差错检测。CRC编码的基本原理如下图所示。</p>
-<p><img src="/img/326e8580024f3bf51b6e1111c1340aa2.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>发送方和接收方首先必须协商一个r +1比特的生成式G 。算法要求G 的最高位和最低位的比特为1。考虑d 比特的数据D ，发送方要选择一个合适的r 比特冗余码R （即检错码），并将它附加到D 上，使得得到的d +r 比特模式用模2算术恰好能被G 整除。接收方进行差错检测时，用G 去除接收到的d +r 比特，如果余数非零则检测出差错，否则认为数据正确。</p>
-<p>在模2算术中，加法不进位，减法不借位，等价于按位异或（XOR），乘以2和除以2等价于左/右移位。</p>
-<p>由于<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>∗</mo><msup><mn>2</mn><mi>r</mi></msup><mi>X</mi><mi>O</mi><mi>R</mi><mi>R</mi><mo>=</mo><mi>n</mi><mo>∗</mo><mi>G</mi></mrow><annotation encoding="application/x-tex">D*2^r XOR R =n*G</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.00773em;">XORR</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4653em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span></span></span></span> ，即<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>∗</mo><msup><mn>2</mn><mi>r</mi></msup><mo>=</mo><mi>n</mi><mo>∗</mo><mi>G</mi><mi>X</mi><mi>O</mi><mi>R</mi><mi>R</mi></mrow><annotation encoding="application/x-tex">D*2^r=n*G XORR</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4653em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">GXORR</span></span></span></span>，因此可以利用下式来计算冗余码R 。</p>
-<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>R</mi><mo>=</mo><mfrac><mrow><mi>D</mi><mo>∗</mo><msup><mn>2</mn><mi>r</mi></msup></mrow><mi>G</mi></mfrac><mtext>的余数</mtext></mrow><annotation encoding="application/x-tex">R = \frac{D*2^r}{G}的余数
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0463em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">G</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord cjk_fallback">的余数</span></span></span></span></span></p>
-<p>下面我们通过一个简单的例子来说明循环冗余检验的计算过程。现假定待传送的数据D =101001（d =6），G =1101（即r =3）。经模2除法运算后的结果：商Q =110101（这个商并没有什么用处），而余数R =001。这个余数R 就作为冗余码拼接在数据D 的后面发送出去。因此加上冗余码后发送的帧是101001001，共有d +r 比特。</p>
-<p>在接收端把接收到的数据除以同样的除数生成式G （模2算术），然后检查得到的余数R 。如果在传输过程中无差错，那么经过CRC后得出的余数R 肯定是0（读者可以自己验算一下，被除数现在是101001001，而除数是G =1101，看余数R 是否为0）。</p>
-<p>但如果出现误码，那么余数R仍等于零的概率是非常非常小的。</p>
-<p>总之，在接收端对收到的每一帧进行CRC后：</p>
-<p>（1）若得出的余数R=0，则判定这个帧没有差错，接受；</p>
-<p>（2）若余数R ≠0，则判定这个帧有差错（但无法确定究竟是哪一位或哪几位出现了差错），丢弃。</p>
-<p>CRC编码也称为多项式编码 ，因为该编码能够将要发送的比特串看作系数为0和1的一个多项式，对比特串的模2算术被解释为多项式算术。在上面的例子中，可以用多项式<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo stretchy="false">(</mo><mi>X</mi><mo stretchy="false">)</mo><mo>=</mo><msup><mi>X</mi><mn>3</mn></msup><mo>+</mo><msup><mi>X</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">G(X)=X^3 + X^2 + 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">G</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>表示生成式G =1101（最高位对应于<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>X</mi><mn>3</mn></msup></mrow><annotation encoding="application/x-tex">X^3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span></span></span></span> ，最低位对应于<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>X</mi><mn>0</mn></msup></mrow><annotation encoding="application/x-tex">X^0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span></span></span></span></span></span></span></span>）。多项式G(X)称为生成多项式 。现在广泛使用的生成多项式G (X )有以下几种：</p>
-<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>C</mi><mi>R</mi><mi>C</mi><mo>−</mo><mn>16</mn><mo>=</mo><msup><mi>X</mi><mn>16</mn></msup><mo>+</mo><msup><mi>X</mi><mn>15</mn></msup><mo>+</mo><msup><mi>X</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">CRC - 16 = X^{16} + X^{15} + X^{2} + 1
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">CRC</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">16</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">16</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">15</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></span></p>
-<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>C</mi><mi>R</mi><mi>C</mi><mo>−</mo><mi>C</mi><mi>C</mi><mi>I</mi><mi>T</mi><mi>T</mi><mo>=</mo><msup><mi>X</mi><mn>16</mn></msup><mo>+</mo><msup><mi>X</mi><mn>15</mn></msup><mo>+</mo><msup><mi>X</mi><mn>5</mn></msup><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">CRC - CCITT = X^{16} + X^{15} + X^{5} + 1
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">CRC</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">CC</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal" style="margin-right:0.13889em;">TT</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">16</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">15</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></span></p>
-<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>C</mi><mi>R</mi><mi>C</mi><mo>−</mo><mn>32</mn><mo>=</mo><msup><mi>X</mi><mn>32</mn></msup><mo>+</mo><msup><mi>X</mi><mn>26</mn></msup><mo>+</mo><msup><mi>X</mi><mn>23</mn></msup><mo>+</mo><msup><mi>X</mi><mn>22</mn></msup><mo>+</mo><msup><mi>X</mi><mn>16</mn></msup><mo>+</mo><msup><mi>X</mi><mn>12</mn></msup><mo>+</mo><msup><mi>X</mi><mn>11</mn></msup><mo>+</mo><msup><mi>X</mi><mn>10</mn></msup><mo>+</mo><msup><mi>X</mi><mn>8</mn></msup><mo>+</mo><msup><mi>X</mi><mn>7</mn></msup><mo>+</mo><msup><mi>X</mi><mn>5</mn></msup><mo>+</mo><msup><mi>X</mi><mn>4</mn></msup><mo>+</mo><msup><mi>X</mi><mn>2</mn></msup><mo>+</mo><mi>X</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">CRC - 32 = X^{32} + X^{26} + X^{23} + X^{22} + X^{16} + X^{12} + X^{11} + X^{10} + X^{8} + X^{7} + X^{5} + X^{4} + X^{2} + X + 1
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">CRC</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">32</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">32</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">26</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">23</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">22</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">16</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">12</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">11</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">10</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">8</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">7</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">4</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></span></p>
-<p>CRC有很好的检错能力，虽然计算比较复杂，但非常易于用硬件实现，因此被广泛应用于现代计算机网络的数据链路层。在数据链路层，发送端FCS的生成和接收端的CRC完全用硬件完成，处理很快，对数据传输的延误非常小。</p>
-<p>最后需要强调的是，使用CRC这样的差错检测技术，只能检测出帧在传输中出现了差错，并不能纠正错误。虽然任何差错检测技术都无法做到检测出所有差错，但通常我们认为：凡是接收端数据链路层通过差错检测接受的帧，我们都能以非常接近于1的概率认为这些帧在传输过程中没有产生差错 。接收端丢弃的帧虽然曾收到 ，但最终还是因为有差错被丢弃，即没有被接受 。上述原则可以近似地 表述为（通常都是这样认为）：凡是接收端数据链路层接受的帧均无差错 。</p>
-<p>要想纠正传输中的差错可以使用冗余信息更多的纠错码 （Error-Correcting Code）进行前向纠错 （Forward Error Correction，FEC）。通过纠错码能检测数据中出现差错的具体位置，从而纠正错误。由于纠错码要发送更多的冗余信息，开销非常大，在计算机网络中较少使用。在计算机网络中通常采用马上将要讨论的检错重传方式来纠正传输中的差错，或者仅仅是丢弃检测到差错的帧，由上层协议去解决数据丢失的问题。</p>
-<h3 id="1-5、可靠传输">1.5、可靠传输</h3>
-<p>在某些情况下，我们需要数据链路层向上面的网络层提供“可靠传输 ”的服务。可靠传输就是要做到：发送端发送什么，对应的接收端就收到什么。 事实上，保证数据传输的可靠性是计算机网络中的一个非常重要的任务，也是各层协议均可选择的一个重要功能。本节所讨论的可靠传输基本原理并不局限于数据链路层，可以应用到计算机网络体系结构的各层协议之中。本章要讨论的无线局域网和第5章要讨论的TCP都用到了这些原理和方法来实现它们的可靠传输服务。</p>
-<p>下图所示为可靠传输的基本模型。</p>
-<p><img src="/img/ec20a60a4e25ae295a22574d3cc16fac.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>可靠传输协议为上层的对等实体间提供一条可靠信道（这里指的是广义的信道），即发送方上层实体通过该信道发送的分组都会正确地到达接收方上层实体，不会出现比特差错、分组丢失、分组重复，也不会出现分组失序。在可靠传输协议实体间的底层信道却是不可靠的，即分组可能出现差错、丢失、重复和失序。可靠传输协议就是要在不可靠的信道上实现可靠的数据传输服务。为简单起见，这里仅讨论单向的可靠传输，读者很容易将其扩展到双向可靠传输。要注意的是，为实现可靠的单向数据传输，可靠传输协议需要进行双向通信，因此底层的不可靠信道必须是双向的。</p>
-<h4 id="1-5-1、停止等待协议">1.5.1、停止等待协议</h4>
-<h5 id="1-5-1-1、工作过程">1.5.1.1、工作过程</h5>
-<p>在计算机网络中实现可靠传输的基本方法就是，如果发现错误就重传 。因此，首先要解决的问题就是如何知道分组在传输过程中出现了差错。对于分组中的比特差错，接收方使用我们上节讨论的差错检测 技术识别接收的分组中是否存在比特差错。为了让发送方知道是否出现了差错，接收方必须将是否正确接收分组的信息反馈给发送方。</p>
-<p>如下图（a）所示（DATA表示数据分组），当正确接收到一个分组时，接收方向发送方发送一个确认分组ACK（Acknowledgment），当接收到的分组出现比特差错时，接收方丢弃该分组并发送一个否认 分组NAK（Negative Acknowledgment）。发送方收到ACK则可以发送下一个分组，而收到NAK则要重传原来的分组，直到收到ACK为止。由于发送方每发送完一个分组必须停下来等待确认，因此该协议被称为停止等待 （Stop-and Wait，SW）协议 。</p>
-<p><img src="/img/97ac9101f24171f55601d1459be40141.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>如果底层的信道会丢失分组，当数据分组或确认分组丢失时，发送方将会一直等待接收方的确认分组。为解决该问题，可以在发送方发送完一个数据分组时，启动一个超时计时器 （Timeout Timer）。若到了超时计时器所设置的超时重传时间t out 发送方仍收不到接收方的任何确认分组，则重传原来的分组，如上图（b）所示。这就叫作超时重传 。显然，超时计时器对超时重传时间应仔细选择。若超时重传时间太短，则在正常情况下发送方也会在对方的确认信息到达之前就过早地重传数据。若超时重传时间太长，则往往要白白等待很长时间。一般可将超时重传时间选为略大于“从发送方到接收方的平均往返时间”。在数据链路层，点对点的往返时间比较确定，超时重传时间比较好设定，然而在运输层，由于端到端往返时间非常不确定，设置合适的超时重传时间有时并不容易。</p>
-<p>为了使协议实现起来更加简单，可以用超时重传来解决比特差错问题而完全不使用NAK。接收方收到有比特差错的分组时，仅仅将其丢弃，而发送方不是通过接收NAK而是通过超时来进行重传。不过使用NAK可以使发送方重传更加及时。</p>
-<p>当确认分组丢失时，接收方会收到两个同样的数据分组，即重复分组 。若接收方不能识别重复分组，则会导致另一种差错——数据重复 ，这也是一种不允许出现的差错。为了解决该问题，必须使每个数据分组带上不同的发送序号，每发送一个新的数据分组就把它的发送序号加1。若接收方连续收到发送序号相同的数据分组，就表明出现了重复分组。这时应当丢弃重复的分组。但应注意，此时接收方还必须向发送方再补发一个确认分组ACK，如上图（c）所示。</p>
-<p>我们知道，任何一个编号系统的序号所占用的比特数一定是有限的。因此，经过一段时间后，发送序号就会被重复使用。例如，当发送序号占用3bit时，就有8个不同的发送序号。因此，要进行编号就要考虑序号到底要占用多少个比特。序号占用的比特数越少，数据传输的额外开销就越少。若不考虑失序情况（后发送的分组比先发送的分组先到达），对于停止等待协议，由于每发送一个数据分组就停止等待，只要保证每发送一个新的数据分组，其发送序号与上次发送的分组的序号不同就可以了，因此用1bit来编号就够了。数据链路层下面的物理链路一般不会导致分组失序，但高层（如运输层）协议下面的分组交换网可能导致分组失序。</p>
-<p>那么确认分组需不需要编号呢？如图3-12（d）所示，由于往返时间的不确定性，有可能一个迟到的确认导致发送方“过早超时”。过早超时会使发送方收到重复的确认分组，发送方应该丢弃重复的确认分组，针对这种情况确认分组也应该使用序号。由于数据链路层点对点的往返时间比较确定，不太可能出现过早超时情况，在数据链路层实现停止等待协议也可以不对确认分组进行编号。</p>
-<p>使用上述的确认和重传机制，我们就可以在不可靠的信道上实现可靠的数据传输。这类通过确认和超时重传机制实现的可靠传输协议，常称为自动重传请求（Automatic Repeat reQuest，ARQ）协议，意思是重传的请求是自动进行的，不需要接收方显式地请求发送方重传某个出错的分组。这里要注意的是，发送方发送完一个分组后，必须暂时保留已发送的分组的副本（为重传时使用）。只有在收到相应的确认后才能清除该分组副本。保留复本、重传、确认和编号都是可靠传输协议实体自己的行为，而上层实体完全感觉不到这些。</p>
-<h5 id="1-5-1-2、算法描述">1.5.1.2、算法描述</h5>
-<h5 id="1-5-1-3、信道利用率">1.5.1.3、信道利用率</h5>
-<p>停止等待协议的优点是简单，缺点是信道利用率太低。我们可以用下图来说明这个问题。</p>
-<p><img src="/img/e5493ee1a83f8338ce5605081d05748b.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>为简单起见，假定A和B之间有一条直通的信道来传送分组。假定A发送分组需要的时间是T D 。显然，T D 等于分组长度除以数据率。再假定分组正确到达B后，B处理分组的时间可以忽略不计，同时立即发回确认分组。假定B发送确认分组需要时间T A 。如果A处理确认分组的时间也可以忽略不计，那么A在经过时间（T D +RTT+T A ）后就可以发送下一个分组，这里的RTT（Round-Trip Time）是往返时间 。因为仅时间T D 被用来传送有用的数据（包括分组的首部），因此信道的利用率U 可用下式计算：</p>
-<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>U</mi><mo>=</mo><mfrac><msub><mi>T</mi><mi>D</mi></msub><mrow><msub><mi>T</mi><mi>D</mi></msub><mo>+</mo><mi>R</mi><mi>T</mi><mi>T</mi><mo>+</mo><msub><mi>T</mi><mi>A</mi></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">U = \frac{T_D}{T_D+RTT+T_A}
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.1963em;vertical-align:-0.836em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">D</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">RTT</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">D</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
-<p>注：更细致的计算还可以在上式分子的时间<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>D</mi></msub></mrow><annotation encoding="application/x-tex">T_D</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">D</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>内扣除传送控制信息（如首部）所花费的时间。但在进行粗略计算时，用近似的上式就可以了。</p>
-<p>我们知道，上式中的RTT取决于所使用的信道。例如，假定1200km的信道的RTT=20ms，分组长度是1200 bit，发送速率是1Mbit/s。若忽略处理时间和<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>A</mi></msub></mrow><annotation encoding="application/x-tex">T_A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>A</mi></msub></mrow><annotation encoding="application/x-tex">T_A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>一般都远小于<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>D</mi></msub></mrow><annotation encoding="application/x-tex">T_D</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">D</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>），则可算出信道的利用率U =5.66%。但若把发送速率提高到10 Mbit/s，则<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>=</mo><mn>5.96</mn><mo>×</mo><mn>1</mn><msup><mn>0</mn><mrow><mo>−</mo><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">U =5.96×10^{-3}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">5.96</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">3</span></span></span></span></span></span></span></span></span></span></span></span> 。信道在绝大多数时间内都是空闲的。</p>
-<p>从上图可看出，当RTT远大于分组发送时间<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>D</mi></msub></mrow><annotation encoding="application/x-tex">T_D</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">D</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>时，信道的利用率就会非常低。还应注意的是，这里还没有考虑出现差错后的分组重传。若出现重传，则对传送有用的数据信息来说，信道的利用率还要降低。但是，当RTT远小于分组发送时间<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>D</mi></msub></mrow><annotation encoding="application/x-tex">T_D</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">D</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>时，信道的利用率还是非常高的，因此停止等待协议应用于无线局域网。</p>
-<p>在RTT相对较大的情况下，为了提高传输效率，发送方可以不使用低效率的停止等待协议，而采用流水线传输 方式，如下图所示。流水线传输方式就是发送方可连续发送多个分组，不必每发完一个分组就停顿下来等待对方的确认。这样可使信道上一直有数据不间断地在传送。显然，这种传输方式可以获得很高的信道利用率。</p>
-<p><img src="/img/cec8edf6859e66bd9ddfd83721163c66.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<h4 id="1-5-2、回退N帧协议">1.5.2、回退N帧协议</h4>
-<p>当使用流水线传输方式时，发送方不间断地发送分组可能会使接收方或网络来不及处理这些分组，从而导致分组的丢失。发送方发送的分组在接收方或网络中被丢弃，实际上是对通信资源的严重浪费。因此发送方不能无限制地一直发送分组，必须采取措施限制发送方连续发送分组的个数。</p>
-<p>回退N帧 （Go-Back-N，GBN）协议在流水线传输的基础上利用发送窗口来限制发送方连续发送分组的个数，是一种连续ARQ协议 。为此，在发送方要维持一个发送窗口。发送窗口是允许发送方已发送但还没有收到确认的分组序号的范围，窗口大小就是发送方已发送但还没有收到确认的最大分组数 。实际上，发送窗口大小为1的GBN协议就是我们刚刚讨论过的停止等待协议。</p>
-<p>接下来，以下图为例，介绍窗口的概念。</p>
-<p><img src="/img/263bc14dc4559f119b5cc1392d0d16b0.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>上图（a）表示，发送窗口大小为5，位于发送窗口内的5个分组都可以连续发送出去，而不需要等待对方的确认。GBN协议规定，发送方每收到一个确认，就把发送窗口向前滑动一个分组的位置。上图（b）表示发送方收到了对第1个分组的确认，于是把发送窗口向前移动一个分组的位置。如果原来已经发送了前5个分组，那么现在就可以发送窗口内的第6个分组了。在协议的工作过程中发送窗口不断向前滑动，因此这类协议又称为滑动窗口协议。</p>
-<p>下图所示为当发送窗口大小为4时GBN协议的工作过程。</p>
-<p><img src="/img/456a0790a21ffad3fe27aa86ea579e8c.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>这里要注意以下3点。</p>
-<p>（1）接收方只按序接收分组。如上图（b）所示，虽然在出现差错的数据分组DATA2之后接收方收到了正确的分组DATA3、DATA4和DATA5，但都必须将它们丢弃，因为在没有正确接收DATA2 之前，这些分组都是失序到达的分组。当收到序号错误的分组时，接收方除了将它们丢弃外，还要对最近按序接收的分组进行确认 。如果将接收方允许接收的分组序号的范围定义为接收窗口的话，GBN协议的接收窗口的大小为1。接收方只接收序号落在接收窗口内的分组并向前滑动接收窗口。</p>
-<p>（2）发送方依然采用超时机制来重传出现差错或丢失的分组。由于接收方只接收按序到达的分组，一旦某个分组出现差错，其后连续发送的所有分组都要被重传，如上图（b）所示，最多会重传窗口大小个分组。因此，GBN协议规定：一旦发送方超时，则立即重传发送窗口内所有已发送的分组 。这就是GBN协议名称的由来，即一旦出错需要退回去重传已发送过的N个分组。</p>
-<p>（3）接收方采用累积确认 的方式。接收方对分组n 的确认，表明接收方已正确接收到分组n 及以前的所有分组。因此，接收方不一定要对收到的分组逐个发送确认，而是可以在收到几个分组后（由具体实现决定），对按序到达的最后一个分组发送确认，即使确认丢失也有可能不必重传。累积确认的优点是容易实现，缺点是不能向发送方准确反映接收方已经正确收到的所有分组的信息。</p>
-<p>从以上3点可以看出，GBN协议在SW协议的基础上只修改了发送方算法，而接收方算法基本没变化。</p>
-<h4 id="1-5-3、选择重传协议">1.5.3、选择重传协议</h4>
-<p>GBN协议存在一个缺点：一个分组的差错可能引起大量分组的重传，这些分组可能已经被接收方正确接收了，但由于未按序到达而被丢弃。显然这些分组的重传是对通信资源的极大浪费。为进一步提高性能，可设法只选择出现差错的分组进行重传，但这时接收窗口大小不再为1 ，以便先收下失序到达但仍然处在接收窗口中的那些分组，等到所缺分组收齐后再一并送交上层。这就是选择重传 （Selective Repeat，SR）协议。注意，为了使发送方仅重传出现差错的分组，接收方不能再采用累积确认，而需要对每个正确接收到的分组进行逐一确认（选择确认 ）。显然，SR协议比GBN协议要复杂，并且接收方需要有足够的缓存来暂存失序到达的分组。</p>
-<p>下图所示为当发送窗口和接收窗口大小均为4时的SR协议的工作过程。</p>
-<p><img src="/img/2e0c321c6233394b356397b0336ac86e.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>可以看出，接收方正确收到失序的分组时，只要其落在接收窗口内就先将其缓存起来并发回确认分组，如DATA3、DATA4和DATA5，但是这些分组不能交付上层。发送方在收到ACK2之前，发送窗口一直保持为2～5，因此在发送完DATA5后只能暂停发送分组。发送方收到失序的ACK3、ACK4和ACK5后并不改变发送窗口，但要记录DATA3、DATA4和DATA5已被确认，因此只有DATA2 被超时重传。注意，在SR中，ACKn 仅表示对分组DATAn 的确认。接收方收到重传的DATA2后，将其和已缓存的DATA3、DATA4和DATA5一起交付上层，并将接收窗口改为6～9。发送方接收到盼望已久的ACK2后，将发送窗口改为6～9，并又可以继续发送分组DATA6～DATA9了。与GBN协议进行比较，很容易发现，SR协议只重传了DATA2一个分组，而GBN协议重传了DATA2～DATA5 4个分组。</p>
-<h4 id="1-5-4、数据链路层的可靠传输">1.5.4、数据链路层的可靠传输</h4>
-<p>从以上的讨论可以看出，不可靠的链路加上适当的协议（如停止等待协议）就可以使链路层向上提供可靠传输服务。但付出的代价是数据的传输效率降低了，而且增加了协议的复杂性。因此，应当根据链路的具体情况来决定是否需要让链路层向上提供可靠传输服务。</p>
-<p>由于过去的通信链路质量不好（表现为误码率高），在数据链路层曾广泛使用可靠传输协议，但随着技术的发展，现在的有线通信链路的质量已经非常好了。因通信链路质量不好而引起差错的概率已大大降低，因此，现在有线网络广泛使用的数据链路层协议一般都不采用确认和重传机制，即不要求数据链路层向上提供可靠传输服务。若数据链路层传输数据偶尔出现了差错，并且需要进行改正，则改正差错的任务由上层协议（如运输层的TCP）来完成。实践证明，这样做可以提高通信效率，降低设备成本。但是在使用无线信道传输数据时，由于无线信道误码率较高，往往需要在数据链路层实现可靠传输服务以尽快改正差错，为上层提供较好的传输服务。</p>
-<h2 id="二、点对点协议（PPP）">二、点对点协议（PPP）</h2>
-<p>在通信线路质量较差的年代，能实现可靠传输的高级数据链路控制 （High-level Data Link Control，HDLC）协议是比较流行的数据链路层协议。HDLC是一个比较复杂的协议，实现了滑动窗口协议，并支持点对点和点对多点两种连接方式。对于现在误码率已非常低的点对点有线链路，HDLC协议已较少使用，而简单得多的点对点协议 （Point-to-Point Protocol，PPP）则是目前使用最广泛的点对点数据链路层协议。</p>
-<p>我们知道，互联网用户通常都要连接到某个ISP才能接入到互联网。用户计算机和ISP进行通信时，所使用的数据链路层协议通常就是PPP，如下图所示。PPP是IETF在1992年制定的。经过1993年和1994年的修订，现在PPP已成为互联网的正式标准（RFC 1661，RFC1662）。</p>
-<p><img src="/img/3319c41f3b7f582de52a5d62e0b32a9b.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<h3 id="2-1、PPP的特点">2.1、PPP的特点</h3>
-<p>PPP的主要特点如下。</p>
-<p>（1）简单 。数据链路层的PPP非常简单：接收方每收到一个帧，就进行CRC。如CRC正确，就收下这个帧；反之，就丢弃这个帧。使用PPP的数据链路层向上不提供可靠传输服务。如需要可靠传输，则由运输层来完成。</p>
-<p>（2）封装成帧 。PPP规定了特殊的字符作为帧定界符 （即标志一个帧的开始和结束的字符），使接收端从收到的比特流中能准确地找出帧的开始和结束位置。</p>
-<p>（3）透明性 。PPP能够保证透明传输。</p>
-<p>（4）多种网络层协议和多种类型链路 。PPP能够在同一条物理链路上同时支持多种网络层协议 （如IP和IPX等）的运行，并能够在多种类型的点对点链路上运行。例如，一条拨号电话线路，一条SONET/SDH链路，一条X.25连接或者一条ISDN电路，这些链路可能是串行的或并行的，同步的或异步的，低速的或高速的，电的或光的。PPP可以用于用户PC到ISP接入服务器间的点对点接入链路，也可以用于路由器之间的专用线路。</p>
-<p>这里特别要提到的是1999年公布的在以太网上运行的PPP，即PPP over Ethernet，简称为PPPoE。这就是PPP能够适应多种类型链路的一个典型例子。PPPoE使ISP可以通过DSL、电路调制解调器、以太网等宽带接入技术以以太网接口的形式为用户（一个或多个用户）提供接入服务。</p>
-<p>（5）差错检测 。PPP能够对接收端收到的帧进行差错检测（但不进行纠错），并立即丢弃有差错的帧 。若在数据链路层不进行差错检测，那么已出现差错的无用帧，就还要在网络中继续向前转发，白白浪费网络资源。</p>
-<p>（6）检测连接状态。PPP具有一种机制，能够及时（不超过几分钟）自动检测出链路是否处于正常工作状态。当出现故障的链路隔了一段时间后又恢复正常工作时，这种及时检测功能就显得很有必要。</p>
-<p>（7）最大传送单元。PPP对每一种类型的点对点链路设置MTU的标准默认值。如果高层协议发送的分组过长并超过MTU的数值，PPP就要丢弃这样的帧，并返回差错。需要强调的是，MTU是数据链路层的帧可以承载的数据部分的最大长度，而不是帧的总长度。</p>
-<p>（8）网络层地址协商 。PPP提供了一种机制，使通信的两个网络层（如两个IP层）实体能够通过协商知道或能够配置彼此的网络层地址。这对拨号连接的链路特别重要，因为在链路层建立了连接后，用户需要配置一个网络层地址，才能在网络层传送分组。</p>
-<h3 id="2-2、PPP的组成">2.2、PPP的组成</h3>
-<p>PPP有3个组成部分。</p>
-<p>（1）一个将IP数据报封装到串行链路的方法。PPP既支持面向字符的异步链路（无奇偶检验的8比特数据），也支持面向比特的同步链路。IP数据报在PPP帧中作为数据部分被传输。这个数据部分的长度受MTU的限制。</p>
-<p>（2）一个用来建立、配置和测试数据链路连接的链路控制协议 （Link Control Protocol，LCP）。通信的双方可协商一些选项。RFC1661中定义了11种类型的LCP分组。</p>
-<p>（3）一套网络控制协议 （Network Control Protocol，NCP），其中的每一个协议支持不同的网络层协议，如IP、OSI的网络层协议、DECnet，以及AppleTalk等。</p>
-<h3 id="2-3、PPP的帧格式">2.3、PPP的帧格式</h3>
-<p>PPP的帧格式如下图所示。</p>
-<p><img src="/img/8544749879ff5039c272e97ef1dbeca5.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>PPP帧的首部和尾部分别为四个字段和两个字段。</p>
-<h3 id="2-4、PPP的工作状态">2.4、PPP的工作状态</h3>
-<h2 id="三、使用广播信道的数据链路层">三、使用广播信道的数据链路层</h2>
-<h3 id="3-1、媒体接入控制">3.1、媒体接入控制</h3>
-<h3 id="3-2、局域网">3.2、局域网</h3>
-<p>局域网是在20世纪70年代末发展起来的。局域网技术在计算机网络中占有非常重要的地位。局域网最主要的特点是，网络为一个单位所拥有，且地理范围和站点数目均有限。在局域网刚刚出现时，局域网比广域网具有较高的数据率、较低的时延和较小的误码率。但随着光纤技术在广域网中普遍使用，现在广域网也具有很高的数据率和很低的误码率。</p>
-<p>最初，局域网主要用来连接单位内部的计算机，使它们能够方便地共享各种硬件、软件和数据资源。现在，局域网将企业、机构、校园中的大量用户接入互联网，并且网络中大部分的信息资源都集中在这些局域网中，广域网往往只是充当连接众多局域网的远程链路。</p>
-<h4 id="3-2-1、局域网拓扑">3.2.1、局域网拓扑</h4>
-<p>局域网可按网络拓扑进行分类。图3-21（a）所示为星形网 。由于集线器 （Hub）的出现和双绞线大量用于局域网中，星形以太网及多级星形结构的以太网获得了非常广泛的应用。图3-21（b）所示为环形网 ，如前面介绍的令牌环网。图3-21（c）所示为总线网 ，各站点直接连在总线上，总线两端的匹配电阻吸收在总线上传播的电磁波信号的能量，避免在总线上产生有害的电磁波反射。总线网以传统以太网最为著名。局域网经过了三十多年的发展，尤其是在快速以太网（100 Mbit/s）、吉比特以太网（1 Gbit/s）和10吉比特以太网（10 Gbit/s）相继进入市场后，以太网已经在局域网市场中占据了绝对优势。现在以太网几乎成了局域网的同义词，因此本书主要以以太网技术为例来讨论局域网。</p>
-<p><img src="/img/68ca1a5033361aff13ce8ffe0d9ad859.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>局域网可使用多种传输媒体。双绞线最便宜，现在10 Mbit/s、100 Mbit/s乃至1 Gbit/s的局域网都可使用双绞线。双绞线已成为局域网中的主流传输媒体。当数据率很高时，往往需要使用光纤作为传输媒体。</p>
-<p>必须指出，局域网工作的层次跨越了数据链路层和物理层。由于局域网技术中有关数据链路层的内容比较丰富，因此我们就把局域网的内容放在数据链路层这一章中讨论，但这并不表示局域网仅仅和数据链路层有关。</p>
-<h4 id="3-2-2、局域网体系结构">3.2.2、局域网体系结构</h4>
-<p>在局域网发展的初期，各种类型的网络相继出现，并且各自采用不同的网络拓扑和媒体接入控制技术。由于有关厂商在商业上的激烈竞争，IEEE 802委员会未能形成一个统一的、“最佳的”局域网标准，而是被迫制定了几个不同的局域网标准。为了使数据链路层能更好地适应多种局域网标准，IEEE 802委员会把局域网的数据链路层拆成两个子层，即逻辑链路控制 （Logical Link Control，LLC）子层和媒体接入控制 （Medium Access Control，MAC）子层。与接入传输媒体有关的内容都放在MAC子层，而LLC子层与传输媒体无关，局域网不管采用何种传输媒体和MAC子层，对LLC子层来说都是透明的，如图3-22所示。LLC子层可以为不同类型的网络层协议提供不同类型的数据传输服务，如无确认无连接服务、面向连接的可靠传输服务、带确认的无连接服务等。</p>
-<p><img src="/img/de9a0f291c794ffb7f6a4942412cfcfb.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>然而20世纪90年代以后，以太网在有线局域网市场中已取得了垄断地位，并且几乎成了有线局域网的代名词，TCP/IP体系经常使用的有线局域网只剩下DIX Ethernet V2而不是IEEE 802.3标准中的局域网，因此对于有线局域网来说，现在IEEE 802委员会制定的LLC子层（即IEEE802.2标准）的作用已经基本消失，很多厂商生产的适配器上就仅装有MAC协议而没有LLC协议。本章在介绍以太网时不再考虑LLC子层。</p>
-<h4 id="3-2-3、网络适配器">3.2.3、网络适配器</h4>
-<p>我们从一般的概念上讨论一下计算机是怎样连接到局域网上的。</p>
-<p>计算机与外界局域网通过通信适配器 （Adapter）相连。适配器本来是在主机箱内插入的一块网络接口板（或者是在笔记本电脑中插入的一块PCMCIA卡）。这种接口板又称为网络接口卡 （Network Interface Card，NIC）或简称为“网卡 ”。由于目前多数计算机主板上都已经嵌入了这种适配器，不再使用单独的网卡了，因此本书使用适配器这个更准确的术语。适配器有自己的处理器和存储器（包括RAM和ROM），是一个半自治的设备。适配器和局域网之间的通信是通过电缆或双绞线以串行传输方式进行的，而适配器和计算机之间的通信则是通过计算机主板上的I/O总线以并行传输方式进行的。因此，适配器的一个重要功能就是进行数据串行传输和并行传输的转换。由于网络上的数据率和计算机总线上的数据率并不相同，因此在适配器中必须装有对数据进行缓存的存储芯片。要想使适配器能正常工作，还必须把管理该适配器的设备驱动程序安装在计算机的操作系统中。这个驱动程序以后就会告诉适配器，应当从存储器的什么位置上把多长的数据块发送到局域网，或者应当在存储器的什么位置上把局域网传送过来的数据块存储下来。适配器还要能够实现局域网数据链路层和物理层的协议。</p>
-<p>适配器接收和发送各种帧时不使用计算机的CPU，这时CPU可以处理其他任务。适配器收到有差错的帧时，就把这个帧丢弃而不必通知计算机。当适配器收到正确的帧时，它就使用中断来通知该计算机并将帧交付协议栈中的网络层。当计算机要发送IP数据报时，就由协议栈把IP数据报向下交给适配器，组装成帧后发送到局域网。</p>
-<p>下图所示为计算机通过适配器和局域网进行通信。我们特别要注意，计算机的硬件地址（MAC地址）就在适配器的ROM中，而计算机的软件地址（IP地址），则在计算机的存储器中。</p>
-<p><img src="/img/39521d4cbb85ba69630b1acfa66194f4.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<h4 id="3-2-4、MAC地址">3.2.4、MAC地址</h4>
-<p>前面我们讨论过，使用点对点信道的数据链路层不需要使用地址，这是因为连接在信道上的只有两个站点。但当多个站点连接在同一个广播信道上时，要想实现两个站点的通信，则每个站点都必须有唯一的标识，即一个数据链路层地址。每个发送的帧必须携带标识接收站点和发送站点的地址。由于该地址用于媒体接入控制，因此被称为MAC地址。</p>
-<p>802标准为局域网规定了一种48位的全球地址（一般都简称为“地址”），这是局域网上的每一台计算机固化在适配器ROM中的地址。实际上这个地址仅仅是一个适配器的标识符，它并不能告诉我们这台计算机所在的位置。因此，有以下两种情况。</p>
-<p>（1）假定连接在局域网上的一台计算机的适配器坏了，而我们更换了一个新的适配器，那么这台计算机的局域网“地址”也就改变了，虽然这台计算机的地理位置一点也没有变化，接入的局域网也没有任何改变。</p>
-<p>（2）假定我们把位于南京的某局域网上的一台笔记本电脑携带到北京，并连接在北京的某局域网上。虽然这台计算机的地理位置改变了，但只要计算机中的适配器不变，那么该计算机在北京的局域网中的“地址”和它在南京的局域网中的“地址”一样。</p>
-<p>请注意，如果连接在局域网上的主机或路由器安装有多个适配器，那么这样的主机或路由器就有多个“地址”。更准确些说，这种48位“地址”应当是某个网络接口的标识符。</p>
-<p>现在IEEE的注册管理机构 （Registration Authority，RA）是局域网全球地址的法定管理机构，它负责分配地址字段的6个字节中的前三个字节（即高位24位）。世界上凡要生产局域网适配器的厂家都必须向IEEE购买由这三个字节构成的号（即地址块），这个号的正式名称是组织唯一标识符 （Organizationally Unique Identifier，OUI），通常也叫作公司标识符 。例如，3Com公司生产的适配器的MAC地址的前三个字节是02-60-8C。地址字段中的后三个字节（即低位24位）则由厂家自行指派，称为扩展标识符 （Extended Identifier），只要保证生产出的适配器没有重复地址即可。可见，用一个地址块可以生成224 个不同的地址。在生产适配器时，这种6个字节的MAC地址已被固化在适配器的ROM中。因此，MAC地址也叫作硬件地址 或物理地址 ，是一种平面结构的地址（即没有层次结构），不论适配器移动到哪里都不会改变。</p>
-<p>IEEE规定地址字段的第一字节的最低位为I/G位。I/G表示Individual/Group。当I/G位为0时，地址字段表示单个站地址 。当I/G位为1时，地址字段表示组地址 ，用来进行多播 （以前曾译为组播）。因此，IEEE只分配地址字段前三个字节中的23位。当I/G位分别为0和1时，一个地址块可分别生成223 个单个站地址和223 个组地址。需要指出，有的书把上述最低位写为“第一位”，但“第一”的定义是含糊不清的。这是因为在地址记法中有两种标准：第一种记法是把每一字节的最低位 写在最左边（最左边的最低位是第一位），IEEE 802.3标准就采用这种记法；第二种记法是把每一字节的最高位 写在最左边（最左边的最高位是第一位）。在发送数据时，两种记法都是按照字节的顺序发送，但每一个字节中先发送哪一位则不同：第一种记法先发送最低位，第二种记法先发送最高位。</p>
-<p>IEEE还考虑到可能有人并不愿意向IEEE的RA购买OUI。为此，IEEE把地址字段第一字节的次低位规定为G/L位，表示Global/Local。G/L位为0表示全球管理 （保证在全球没有相同的地址），厂商向IEEE购买的OUI都属于全球管理 。G/L位为1表示本地管理 ，这时用户可任意分配网络上的地址。采用2字节地址字段时全都是本地管理。但应当指出，以太网几乎不使用这个G/L位。</p>
-<p>这样，在全球管理时，每一个站点的地址可用46位的二进制数字来表示（最低位为0和次低位为1时）。剩下的46位组成的地址空间可以有246 个地址，已经超过70万亿个，可保证世界上的每一个适配器都有唯一的地址。</p>
-<p>当路由器通过适配器连接到局域网时，适配器上的硬件地址就用来标志路由器的某个接口。路由器如果同时连接到两个网络上，那么它就需要两个适配器和两个硬件地址。</p>
-<p>适配器有过滤功能 。适配器从网络上每收到一个MAC帧就先用硬件检查MAC帧中的目的地址。如果是发往本站的帧则收下，然后进行其他处理；否则就将此帧丢弃，不再进行其他处理。这样做就不浪费主机的处理器和内存资源。这里“发往本站的帧”包括以下3种帧：</p>
-<p>（1）单播 （Unicast）帧（一对一），即收到的帧的MAC地址与本站的MAC地址相同；<br>
-（2）广播 （Broadcast）帧（一对全体），即发送给本局域网上所有站点的帧（全1地址）；<br>
-（3）多播 （Multicast）帧（一对多），即发送给本局域网上一部分站点的帧。</p>
-<p>所有的适配器都至少应当能够识别前两种帧，即能够识别单播地址和广播地址。有的适配器可用编程方法识别多播地址。当操作系统启动时，它就把适配器初始化，使适配器能够识别某些多播地址。显然，只有目的地址才能使用广播地址和多播地址。</p>
-<p>通常适配器还可设置为一种特殊的工作方式，即混杂方式 （Promiscuous Mode）。工作在混杂方式的适配器只要“听到”有帧在共享媒体上传输就悄悄地将其接收下来，而不管这些帧是发往哪个站点的。请注意，这样做实际上是“窃听”其他站点的通信，而并不中断其他站点的通信。网络上的“黑客 ”（Hacker或Cracker）常利用这种方法非法获取网上用户的口令。</p>
-<p>但混杂方式有时非常有用。例如，网络维护和管理人员需要用这种方式来监视和分析局域网上的流量，以便找出提高网络性能的具体措施。有一种很有用的网络工具叫作嗅探器 （Sniffer），它就使用了设置为混杂方式的网络适配器。此外，这种嗅探器还可帮助学习网络的人员更好地理解各种网络协议的工作原理。因此，混杂方式就像一把“双刃剑”，是利是弊要看你怎样使用它。</p>
-<h2 id="四、共享式以太网">四、共享式以太网</h2>
-<p>以太网是美国施乐（Xerox）公司的Palo Alto研究中心（简称为PARC）于1975年研制成功的。那时，以太网是一种基带总线局域网，数据率为2.94 Mbit/s。以太网用无源电缆作为总线来传送数据帧，并以曾用来表示假想的电磁波传播媒体的以太 （Ether）来命名。1976年7月，梅特卡夫（Metcalfe）和博格斯（Boggs）发表了他们的具有里程碑意义的以太网论文。1980年9月，DEC公司、英特尔（Intel）公司和施乐公司联合提出了10 Mbit/s以太网规约的第一个版本DIX V1（DIX是这三个公司名称的缩写），1982年又修改为第二版（实际上也就是最后的版本），即DIX Ethernet V2，这是世界上第一个局域网产品的规约。</p>
-<p>在此基础上，IEEE 802委员会的802.3工作组于1983年制定了IEEE的第一个以太网标准IEEE 802.3，数据率为10 Mbit/s。802.3局域网对以太网标准中的帧格式做了很小的一点改动，但允许基于这两种标准的硬件在同一个局域网上互操作。以太网的两个标准DIX Ethernet V2与IEEE 802.3只有很小的差别，因此很多人也常把802.3局域网简称为“以太网”。但由于在IEEE 802.3标准公布之前，DIX Ethernet V2标准已被大量使用，因此最后IEEE 802.3标准并没有被广泛应用。本书仅讨论DIX Ethernet V2标准。</p>
-<p>以太网目前已从传统的共享式以太网发展到交换式以太网，数据率已演进到每秒百兆比特、吉比特甚至10吉比特。本节先介绍最早流行的10 Mbit/s速率的共享式以太网。</p>
-<p>最早的以太网是将许多站点都连接到一根总线上。当初人们认为这种连接方法既简单又可靠，因为“有源器件不可靠，而无源的电缆线才是最可靠的”。</p>
-<p>总线的特点是，当一个站点发送数据时，总线上的所有站点都能检测并接收到这个数据。这就是广播通信方式。但我们并不总是要在局域网上进行一对多的广播通信。为了在总线上实现一对一的通信，可以使每个站点的适配器拥有一个与其他适配器都不同的地址。在发送数据帧时，在帧的首部写明接收站的地址。仅当数据帧中的目的地址与适配器ROM中存放的硬件地址一致时，该适配器才能接收这个数据帧。适配器遇到不是发送给自己的数据帧就丢弃。这样，具有广播特性的总线上就实现了一对一的通信。</p>
-<p>为了通信的简便，以太网采取了以下两种措施。</p>
-<p>（1）采用较为灵活的无连接 的工作方式，即不必先建立连接就可以直接发送数据。适配器对发送的数据帧不进行编号 ，也不要求对方发回确认帧 。这样做的理由是局域网信道的质量很好，因通信质量不好产生差错的概率是很低的。因此，以太网提供的服务是不可靠的交付 ，即尽最大努力的交付 。目的站收到有差错的数据帧时（例如，用CRC查出有差错），就把帧丢弃，其他什么也不做。对有差错帧是否需要重传则由高层来决定 。但以太网并不知道这是重传帧，而是将其当作新的数据帧来发送 。</p>
-<p>（2）以太网采用基带传输，发送的数据都使用曼彻斯特编码 。曼彻斯特编码在每一个比特信号的正中间有一次电平的跳变，接收端很容易利用这个比特信号的电平跳变来提取信号时钟频率，并与发送方保持时钟同步。但是曼彻斯特编码的缺点就是它所占的频带宽度比原始的基带信号增加了一倍（因为每秒信号的电平变化次数加倍了）。</p>
-<p>剩下的一个重要问题就是如何协调总线上各站点的工作。我们知道，总线上只要有一个站点在发送数据，总线的传输资源就被占用。因此，在同一时间只能允许一个站点发送数据 ，否则各站点就会互相干扰，结果大家都无法正常发送数据。要解决这个问题，就需要使用媒体接入控制协议。</p>
-<h3 id="4-1、CSMA-CD协议">4.1、CSMA/CD协议</h3>
-<p>以太网采用的媒体访问控制协议是载波监听多址接入/冲突检测 （Carrier Sense Multiple Access/Collision Detection，CSMA/CD）协议。这里以10 Mbit/s总线型以太网为例讨论以太网的媒体接入控制协议CSMA/CD的基本原理。下面是CSMA/CD协议的要点。</p>
+<p>可以证明采用这种基本的P2P分发方式，文件分发时间随对等方数量呈对数增长。显然，每个对等方都参与了文件的分发，它们既是服务的请求者，也是服务的提供者。参加的对等方越多，服务的提供者也就越多。因此，P2P方式比客户/服务器方式具有更好的可扩展性。</p>
+<p>实际上，通过分片 ，即把文件划分为很多等长的小数据块进行分发，可以进一步加快文件分发的速度。因为一个对等方不必等整个文件全部收完就可以将该文件的部分数据块分发给其余对等方，这提高了文件分发的并行性。这就是说，对每一台需要下载文件的主机来说，不仅可以从多个对等方下载数据块，而且可以同时给多个对等方上载数据块。下图说明了这种情况。可以看出，数据块的传送途径不仅有A→B，A→C，A→D，而且有B→C，B→D，C→B，C→D，D→B，D→C。</p>
+<p><img src="/img/1391352f1fcd8726be044835fbcfeffd.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>巧妙地设计分发算法可以大大提高整个系统文件分发的效率。在一个实际的P2P文件分发系统中，任意两个拥有不同数据块的对等方之间都可能互相传送数据块，并且不断有对等方加入或离开。下载某个文件的人越多，拥有该文件数据块的对等方就越多，新加入的对等方就可以从更多的对等方下载该文件，因此有可能更快地下载完整的大文件。这就是为什么使用P2P文件分发软件的用户会有“下载的人越多，下载速度越快”的体验。由于对等方随时都有可能离开，为避免所有下载同一文件的对等方都缺少同一数据块，对等方通常会优先下载“稀有”数据块（拥有该数据块的对等方少），因此每个文件的数据块下载顺序具有随机性。</p>
+<h1>八、Socket编程基础</h1>
+<p>典型的网络应用是由一对程序（即客户程序和服务器程序）组成的，分别位于两个不同的端系统中。当运行这两个程序时，便创建了一个客户进程和一个服务器进程，同时它们通过从套接字读出或写入数据，完成彼此之间的通信。</p>
+<p>开发者创建一个网络应用时，其主任务就是编写客户程序和服务器程序的代码。网络应用程序可分为两类：实现标准协议的网络应用和专用网络应用。</p>
 <ul>
-<li>
-<p>“多址接入”说明这是一种多址接入协议，许多站点以多址接入的方式连接在一根总线上。协议的实质是“载波监听”和“冲突检测”。</p>
-</li>
-<li>
-<p>“载波监听 ”就是“发送前先监听”，即每一个站点在发送数据之前先要检测一下总线上是否有其他站点在发送数据，如果有，则暂时不发送数据，等待信道变为空闲时再发送。其实总线上并没有什么“载波”，“载波监听”就是用电子技术检测总线上有没有其他站点发送的数据信号。</p>
-</li>
-<li>
-<p>“冲突检测 ”就是“边发送边监听”，即适配器边发送数据边检测信道上的信号电压的变化情况，以判断自己在发送数据时其他站是否也在发送数据。当几个站点同时在总线上发送数据时，总线上各站点发送的信号脉冲互相叠加会导致信号脉冲的异常；适配器检测到总线上信号异常，或发现接收信号与发送信号明显不一致时，就认为总线上至少有两个站点同时在发送数据，信号发生了“碰撞”，即产生了冲突。因此“冲突检测”也称为“碰撞检测 ”。发生冲突时，总线上传输的信号产生严重的失真，无法从中恢复出有用的信息。因此，每一个正在发送数据的站点，一旦发现总线上出现了冲突，适配器就要立即停止发送，免得继续浪费网络资源，然后等待一段随机时间后再次发送。</p>
-</li>
+<li>实现标准协议的网络应用的应用层协议遵循某个或某些标准，如RFC 定义的标准或某种其他标准，客户程序和服务器程序必须遵守标准所规定的规则。这类网络应用的客户程序和服务器程序可以分别由不同组织或人员开发，一个开发者编写的客户程序可以与另一个开发者编写的服务器程序进行正常通信，因为两者都遵守同一标准的各种规则。例如，一个组织开发的 Web 浏览器，可以与另一组织开发的 Web 服务器进行正常通信与交互，因为彼此共同遵守HTTP协议标准。事实上，大多数标准网络应用的客户程序和服务器程序通常都是由不同的程序员甚至是不同组织单独开发的。</li>
+<li>专用网络应用是针对某组织或个人的特殊需求编写的网络应用程序。这类应用的应用层协议是专门设计的，没有公开发布在 RFC 中，没有成为标准，只在小范围内甚至只在某个网络应用中使用。专用网络应用的开发通常要求开发者（或开发团队）同时完成应用的客户程序和服务器程序的编写，因为这类应用没有实现一个开放（或标准）的应用层协议，其他开发者将不能开发出和该应用程序交互的代码。显然，要想了解网络应用程序是如何编写的，需要同时理解客户程序和服务器程序的编写。</li>
 </ul>
-<blockquote>
-<p>既然每一个站点在发送数据之前已经监听到信道“空闲”，那么为什么还会出现数据在总线上的冲突呢？</p>
-</blockquote>
-<p>这是因为电磁波在总线上总是以有限的速率传播的。因此当某个站点监听到总线空闲时，总线并非一定是空闲的。下图所示的例子可以说明这种情况。</p>
-<p><img src="/img/17e09409f61b4a1d9df5efff1a29aeea.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>设图中的局域网两端的站点A和B相距1km，用同轴电缆相连。电磁波在1km电缆中的传播时延约为5 µs （这个数字应当记住）。因此，A向B发出的信号，在约5 µs后才能传送到B。换言之，B若在A发送的信号到达B之前发送自己的帧（因为这时B的载波监听检测不到A所发送的信号），则必然在某个时间和A发送的信号发生冲突。冲突的结果是两个帧都变得无用。</p>
-<p>在局域网的分析中，常把总线上的单程端到端传播时延 记为τ 。发送数据的站点希望尽早知道是否发生冲突。那么，A发送数据后，最迟 要经过多长时间才能知道自己发送的数据和其他站点发送的数据有没有发生冲突？</p>
-<p>从上图中不难看出，这个时间最多是两倍的总线端到端的传播时延 （2τ ），或总线的端到端往返传播时延 。由于局域网上任意两个站点之间的传播时延有长有短，因此局域网必须按最坏情况设计，即取总线两端的两个站点之间的传播时延（这两个站点之间的距离最大）为端到端传播时延。</p>
-<p>显然，在使用CSMA/CD协议时，一个站点不可能同时进行发送和接收，因此使用CSMA/CD协议的以太网不可能进行全双工通信，而只能进行双向交替通信（半双工通信）。</p>
-<p>下面是图3-24中的一些重要的时刻。</p>
-<p>在t=0时，A发送数据。B检测到信道空闲。</p>
-<p>在t =τ -δ 时（这里τ &gt;δ &gt;0），A发送的数据还没有到达B，由于B检测到信道空闲，因此B发送数据。</p>
-<p>经过时间δ  / 2后，即在t =τ -δ  / 2时，A发送的数据和B发送的数据发生了冲突。但这时A和B都不知道发生了冲突。</p>
-<p>在t =τ 时，B检测到发生了冲突，于是停止发送数据。</p>
-<p>在t =2τ -δ 时，A也检测到发生了冲突，因而也停止发送数据。</p>
-<p>A和B发送数据均失败，它们都要等待一段时间再重新发送。</p>
-<h3 id="4-2、共享式以太网的信道利用率">4.2、共享式以太网的信道利用率</h3>
-<h3 id="4-3、使用集线器的星形拓扑">4.3、使用集线器的星形拓扑</h3>
-<h3 id="4-4、以太网的帧格式">4.4、以太网的帧格式</h3>
-<h2 id="五、网桥和以太网交换机">五、网桥和以太网交换机</h2>
-<p>在传统的共享式局域网中，所有站点共享一个公共的传输媒体。随着局域网规模的扩大、网络中站点数目的不断增加，这样的网络通信负载加重，网络效率急剧下降。随着技术的发展、交换技术的成熟和成本的降低，具有更高性能的交换式局域网在有线领域已完全取代了传统的共享式局域网。本节，我们先从扩展局域网的角度，讨论在物理层扩展以太网存在的问题和在数据链路层扩展以太网的数据链路层分组交换设备——网桥，然后讨论使用以太网交换机的全双工交换式以太网。</p>
-<h3 id="5-1、在物理层扩展以太网">5.1、在物理层扩展以太网</h3>
-<p>以太网两站点之间的距离不能太远（例如，10BASE-T以太网每个站点到集线器的距离不超过100 m），否则站点发送的信号经过铜线的传输就会衰减到使CSMA/CD协议无法正常工作。在过去广泛使用粗缆或细缆以太网时，常使用工作在物理层的转发器来扩展以太网的地理覆盖范围。那时，两个网段可用一个转发器 连接起来。IEEE 802.3标准还规定，任意两个站点之间最多可以有三个电缆网段。但随着双绞线以太网成为以太网的主流类型，扩展以太网的覆盖范围已很少使用转发器了。</p>
-<p>现在，扩展站点和集线器之间的距离的一种简单方法就是使用光纤（通常是一对光纤）和一对光纤调制解调器，如下图所示。</p>
-<p><img src="/img/9d77ca540a251f9207a6f457f13ea816.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>光纤调制解调器的作用就是进行电信号和光信号的转换。由于信号在光纤中衰减和失真很小，使用这种方法很容易使站点和千米以外的集线器相连接。</p>
-<p>单个集线器能连接的站点数非常有限，如果使用多个集线器，就可以连接成覆盖更大范围、连接更多站点的多级星形结构的以太网。例如，一个学院的三个系各有一个10BASE-T以太网，如图3-31（a）所示。可通过一个主干集线器把各系的以太网连接起来，成为一个更大的以太网，如图3-31（b）所示。</p>
-<p><img src="/img/5fcadd02f94fd1efaf16a390291b74f6.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>但这种多级结构的集线器以太网也有一些缺点。</p>
-<p>（1）如图3-31（a）所示，在三个系的以太网互连起来之前，每一个系的10BASE-T以太网是一个独立的冲突域 （Collision Domain，又称为碰撞域 ），即在任一时刻，在每一个冲突域中只能有一个站点在发送数据。每一个系的以太网的最大吞吐量是10 Mbit/s，因此三个系总的最大吞吐量为30 Mbit/s。在三个系的以太网通过集线器互连起来后，三个冲突域变成了一个冲突域（范围扩大到三个系），如图3-31（b）所示，而这时的最大吞吐量仍然是一个系的吞吐量10 Mbit/s。这就是说，当某个系的两个站点在通信时，所传送的数据会通过所有的集线器进行转发，使得其他系的内部在这时都不能通信（一发送数据就会冲突）。</p>
-<p>（2）如果不同的系使用不同的以太网技术（如数据率不同），那么就不可能用集线器将它们互连起来。在图3-31中，如果一个系使用10Mbit/s的适配器，而另外两个系使用100 Mbit/s的适配器，那么用集线器连接起来后，大家都只能工作在10 Mbit/s的速率。集线器基本上是个多接口（即多端口）的转发器，它并不能对帧进行缓存。</p>
-<p>总之，在物理层扩展的以太网仍然是一个冲突域，不能连接过多的站点，否则平均吞吐量太低，且会导致大量的冲突。同时，不论是利用转发器、集线器还是光纤在物理层扩展以太网，都仅仅相当于延长了共享的传输媒体，由于以太网有争用期对端到端时延的限制，因此并不能无限扩大地理覆盖范围。</p>
-<h3 id="5-2、在数据链路层扩展以太网">5.2、在数据链路层扩展以太网</h3>
-<p>用网桥可以在数据链路层扩展以太网。网桥工作在数据链路层，采用存储转发方式 ，它根据MAC帧的目的地址对收到的帧进行转发 和过滤 。网桥收到一个帧时，并不是向所有的接口转发此帧，而是先检查此帧的目的MAC地址，然后再确定将该帧转发到哪一个接口，或者是把它丢弃（即过滤）。可见，网桥就是一种数据链路层的分组交换机。</p>
-<h4 id="5-2-1、网桥的内部结构">5.2.1、网桥的内部结构</h4>
-<p>图3-32所示为一个网桥的内部结构要点。最简单的网桥有两个接口。复杂些的网桥可以有更多的接口。两个以太网通过网桥连接起来后，就成为一个覆盖范围更大的以太网，而原来的每个以太网就可以称为一个网段 （Segment）。图3-32所示的网桥的接口1和接口2各连接一个网段。</p>
-<p><img src="/img/cdbd3f722489ef8852f134ffaeb16ccf.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>网桥依靠转发表 来转发帧。转发表也叫作MAC地址表 ，记录了每个接口所能到达（连接或间接连接）的各站点的MAC地址。至于转发表如何得出，我们将在后面讨论。在图3-32中，网桥若从接口1收到A发给E的帧，则在查找转发表后，把这个帧送到接口2转发到另一个网段，使E能够收到这个帧；网桥若从接口1收到A发给B的帧，就丢弃这个帧，因为转发表指出，转发给B的帧应当从接口1转发出去，而现在正是从接口1收到这个帧，这说明B和A处在同一个网段上，B能够直接收到这个帧而不需要借助于网桥的转发。网桥收到一个广播帧时（目的MAC地址为全1的广播地址），会向除了接收接口以外的其他接口转发。</p>
-<p>需要注意的是，网桥的接口在向某个网段转发帧时，就像一个站点的适配器向这个网段发送帧一样，要执行相应的媒体接入控制协议，对于以太网就是CSMA/CD协议。</p>
-<p>网桥是通过内部的接口管理软件和网桥协议实体来完成上述操作的。</p>
-<p>使用网桥可以带来以下好处。</p>
-<p>（1）过滤通信量，增大吞吐量 。网桥工作在链路层的MAC子层，可以使以太网各网段成为隔离开的冲突域。如果把网桥换成工作在物理层的转发器，那就没有这种过滤通信量的功能。图3-33说明了这一概念。网桥B1 和B2 把三个网段连接成一个以太网，但它具有三个隔离开的冲突域。</p>
-<p>我们可以看到，不同网段上的通信不会相互干扰。例如，A和B正在通信，但其他网段上的C和D，以及E和F也都可以同时通信。但如果A要和另一个网段上的C通信，就必须经过网桥B1 的转发，那么这两个网段上就不能再有其他的站点进行通信（但这时E和F仍然可以通信）。因此，若每一个网段的数据率都是10 Mbit/s，那么三个网段合起来的最大吞吐量就变成30 Mbit/s。如果把两个网桥换成集线器或转发器，那么整个网络仍然是一个冲突域，当A和B通信时，所有其他站点都不能够通信。整个冲突域的最大吞吐量只有10 Mbit/s。</p>
-<p>（2）扩大了物理范围。由于隔离了冲突域，网络覆盖范围不受争用期对端到端传播时延的限制，同时也增加了整个以太网可容纳的站点数目。</p>
-<p>（3）提高了可靠性。当网络出现故障时，一般只影响个别网段，网桥不会转发无效的MAC帧。</p>
-<p>（4）可互连不同物理层 、不同MAC子层和不同速率 （如10 Mbit/s和100 Mbit/s以太网）的以太网 。</p>
-<p>不过，用网桥扩展以太网也有以下不足。</p>
-<p>（1）由于网桥对接收的帧要先存储和查找转发表然后才转发，而转发之前，还必须执行CSMA/CD算法（发生冲突时要退避），因此增加了时延 。</p>
-<p>（2）MAC子层并没有流量控制功能 。当网络上的负荷很重时，网桥中的缓存可能因存储空间不够而发生溢出，以致产生帧丢失的现象。</p>
-<p>（3）由于网桥会转发所有广播帧，因此只适合于扩展用户数不太多（不超过几百个）和通信量不太大的以太网，否则可能因传播过多的广播信息而产生网络拥塞。这就是所谓的广播风暴 。</p>
-<p>有时，在两个网桥之间还可使用一段点对点链路。图3-34说明了这种情况。</p>
-<p><img src="/img/4346cc6109aef6fb32cdd7cdfe4f50c3.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>图3-34中的以太网LAN1 和LAN2 通过网桥B1 和B2 ，以及一段点对点链路相连。为简单起见，我们把IP层以上看成用户层，图中灰色粗线表示数据在各协议栈移动的情况。图3-34的下半部分，表示用户数据从站点A传到B经过各层次时，相应的数据单元首部的变化。这里只需要指出以下几点。</p>
-<p>当A向B发送数据帧时，其MAC帧首部中的源地址和目的地址分别是A和B的硬件地址，对应于图中的❸和❹。当网桥B1 通过点对点链路转发数据帧时，若链路采用PPP，则要在数据帧的头尾分别加上首部PPP-H和尾部PPP-T（对应于图中的❺）。数据帧离开B2 时，还要剥去首部PPP-H和尾部PPP-T（对应于图中的❻），然后经过以太网LAN2 到达B。</p>
-<p>请注意，网桥在转发帧时，不改变帧的源地址。</p>
-<h4 id="5-2-2、透明网桥">5.2.2、透明网桥</h4>
-<p>目前使用得最多的网桥是透明网桥 （Transparent Bridge）。“透明”是指局域网上的站点并不知道所发送的帧将经过哪几个网桥，因为网桥对各站点来说是看不见的，站点不需要做任何配置和修改。使用透明网桥连接各局域网，不需人工配置转发表，因此透明网桥是一种即插即用设备 ，其标准是IEEE 802.1D。</p>
-<p>透明网桥是通过一种自学习算法来逐步建立起自己的转发表的。其基本思想就是，如果网桥现在能够从接口x收到从站点A发来的帧，那么以后就可以从接口x将一个目的地址为A的帧转发到站点A 。或者说，如果网桥能够从接口x收到从站点A发来的帧，那么就说明站点A连接（或间接连接）在网桥的接口x上。所以透明网桥每收到一个帧，就将其源地址和进入网桥的接口号记录到转发表中。当下次网桥接收到以该源地址为目的地址的帧时，就将其从这个接口转发出去。但是，在学习到转发表各项之前，透明网桥是如何完成转发工作的呢？当透明网桥接收到一个帧时，如果该帧的目的地址不在转发表中，则网桥向所有其他接口（所有非接收该帧的接口）转发该帧。</p>
-<p>透明网桥处理该帧和建立转发表的算法具体如下。</p>
-<p>（1）从接口x收到无差错的帧（如有差错即丢弃），在转发表中查找目的站MAC地址。</p>
-<p>（2）如有，则查找出此MAC地址的接口d，然后进行（3）。否则向除x以外的所有接口转发此帧（这样做可保证到达目的站），然后转到（4）。</p>
-<p>（3）如这个MAC地址的接口d=x，则丢弃此帧（因为这表示不需要经过网桥进行转发）。否则从接口d转发此帧。</p>
-<p>（4）如源站不在转发表中，则将源站MAC地址加入转发表，登记该帧进入网桥的接口号和当前时间，然后转到（6）。如源站在转发表中，则执行（5）。</p>
-<p>（5）更新转发表该项记录的时间。</p>
-<p>（6）等待新的数据帧。转到（1）。</p>
-<p>这时，网桥已在转发表中登记以下三个信息。</p>
-<p>（1）地址：收到的帧的源MAC地址。</p>
-<p>（2）接口：收到的帧进入该网桥的接口号。</p>
-<p>（3）时间：收到的帧进入该网桥的时间。</p>
-<p>网桥在这样的转发过程中就可逐渐将其转发表建立起来。这里特别要注意的是，转发表中的MAC地址是根据源MAC地址写入的，但在进行转发时将此MAC地址当作目的地址。</p>
-<p>在上述算法中，为什么网桥要记录帧进入该网桥的时间呢？因为局域网的拓扑经常会发生变化，例如，一个站点从一个网段移至另一个网段，站点更换网卡，等等。为了使转发表能反映出整个网络的最新拓扑，网桥将每个帧到达网桥的时间登记下来，每经过一段时间就将转发表中陈旧的记录删除，以便在转发表中保留网络拓扑的最新状态信息。</p>
-<h4 id="5-2-3、生成树协议">5.2.3、生成树协议</h4>
-<p>透明网桥即插即用，使用起来非常方便，但根据以上透明网桥学习转发表的工作原理，用透明网桥互连多个局域网时不能出现环路，否则帧有可能在环路中不断地兜圈子 。请看图3-35所示的简单例子，这里用两个网桥将两个局域网LAN1 和LAN2 互连起来。</p>
-<p><img src="/img/c6a35b75d62c4d6bd1eda724f92c570b.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>设站点A发送一个帧F，它经过网桥B1 和B2 （见箭头❶和箭头❷）。假定帧F的目的地址均不在这两个网桥的转发表中，因此B1 和B2 都转发帧F（见箭头❸和箭头❹）。经B1 和B2 转发的帧F到达LAN2 ，我们将其分别记为F1 和F2 。接着F1 传到网桥B2 （见箭头❺），而F2 传到网桥B1 （见箭头❻）。网桥B2 和网桥B1 分别收到F1 和F2 后，又将其转发到LAN1 。结果，帧在网络中不停地兜圈子，从而使网络资源不断地被白白消耗。</p>
-<p>当网络比较复杂时，很容易因误配导致网络中出现以上环路。更重要的是，有时需要在两个局域网之间使用多个网桥形成冗余链路以增强网络的可靠性。为了避免帧在网络中不断地兜圈子 。透明网桥使用了一个生成树协议 （Spanning Tree Protocol，STP），通过互连在一起的网桥间的通信，找出原来网络拓扑的一个连通子集（生成树），这个子集里不存在环路，即任何两个站点之间有且只有一条路径。一旦生成树确定了，网桥就会关闭不在生成树链路上的那些接口（这些接口不再接收和转发帧），以确保不存在环路。</p>
-<p>为了使生成树能够反映网络拓扑发生的最新变化，各网桥要定期检查所有链路的状态。一旦网络中某条链路出现了问题，网桥就会恢复关闭的接口，并重新开始生成树的构造过程，形成新的生成树，保证网络的连通。</p>
-<p>可见，用透明网桥互连的网络中冗余链路可以增强网络的可靠性，但并不能充分利用这些冗余链路（为的是消除兜圈子现象），同时每一个帧也不一定都能沿最佳路由传送（因为网络的逻辑拓扑被限定为一棵树）。当互连的局域网的数目非常大时，生成树算法可能要花费很多时间，因此用透明网桥互连的网络规模不宜太大。</p>
-<h3 id="5-3、以太网交换机">5.3、以太网交换机</h3>
-<p>1990年问世的交换式集线器 （Switching Hub）可明显地提高以太网的性能。交换式集线器常称为以太网交换机 （Switch）、二层交换机 或局域网交换机 ，表明这种交换机工作在数据链路层 。</p>
-<p>“交换机”并无准确的定义和明确的概念，而现在的很多交换机已混合了网桥和路由器的功能。著名网络专家帕尔曼（Perlman）认为：“交换机”应当是一个市场名词 ，通常指用硬件实现转发功能的分组交换设备，其转发速度比用软件实现更快。目前使用的有线局域网基本上就是以太网，在局域网上下文中人们通常所说的“交换机”是局域网交换机的简称，并且指的就是以太网交换机。在本书中如果不特别说明，“交换机”就是以太网交换机。下面简单地介绍其特点。</p>
-<p>从技术上讲，网桥的接口数很少，一般只有2～4个，而交换机通常都有十几个接口。对于交换机人们更喜欢将接口称为“端口”。图3-36所示的是一台具有26个端口的华为二层交换机S2700。</p>
-<p><img src="/img/c9be7650dde188aa04846b51ee4e74f0.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>交换机实质上就是一个多接口的网桥 ，每个交换机维护一个MAC地址表 并在数据链路层根据帧中的目的MAC地址转发帧，和工作在物理层的转发器和集线器有很大的差别。此外，交换机的每个接口可以直接连接计算机，也可以连接一个集线器或另一个交换机。交换机直接与计算机或交换机连接时可以以全双工方式 工作，并能同时连通许多对接口，使每一对相互通信的计算机都能像独占传输媒体 那样，无冲突地传输数据 ，这时已无须使用CSMA/CD协议了。当交换机的接口连接共享媒体的集线器时，交换机仍需以半双工方式工作并要使用CSMA/CD协议。现在的交换机接口和计算机适配器都能自动识别这两种情况并切换到相应的方式。交换机和透明网桥一样，是一种即插即用设备，其内部的MAC地址表 也是通过自学习算法自动地逐渐建立起来的。交换机由于使用了专用的交换结构芯片，能实现多对接口的高速并行交换，可以大大提高网络性能。在逻辑上，我们认为网桥和交换机是等价的。</p>
-<p>对于普通的10 Mbit/s共享式以太网，若共有N 个用户，则每个用户占有的平均带宽只有总带宽（10 Mbit/s）的N 分之一。在使用交换机时，虽然每个接口的带宽还是10 Mbit/s，但由于一个用户在通信时是独占而不是和其他网络用户共享传输媒体的带宽，因此拥有N 对接口的交换机的总容量为N ×10 Mbit/s。这正是交换机的最大优点。</p>
-<p>从共享式10BASE-T以太网转到交换式以太网（全部使用以太网交换机的网络）时，所有接入设备的软件和硬件、适配器等都不需要做任何改动。也就是说，所有接入的设备可以继续使用CSMA/CD协议。此外，只要增大交换机的容量，整个系统的容量是很容易扩充的。</p>
-<p>以太网交换机一般都具有多种速率的接口，例如，可以具有10 Mbit/s、100 Mbit/s和1 Gbit/s的接口，以及多速率自适应接口，这就大大方便了各种不同情况的用户。</p>
-<p>图3-37所示为一个简单的例子。图中的以太网交换机有三个10 Mbit/s接口分别和学院三个系的10BASE-T以太网相连，还有三个100Mbit/s的接口分别和电子邮件服务器、万维网服务器及一个连接互联网的路由器相连。</p>
-<p><img src="/img/f2c23040916fa307968efd76163438c6.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>为了提高交换机的转发速度，减小转发时延，一些交换机采用直通 （Cut-Through）的交换方式。直通交换不必把整个帧先缓存后再进行处理，而是在接收帧的同时就立即按帧的目的MAC地址决定该帧的转发接口，因而提高了帧的转发速度。如果在这种交换机的内部采用基于硬件的交叉矩阵，交换时延就非常小。直通交换的一个缺点是它不检查差错就直接将帧转发出去，因此有可能会将一些无效帧转发给其他的站点。要注意的是，当交换机的输出接口有帧排队时，仍然要将帧先缓存起来等输出接口空闲时再进行转发，即仍然需要进行存储转发。因此，我们说一个交换机采用的是直通交换方式，并不表示它不会进行存储转发，而说一个交换机采用的是存储转发交换方式，是指该交换机仅采用存储转发方式进行交换。 另外，还有一些情况仍需要采用基于软件的存储转发方式进行交换。例如，当需要进行线路速率匹配、协议转换或差错检测时，有的交换机支持两种交换方式，用户可以设置其工作的方式，或根据情况自动切换交换方式。</p>
-<p>随着交换机成本的降低，由于其性能上的明显优势，交换式以太网基本上已取代了传统的共享式以太网。由于不再使用集线器，全部使用交换机的交换式以太网工作在无冲突的全双工方式下。</p>
-<h3 id="5-4、虚拟局域网">5.4、虚拟局域网</h3>
-<h2 id="六、以太网的演进">六、以太网的演进</h2>
-<h3 id="6-1、100BASE-T以太网">6.1、100BASE-T以太网</h3>
-<h3 id="6-2、吉比特以太网">6.2、吉比特以太网</h3>
-<h3 id="6-3、10吉比特及更高速率以太网">6.3、10吉比特及更高速率以太网</h3>
-<h3 id="6-4、使用以太网进行宽带接入">6.4、使用以太网进行宽带接入</h3>
-<h2 id="七、无线局域网">七、无线局域网</h2>
-<p>在局域网刚刚问世后的一段时间内，无线局域网的发展比较缓慢，其原因是价格贵、数据传输速率低、安全性较差。但自20世纪80年代末以来，由于人们工作和生活节奏的加快，以及移动通信技术的飞速发展，无线局域网逐步进入市场。无线局域网提供了移动接入的功能，这就给许多需要发送数据但又不能坐在办公室的工作人员提供了方便。当一个工厂跨越的面积很大时，若要将各个部门用电缆连接成网，其费用可能很高。但若使用无线局域网，不仅节省了投资，而且建网的速度也会较快。另外，当大量持有便携式计算机的用户在一个地方同时要求上网时（如在图书馆或购买股票的大厅里），若用电缆连网，恐怕连铺设电缆的位置都很难找到，而用无线局域网则比较容易。无线局域网常简写为WLAN（Wireless Local Area Network）。</p>
-<p>请读者注意，便携站 （Portable Station）和移动站 （Mobile Station）的意思并不一样。便携站当然是便于移动的，但便携站在工作时其位置是固定不变的。而移动站不仅能够移动，还可以在移动的过程中进行通信（正在运行的应用程序感觉不到计算机位置的变化，也不因计算机位置的移动而中断运行）。移动站一般都使用电池供电。</p>
-<h3 id="7-1、无线局域网的物理层">7.1、无线局域网的物理层</h3>
-<p>无线局域网可分为两大类。第一类是有固定基础设施的 ，第二类是无固定基础设施的 。“固定基础设施”是指预先建立起来的、能够覆盖一定地理范围的一批固定基站。大家经常使用的蜂窝移动电话就是利用电信公司预先建立的、覆盖全国的大量固定基站来接通用户手机拨打的电话。</p>
-<h4 id="7-1-1、有固定基础设施的无线局域网">7.1.1、有固定基础设施的无线局域网</h4>
-<p>第一类有固定基础设施的无线局域网，最有名的就是IEEE 802.11无线局域网。实际上802.11既支持有固定基础设施的网络，也支持无固定基础设施的网络，但使用最多的是它的有固定基础设施的组网方式。</p>
-<p>1997年IEEE制定出无线局域网的协议标准802.11，ISO/IEC也批准了这一标准，其编号为ISO/IEC 8802-11。802.11是个非常复杂的标准，在MAC层使用CSMA/CA协议（在后面的3.7.3小节讨论）。由于标准在实现的技术细节上的微小偏差可能导致产品的不兼容性，1999年成立了一个非营利性国际组织即Wi-Fi联盟（Wi-Fi Alliance）对无线局域网产品进行无线兼容性认证，对通过其测试的产品就发给“Wi-Fi ”这样的商业认证标记。尽管Wi-Fi只是厂商联盟在推广802.11标准时使用的标记，但人们习惯将Wi-Fi作为802.11无线局域网的名称。由于802.11无线局域网的广泛应用，现在Wi-Fi几乎成了无线局域网WLAN的同义词。</p>
-<p>在有固定基础设施的组网方式中，802.11无线局域网使用一种星形拓扑，其中心的基站 （Base Station）被称为接入点 （Access Point，AP）。802.11标准规定无线局域网的最小构件是基本服务集 （Basic Service Set，BSS）。一个BSS包括一个AP和若干个移动站，本BSS内站点相互通信及和本BSS以外的站点通信时，都必须通过本BSS的AP。网络管理员安装AP时，必须为该AP分配一个不超过32字节的服务集标识符 （Service Set Identifier，SSID）和一个无线信道。SSID其实就是使用该AP的无线局域网的名字。一个BSS所覆盖的地理范围叫作一个基本服务区 （Basic Service Area，BSA）。BSA和无线移动通信的蜂窝小区相似。在无线局域网中，一个BSA的直径不超过100 m。</p>
-<p>一个基本服务集可以是孤立的，也可通过接入点连接到一个分配系统 （Distribution System，DS），然后再连接到另一个基本服务集，这样就构成了一个扩展服务集 （Extended Service Set，ESS），如图3-42所示。</p>
-<p><img src="/img/884dc3e71514f467385a8294c8a6ddf6.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>分配系统的作用就是使ESS对上层的表现就像一个BSS一样，因此ESS仍然是一个局域网。分配系统可以使用以太网（这是最常用的）、点对点链路或其他无线网络。ESS还可为无线用户提供到非802.11无线局域网（例如，到有线连接的互联网）的接入。在一个ESS内的几个不同的BSS也可能有相交的部分。图3-42中的移动站A如果要和另一个BSS中的移动站B通信，就必须经过两个接入点AP1 和AP2 ，即A→AP1 →AP2 →B。我们应当注意到，从AP1 到AP2 的通信是使用有线传输的。</p>
-<p>图3-42还给出了移动站A从一个BSS漫游到另一个BSS而仍然保持与移动站B的通信的例子，但A在不同的BSS所使用的接入点改变了。BSS的服务范围是由移动站所发射的电磁波的辐射范围确定的，图3-42用一个椭圆形来表示BSS的服务范围，当然实际上的服务范围可能是很不规则的几何形状。</p>
-<p>802.11标准并没有定义如何实现漫游，但定义了一些基本的工具。例如，一个移动站若要加入一个BSS，就必须先选择一个AP，并与此AP建立关联 （Association）。此后，这个移动站就可以通过该AP来发送和接收数据。若移动站使用重建关联 （Reassociation）服务，就可把这种关联转移到另一个AP。若要终止这种关联服务，应使用分离 （Dissociation）服务。移动站与AP建立关联的方法有两种。一种是被动扫描，即移动站等待接收AP周期性发出的信标帧 （Beacon Frame）。信标帧包含若干系统参数（如SSID、AP的MAC地址及所支持的速率等）。另一种是主动扫描，即移动站主动发出探测请求帧 （Probe Request Frame），然后等待从接入点发回的探测响应帧 （ProbeResponse Frame）。当你在操作系统中“查看可用网络时”，将显示所在区域内每个AP的SSID。用户可以选择其中的一个并与之建立关联。现在许多地方（如办公室、机场、快餐店、旅馆、购物中心等）都能够向公众提供有偿或无偿的互联网Wi-Fi接入服务，人们将互联网公众无线接入点称为热点 （Hot Spot）。</p>
-<p>由于无线局域网已非常普及，因此现在无论是笔记本电脑、平板电脑还是智能手机，都已经内置了无线局域网适配器 （也就是无线网卡 ，不要和第2章介绍的移动无线上网卡 混淆），不需要再插入外置的无线网卡了。无线局域网的适配器能够实现802.11的物理层和MAC层的功能。只要在无线局域网信号覆盖的地方，用户就能够通过AP连接到互联网。</p>
-<p>当用户选择AP建立关联时，一般都需要键入用户口令（这时的通信是加密的）。只有键入正确，才能和在该网络中的AP建立关联。在无线局域网发展初期，这种接入加密方案称为WEP（Wired Equivalent Privacy，有线等效保密），它曾经是1999年通过的IEEE 802.11b标准中的一部分。然而WEP相对比较容易被破译，因此现在的无线局域网普遍采用了保密性更好的加密方案WPA（WiFi Protected Access，无线局域网受保护的接入）或其第二个版本WPA2 。现在WPA2 是2004年颁布的802.11n标准中强制执行的加密方案。</p>
-<h4 id="7-1-2、无固定基础设施的无线局域网">7.1.2、无固定基础设施的无线局域网</h4>
-<p>另一类无线局域网是无固定基础设施的无线局域网，又叫作自组网络 （ad hoc Network）。这种自组网络没有上述基本服务集中的AP，而是一些处于平等状态的移动站相互通信组成的临时网络。802.11的ad hoc模式允许在通信范围内的各站点间直接进行通信，组成一个无中心、不与外界网络连接的自组网络，即独立基本服务集（independent BSS，iBSS），支持站点间的单跳通信。复杂的自组网络支持结点间的多跳存储转发，如图3-43所示。图中移动站A和E通信时，经过了A→B、B→C、C→D和D→E这样一连串的存储转发过程。因此，在从源结点A到目的结点E的路径中，移动站B、C和D都是转发结点，这些结点都具有路由功能。</p>
-<p>自组网络通常是这样构成的：一些可移动的设备发现在它们附近还有其他可移动设备，并且要求和其他移动设备通信。由于便携式计算机的普及，自组网络的组网方式已受到人们的广泛关注。</p>
-<p>移动自组网络更强调站点的能动性，在军用和民用领域都有很好的应用前景。在军事领域中，战场上往往没有预先建好的固定AP，携带移动站的战士可以利用临时建立的移动自组网络进行通信。这种组网方式也能够应用到作战的地面车辆群和坦克群，以及海上的舰艇群、空中的机群。由于每一个移动设备都具有路由器的转发分组的功能，因此，分布式的移动自组网络的生存性非常好。在民用领域，开会时持有笔记本电脑的人可以利用这种移动自组网络方便地交换信息，而不受附近没有电话线插头的限制。当出现自然灾害时，抢险救灾时利用移动自组网络进行及时的通信往往也是很有效的，因为这时事先建好的固定网络基础设施（基站）可能已经被破坏了。</p>
-<p>顺便指出，移动自组网络和移动IP并不相同 。移动IP技术使漫游的主机可以用多种方式连接到互联网。漫游的主机可以直接连接到或通过无线链路连接到固定网络上的另一个子网。为了支持这种形式的主机移动性，移动IP需要具有地址管理功能和协议的互操作性，但移动IP的核心网络功能仍然基于在固定互联网中一直在使用的各种路由选择协议。移动自组网络是将移动性扩展到无线领域中的自治系统，它具有自己特定的路由选择协议，并且可以不和互联网相连。即使在和互联网相连时，移动自组网络也是以残桩网络 （Stub Network）方式工作的。所谓“残桩网络”就是通信量可以进入残桩网络，也可以从残桩网络发出，但不允许外部的通信量穿越残桩网络。</p>
-<h3 id="7-2、802-11无线局域网的物理层">7.2、802.11无线局域网的物理层</h3>
-<h3 id="7-3、802-11无线局域网的MAC协议">7.3、802.11无线局域网的MAC协议</h3>
-<h4 id="7-3-1、CSMA-CA协议">7.3.1、CSMA/CA协议</h4>
-<p>既然CSMA/CD协议已成功地应用于有线局域网，无线局域网能不能也使用CSMA/CD协议呢？在无线局域网中，仍然可以用CSMA“发送前先监听”的方法避免冲突，即在发送数据之前先对传输媒体进行载波监听。如发现有其他站在发送数据，就推迟发送以免发生冲突。但在无线局域网中进行“冲突检测”存在以下问题。</p>
-<p>（1）冲突检测要求一个站点在发送本站数据的同时不间断地检测信道。一旦检测到冲突，就立即停止发送。但由于无线信道的传输条件特殊，无线信号衰减非常快，其信号强度的动态范围非常大，在802.11适配器上接收到的信号强度往往会远远小于发送信号的强度（信号强度可能相差百万倍）。要在无线局域网的适配器上实现冲突检测，对硬件的要求非常高。</p>
-<p>（2）更重要的是，即使我们能够在硬件上实现无线局域网的冲突检测功能，由于无线电波传播的特殊性（下面将要讨论的隐蔽站问题），仍然有可能检测不出所发生的冲突。也就是说实现了冲突检测也意义不大。</p>
-<p>我们知道，无线电波能够向所有的方向传播，信号衰减非常快，传播距离有限。当电磁波在传播过程中遇到障碍物时，其传播还会受到阻碍。图3-44所示的例子表示了无线局域网的特殊问题。图中给出两个无线移动站A和B，以及接入点（AP）。我们假定无线信号传播的范围是以发送站为圆心的一个圆。</p>
-<p><img src="/img/cca90491105f94c9ed0c5440eb5ce031.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>图3-44表示A和B同时向AP发送数据，但A和B相距较远或有物体遮挡，彼此都接收不到对方发送的信号。当A和B都检测不到对方的无线信号时，它们认为现在无线信道是空闲的，因而都向AP发送数据。结果AP同时收到A和B发来的数据，发生了冲突，但A和B都检测不到这种冲突。这就是所谓的隐蔽站问题（Hidden Station Problem）。图3-44中A和B互为隐蔽站，因为它们都检测不到对方发送的信号。有时，虽然A和B相距很近，但它们之间有障碍物，也有可能出现上述问题。</p>
-<p>既然不能有效检测冲突，就要尽可能避免冲突。802.11标准没有简单照搬有线局域网使用的CSMA/CD协议，而是使用一种称为CSMA/CA的协议，即载波监听多址接入/冲突避免（Carrier Sense Multiple Access/Collision Avoidance）。该协议在CSMA的基础上增加了一个冲突避免（Collision Avoidance）功能，而没有实现冲突检测功能。由于不可能避免所有的冲突，且无线信道误码率较高，802.11标准还使用了数据链路层确认机制来保证数据被正确接收。</p>
-<p>实际上，802.11标准的MAC层标准定义了两种不同的媒体接入控制方式：分布式协调功能（Distributed Coordination Function，DCF）和点协调功能（Point Coordination Function，PCF）。在DCF方式下，没有中心控制站点，每个站点使用CSMA/CA协议通过争用信道来获取发送权，这是802.11标准定义的默认方式。而PCF方式使用集中控制的接入算法（一般在AP实现集中控制），是802.11标准定义的可选方式，在实际中很少使用，这里不再进行介绍。</p>
-<h4 id="7-3-2、确认机制和帧间间隔">7.3.2、确认机制和帧间间隔</h4>
-<p>在考虑如何避免冲突之前，我们先介绍802.11标准中的确认机制和帧间间隔。802.11标准规定，所有的站点必须在持续检测到信道空闲一段指定时间后才能发送帧，这段时间通称为帧间间隔（InterFrame Space，IFS）。帧间间隔的长短取决于该站点要发送的帧的类型。高优先级帧需要等待的时间较短，因此可优先获得发送权，低优先级帧就必须等待较长的时间。若低优先级帧还没来得及发送，而其他站的高优先级帧已发送到信道上，则信道变为忙态，低优先级帧就只能再推迟发送了。这样就减少了发生冲突的机会。以下是常用的两种帧间间隔。</p>
-<p>（1）SIFS，即短（Short）帧间间隔，是最短的帧间间隔，用来分隔开属于一次对话的各帧。一个站点应当能够在这段时间内从发送方式切换到接收方式。使用SIFS的帧类型有ACK帧、CTS帧（在本节后面有介绍）、由过长的MAC帧分片后的数据帧，以及所有回答AP探询的帧和在PCF方式中AP发送出的任何帧。</p>
-<p>（2）DIFS，即DCF帧间间隔，它比SIFS长得多，在DCF方式中用来发送数据帧和管理帧。</p>
-<p>CSMA/CA协议的确认机制如图3-45所示。</p>
-<p><img src="/img/66d5c009e6d2c2ad0ed6bced784577fb.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>源站先检测信道，若检测到信道空闲，则在等待DIFS时间后发送。目的站若正确收到此帧，则经过SIFS时间后，向源站发送ACK（但对于接收到的广播帧不发送ACK）。若源站在规定时间内没有收到ACK（由超时计时器控制这段时间），就必须重传此帧，直到收到ACK为止，或者经过若干次的重传失败后放弃发送。可以认为CSMA/CA协议的确认机制是一种“间接冲突检测”机制。</p>
-<p>为什么信道空闲还要再等待呢？就是考虑到可能其他站有高优先级的帧要发送。如有，就要让高优先级帧先发送。例如，这里的ACK就是一种高优先级帧，需确保其发送不被其他站发送的数据帧打断。</p>
-<p>可以看出，802.11无线局域网采用了停止等待协议来提供可靠传输服务（但对广播帧不进行确认）。但802.3有线局域网的传输是不可靠的，发送方把数据发送出去就不管了（当然若检测到冲突是必须重传的），至于可靠传输则由高层负责。</p>
-<h4 id="7-3-3、退避算法">7.3.3、退避算法</h4>
-<p>为了尽可能避免各种可能的冲突，CSMA/CA采用了一种不同于CSMA/CD的退避算法。图3-45指出，当信道从忙态变为空闲时，任何一个站要发送数据帧，不仅都必须等待一个DIFS时间，而且还要退避一段随机的时间以后再次重新试图接入信道。</p>
-<p>请读者注意，在以太网的CSMA/CD协议中，要发送数据的站点在监听到信道变为空闲时等待一个帧间最小间隔就立即发送数据，同时进行冲突检测。如果发生了冲突，才执行退避算法。当一个站点在发送数据时，很可能有多个站点都在监听信道并等待发送数据，一旦信道空闲，如果不执行退避算法必然会有多个站点几乎同时发送数据而发生冲突。CSMA/CD通过冲突检测能及时停止发送冲突了的无效帧，而CSMA/CA并没有像以太网那样的冲突检测机制。为降低发生冲突的概率，在802.11标准的CSMA/CA协议中，当要发送帧的站点检测到信道从忙态转为空闲时，就要执行退避算法。</p>
-<p>在执行退避算法时，站点为退避计时器（Backoff Timer）设置一个随机的退避时间，当退避计时器的时间减小到零时，就开始发送数据（图3-45所示的情况）。若退避计时器的时间还未减小到零信道又转变为忙态，这时就冻结退避计时器的时间，重新等待信道变为空闲，再经过DIFS时间后，继续启动退避计时器（从剩下的时间开始，在图3-45中没有画出这种情况）。显然，当退避计时器的时间减小到零时，信道一定处于空闲状态。</p>
-<p>当发送站点因没有接收到ACK而重传帧时，也要执行退避算法。</p>
-<p>为了避免一个站点独占信道，一个站点在成功发送完一个数据帧后（收到ACK后），要连续发送下一个数据帧时也要执行退避算法。</p>
-<p>因此，当一个站点要发送数据帧时，仅在下面的情况下才不使用退避算法：检测到信道是空闲的，并且这个数据帧不是成功发送完上一个数据帧之后立即连续发送的数据帧。除此以外的以下情况，都必须使用退避算法：</p>
-<p>（1）在发送帧之前检测到信道处于忙态时；</p>
-<p>（2）在每一次重传一个帧时；</p>
-<p>（3）在每一次成功发送后要连续发送下一个帧时。</p>
-<h4 id="7-3-4、信道预约和虚拟载波监听">7.3.4、信道预约和虚拟载波监听</h4>
-<p>为尽可能降低冲突的概率和减少冲突的影响，802.11标准允许要发送数据的站点对信道进行预约。如图3-46所示</p>
-<p><img src="/img/aa9783cc733c7d727faba8015944b0f2.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>源站在发送数据帧之前先发送一个短的控制帧，叫作请求发送（Request To Send，RTS）帧，它包含源地址、目的地址和这次通信（包括相应的确认帧）所需的持续时间。当然，源站在发送RTS帧之前，必须先监听信道。若信道空闲，则等待DIFS时间后，就能够发送RTS帧了。若目的站正确收到源站发来的RTS帧，且信道空闲，就发送一个响应控制帧，叫作允许发送（Clear To Send，CTS）帧，它也包含这次通信所需的持续时间（从RTS帧中将此持续时间复制到CTS帧中）。源站收到CTS帧后，再等待SIFS时间后，就可发送其数据帧。若目的站正确收到了源站发来的数据帧，在等待SIFS时间后，就向源站发送ACK。</p>
-<p>在图3-46中，除源站和目的站以外的其他各站，监听到RTS帧或CTS帧后，根据帧中指明的持续时间推迟接入无线局域网。这样就保证了源站和目的站之间的通信不会受其他站的干扰。如果RTS帧发生冲突，源站就收不到CTS帧，需执行退避算法重传RTS帧。</p>
-<p>由于RTS帧和CTS帧很短，发生冲突的概率、冲突产生的开销及本身的开销都很小，而一般的数据帧发送时延往往远大于传播时延（注意是局域网），冲突的概率很大，且一旦发生冲突导致数据帧重发，浪费的时间就很多，因此，用很小的代价对信道进行预约往往是值得的。虽然如此，802.11标准还是设置了3种情况供用户选择：</p>
-<p>（1）使用RTS帧和CTS帧；</p>
-<p>（2）只有当数据帧的长度超过某一数值时才使用RTS帧和CTS帧（显然，当数据帧本身就很短时，再使用RTS帧和CTS帧只能增加开销）；</p>
-<p>（3）不使用RTS帧和CTS帧。</p>
-<p>实际上不仅RTS帧和CTS帧会携带通信需要持续的时间，数据帧也会携带通信需要持续的时间，这就是802.11无线局域网的虚拟载波监听<br>
-（Virtual Carrier Sense）机制。802.11无线局域网的帧中有一个持续时间字段，允许发送帧的站点把它要占用信道的时间（包括目的站发回确认帧所需的时间）及时通知所有其他站点。当一个站点检测到正在信道中传送的MAC帧首部的“持续时间”字段时，它就调整自己的网络分配向量（Network Allocation Vector，NAV）。NAV指出了信道将被占用的时间，即使站点（如隐蔽站）在这段时间内可能检测不到信道忙，也不能访问信道，也好像是监听到信道忙一样。由于利用虚拟载波监听机制的站点只要监听到RTS帧、CTS帧和数据帧中的任何一个，就能知道信道被占用的持续时间，而不需真正监听到信道上的信号，因此虚拟载波监听机制能减少隐蔽站带来的冲突。例如，图3-44中的隐蔽站B虽然监听不到A发送给AP的RTS帧，却能监听到AP应答给A的CTS帧，B根据CTS帧中的持续时间修改自己的NAV，在NAV指示的时间内不会发送帧干扰A和AP的通信。</p>
-<h3 id="7-4、802-11无线局域网的MAC帧">7.4、802.11无线局域网的MAC帧</h3>
-<p>802.11无线局域网的MAC帧共有三种类型，即控制帧、数据帧和管理帧。802.11无线局域网的帧格式比较复杂，我们这里仅讨论其数据帧的一些重要字段。</p>
-<p><img src="/img/b33b9d6e00a0b35bc373171d6bbbe6ec.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>从图3-47中可以看出，802.11无线局域网的数据帧由以下三大部分组成。</p>
-<p>（1）MAC首部，共30字节。帧的复杂性都在帧的首部。</p>
-<p>（2）有效载荷，也就是帧的数据部分，最大长度为2312字节。但通常802.11数据帧的长度都不超过1500字节。</p>
-<p>（3）帧检验序列（FCS），即帧的尾部，共4字节的CRC编码。</p>
-<h4 id="7-4-1、地址字段">7.4.1、地址字段</h4>
-<p>802.11数据帧最特殊的地方就是有4个地址字段。这4个地址字段的内容取决于帧控制字段中的“到DS”（去往AP）和“从DS”（来自AP）这两个字段的值，如表3-3所示。</p>
-<p><img src="/img/281aa95174a10e1c279b2a6f1dddf4b7.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>注：表3-3中的BSSID就是基本服务集标识符（Basic Service Set Identifier），是一个48位的二进制数（不是服务集标识符），对于有AP的基本服务集，BSSID就是AP的MAC地址，而对于ad hoc独立基本服务集，BSSID一般由系统随机生成。</p>
-<p>最常用的是表3-3列出的中间两种情况。我们以图3-48为例说明这两种情况。</p>
-<p><img src="/img/b13b23ae73ec17e00ee33e692a70045f.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>在有固定基础设施AP的BSS中，站点要和本BSS以内或以外的站点通信，都必须通过本BSS的AP。其实源站也并不知道要通信的站点是否在本BSS以内。</p>
-<p>如果是和本BSS内的站点通信，如图3-48所示，站点A向B发送数据帧。首先A要把数据帧发送给AP1 ，帧控制字段中“到DS=1”而“从DS=0”，并且帧中地址1是AP1 的MAC地址，地址2是A的MAC地址，地址3是B的MAC地址，而地址4没有被使用。</p>
-<p>当AP1将数据帧转发给站点B时，帧控制字段中“到DS=0”而“从DS=1”，并且帧中地址1是B的MAC地址，地址2是AP1的MAC地址，地址3是A的MAC地址，也不使用地址4。</p>
-<p>如果站点要和本BSS以外的站点通信，例如，站点A向位于DS的路由器R发送数据帧，与以上类似。A要把数据帧发送给AP1 ，如果DS是以太网，AP会将802.11数据帧转换为以太网帧发送给R。这时以太网帧中的源地址和目的地址就是A和R的MAC地址。反之，当R发送响应给A时，以太网帧中的源地址和目的地址分别是R和A的MAC地址（注意：没有AP1 的MAC地址），AP1 收到后会将该帧转换为802.11数据帧发送给A。因此，AP具有网桥的功能。</p>
-<blockquote>
-<p>读者可能会产生这样一个疑问：为什么802.11数据帧要携带AP的MAC地址，而以太网帧中没有AP的MAC地址也能正常工作呢？</p>
-</blockquote>
-<p>在以太网中，AP与透明网桥一样，对各站点是透明的，在以太网帧中也不需要指出AP的MAC地址。在802.11无线局域网中，站点的信号覆盖范围内可能会有多个站点或AP共享同一物理信道，因此MAC帧需要携带AP的MAC地址以明确指出转发该帧的AP（即接收AP或发送AP）。</p>
-<p>帧控制字段中“到DS”和“从DS”都为0的情况用于802.11无线局域网的自组网络模式。当通信的两个站点处于同一个独立BSS时，它们可以直接通信而不需要AP的转发，帧中的BSSID用于指出它们所在的BSS。</p>
-<p>帧控制字段中“到DS”和“从DS”都为1的情况用于连接多个BSS的分配系统也是一个802.11无线局域网的情况。例如，在图3-48中，如果DS也是802.11无线局域网，位于BSS1 的站点A发送数据给BSS2 的站点C，当AP1 通过无线DS将帧转发给AP2 时，帧控制字段中的“到DS”和“从DS”都为1，并且帧中地址1是AP2 的MAC地址，地址2是AP1 的MAC地址，地址3是C的MAC地址，地址4是A的MAC地址。但如果DS是以太网，显然AP1 转发给AP2 的是以太网帧，帧中仅携带A和C的MAC地址。</p>
-<h4 id="7-4-2、序号控制字段、持续期字段和帧控制字段">7.4.2、序号控制字段、持续期字段和帧控制字段</h4>
-<p>序号控制字段用来实现802.11无线局域网的可靠传输。在停止等待协议中，我们已经知道要对数据帧进行编号，当接收方的ACK丢失时，发送方会进行超时重传，接收方可以用序号来区分重复接收到的帧。</p>
-<p>持续期字段用于实现3.7.3小节介绍的信道预约和虚拟载波监听功能。在RTS帧、CTS帧或数据帧中，该字段用于指出将要占用信道的时间。</p>
-<p>帧控制字段是最复杂的字段。其中“到DS”和“从DS”字段已经介绍了。类型和子类型字段用于区分不同类型的帧。802.11数据帧共有三种类型：控制帧、数据帧和管理帧，而每种类型又分为若干种子类型。例如，控制帧包括RTS、CTS和ACK等。控制帧和管理帧都有其特定的帧格式，这里从略。有线等效保密 （Wired Equivalent Privacy，WEP）字段 用于指示是否使用了加密算法来保护帧有效载荷的数据（将在7.6.2小节具体讨论802.11无线局域网的安全）。</p>
-<h3 id="7-5、无线个域网">7.5、无线个域网</h3>
-<p>无线个人区域网（或无线个域网）（Wireless Personal Area Network，WPAN）就是在个人工作的地方把个人使用的电子设备（如便携式计算机、蜂窝电话等）用无线技术连接起来，整个网络的范围大约为10 m。WPAN可以供一个人使用，也可以供若干人共同使用。例如，一个外科手术小组的几位医生把几米范围内的一些电子设备组成一个无线个人区域网。这些电子设备之间可以很方便地进行通信，就像用普通电缆连接一样。</p>
-<p>WPAN的IEEE标准都由IEEE 802.15工作组制定，欧洲的ETSI标准则把无线个人区域网取名为HiperPAN。无线个人区域网实际上就是低功率、小范围、低速率的电缆替代技术，而前面所讲的802.11无线局域网是大功率、中等范围、高速率的接入技术。WPAN一般工作在2.4GHz的ISM频段。</p>
-<h4 id="7-5-1、蓝牙">7.5.1、蓝牙</h4>
-<p>最早流行的WPAN就是1994年爱立信公司推出的蓝牙（Bluetooth）系统。该系统工作在2.4GHz频段，通信范围为10～30 m，IEEE802.15工作组曾把蓝牙技术标准化为IEEE 802.15.1，但目前由蓝牙技术联盟负责维护和更新其技术标准。现在几乎所有消费类电子设备都支持蓝牙，从手机和笔记本电脑到耳机、打印机、键盘、鼠标、游戏机、音乐播放器、汽车导航仪等。蓝牙协议使这些设备能彼此发现并进行连接，使人们摆脱了传统电缆连接的烦琐。蓝牙技术发展很快，第一代蓝牙的数据率仅为720 kbit/s，2010年发布的蓝牙4.0数据率可达到1Mbit/s，2016年发布的蓝牙5.0的数据率上限已达24 Mbit/s，并且有效传输距离最高可达300 m。目前最新的版本是2020年发布的蓝牙5.2。</p>
-<h4 id="7-5-2、低速WPAN">7.5.2、低速WPAN</h4>
-<p>2000年IEEE成立802.15.4工作组，致力于定义一种供廉价的固定、便携或移动设备使用的低成本、低功耗的低速无线连接技术。ZigBee是这种技术的商业化名称，该名称来源于蜂群使用的通信方式。在标准化方面，IEEE 802.15.4工作组主要负责物理层和MAC层协议，ZigBee联盟负责高层协议及应用、测试和市场推广等方面的工作。ZigBee比蓝牙更简单、数据率更低、功耗及成本也更低。ZigBee的基本数据率是250 kbit/s，当数据率降低到28 kbit/s时传输距离可扩大到134 m，并获得更高的可靠性。ZigBee结点在工作时信号收发时间很短，而在非工作时间都处于休眠状态，占空比（工作时间与总时间之比）可小于1%，因此功耗非常低，电池寿命甚至可以超过10年。ZigBee支持大规模组网，其应用已超出了个人区域网的范围，多用于传感器网络等物联网，在数字家庭、工业控制、智能交通、环境监测等领域有很好的应用前景。</p>
-<h4 id="7-5-3、高速WPAN">7.5.3、高速WPAN</h4>
-<p>IEEE 802.15.3是针对高速WPAN制定的无线MAC层和物理层标准，用于便携式多媒体设备之间短距离传送数据，支持11～55 Mbit/s的数据率。现代社会，人们的个人数码设备日益增多，使用高速WPAN不用连线就能把计算机和在同一房间内的打印机、扫描仪、摄像机、电视机、投影仪、MP3播放器等电子设备连接起来，实现多媒体数据复制和在线播放。IEEE 802.15.3a工作组还提出了更高数据率物理层标准的超高速WPAN，采用超宽带（Ultra-Wide Band，UWB）技术，可支持高达480 Mbit/s的数据率，传输距离达10 m，允许小范围内传送DVD质量的多媒体视频信号。UWB技术工作在3.1～10.6 GHz微波频段，有非常大的信道带宽。一般超宽带信号的带宽应超过信号中心频率25%以上，或者信号的绝对带宽超过500 MHz。超宽带技术使用极窄的高速脉冲作为数据信号（一种脉冲调制技术），虽然信号频带很宽，但带内发射功率极低，由于其信号能量分散在极宽的频带范围内，对于一般通信系统而言，UWB信号相当于白噪声，因此不会干扰授权频段及其他重要无线设备。</p>
-<h2 id="八、蜂窝互联网接入">八、蜂窝互联网接入</h2>
-<p>通过Wi-Fi，人们可以方便地接入互联网，但无线局域网的覆盖范围通常只有10～100 m。当我们携带笔记本电脑在外面四处移动时，并不是在所有地方都能找到可接入互联网的Wi-Fi热点，这时候蜂窝移动通信系统可以为我们提供广域无线接入服务。蜂窝移动通信系统非常复杂，详细讨论该系统已超出本书的范围，在此仅从通过蜂窝移动通信系统接入互联网的角度对该系统进行简要介绍。实际上，本节内容还涉及网络层和运输层的一些知识，但从互联网的角度看，蜂窝移动通信系统是作为一个物理网络接入互联网的，因此将此内容放在第3章，但建议读者学完本书其他部分内容再来学习本节。</p>
-<h3 id="8-1、蜂窝移动通信系统概述">8.1、蜂窝移动通信系统概述</h3>
-<p>蜂窝移动通信系统将整个地理覆盖区域划分成许多被称为小区 （Cell）的小块区域，典型的小区为图3-49所示的六边形，形状类似“蜂窝”，因此而得名。每个小区由一个小功率收发基站 （Base Station）为本小区内的用户服务。为避免同频率信号间的干扰，每个小区可以使用同一信道频率，相邻小区使用不同频率，相距较远的若干不相邻小区可复用同一频率。基站的功能类似无线局域网中的AP，负责向位于小区内的移动终端（如手机等）发送或接收信号，并将移动终端连接到蜂窝移动通信系统的核心网络。由于移动终端与基站通过空间无线电进行通信，因此它们之间的无线电接口 也被称为空中接口 。</p>
-<p>需要说明的是，图3-49仅是一个逻辑示意图，实际的小区因受地形等条件限制，并非严格的六边形。而且，基站也不一定放置在小区中央，例如，很多系统将基站放置在3个小区的交叉处，使得具有多个定向天线的单个基站能够为3个小区提供服务。</p>
-<p><img src="/img/d0bfe9921cc4bc21951e637509ee1554.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>蜂窝移动通信经历了多次更新换代，其技术发展主要体现在空中接口无线通信技术和系统体系结构两个方面。</p>
-<p>最初的第一代（1G）蜂窝移动通信采用频分多址（FDMA）的模拟调制方式，这种系统的主要缺点是频谱利用率低，信令干扰话音业务，只能够提供模拟话音通信，现已被淘汰。</p>
-<p>第二代（2G）蜂窝移动通信采用数字化技术，主要提供数字话音和短信服务，标准主要有两种，一种是全球移动通信系统（Global System for Mobile Communication，GSM），另一种是使用码分多址（CDMA）（严格说是IS-95 CDMA）。GSM是2G蜂窝通信的代表技术，在FDMA的基础上引入了时分多址（TDMA）的数字调制方式，提高了系统容量，并采用独立信道传送信令。2G系统最初仅仅是为话音通信而设计的，但后来扩展出了对分组数据（即互联网业务）的支持（2.5G），可进行收发邮件和浏览网页等低速率数据通信。</p>
-<p>第三代（3G）蜂窝移动通信能够提供话音和数据通信，具有比2G高得多的数据率，能够处理图像、视频流等多种媒体形式，并提供电话会议、电子商务等多种信息服务。3G系统的空中接口采用了CDMA技术，主要有三个标准：欧洲的WCDMA（W表示宽带，Wideband）、美国的CDMA2 000和我国提出的时分同步码分多址（TD-SCDMA）。CDMA技术具有频率规划简单、系统容量大、频率复用系数高、抗多径能力强、通信质量高、软容量、软切换等优点。在系统体系结构方面，3G通过在核心网增加与原有蜂窝语音网电路交换域平行的分组交换域来专门支持互联网数据业务。</p>
-<p>第四代（4G）移动通信主要采用了正交频分复用 （Orthogonal Frequency Division Multiplexing，OFDM）、多输入多输出 （Multiple Input Multiple Output，MIMO）等无线电新技术，比3G具有更高的带宽、更大的容量、更高的频谱效率，可为用户提供高速数据传输服务，可满足普通用户大多数的上网业务需求。在系统体系结构方面，4G采用全IP网络结构，即语音和数据都承载在IP数据报中进行传输。4G主要有两个标准，即LTE（Long Term Evolution）和LTE-A（LTE-Advanced）。LTE的意思就是“长期演进”，表明从3G到4G的过渡需要较长的时间。LTE是国际标准组织3GPP针对无线电接口方面的项目，在核心网方面配套的项目是系统体系结构演进 （System ArchitectureEvolution，SAE），有时为了方便，常将这两部分合起来统称为LTE。目前4G已全面部署应用，是我国移动用户主要的上网手段。</p>
-<p>第五代（5G）移动通信是最新一代蜂窝移动通信技术，其主要性能目标是超高速、大容量、低时延和大规模设备连接，已不再仅仅是满足普通用户的上网需求，而是要满足移动环境下高清视频、虚拟现实等数据传输需求（增强型移动宽带），满足自动驾驶、远程手术等实时应用需求（超高可靠、超低时延通信），以及提供千亿设备的连接能力，满足物联网万物互连的通信需求（大规模机器类型通信）。5G在空中接口方面采用大规模MIMO、天线波束赋形、先进的多址技术和信道编码技术提高频谱效率，并开发使用了新的频谱资源——毫米波。在系统体系结构方面，引入云计算、软件定义网络、网络功能虚拟化等先进网络技术，采用云无线电接入网和基于微服务的核心网功能架构，具有灵活、高效、支持多样化业务等特点。2019年10月31日，我国三大运营商公布5G商用套餐，并于11月1日正式上线5G商用套餐，开启了我国5G时代。</p>
-<p>由于目前5G总体来说还处于刚刚起步的阶段，而4G已全面部署应用，是我国移动用户主要的上网手段，因此下面重点对4G系统体系结构及其核心网的基本工作原理进行简要介绍，使读者理解我们的手机是如何通过蜂窝移动通信系统接入互联网的。</p>
-<h3 id="8-2、蜂窝移动通信系统体系结构">8.2、蜂窝移动通信系统体系结构</h3>
-<p>蜂窝移动通信系统的体系结构主要包括三个功能子系统：用户设备 （User Equipment，UE）、无线电接入网 （Radio AccessNetwork，RAN）和核心网 （Core Network，CN）。我们以4G为例介绍蜂窝移动通信系统的体系结构。4G系统体系结构被称为演进型分组系统 （Evolved Packet System，EPS），如图3-50所示。</p>
-<p><img src="/img/6611edf10ea76ee585a94519890f273b.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<h3 id="8-3、移动终端接入互联网">8.3、移动终端接入互联网</h3>
-<h2 id="九、参考">九、参考</h2>
+<p>网络应用进程通信时需要通过API接口请求底层协议的服务（如传输层服务），目前在Internet 中应用最广泛的网络应用编程接口就是 Socket API。无论是客户进程还是服务器进程，都需要创建 Socket，实现底层协议接口，从而可以通过Socket 将数据发送出去或接收进来。</p>
+<h2 id="8-1、Socket的基本类型">8.1、Socket的基本类型</h2>
+<p>应用进程可以根据需要，创建不同类型的 Socket和不同的底层协议接口，当然也就使用了不同底层协议提供的不同类型的服务。应用进程面向 TCP/IP 协议栈的Socket接口模型如下图所示。</p>
+<p>网络应用进程可以创建3种类型的 Socket：数据报类型套接字 SOCK_DGRAM、流式套接字SOCK_STREAM和原始套接字SOCK_RAW。其中，SOCK_DGRAM面向传输层 UDP 接口；SOCK_STREAM面向传输层TCP接口； SOCK_RAW 面向网络层协议（如IP、ICMP）接口。</p>
+<p>前两类套接字均是面向传输层的接口，比较容易理解，而原始套接字比较特殊，“绕”过了传输层，是面向网络层的接口。原始套接字的创建有权限限制，例如，在 Linux 操作系统中，具有 root 权限的用户才能创建原始套接字。通过原始套接字，应用进程可以实现—些特殊的功能，如收发 ICMP报文等。</p>
+<h2 id="8-2、典型的Socket-API函数">8.2、典型的Socket API函数</h2>
+<p>Socket为开发人员提供了开发C/S 网络应用的途径与架构，具体形式为一组Socket API 函数。在编写客户程序和服务器程序时，需要调用不同的 Socket API 函数，实现创建套接字、发送数据、接收数据等功能。典型的Socket API函数如下。</p>
+<h2 id="8-3、Socket-API函数调用过程">8.3、Socket API函数调用过程</h2>
+<p>在开发 C/S 架构网络应用程序时，需要根据应用特点和需求等选择使用传输层 TCP 或UDP。</p>
+<p>TCP 提供面向连接、可靠的字节流传输服务，选择使用 TCP 的网络应用程序，无须处理数据丢失等问题，从而使得应用程序设计相对简单。基于 TCP 客户与服务器的典型Socke API函数调用过程如下图所示。</p>
+<p>服务器程序运行后，调用 socket（）函数创建 SOCK _ STREAM 类型的主套接字 ms；调用bind（）函绑定本地端点地址；调用 listen（）函数置主套接字 ms 为监听模式；调用 accept ( )数通过主套接字 ms 接收客户连接请求，并阻塞服务器进程，直到有客户连接请求到达accept（）函数调用成功，返回（创建）连接套接字ss.</p>
+<p>客户程序在服务器程序运行后执行，创建了本地sOCK STREAM类型的套接字cs后调用 connect（）函数请求与服务器建立 TCP 连接，connect（）函数调用成功，表明 TCP连接建立成功。接下客户程序与服务器程序通过调用 send（）和 recv（）函数，实现数据发送与接收。通信结束后，客户程序通过调用 close（）函数，释放套接字 cs；服务器程序通过调用close（）函数，释放套接字 ss，从而关闭 TCP 连接。服务器程序继续调用 accept)函数，通主套接2s接收一个客户连接请求。通常情况下，服务器程序不会关闭主套接字 ms,为服务器还要继续为其他客户提供服务：</p>
+<p>服务器器端在调用 accept（）函数时，通常阻塞服务器进程，等待客户的连接请求，一日客户连接请求到达，accept（）函数会返回（创建）个新的套接字 Ss, sS 是真正与客户建TCP 连接的。服务器与客户的通信是通过与特定客户连接的ss 进行的，当与该客户通信结市；可调用 closes（）函数关闭与客户通信的 Ss。服务器通常通过无限循环机制，继续用 accept（）函数继续等待新的客户连接请求，周而复始。当然，服务器也可以通过并发机制，如多线程机，实现并发的服务器，实现在与个（些）客户通信的同时继续接收新的客连请</p>
+<p>UDP 提供无连接可靠的数据报传输服务，选择使用 UDP 的网络应用程序，不能依UDP实现可靠数据传输。应用程序或者容许 UDP 的不可靠数据传输特点（例如，多媒体应可以允一定比例的数据丢失），或者应用程序在应用层自己解决可靠性问题。基于UDP 与服务器邈型SoceAI函数调用过程如图2.22所方</p>
+<p>服务器程序运行后，调用 socket)函数创建 SOCK DGRAM 类型的套接字 ums：调用bind（）函数绑定本地端点地址。客户程序运行后，创建本地 SOCK DGRAM 类型的套接ucs。接下：客户程序与服务器程序通过调用 sendto（）和recvfrom（）函数，实现数据发送与羹接收。通信结束后，客户程序通过调用 close（）函数，释放夿字ucs：服务器程序继续调片recvfrom（）函数，通过套接字 ums 接收下一个客户发送过来的数据报。通常情况下，服务器程序不会关闭套接字ums。</p>
+<h1>九、参考</h1>
 <p><a target="_blank" rel="noopener" href="https://www.dedao.cn/ebook/detail?id=6JvkYVNn8NXVry5MeG6Z9RALK2dxJ3Gdd2w7olBEmjgakz1DPvYObQ4qpQdZqme9">计算机网络教程（第6版·微课版）</a></p>
 <p><a target="_blank" rel="noopener" href="https://product.dangdang.com/29274044.html">计算机网络原理创新教程</a></p>
 <p><a target="_blank" rel="noopener" href="https://product.dangdang.com/11846567948.html">计算机网络原理 自考04741</a></p>
@@ -838,7 +414,7 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/12/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%8606%EF%BC%9A%E7%89%A9%E7%90%86%E5%B1%82/" title="计算机网络原理：物理层">
+                      <a href="/2024/12/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%8606%EF%BC%9A%E7%89%A9%E7%90%86%E5%B1%82/" title="计算机网络原理：物理层">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">计算机网络原理：物理层</span>
                         <span class="visible-mobile">上一篇</span>
