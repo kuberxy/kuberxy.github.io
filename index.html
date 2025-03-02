@@ -517,7 +517,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2024/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%8603%EF%BC%9A%E4%BC%A0%E8%BE%93%E5%B1%82/" target="_self">
         <div>
-          todo 一、传输层的基本任务 二、传输层的复用与分解 三、停-等协议与滑动窗口协议 3.1、可靠传输基本原理 可靠传输就是要做到：发送端发送什么，对应的接收端就收到什么。 理想的传输信道是不产生差错（即比特跳变）并提供按序交付服务的物理或逻辑信道。如果一个协议，比如传输层协议，直接使用这种理想传输信道的服务，则该协议不需要采取任何措施就能够实现可靠数据传输。然而，大部分传输信道，例如实际的网络传
+          todo 一、传输层的基本服务 传输层的核心任务是为应用进程之间提供端到端的逻辑通信服务，为此，传输层主要实现如下功能：  传输层寻址； 对应用层报文进行分段和重组； 对报文进行差错检测； 实现进程间端到端可靠数据传输控制； 面向应用层实现复用与分解； 实现端到端的流量控制； 拥塞控制等。  Internet 网络有两种传输层协议，即 TCP和UDP, TCP提供面向连接的、可靠的、有序字节流传输
         </div>
       </a>
 
@@ -578,7 +578,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2024/11/10/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%8602%EF%BC%9A%E5%BA%94%E7%94%A8%E5%B1%82/" target="_self">
         <div>
-          todo 一、计算机网络应用体系结构 二、网络应用通信基本原理 三、域名系统（DNS） 3.1、层次化域名空间 为了实现域名的有效管理与高效查询，DNS服务器采用了层次结构组织方式，并且该层次结构与域名的结构相对应。 域名是一个层次树状结构，其结构由标号序列组成，各标号之间用点隔开，例如，”···.三级域名.二级域名.顶级域名“，各标号分别代表不同级别的域名，如下图所示。  顶级域名可分为三类：
+          todo 一、计算机网络应用体系结构 1.1、客户/服务器（C/S）结构 客户／服务器(C/S)结构网络应用的通信双方分为服务器程序和客户程序，服务器程序需要先运行，做好接受通信的准备，客户程序后运行，主动请求与服务器进行通信。服务器计算机通常也称为服务器，一般具有固定的网络地址（比如IP地址），长期运行，以便服务器软件能够随时被请求服务。客户软件通常运行在普通用户的计算机或其他计算设备上，可能使
         </div>
       </a>
 
@@ -692,6 +692,67 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2024/08/25/C++%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A102%EF%BC%9A%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B/" target="_self">
+          C++程序设计：核心编程
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/08/25/C++%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A102%EF%BC%9A%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B/" target="_self">
+        <div>
+          本阶段主要针对C++==面向对象==编程技术做详细讲解，探讨C++中的核心和精髓。 1 内存分区模型 C++程序在执行时，将内存大方向划分为4个区域  代码区：存放函数体的二进制代码，由操作系统进行管理的 全局区：存放全局变量和静态变量以及常量 栈区：由编译器自动分配释放, 存放函数的参数值,局部变量等 堆区：由程序员分配和释放,若程序员不释放,程序结束时由操作系统回收  内存四区意义： 不同区域
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-08-25 13:47" pubdate>
+              2024-08-25
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/" class="category-chain-item">程序设计</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">#C++</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2024/08/18/C++%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A101%EF%BC%9A%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/" target="_self">
           C++程序设计：基础入门
         </a>
@@ -700,7 +761,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2024/08/18/C++%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A101%EF%BC%9A%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/" target="_self">
         <div>
-          指针是C语言中的一个重要概念。通过指针，我们可以简化一些C编程任务的执行。指针是C语言的精髓，同时也是C语言最难理解的一部分内容，要想成为一名优秀的C程序员，学好指针是很有必要的。 一、初识C++ 1.1 、第一个C++程序 使用Visual Studio编写一个C++程序，一共分为4个步骤：  创建项目 创建文件 编写代码 运行程序  1.1.1、创建项目 运行Visual Studio，创建项
+          一、初识C++ 1.1 、第一个C++程序 使用Visual Studio编写一个C++程序，一共分为4个步骤：  创建项目 创建文件 编写代码 运行程序  1.1.1、创建项目 运行Visual Studio，创建项目   1.1.2、创建文件 右键源文件，选择添加-&gt;新建项  给C++文件起个名称，然后点击添加即可。  1.1.3、编写代码 12345678910#include&lt;
         </div>
       </a>
 
@@ -739,68 +800,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/C%E8%AF%AD%E8%A8%80/">#C语言</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/08/11/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%8616%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E7%89%A9%E7%90%86%E7%BB%93%E6%9E%84%E8%AE%BE%E8%AE%A1%E3%80%81%E5%AE%9E%E6%96%BD%E5%92%8C%E8%BF%90%E8%A1%8C%E7%BB%B4%E6%8A%A4/" target="_self">
-          数据库原理：数据库物理结构设计、实施和运行维护
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/08/11/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%8616%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E7%89%A9%E7%90%86%E7%BB%93%E6%9E%84%E8%AE%BE%E8%AE%A1%E3%80%81%E5%AE%9E%E6%96%BD%E5%92%8C%E8%BF%90%E8%A1%8C%E7%BB%B4%E6%8A%A4/" target="_self">
-        <div>
-          数据库逻辑结构设计完成之后，就进入数据库物理结构设计阶段，在这个阶段将确定数据库物理结构，并对其进行评价。初步评价完成后，就进入数据库实施阶段，其中包括确定数据库结构、数据加载、编制应用程序与调试、数据库试运行等步骤。数据库系统投入正式运行，标志着数据库运行和维护阶段的开始。本章将着重介绍数据库物理结构设计的任务和内容、数据库实施步骤，以及数据库运行和维护阶段需要完成的任务。 本章学习目标：理解数
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-08-11 12:47" pubdate>
-              2024-08-11
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="category-chain-item">数据库</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86/">#数据库原理</a>
+              <a href="/tags/C/">#C++</a>
             
           </div>
         
