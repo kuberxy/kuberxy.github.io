@@ -387,15 +387,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2020/09/26/JVM%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/" target="_self">
-          JVM内存分配
+        <a href="/2020/09/26/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/" target="_self">
+          JVM垃圾回收机制
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/09/26/JVM%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/09/26/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/" target="_self">
         <div>
-          我们知道，在大多数情况下，我们基本不用去调整JVM内存分配，因为一些初始化的参数已经可以保证应用服务正常稳定地工作了。但这并不意味着我们不需要理解JVM内存分配，尤其是在遇到一些性能问题时。 那么，当出现JVM内存性能问题时，我们该如何调优呢？在回答这个问题之前，我们先来了解一下JVM的内存分配。 一、JVM的内存性能问题 谈到JVM表现出的内存性能问题时，我们可能会想到一些线上的JVM内存溢出事
+          JVM具备自动内存管理机制，这个机制虽然可以减轻很多工作量，但是完全交由JVM处理，也会增加回收性能的不确定性。尤其是在一些特殊的业务场景下，不合适的垃圾回收算法以及策略，都有可能导致系统性能下降。因此，我们有必要了解一下JVM的垃圾回收机制。 一、GC机制 在认识GC算法之前，我们需要先弄清楚3个问题。第一，回收发生在哪里？第二，对象在什么时候可以被回收？第三，如何回收这些对象？ 1.1、回收发
         </div>
       </a>
 
@@ -448,15 +448,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2020/09/26/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/" target="_self">
-          JVM垃圾回收机制
+        <a href="/2020/09/26/JVM%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/" target="_self">
+          JVM内存分配
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/09/26/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/09/26/JVM%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/" target="_self">
         <div>
-          JVM具备自动内存管理机制，这个机制虽然可以减轻很多工作量，但是完全交由JVM处理，也会增加回收性能的不确定性。尤其是在一些特殊的业务场景下，不合适的垃圾回收算法以及策略，都有可能导致系统性能下降。因此，我们有必要了解一下JVM的垃圾回收机制。 一、GC机制 在认识GC算法之前，我们需要先弄清楚3个问题。第一，回收发生在哪里？第二，对象在什么时候可以被回收？第三，如何回收这些对象？ 1.1、回收发
+          我们知道，在大多数情况下，我们基本不用去调整JVM内存分配，因为一些初始化的参数已经可以保证应用服务正常稳定地工作了。但这并不意味着我们不需要理解JVM内存分配，尤其是在遇到一些性能问题时。 那么，当出现JVM内存性能问题时，我们该如何调优呢？在回答这个问题之前，我们先来了解一下JVM的内存分配。 一、JVM的内存性能问题 谈到JVM表现出的内存性能问题时，我们可能会想到一些线上的JVM内存溢出事
         </div>
       </a>
 
