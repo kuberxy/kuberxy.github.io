@@ -1,0 +1,1060 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Mr.x">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="todo 一、C++语言简介 1.1、C++语言的发展简史 1.2、C++语言的特点 1.3、C++语言的程序结构 二、面向对象的基本概念 2.1、结构化程序设计 2.2、面向对象程序设计的概念和特点 2.3、类的初步知识 2.4、类的示例程序剖析 2.5、访问对象的成员 通过对象访问成员变量的格式为：对象名.成员变量名 通过对象调用成员函数的格式为：对象名.成员函数名(参数表) 使用指针访问类成">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++程序设计：自考知识点速记">
+<meta property="og:url" content="https://kuberxy.github.io/2025/04/05/C++%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%EF%BC%9A%E8%87%AA%E8%80%83%E7%9F%A5%E8%AF%86%E7%82%B9%E9%80%9F%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Kubxy">
+<meta property="og:description" content="todo 一、C++语言简介 1.1、C++语言的发展简史 1.2、C++语言的特点 1.3、C++语言的程序结构 二、面向对象的基本概念 2.1、结构化程序设计 2.2、面向对象程序设计的概念和特点 2.3、类的初步知识 2.4、类的示例程序剖析 2.5、访问对象的成员 通过对象访问成员变量的格式为：对象名.成员变量名 通过对象调用成员函数的格式为：对象名.成员函数名(参数表) 使用指针访问类成">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="f:%5Cblog%5Csource%5Cimg%5Cclip_image002-1740909470742.png">
+<meta property="article:published_time" content="2025-04-05T05:47:11.000Z">
+<meta property="article:modified_time" content="2025-04-06T02:52:10.000Z">
+<meta property="article:author" content="Mr.x">
+<meta property="article:tag" content="计算机网络原理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="f:%5Cblog%5Csource%5Cimg%5Cclip_image002-1740909470742.png">
+  
+  
+  
+  <title>C++程序设计：自考知识点速记 - Kubxy</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kuberxy.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kubxy</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="C++程序设计：自考知识点速记"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-04-05 13:47" pubdate>
+          2025年4月5日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          60 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">C++程序设计：自考知识点速记</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>todo</p>
+<h1>一、C++语言简介</h1>
+<h2 id="1-1、C-语言的发展简史">1.1、C++语言的发展简史</h2>
+<h2 id="1-2、C-语言的特点">1.2、C++语言的特点</h2>
+<h2 id="1-3、C-语言的程序结构">1.3、C++语言的程序结构</h2>
+<h1>二、面向对象的基本概念</h1>
+<h2 id="2-1、结构化程序设计">2.1、结构化程序设计</h2>
+<h2 id="2-2、面向对象程序设计的概念和特点">2.2、面向对象程序设计的概念和特点</h2>
+<h2 id="2-3、类的初步知识">2.3、类的初步知识</h2>
+<h2 id="2-4、类的示例程序剖析">2.4、类的示例程序剖析</h2>
+<h2 id="2-5、访问对象的成员">2.5、访问对象的成员</h2>
+<p>通过对象访问成员变量的格式为：<code>对象名.成员变量名</code></p>
+<p>通过对象调用成员函数的格式为：<code>对象名.成员函数名(参数表)</code></p>
+<p>使用指针访问类成员的格式为：<code>指针-&gt;成员名</code></p>
+<h2 id="2-6、类成员的可访问范围">2.6、类成员的可访问范围</h2>
+<p>public修饰的成员，可以在任何地方被访问</p>
+<p>private修饰的成员，仅能在本类内被访问</p>
+<p>protected修饰的成员，可以在本类及子类中被访问</p>
+<p>没有使用访问修饰符的成员，默认是私有的，仅能在本类内被访问</p>
+<p>设置私有成员的机制称为“隐藏”</p>
+<p>“隐藏”的一个目的，就是强制对私有成员变量的访问，一定要通过公有成员函数进行</p>
+<h2 id="2-7、标识符的作用域与可见性">2.7、标识符的作用域与可见性</h2>
+<p>标识符的作用域，是指一个标识符在程序中的有效范围，即它在程序中的存在区域</p>
+<p>标识符的可见性，是指在程序的哪个区域里可以使用</p>
+<p>C++中标识符的作用域有函数原型作用域、局部作用域、类作用域（块作用域）和命名空间作用域</p>
+<p>函数原型作用域，是最小的作用域。在声明函数原型时，形参的作用范围就是函数原型作用域</p>
+<p>块，是指程序中使用相匹配的一对大括号括起来的一段程序</p>
+<p>作用域局限在块内的称为局部作用域</p>
+<p>对于在不同的作用域声明的标识符，可见性的一般原则为：</p>
+<ul>
+<li>
+<p>标识符要声明在前，引用在后</p>
+</li>
+<li>
+<p>在同一个作用域中，不能声明同名的标识符</p>
+</li>
+<li>
+<p>在没有互相包含关系的不同作用域中声明的同名标识符，互不影响</p>
+</li>
+<li>
+<p>如果存在两个或多个具有包含关系的作用域，外层声明了一个标识符，而内层没有再次声明同名标识符，那么外层标识符在内层仍然可见；</p>
+<p>如果在内层声明了同名标识符，则外层标识符在内层不可见，这时称内层标识符隐藏了外层同名标识符，这种机制称为隐藏规则</p>
+</li>
+</ul>
+<h1>三、类和对象进阶</h1>
+<h2 id="3-1、构造函数">3.1、构造函数</h2>
+<p>类中的特殊成员函数，属于类的一部分</p>
+<p>创建对象时，由系统自动调用</p>
+<p>函数名与类名相同，没有返回值</p>
+<p>可以有多个构造函数，即构造函数允许重载</p>
+<p>在声明类的构造函数时，可以同时给出函数体，这样的构造函数称为内联函数</p>
+<p>构造函数也可以在类外定义</p>
+<p>构造函数的声明中，形参的个数可以为0，即参数表为空</p>
+<p>当类中没有定义任何构造函数时，系统会自动添加一个参数表为空、函数体也为空的构造函数，称为默认构造函数</p>
+<p>假设，类的成员变量是x1，x2，…，xn，则在类体外定义构造函数时，通常有如下3种形式：</p>
+<p>第一种形式：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">类名::类名(形参<span class="hljs-number">1</span>, 形参<span class="hljs-number">2</span>, ..., 形参n):<span class="hljs-built_in">x1</span>(形参<span class="hljs-number">1</span>),<span class="hljs-built_in">x2</span>(形参<span class="hljs-number">2</span>), ...,<span class="hljs-built_in">xn</span>(形参n) &#123;&#125;<br></code></pre></td></tr></table></figure>
+<p>第二种形式：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++">类名::类名(形参<span class="hljs-number">1</span>, 形参<span class="hljs-number">2</span>, ..., 形参n) &#123;<br>    x1 = 形参<span class="hljs-number">1</span>;<br>    x2 = 形参<span class="hljs-number">2</span>;<br>    ...<br>    xn = 形参n;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>第三种形式：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++">类名::类名() &#123;<br>    x1 = 初始表达式<span class="hljs-number">1</span>;<br>    x2 = 初始表达式<span class="hljs-number">2</span>;<br>    ...<br>    xn = 初始表达式n;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>构造函数参数的排列顺序可以是任意的，只要能保证与类的成员变量相对应即可</p>
+<p>可以使用默认参数为成员变量赋初值，也就是说，构造函数中实参的个数可以少于类的成员变量的个数</p>
+<p>复制构造函数是构造函数的一种，也称为拷贝构造函数</p>
+<p>其作用是使用一个已经存在的对象去初始化另一个正在创建的对象</p>
+<p>复制构造函数只有一个参数，参数类型是本类的引用</p>
+<h2 id="3-2、析构函数">3.2、析构函数</h2>
+<p>类中的特殊成员函数</p>
+<p>函数名与类名相同，且需要在类名前加一个<code>~</code></p>
+<p>没有返回值</p>
+<p>一个类有且仅有一个析构函数</p>
+<p>如果程序中没有定义析构函数，则编译器自动生成默认的析构函数，其函数体为空</p>
+<p>不可以有多个析构函数，即析构函数不允许重载</p>
+<h2 id="3-3、类的静态成员">3.3、类的静态成员</h2>
+<p>使用static，可以说明静态变量</p>
+<p>根据定义的位置不同，分为静态全局变量和静态局部变量</p>
+<p>全局变量，是指在花括号外声明的变量，其作用域范围是全局可见的，即在整个项目文件内都有效</p>
+<p>静态全局变量，是指使用static修饰的全局变量，其作用域有所限制，仅在定义该变量的源文件内有效，项目中的其他源文件不能使用它</p>
+<p>局部变量，是指在块内定义的变量，其作用域范围，从定义处开始到本块结束处为止</p>
+<p>静态局部变量，是指使用static修饰的局部变量，其特点是具有局部作用域，但却具有全局生存期</p>
+<p>静态变量，存储在全局数据区，只执行一次初始化</p>
+<p>如果程序未显式给出初始值，则相当于初始化未0</p>
+<p>如果程序显式给出了初始值，则在变量所在块第一次执行时完成初始化</p>
+<p>类的静态成员有两种：静态成员变量和静态成员函数</p>
+<p>类的静态成员被类的所有对象共享，不论有多少对象存在，静态成员都只有一份保存在公有内存中</p>
+<p>对于静态成员变量，各对象看到的值是一样的</p>
+<p>静态成员变量本质上是全局变量</p>
+<p>对于一个类来说，哪怕它一个对象都不存在，其静态成员变量也存在</p>
+<p>静态成员变量本质上是全局函数，不需要作用在某个具体的对象上</p>
+<h2 id="3-4、变量及对象的生存期和作用域">3.4、变量及对象的生存期和作用域</h2>
+<p>变量的生存期，是指变量所占据的内存空间由分配到释放的时期</p>
+<p>对象的生存期，是从调用构造函数开始，到调用完析构函数为止</p>
+<p>作用域分为：</p>
+<ul>
+<li>全局域，包括程序作用域、文件作用域</li>
+<li>局部域，包括类作用域、函数作用域，块作用域和函数原型作用域等</li>
+</ul>
+<p>程序作用域，也称为多文件作用域，属于程序作用域的有通过extern关键字进行说明的外部变量以及外部函数等</p>
+<h2 id="3-5、常量成员和常引用成员">3.5、常量成员和常引用成员</h2>
+<p>由关键字const修饰的类成员变量称为类的常量成员变量</p>
+<p>类的常量成员变量必须进行初始化，而且只能通过构造函数的成员初始化列表的方式进行</p>
+<p>使用const修饰的函数称为常量函数</p>
+<p>定义常量对象或常量成员变量的一般格式为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">const</span> 数据类型 常量名 = 表达式;<br></code></pre></td></tr></table></figure>
+<p>定义常量函数的格式为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">类型说明符 函数名(参数表) <span class="hljs-type">const</span>;<br></code></pre></td></tr></table></figure>
+<h2 id="3-6、成员对象和封闭类">3.6、成员对象和封闭类</h2>
+<p>如果类的成员变量是另一个类的对象，则该成员变量称为“成员对象”</p>
+<p>这两个类是包含关系</p>
+<p>包含成员对象的类叫作封闭类</p>
+<p>在封闭类的构造函数中，添加初始化列表的格式如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++">封闭类::构造函数名(参数表):成员变量<span class="hljs-number">1</span>(参数表), 成员变量<span class="hljs-number">2</span>(参数表), ... &#123;<br>    ...<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="3-7、友元">3.7、友元</h2>
+<p>友元并不是面向对象的特征</p>
+<p>是为了兼顾C语言的程序设计习惯与C++的信息隐藏特性而增加的功能</p>
+<p>是一种类成员的访问权限</p>
+<p>友元破坏了类的封装性和信息隐藏，但有助于数据共享，能够提高程序执行效率</p>
+<p>友元使用关键字friend标识</p>
+<p>在类定义中，当friend出现在函数说明语句的前面时，表示该函数为类的友元函数</p>
+<p>一个函数可以是多个类的友元函数，一个类中也可以有多个友元函数</p>
+<p>在类定义中，将一个全局函数声明为本类友元函数的格式如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">friend</span> 返回值类型 函数名(参数表)；<br></code></pre></td></tr></table></figure>
+<p>当有某类A的定义后，将类A的成员函数说明为本类的友元函数的格式如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">friend</span> 返回值类型 类A::类A的成员函数名(参数表);<br></code></pre></td></tr></table></figure>
+<p>在类中，声明友元类的格式如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">friend</span> <span class="hljs-keyword">class</span> 类名;<br></code></pre></td></tr></table></figure>
+<p>友元的关系是单向的</p>
+<p>若说明类B是类A的友元类，不等于类A也是类B的友元类</p>
+<p>友元函数不是类的成员函数，但可以访问类中的所有成员</p>
+<p>不能把其他类的所有成员函数声明为友元函数</p>
+<p>友元函数不受类中的访问权限关键字的限制，可以把它放在公有、私有、保护部分，其结果都是一样的</p>
+<h2 id="3-8、this指针">3.8、this指针</h2>
+<p>在C++中，当调用一个成员函数时，系统自动向它传递一个隐含的参数</p>
+<p>该参数是一个指向调用该函数的对象的指针，称为this指针</p>
+<p>this指针是C++实现封装的一种机制</p>
+<p>它将对象和该对象调用的成员函数联系在一起，从外部来看，好像每一个对象都拥有自己的成员函数</p>
+<h1>四、运算符重载</h1>
+<h2 id="4-1、运算符重载的概念">4.1、运算符重载的概念</h2>
+<p>C++中的表达式由运算符和操作数按照规则构成</p>
+<p>运算符重载，是指给已有的运算符赋予多重含义，使同一个运算符作用于不同类型的数据时产生不同的行为</p>
+<p>在C++中，不可以重载的运算符有：</p>
+<ul>
+<li>.</li>
+<li>.*</li>
+<li>-&gt;*</li>
+<li>::</li>
+<li>sizeof</li>
+<li>?:</li>
+<li>
+<h1></h1>
+</li>
+</ul>
+<p>有两个运算符，系统提供了默认的重载版本，它们是：</p>
+<ul>
+<li>赋值运算符=：系统默认重载为，对象成员变量的复制</li>
+<li>地址运算符&amp;：系统默认重载为，返回任何类对象的地址</li>
+</ul>
+<p>运算符重载的实质是编写以运算符为名称的函数</p>
+<p>当使用运算符表达式时，就被解释为对重载函数的调用</p>
+<p>运算符重载函数的函数名，由关键字operator和其后要重载的运算符构成，其格式如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++">返回值类型 <span class="hljs-keyword">operator</span>运算符(形参表) &#123;<br>    函数体<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>在重载运算符时，有如下规则：</p>
+<ul>
+<li>重载后，运算符的含义，应该符合原有的用法习惯</li>
+<li>不能改变运算符原有的语义。包括运算符的优先级和结合性</li>
+<li>不能改变运算符操作数的个数和语法结构</li>
+<li>不能创建新的运算符</li>
+<li>运算符<code>()、[]、-&gt;和=</code>，只能重载为成员函数，不能重载为全局函数</li>
+<li>不能改变运算符用于基本数据类型对象的含义</li>
+</ul>
+<h2 id="4-2、重载赋值运算符">4.2、重载赋值运算符</h2>
+<p>赋值运算符=，只能重载为成员函数</p>
+<p>同类对象之间可以通过赋值运算符互相赋值</p>
+<p>如果没有重载赋值运算符，则=作用是将其右侧对象的值一一赋值给左侧对象，这相当于值的拷贝，称为“浅拷贝”</p>
+<p>重载赋值运算符，常用于实现“深拷贝”</p>
+<h2 id="4-3、重载流提取运算符和流插入运算符">4.3、重载流提取运算符和流插入运算符</h2>
+<p>右移运算符&gt;&gt;可以和cin一起用于输入，常被称为流提取运算符</p>
+<p>左移运算符&lt;&lt;可以和cout一起用于输出，常被称为流插入运算符</p>
+<p>流是标准类库，用户程序只能继承不能修改</p>
+<p>重载函数不能是流类库中的成员，必须重载为类的友元</p>
+<h2 id="4-4、重载强制类型转换运算符">4.4、重载强制类型转换运算符</h2>
+<p>在C++中，类型的名字（包括类的名字），其本身也是一种运算符，即强制类型转换运算符</p>
+<p>强制类型转换运算符是单目运算符，也可以被重载，但只能重载为成员函数，不能重载为全局函数</p>
+<p>经过适当重载后，“(类型名)对象”这个对对象进行强制类型转换的表达式就等价于“对象.operator类型名()”，即变成对运算符函数的调用</p>
+<h2 id="4-5、重载自增、自减运算符">4.5、重载自增、自减运算符</h2>
+<p>自增、自减运算符都可以被重载，但有前置和后置之分</p>
+<p>区分前置和后置的方式是，在参数表中增加一个不使用的int类型</p>
+<p>前置，是参数个数正常的重载函数</p>
+<p>后置，是多出一个参数的重载函数</p>
+<h1>五、类的继承与派生</h1>
+<h2 id="5-1、类的继承与类的派生">5.1、类的继承与类的派生</h2>
+<p>通过已有的类建立新类的过程，叫作类的派生</p>
+<p>原来的类称为基类，也称为父类或一般类；新类称为派生类，也称为子类或特殊类</p>
+<p>派生类派生自基类，或继承于基类，也可以说基类派生了派生类</p>
+<p>派生类可以再作为基类派生新的派生类</p>
+<p>从基类派生派生类的一般格式为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> 派生类:继承方式说明符 基类名 &#123;<br>    类体<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>继承方式说明符，指明如何控制基类成员再派生类中的访问属性</p>
+<p>继承方式通常有3种，分别是public(共有继承)、private(私有继承)和protected(保护继承)</p>
+<p>一般情况下都使用public，protected和private方式很少用到</p>
+<p>派生类对象占用的存储空间大小 = 基类成员变量占用的存储空间大小 + 派生类对象自身成员变量占用的存储空间大小</p>
+<p>可以使用sizeof()函数计算对象占用的字节数</p>
+<p>为类对象分配空间时，遵循字节对齐原则</p>
+<p>空类的大小是1，这是一种特殊情况</p>
+<p>对象占用的存储空间包含对象中各成员变量占用的存储空间</p>
+<p>对象的大小与普通成员变量有关，与成员函数和类中的静态成员无关</p>
+<p>即普通成员函数、静态成员函数、静态成员变量、静态常成员变量等均对类对象的大小没有影响</p>
+<p>基类的成员和派生类中新增的成员都具有类作用域</p>
+<p>但二者的作用范围不同，是相互包含的两个层，派生类在内层，基类在外层</p>
+<p>单继承，是指派生类只有一个基类</p>
+<p>多继承，是指派生类有多个基类</p>
+<h2 id="5-2、访问控制">5.2、访问控制</h2>
+<p><img src="F:%5Cblog%5Csource%5Cimg%5Cclip_image002-1740909470742.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>不论是哪种继承方式，基类中的私有成员，在派生类中都无法访问。</p>
+<p>采用公有继承，基类中的公有成员和保护成员，在派生类中的访问权限不变</p>
+<p>采用保护继承，基类中的公有成员，在派生类中的访问权限变为保护权限，基类中的保护成员，在派生类中的访问权限不变</p>
+<p>采用私有继承，基类中的公有成员和保护成员，在派生类中的访问权限都变为私有权限</p>
+<p>类型兼容，也称为赋值兼容，是指在任何需要基类对象的地方，都可以使用公有派生类的对象来替代</p>
+<p>在公有派生情况下，有3条类型兼容规则：</p>
+<ul>
+<li>派生类对象，可以赋值给基类对象</li>
+<li>派生类对象，可以用来初始化基类引用</li>
+<li>派生类对象的地址，可以赋值给基类指针，即派生类指针可以赋值给基类指针</li>
+</ul>
+<h2 id="5-3、派生类的构造函数和析构函数">5.3、派生类的构造函数和析构函数</h2>
+<p>在继承中，构造函数的调用顺序是：先基类，后派生类</p>
+<p>在继承中，析构函数的调用顺序是：先派生类，后基类</p>
+<p>如果基类定义了有参构造函数，那么派生类也要定义有参构造函数</p>
+<h2 id="5-4、类之间的关系">5.4、类之间的关系</h2>
+<p>使用已有类，编写新类的方式，有两种：继承和组合</p>
+<p>如果一个类的成员变量是另一个类的对象，则该类为封闭类</p>
+<p>定义封闭类，其构造函数的一般形式为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++">类名::类名(形参表):内嵌对象<span class="hljs-number">1</span>(形参表):内嵌对象<span class="hljs-number">2</span>(形参表)... &#123;<br>    类体<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="5-5、多层次的派生">5.5、多层次的派生</h2>
+<p>派生可以是多层次的</p>
+<p>类之间的继承关系具有传递性</p>
+<p>在定义派生类时，只需写直接基类，不用写间接基类</p>
+<h2 id="5-6、基类与派生类指针的互相转换">5.6、基类与派生类指针的互相转换</h2>
+<p>对于指针类型，可以使用基类指针指向派生类对象，也可以将派生类的指针直接赋值给基类指针</p>
+<p>基类指针指向派生类对象时，不能通过基类指针访问基类中没有而仅在派生类中定义的成员</p>
+<p>当派生类指针指向基类对象时，必须将基类对象进行强制类型转换，才能赋给派生类指针</p>
+<h1>六、多态与虚函数</h1>
+<h2 id="6-1、多态的基本概念">6.1、多态的基本概念</h2>
+<p>多态，可以使同一个函数完成不同的功能</p>
+<p>多态分为编译时多态和运行时多态</p>
+<p>静态联编，是指在编译期间就可以确定函数的调用地址</p>
+<p>动态联编，是指函数调用与代码入口地址的绑定需要在运行时刻才能确定</p>
+<p>虚函数，是指类中的成员函数前加了virtual关键字</p>
+<p>声明虚函数成员的一般格式如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">virtual</span> 函数返回值类型 函数名(参数表);<br></code></pre></td></tr></table></figure>
+<h2 id="6-2、多态实例">6.2、多态实例</h2>
+<p>使用多态能够增强程序的可扩充性</p>
+<p>使用多态能够起到精简代码的作用</p>
+<h2 id="6-3、多态的使用">6.3、多态的使用</h2>
+<p>类的成员函数之间是可以相互调用的</p>
+<p>在普通成员函数（静态成员函数、构造函数和析构函数除外）中调用其他虚成员函数也是允许的，并且是多态的</p>
+<p>实现多态时，必须满足的条件是：使用基类指针或引用，调用基类中声明的虚函数</p>
+<h2 id="6-4、虚析构函数">6.4、虚析构函数</h2>
+<p>声明虚析构函数的格式为：<code>virtual ~类名();</code></p>
+<p>虚析构函数没有返回值类型，没有参数</p>
+<p>如果一个类的析构函数是虚函数，则由它派生的所有子类的析构函数也是虚析构函数</p>
+<h2 id="6-5、纯虚函数和抽象类">6.5、纯虚函数和抽象类</h2>
+<p>纯虚函数，是指基类中的虚函数，没有具体的定义，而由各派生类根据实际需要给出各自的定义</p>
+<p>声明纯虚函数的一般格式为：<code>virtual 函数类型 函数名(参数表)=0;</code></p>
+<p>包含纯虚函数的类称为抽象类</p>
+<h1>七、输入/输出流</h1>
+<h2 id="7-1、流类简介">7.1、流类简介</h2>
+<p>在C++的标准类库中，将与数据输入/输出相关的类统称为“流类”</p>
+<p>istream类提供了流的大部分输入操作，对系统预定义的所有输入流，都重载了流提取运算符&gt;&gt;</p>
+<p>ostream类提供了流的大部分输出操作，对系统预定义的所有输出流，都重载了流插入运算符&lt;&lt;</p>
+<p>istream类和ostream类共同派生了iostream类</p>
+<p>在流类中，常见的头文件有3个：iostream、fstream和iomanip。其中：</p>
+<ul>
+<li>头文件iostream，包含操作所有输入/输出流所需的基本信息</li>
+<li>头文件fstream，包含处理文件的有关信息，提供建立文件、读写文件的各种操作接口</li>
+<li>头文件iomanip，包含格式I/O的有参流操纵符</li>
+</ul>
+<h2 id="7-2、标准流对象">7.2、标准流对象</h2>
+<p>标准流对象，是C++为用户提供的，用于外设与内存之间的通信，对数据进行解释和传输，提供必要的数据缓冲等</p>
+<p>C++在头文件iostream中，为用户预定义了4个标准流对象，分别是：</p>
+<ul>
+<li>cin（标准输入流）：与标准输入设备（键盘）相关联，用于读取数据，可以被重定向为从文件中读取数据</li>
+<li>cout（标准输出流）：与标准输出设备（显示器）相关联，用于输出数据，可以被重定向为向文件里写入数据</li>
+<li>cerr（无缓冲的错误输出流）：与标准错误信息输出设备（显示器）相关联，用于输出错误信息，不能被重定向（无缓冲）</li>
+<li>clog（有缓冲的错误输出流）：与标准错误信息输出设备（显示器）相关联，用于输出错误信息，不能被重定向（有缓冲）</li>
+</ul>
+<p>所谓重定向，就是改变默认的输入来源，或改变默认的输出目的地</p>
+<h2 id="7-3、控制I-O格式">7.3、控制I/O格式</h2>
+<p>C++进行I/O格式控制的方式，一般有：使用流操纵符、设置标志字和调用成员函数</p>
+<p>为了满足不同用户对数据输入/输出格式的要求，C++提供了setiosflags()函数，设置标志字，进行格式控制</p>
+<p>setiosflags()是有参数的操纵符，在头文件iostream中，用来设置指定的标志，函数的参数为流的格式标志位</p>
+<h2 id="7-4、调用cout的成员函数">7.4、调用cout的成员函数</h2>
+<p>ostream类提供了在cout中控制输出格式的成员函数，常见的用于控制格式的成员函数原型如下：</p>
+<ul>
+<li>
+<p>设置和返回标志字：</p>
+<ul>
+<li><code>long flags(long lFlags);</code></li>
+<li><code>long flags() const;</code></li>
+</ul>
+</li>
+<li>
+<p>设置标志位：</p>
+<ul>
+<li><code>long setf(long lFlags);</code></li>
+<li><code>long setf(long lFlags, long lMask);</code></li>
+</ul>
+</li>
+<li>
+<p>消除标志位：</p>
+<ul>
+<li><code>long unsetf(long lFlags);</code></li>
+</ul>
+</li>
+<li>
+<p>设置和返回输出宽度：</p>
+<ul>
+<li><code>int width(int nw);</code></li>
+<li><code>int width() const;</code></li>
+</ul>
+</li>
+<li>
+<p>设置填充字符：</p>
+<ul>
+<li><code>char fill(char cFill);</code></li>
+<li><code>char fill() const;</code></li>
+</ul>
+</li>
+<li>
+<p>设置数据显示精度：</p>
+<ul>
+<li><code>int precision(int np);</code></li>
+<li><code>int precision() const;</code></li>
+</ul>
+</li>
+</ul>
+<p>ostream类有一些输出流的成员函数，其原型如下：</p>
+<ul>
+<li>字符插入：<code>ostream&amp; put(char c);</code></li>
+<li>数据块插入：<code>ostream&amp; write(const char *pch, int nCount);</code></li>
+</ul>
+<h2 id="7-5、调用cin的成员函数">7.5、调用cin的成员函数</h2>
+<p>get()函数从输入流中读入一个字符（包括空白字符），返回值就是该字符的ASCII码</p>
+<p>getline()函数从输入流中的当前字符开始读取bufSize-1个字符到缓冲区buf中，或读到‘\n’为止</p>
+<p>eof()函数用于判断输入流是否已经结束</p>
+<p>ignore()函数用于跳过输入流中的n个字符，或跳过delim及其之前的所有字符</p>
+<p>peek()函数返回输入流中的当前字符，但是并不会将该字符从输入流中取走</p>
+<h1>八、文件操作</h1>
+<h2 id="8-1、文件基本概念和文件流类">8.1、文件基本概念和文件流类</h2>
+<p>在计算机中，通常将一些内容相关的信息组织起来，保存在一起并用一个名字标识，这就是文件</p>
+<p>根据文件的编码方式不同，文件可分为文本文件和二进制文件</p>
+<p>根据文件的存取方式不同，文件可分为顺序存取文件和随机存取文件</p>
+<p>流是一个逻辑概念，是对所有外部设备的逻辑抽象</p>
+<p>C++标准库中有3个流类可以用于文件操作：</p>
+<ul>
+<li>ifstream</li>
+<li>ofstream</li>
+<li>fstream</li>
+</ul>
+<h2 id="8-2、打开和关闭文件">8.2、打开和关闭文件</h2>
+<p>在对文件进行读写操作之前，先要打开文件。打开文件有两个目的：</p>
+<ul>
+<li>一是，建立关联</li>
+<li>二是，指明文件的使用方式和文件格式</li>
+</ul>
+<p>打开文件的方式有两种：</p>
+<ul>
+<li>先建立流对象，然后调用open()函数连接外部文件。格式如下：
+<ul>
+<li><code>流类名 对象名;</code></li>
+<li><code>对象名.open(文件名, 模式);</code></li>
+</ul>
+</li>
+<li>调用流类的有参构造函数，在建立流对象的同时连接外部文件。格式如下：
+<ul>
+<li><code>流类名 对象名(文件名, 模式);</code></li>
+</ul>
+</li>
+</ul>
+<p>文件操作完毕后，需要关闭</p>
+<p>关闭文件使用fstream中的成员函数close()</p>
+<h2 id="8-3、文件读写操作">8.3、文件读写操作</h2>
+<p>文本文件存储数据时，以ASCII码形式保存数据</p>
+<p>二进制文件以基本类型数据的二进制形式存放</p>
+<p>调用ifstream或fstream的read()成员函数，从文件中读取数据</p>
+<p>调用ofstream或fstream的write()成员函数，向文件中写入数据</p>
+<p>打开二进制文件，需要使用binary方式，如<code>open(&quot;person.txt&quot;, ios::out | ios::binary)</code></p>
+<p>类ifstream和类fstream的成员函数get()，可以从文件中一次读取一个字节</p>
+<p>类ofstream和类fstream的成员函数pu()，可以向文件中一次写入一个字节</p>
+<h2 id="8-4、随机访问文件">8.4、随机访问文件</h2>
+<p>如果一个文件只能进行顺序存取操作，则称为顺序文件</p>
+<p>典型的顺序文件（设备）是键盘、显示器和保存在磁带上的文件</p>
+<p>如果一个文件可以在文件的任意位置进行存取操作，则称为随机文件</p>
+<p>典型的随机文件时磁盘文件</p>
+<p>顺序访问，是指严格按照数据保存的次序，从头到尾访问文件</p>
+<p>随机访问，是指根据需要在文件的不同位置进行访问</p>
+<p>在C++中，每个流都有一个流指针，它由系统控制，会随着对流的各种操作在字节流中移动</p>
+<p>类istream、类ifstream和类fstream中的成员函数seekg()，可以设置文件读取指针的位置</p>
+<p>类ostream、类ofstream和类fstream中的成员函数seekp()，可以设置文件写入指针的位置</p>
+<h1>九、函数模板与类模板</h1>
+<h2 id="9-1、函数模板">9.1、函数模板</h2>
+<p>为了提高效率，实现代码复用，C++提供了一种处理机制，函数模板</p>
+<p>定义函数模板的一般格式如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">template</span>&lt;模板参数列表&gt;<br>返回类型名 函数模板名(参数列表) &#123;<br>    函数体的定义<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>定义函数模板，以关键字template开头，其后是使用尖括号<code>&lt;&gt;</code>括起来的“模板参数列表”</p>
+<p>函数指针只能指向模板的实例，不能指向模板本身</p>
+<p>函数模板可以重载，只要它们的形参表不同即可</p>
+<p>函数模板实例化过程由编译器完成，生成模板函数</p>
+<h2 id="9-2、类模板">9.2、类模板</h2>
+<p>当需要编写多个形式和功能都相似的类时，可以使用类模板机制</p>
+<p>类是对一组对象的公共性质的抽象</p>
+<p>类模板是对不同类公共性质的抽象</p>
+<p>类模板属于更高层次的抽象</p>
+<p>通过类模板，可以实例化一个个的类</p>
+<p>声明类模板的一般格式如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">template</span>&lt;模板参数列表&gt;<br><span class="hljs-keyword">class</span> 类模板名 &#123;<br>    类定义<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>如果在类模板外定义其成员函数，则要采用以下格式：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">template</span>&lt;模板参数列表&gt;<br>返回类型名 类模板名&lt;模板参数列表&gt;::成员函数名(参数表) &#123;<br>    函数体<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>当使用类模板创建对象时，要随类模板名给出具体的类型形参或普通形参的具体实参，格式如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">类模板名&lt;模板参数列表&gt; 对象名<span class="hljs-number">1</span>, ..., 对象名n;<br></code></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">类模板名&lt;模板参数列表&gt; 对象名<span class="hljs-number">1</span>(构造函数实参), ..., 对象名<span class="hljs-built_in">n</span>(构造函数实参);<br></code></pre></td></tr></table></figure>
+<p>由类模板生成类的过程称为类模板的实例化</p>
+<p>由类模板实例化得到的类称为模板类</p>
+<p>类模板和类模板之间、类模板和普通类之间可以互相继承，它们之间的常见派生关系有以下4种情况：</p>
+<ul>
+<li>普通类继承模板类</li>
+<li>类模板继承普通类</li>
+<li>类模板继承类模板</li>
+<li>类模板继承模板类</li>
+</ul>
+<p>如果类模板的成员函数定义在类中，则其自动成为内联函数</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BD%91%E7%BB%9C/" class="category-chain-item">网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86/" class="print-no-link">#计算机网络原理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>C++程序设计：自考知识点速记</div>
+      <div>https://kuberxy.github.io/2025/04/05/C++程序设计：自考知识点速记/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Mr.x</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年4月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/12/22/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%8608%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%9F%BA%E7%A1%80/" title="计算机网络原理：网络安全基础">
+                        <span class="hidden-mobile">计算机网络原理：网络安全基础</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
