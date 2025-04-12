@@ -16,15 +16,15 @@
   <meta name="author" content="Mr.x">
   <meta name="keywords" content="">
   
-    <meta name="description" content="todo 一、无线网络 无线网络无线主机、无线链路、基站和网络基础设施等组成。 无线主机通过基站实现通信中继的无线网络通常被称为基础设施模式。无线主机不通过基站（即没有基站），与另一个无线主机直接通信的无线网络称为自组织网络，或称为特定网络，也称为Ad Hoc网络。 无线链路与有线链路的主要区别如下：  信号衰减。电磁波在穿过物体（如墙壁）时信号强度会衰减。即使在自由空间中，信号也会衰减，这使得信">
+    <meta name="description" content="一、无线网络 无线网络无线主机、无线链路、基站和网络基础设施等组成。 无线主机通过基站实现通信中继的无线网络通常被称为基础设施模式。无线主机不通过基站（即没有基站），与另一个无线主机直接通信的无线网络称为自组织网络，或称为特定网络，也称为Ad Hoc网络。 无线链路与有线链路的主要区别如下：  信号衰减。电磁波在穿过物体（如墙壁）时信号强度会衰减。即使在自由空间中，信号也会衰减，这使得信号强度随着">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算机网络原理：无线与移动网络">
 <meta property="og:url" content="https://kuberxy.github.io/2024/12/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%8607%EF%BC%9A%E6%97%A0%E7%BA%BF%E4%B8%8E%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C/index.html">
 <meta property="og:site_name" content="Kubxy">
-<meta property="og:description" content="todo 一、无线网络 无线网络无线主机、无线链路、基站和网络基础设施等组成。 无线主机通过基站实现通信中继的无线网络通常被称为基础设施模式。无线主机不通过基站（即没有基站），与另一个无线主机直接通信的无线网络称为自组织网络，或称为特定网络，也称为Ad Hoc网络。 无线链路与有线链路的主要区别如下：  信号衰减。电磁波在穿过物体（如墙壁）时信号强度会衰减。即使在自由空间中，信号也会衰减，这使得信">
+<meta property="og:description" content="一、无线网络 无线网络无线主机、无线链路、基站和网络基础设施等组成。 无线主机通过基站实现通信中继的无线网络通常被称为基础设施模式。无线主机不通过基站（即没有基站），与另一个无线主机直接通信的无线网络称为自组织网络，或称为特定网络，也称为Ad Hoc网络。 无线链路与有线链路的主要区别如下：  信号衰减。电磁波在穿过物体（如墙壁）时信号强度会衰减。即使在自由空间中，信号也会衰减，这使得信号强度随着">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-12-15T05:47:11.000Z">
-<meta property="article:modified_time" content="2025-04-10T04:12:37.000Z">
+<meta property="article:modified_time" content="2025-04-12T10:39:13.000Z">
 <meta property="article:author" content="Mr.x">
 <meta property="article:tag" content="计算机网络原理">
 <meta name="twitter:card" content="summary_large_image">
@@ -268,8 +268,7 @@
             
               <div class="markdown-body">
                 
-                <p>todo</p>
-<h1>一、无线网络</h1>
+                <h1>一、无线网络</h1>
 <p>无线网络无线主机、无线链路、基站和网络基础设施等组成。</p>
 <p>无线主机通过基站实现通信中继的无线网络通常被称为基础设施模式。无线主机不通过基站（即没有基站），与另一个无线主机直接通信的无线网络称为自组织网络，或称为特定网络，也称为Ad Hoc网络。</p>
 <p>无线链路与有线链路的主要区别如下：</p>
@@ -281,11 +280,48 @@
 <h1>二、移动网络</h1>
 <p>移动网络实现移动结点寻址的基本策略包括：间接路由选择和直接路由选择。</p>
 <p>间接路由选择存在一个低效的问题，即三角路由选择问题。直接路由选择克服了三角路由选择的低效问题，但其代价是增加了复杂性。</p>
-<h1>三、无线局域网IEEE 802.11</h1>
+<h1>三、无线局域网IEEE802.11</h1>
 <p>IEEE 802.11体系结构的基本构件由两部分组成：基站和基本服务集。基站，又称接入点（AP）；基本服务集（BSS），一个BSS包含一个或多个无线站点和一个接入点的中央基站。</p>
 <p>多个站点（无线站点或AP）可能同时经相同信道传输数据帧，因此需要一个多路访问控制协议来协调传输。IEEE 802.11的MAC协议采用CSMA/CA协议。</p>
 <p>CSMA/CA通过RTS和CTS帧的交换，可以有效避免隐藏站问题，实现信道的预约占用，从而可以有效避免数据帧传输过程中的冲突。</p>
 <p>IEEE 802.11帧共有3种类型：控制帧、数据帧和管理帧。</p>
+<p>IEEE 802.11标准小结：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">标准</th>
+<th style="text-align:center">频率范围/GHz</th>
+<th style="text-align:center">数据率</th>
+<th style="text-align:center">物理层</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">IEEE 802.11 b</td>
+<td style="text-align:center">2.4</td>
+<td style="text-align:center">最高为 11Mbit/s</td>
+<td style="text-align:center">扩频</td>
+</tr>
+<tr>
+<td style="text-align:center">IEEE 802.11 a</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">最高为 54Mbit/s</td>
+<td style="text-align:center">OFDM</td>
+</tr>
+<tr>
+<td style="text-align:center">IEEE 802.11 g</td>
+<td style="text-align:center">2.4</td>
+<td style="text-align:center">最高为 54Mbit/s</td>
+<td style="text-align:center">OFDM</td>
+</tr>
+<tr>
+<td style="text-align:center">IEEE 802.11 n</td>
+<td style="text-align:center">2.4 / 5</td>
+<td style="text-align:center">最高为 600Mbit/s</td>
+<td style="text-align:center">MIMO / OFDM</td>
+</tr>
+</tbody>
+</table>
 <h1>四、蜂窝网络</h1>
 <h3 id="7-4-1、蜂窝网络体系结构">7.4.1、蜂窝网络体系结构</h3>
 <h3 id="7-4-2、蜂窝网络中的移动性管理">7.4.2、蜂窝网络中的移动性管理</h3>

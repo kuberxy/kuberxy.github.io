@@ -27,9 +27,19 @@
 <meta property="og:image" content="https://kuberxy.github.io/img/image-20250128184928046.png">
 <meta property="og:image" content="https://kuberxy.github.io/img/image-20250129123509730.png">
 <meta property="og:image" content="https://kuberxy.github.io/img/image-20250129154516227.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20250412164712521.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20250412165544651.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20250412170212107.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20250412171406726.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20250412172326178.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20250412173320447.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20250412175908972.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20250412180733360.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20250412181933435.png">
+<meta property="og:image" content="https://kuberxy.github.io/img/image-20250412182650531.png">
 <meta property="og:image" content="https://kuberxy.github.io/img/image-20250129180655541.png">
 <meta property="article:published_time" content="2024-12-08T05:47:11.000Z">
-<meta property="article:modified_time" content="2025-04-11T09:03:57.000Z">
+<meta property="article:modified_time" content="2025-04-12T10:33:11.000Z">
 <meta property="article:author" content="Mr.x">
 <meta property="article:tag" content="计算机网络原理">
 <meta name="twitter:card" content="summary_large_image">
@@ -349,11 +359,11 @@
 <p>虽然模拟信号与数字信号有着明显的差别，但二者之间并没有存在不可逾越的鸿沟，在一定条件下它们是可以相互转化的。模拟信号可以通过采样、量化和编码等步骤变成数字信号，而数字信号也可以通过解码、平滑等步骤恢复为模拟信号。由于数字通信相比与模拟通信有着许多优势，因此目前的数据通信系统更多的是采用数字信号的传输技术。</p>
 <p>需要指出的是，数字通信系统与数据通信系统的概念并不完全相同，数字通信系统是指信道中传输的信号是离散的数字信号，而数据通信系统是指在信源和信宿端处理的是二进制数据，在信道中传输的信号可以是模拟信号，也可以是数字信号。</p>
 <h4 id="1-2-4、数据通信方式">1.2.4、数据通信方式</h4>
-<p>为了适应不同的通信环境、通信要求和经济成本，数据在通信系统中的传输有着多种方式：</p>
+<p>为了适应不同的通信环境、通信要求和经济成本，数据在通信系统中存在着多种传输方式：</p>
 <ul>
 <li>按数据传输的方向，可分为单向通信、双向交替通信和双向同时通信；</li>
 <li>按二进制数据传输的时空顺序，可分为并行通信和串行通信；</li>
-<li>按发送方和接收方对数据保持步调一致的措施，可分为异步通信和同步通信。</li>
+<li>按收发两端对数据保持步调一致的措施，可分为异步通信和同步通信。</li>
 </ul>
 <p>下面具体介绍这些数据传输方式。</p>
 <blockquote>
@@ -371,18 +381,24 @@
 <blockquote>
 <p>异步通信和同步通信</p>
 </blockquote>
-<p>数据通信系统能否可靠而有效地工作，在很大程度上依赖于是否能很好的实现同步。同步技术是指通信系统中实现收发两端动作统一、保持收发步调一致的过程。简单来说，就是接收方按照送方发送信息的重复频率和起止时间来接收数据。异步和同步本质上都属于同步技术，常用的数据传输同步方式有异步式同步（简称异步）和同步式同步（简称同步），两者的区别在于发送端和接收端的时钟是独立的还是同步的。</p>
-<p>异步数据传输以字符为单位独立进行发送，一次传输一个字符，每个字符用5~8位来表示，在每个字符前增加1个起始位，以指明字符的开始，每个字符后增加1个或2个停止位，以指明字符的结束；无字符发送时，发送方就一直发送停止位。接收方以字符为单位接收数据，并根据起始位和停止位判断字符的开始和结束。异步传输不需要在收发两端间传输时钟信，所以实现起来比较简单；但是传输效率较低，只适用于低速数据传输系统。</p>
-<p>同步数据传输以数据块为单位进行发送。每个数据块内包含有多个字符，每个字符用5~8个位表示；在每个数据块的前增加一个起始标志，以指明数据块的开始，在其后增加一个结束标志，以指明数据块的结束。接收方根据起始标志和结束标志以数据块为单位进行接收。同步传输方式的传输效率高，开销小，但收发双方需建立同步时钟，实现和控制比较复杂。同步传输方式适合于高速数据传输系统。</p>
-<h2 id="二、物理介质">二、物理介质</h2>
+<p>数据通信系统能否可靠而有效地工作，很大程度上依赖于是否能很好的实现同步。</p>
+<p>同步技术是指通信系统中实现收发两端动作统一、保持收发步调一致的过程。简单来说，就是接收方按照送方发送信息的重复频率和起止时间来接收数据。同步和异步本质上都属于同步技术，常用的数据传输同步方式有，同步式同步（简称同步）和异步式同步（简称异步），两者的区别在于发送端和接收端的时钟是独立的还是同步的。</p>
+<p>同步数据传输方式，以数据块为单位进行发送。每个数据块内包含多个字符，每个字符用5~8位来表示；在每个数据块前增加一个起始标志，以指明数据块的开始；在每个数据块后增加一个结束标志，以指明数据块的结束。接收方根据起始标志和结束标志以数据块为单位进行接收。同步传输方式的传输效率高，开销小，但收发双方需建立同步时钟，实现和控制比较复杂。同步传输方式适合于高速数据传输系统。</p>
+<p>异步数据传输方式，以字符为单位进行发送，每次传输一个字符，每个字符用5~8位来表示；在每个字符前增加1个起始位，以指明字符的开始；在每个字符后增加1个或2个停止位，以指明字符的结束；无字符发送时，发送方就一直发送停止位。接收方以字符为单位接收数据，并根据起始位和停止位判断字符的开始和结束。异步传输不需要在收发两端间传输时钟信号，所以实现起来比较简单；但是传输效率较低，只适用于低速数据传输系统。</p>
+<h2 id="二、传输介质">二、传输介质</h2>
+<p>计算机网络在进行数据通信时，必须通过某种介质传输信号，即传输介质。传输介质是传输信息的载体，常用的传输介质分为导引型传输介质和非导引型传输介质。</p>
 <h3 id="2-1、导引型传输介质">2.1、导引型传输介质</h3>
-<p>导引型传输介质，又可称为有线信道，以导线作为传输介质，信号沿导线进行传输，信号的能量集中在导线附近，因此传输效率高，但是部署不够灵活。这一类信道使用的传输介质包括用电线传输电信号的架空明线、双绞线电缆、同轴电缆、光纤等。</p>
+<p>导引型传输介质，又称为有线信道，以导线作为传输介质，信号沿导线进行传输，信号能量集中在导线附近，因此传输效率高，但是部署不够灵活。</p>
+<p>导引型传输介质，包括架空明线、同轴电缆、双绞线、光纤等。</p>
 <h4 id="2-1-1、架空明线">2.1.1、架空明线</h4>
-<p>架空明线是指平行且相互分离或绝缘的架空裸线线路，通常采用铜线或铝线等金属导线。对于常用的铜线和铝线，长距离传输的最高允许频率为150 kHz 左右，可以复用16路语音信号；短距离传输时，传输频率可达300kHz左右，可再增加复用12路语音信号。</p>
+<p>架空明线是指平行且相互分离或绝缘的架空裸线线路，通常采用铜线或铝线等金属导线。长距离传输的最高允许频率为150kHz 左右，可以复用16路语音信号；短距离传输时，传输频率可达300kHz左右，可再增加复用12路语音信号。</p>
 <p>架空明线的优点是传输损耗较低，但缺点是易受天气和外界电磁干扰，对外界噪声敏感，带宽有限。架空明线现已基本被淘汰。</p>
-<h4 id="2-1-2、双绞线">2.1.2、双绞线</h4>
-<p>将两根相互绝缘的铜线并排绞合在一起可以减少对相邻导线的电磁干扰，这样的一对线称为双绞线。多对双绞线封装到护套之内构成双绞线电缆，简称双绞线。双绞线既可以应用于模拟传输也可以应用于数字传输，通信距离一般为几千米到十几千米。</p>
-<p>双绞线电缆封装时在护套与线对之间增加一层金属丝编制的屏蔽层，可以提高双绞线的抗电磁干扰能力，这类双绞线电缆称为屏蔽双绞线(STP)。相应地，没有这层屏蔽层的双绞线电缆称为非屏蔽双绞线(UTP)。显然，屏蔽双绞线性能要优于非屏蔽双绞线，但价格高，且安装工艺要求高、复杂。因此，在现代数据通信网络（如局域网）中，普遍使用的是非屏蔽双绞线。</p>
+<h4 id="2-1-2、同轴电缆">2.1.2、同轴电缆</h4>
+<p>同轴电缆由两个导体构成，外导体是空心圆柱形网状编织金属导体，内导体是金属导线（通常为铜线），两者之间填充绝缘实心介质。外导体同时也起到屏蔽网的作用，可以有效抵抗电磁干扰。在实际应用中，同轴电缆的外导体是接地的，对外界干扰具有较好的屏蔽作用，所以同轴电缆具有较好的抗电磁干扰性。为了增加容量，可以将多根同轴电缆封装到一个大的保护套内，构成多芯同轴电缆。</p>
+<p>早期的局域网曾广泛使用同轴电缆作为传输介质，随着技术的发展，同轴电缆在局域中不再使用，已被双绞线所取代，但是，同轴电缆在有线电视网络中应用很普遍。同轴电缆的带宽取决于电缆质量，同轴电缆的带宽接近1GHz。同轴电缆主要用于频带传输，如有线电视网络。</p>
+<h4 id="2-1-3、双绞线">2.1.3、双绞线</h4>
+<p>双绞线，是指将两根相互绝缘的铜线并排绞合在一起。绞合在一起的一对线可以减少对相邻导线的电磁干扰，多对双绞线封装到护套之内构成双绞线电缆，简称双绞线。双绞线既可以应用于模拟传输也可以应用于数字传输，通信距离一般为几千米到十几千米。</p>
+<p>屏蔽双绞线(STP)，是指封装双绞线电缆时，在护套与线对之间增加一层金属丝编制的屏蔽层，提高双绞线的抗电磁干扰能力。相应地，没有屏蔽层的双绞线电缆称为非屏蔽双绞线(UTP)。显然，屏蔽双绞线性能要优于非屏蔽双绞线，但价格高，且安装工艺要求高。因此，在现代数据通信网络（如局域网）中，普遍使用的是非屏蔽双绞线。</p>
 <p>1995年，美国电子工业协会EIA在更新的EIA/TIA-568-A中，规定了5个种类的 UTP 标准，其中3类UTP主要应用于电话网络，而5类UTP是目前局域网中最常用的。不同类别双绞线的主要差异之一是单位长度的绞合次数。例如，3 类线绞合长度是 7.5~10 cm，而5类线的绞合长度为0.6~0.85 cm。另外，5类线相比3类线在线对间的绞合度和线对内两根导线的绞合度都经过精心设计，并在生产过程中加以严格控制，使得干扰在一定程度上得以抵消，从而提高了传输速率。</p>
 <p>典型UTP类别、带宽及其典型应用如下表所示。</p>
 <table>
@@ -422,32 +438,30 @@
 </tbody>
 </table>
 <p>双绞线主要于基带传输。无论哪类双绞线，衰落都随频率的升高而增大。使用更粗的导线可以降低衰落，但会增加导线成本和重量。信号应当有足够大的振幅，以便在噪声干扰下能够在接收端被正确地检测出来。双绞线的最高速率还与数字信号的编码方法有很大的关系。</p>
-<h4 id="2-1-3、同轴电缆">2.1.3、同轴电缆</h4>
-<p>同轴电缆由同轴的两个导体构成，外导体是空心圆柱形网状编织金属导体，内导体是金属导线（通常为铜线），两者之间填充绝缘实心介质。网状编织导体同时也起到屏蔽网的作用，可以有效抵抗电磁干扰。实际应用中，同轴电缆的外导体是接地的，对外界干扰具有较好的屏蔽作用，所以同轴电缆具有较好的抗电磁干扰性能。为了增加容量，可以将多根同轴电缆封装到个大的保护套内，构成多芯同轴电缆。</p>
-<p>早期的局域网曾广泛使用同轴电缆作为传输信道，随着技术的发展，同轴电缆在局域中已不再使用，已被双绞线所取代，但是，同轴电缆在有线电视网络中应用很普遍。同轴电缆的带宽取决于电缆质量，同轴电缆的带宽接近1GHz。同轴电缆主要用于频带传输，如有线电视网络。</p>
 <h4 id="2-1-4、光纤">2.1.4、光纤</h4>
-<p>光纤的基本原理是利用了光的全反射现象。光纤是由两种折射率不同的导光介质复合纤维制成，内层（纤维中心）称为纤芯，纤芯外包另一种折射率的介质，称为包层。由于纤芯的折射率大于包层的折射率，因此，进入纤芯的光波会在两层边界产生折射，折射的光会再次被折射，以此类推，经过多次反射，光波可以着光纤传输到很远距离。如果纤芯和包层是两种均匀介质，折射率只在两种介质的边界发突变，则光波只在边界发生折射，这种光纤称为阶跃（折射率）型光纤，这也是最早出现的光纤类型。如果光纤的折射率不是突变的，而是沿半径增大方向逐渐减小，光波在其中的传输路径是随折射率的变化而逐渐弯曲的，这种光纤称为梯度（折射率）型光纤。当然，梯度型光纤的制造艺要求高于阶跃型光纤。</p>
-<p>按照光纤内光波传输模式的不同，光纤可以分为多模光纤和单模光纤两类。光纤与其他传输介质相比拥有很多优点。</p>
+<p>光纤的基本原理是利用光的全反射现象。</p>
+<p>光纤是由两种折射率不同的导光介质复合纤维制成，内层（纤维中心）称为纤芯，纤芯外包另一种折射率的介质，称为包层。由于纤芯的折射率大于包层的折射率，因此，进入纤芯的光波会在两层边界产生折射，折射的光会再次被折射，以此类推，经过多次反射，光波可以沿着光纤传输到很远距离。</p>
+<p>如果纤芯和包层是两种均匀介质，折射率只在两种介质的边界发生突变，则光波只在边界发生折射，这种光纤称为阶跃（折射率）型光纤，这也是最早出现的光纤类型。如果光纤的折射率不是突变的，而是沿半径增大方向逐渐减小，光波在其中的传输路径是随折射率的变化而逐渐弯曲的，这种光纤称为梯度（折射率）型光纤。当然，梯度型光纤的制造工艺要求高于阶跃型光纤。</p>
+<p>按照光纤内光波传输模式的不同，光纤可以分为多模光纤和单模光纤两类。与其他传输介质相比，光纤拥有很多优点。</p>
 <ul>
 <li>
-<p>光纤通信容量非常大，最高可达100Gbits。</p>
+<p>通信容量大，最高可达100Gbits。</p>
 </li>
 <li>
-<p>传输损耗小，中继距离长，对远距离传输特别经济。</p>
+<p>传输损耗小，中继距离长，适用于远距离传输。</p>
 </li>
 <li>
-<p>抗雷电和电磁干扰性能好。</p>
+<p>抗雷电、抗电磁干扰能力强。</p>
 </li>
 <li>
-<p>无串音干扰，保密性好，也不易被窃听或截取数据。</p>
+<p>无串音干扰，保密性好，也不易被窃听或截取。</p>
 </li>
 <li>
-<p>体积小，重量。这在现有电缆管道拥塞不堪的情况下特别有利。例如，1km长的1000 对双绞线电缆约重8000 kg,，而同样长度但容量大得多的一对两芯光缆仅重100kg。但要把两根光纤精确地连接起来，需要使用专用设备。</p>
+<p>体积小，重量轻。这在现有电缆管道拥塞不堪的情况下特别有利。例如，1km长的1000对双绞线电缆约重8000kg,，而同样长度但容量大得多的一对两芯光缆仅重100kg。但要把两根光纤精确地连接起来，需要使用专用设备。</p>
 </li>
 </ul>
-<p>为了使光纤传输的衰减尽量小，以便传输更远的距离，在光纤通信中通常选择在光纤信道中传输损耗最小的波长光波。。</p>
 <h3 id="2-2、非导引型传输介质">2.2、非导引型传输介质</h3>
-<p>对于导引型传输媒介，若通信线路要通过一些高山或岛屿，有时就很难施工。即使是在城市中，挖开马路铺设电缆也不是一件容易的事。当通信距离很远时，铺设电缆或光纤既昂贵又费时。但利用无线电在自由空间的传播就可以较快地实现多种通信。由于这种通信方式不使用各种导引型传输媒介，因此就将自由空间称为“非导引型传输媒介”，又称为无线信道。</p>
+<p>非导引型传输媒介质，又称无线信道。导引型传输媒介，若通信线路要通过一些高山或岛屿，有时就很难施工。即使是在城市中，挖开马路铺设电缆也不是一件容易的事。当通信距离很远时，铺设双绞线电缆或光纤既昂贵又费时。然而，利用电磁波在自由空间中的传播，可以较快地实现多种通信。由于这种通信方式不使用各种导引型传输媒介，因此就将自由空间称为非导引型传输介质。</p>
 <p>不同频率或波长的电磁波其带宽与传输特性不同，因此，适用于不同的通信系统。在实际应用中，电磁波按频率划分为若干频段，用于不同目的或场合的无线通信，如下表所示。</p>
 <table>
 <thead>
@@ -544,12 +558,27 @@
 <td style="text-align:center">光通信系统</td>
 </tr>
 <tr>
-<td style="text-align:center">750T~3 000T Hz</td>
+<td style="text-align:center">750T~ 3000T Hz</td>
 <td style="text-align:center">紫外线（0.4~0.1<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi><mi>m</mi></mrow><annotation encoding="application/x-tex">\mu m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">μ</span><span class="mord mathnormal">m</span></span></span></span>）</td>
 <td style="text-align:center">光通信系统</td>
 </tr>
 </tbody>
 </table>
+<p>小结：</p>
+<ul>
+<li>
+<p>3 ~ 30k：水下通信，远程导航</p>
+</li>
+<li>
+<p>30k ~ 30M：电报，电话，传真</p>
+</li>
+<li>
+<p>30M ~ 300G：电视，蜂窝网，卫星通信</p>
+</li>
+<li>
+<p>300G ~ 3000T：光通信系统</p>
+</li>
+</ul>
 <p>电磁波会在整个空间中传播，为了避免不同通信系统之间相互干扰，国际电信联盟（ITU）负责定期召开世界无线电通信大会(The World Radiocommunication Conference, WRC)，制定有关无线电频率使用的国际协议。各国在此基础上，再分别制定本国的无线电频率使用规则。我国的无线电频率规划与管理目前由工信部无线电管理局负责。</p>
 <p>电磁波在外层空间的传播（如两艘飞船之间的通信），为自由空间传播，在近地空间的传播会受到地面和大气层的影响。根据电磁波频率、通信距离与位置的不同，电磁波的传播可以分为地波传播、天波传播（或称电离层反射波）和视线传播。</p>
 <ul>
@@ -558,7 +587,8 @@
 <li>视线传播。频率高于30 MHz的电磁波将穿透电离层，不会被反射回来，并且沿地面绕射能力也弱。因此，这类电磁波通常采用视线无障碍的点对点直线传播，称为视线传播或视距传播。由于地球曲率的影响，视线传播的距离有限，为了增大视线传播的距离，可以通过增加发射天线的高度来实现。</li>
 </ul>
 <h2 id="三、信道与信道容量">三、信道与信道容量</h2>
-<p>计算机网络可以传输的消息种类很多，如文本、声音、图像、视频等，任何类型消息的传输都需要将其转换为某种特定类型的信号，然后通过在特定传输介质中的传播来完成。信道就是信号在通信系统中传输的通道，由信号从发射端（信源）传播到接收端（信宿）所经过的传输介质构成。无线通信的信道就是电磁波传播所通过的空间，有线通信的信道就是导向性缆线。</p>
+<p>计算机网络可以传输的消息种类很多，如文本、声音、图像、视频等，传输任何类型的消息都需要将其转换为某种特定类型的信号，然后通过在特定传输介质中的传播来完成。</p>
+<p>信道就是信号在通信系统中传输的通道，由信号从发射端（信源）传播到接收端（信宿）所经过的传输介质构成。无线通信的信道就是电磁波传播所通过的空间，有线通信的信道就是导向性缆线。</p>
 <h3 id="3-1、信道分类与模型">3.1、信道分类与模型</h3>
 <p>信道的定义区分为广义信道和狭义信道。狭义信道就是信号的传输介质（即物理介质）；广义信道包括号传输介质和通信系统的一些变换装置，如发送设备、接收设备、天线、调制器等。通常，在讨论通信的一般原理时，采用广义信道；在研究信道的一般特性时，主要考虑狭义信道。一般情况下，将广义信道简称为信道。下面主要介绍广义信道及其对应的信道模型。</p>
 <p>广义信道的定义除了包括传输介质，还包括传输信号的相关设备。按照功能划分，可将广义信道划分为调制信道和编码信道两类，广义信道的分类与组成如下图所示。</p>
@@ -590,7 +620,7 @@
 <li>对信号输出产生固定的时延。</li>
 </ul>
 <p>满足上述特性的理想恒参信道的信号传输称为无失真传输。恒参信道也并非总是如此“理想”，当实际信道的传输特性偏离了理想信道特性时，就会产生失真（或称畸变）。</p>
-<h4 id="3-2-2、随道信道">3.2.2、随道信道</h4>
+<h4 id="3-2-2、随参信道">3.2.2、随参信道</h4>
 <p>随参信道的传输特性随时间随机快速变化。许多无线信道都是随参信道，如依靠地波和天波传播的无线电信道、部分视距传播信道以及各种散射信道等。随参信道的共同特如下。</p>
 <ul>
 <li>信号的传输衰减，随时间随机变化。</li>
@@ -629,73 +659,133 @@
 <h3 id="4-1、基带传输基本概念">4.1、基带传输基本概念</h3>
 <p>在信道中直接传输基带信号，称为基带传输，实现基带传输的系统称为基带传输系统。</p>
 <p>在信道中直接传输数字基带信号，称为数字基带传输，相应的系统称为数字基带传输系统。</p>
-<p>数字基带传输系统主要由信号形成器、信道、接收滤波器、抽样判决器以及同步提取等部分组成。数字基带传输系统的基本结构如下图所示。</p>
+<p>数字基带传输系统主要由信号形成器、信道、接收滤波器、抽样判决器以及同步提取等部分组成。</p>
+<p>数字基带传输系统的基本结构如下图所示。</p>
 <p><img src="/img/image-20250129154516227.png" srcset="/img/loading.gif" lazyload alt="image-20250129154516227"></p>
 <p>信号形成器的作用是把原始的数字基带信号变换为适合信道传输特性的数字基带信号。数字基带传输系统的输入是数字信源发出的数字基带信号或者是模拟信源发出的模拟基带信号经过信源编码后得到的数字基带信号。这些数字基带信号有时不适合在信道中直接传输，往往需要进行码型变换和波形变换，以匹配信道传输特性，获得最佳传输性能。</p>
 <p>接收滤波器的作用是滤除噪声，得到有利于抽样判决的基带波形。</p>
 <p>抽样判决器的作用是基于同步提取从信号中提取定时脉冲，对接收滤波器输出的基带波形进行抽样判决，再生数字基带信号。</p>
 <p>基带信号比较适合在具有低通特性的有线信道中传输，通常不适合在无线信道中传输。信道的传输特性会引起波形失真，并会受噪声的影响，因此，信道中的信号传播一定距离后，信号质量就会有所下降，甚至出现传输误码现象。</p>
-<h3 id="4-2、数字基带传输编码">4.2、数字基带传输编码</h3>
 <p>下面介绍几种常见的信号码型和传输码型。</p>
+<h3 id="4-2、数字基带传输编码">4.2、数字基带传输编码</h3>
 <h4 id="4-2-1、常见的信号码型">4.2.1、常见的信号码型</h4>
-<p>数字基带信号的码型有很多种，比较多见的是利用矩形脉冲信号的幅值编码二进制数字数据，包括单极不归零码(NRZ)、双极不归零码、单极归零码(RZ)、双极归零码、差分码和多元码等。</p>
+<p>数字基带信号，是利用矩形脉冲信号的幅值，编码二进制数字数据。常见的码型有单极不归零码(NRZ)、双极不归零码、单极归零码(RZ)、双极归零码、差分码和多元码等。</p>
 <h5 id="4-2-1-1、单极不归零码">4.2.1.1、单极不归零码</h5>
 <p>单极不归零码（Not Return to Zero，NRZ）的信号波形如下图所示：</p>
-<p>二进制数字符号0和1分别用零电平和正电平（当然，也可以用负电平）表示。脉冲幅值要么是正电平、要么是零电平，只有一个极性，因此称为“单极”；所谓“不归零”是指在整个脉冲持续时间内，电平保持不变，且脉冲持续期结束时也不要求必须回归0电平。</p>
-<p>这种码型易于产生，但不适合长距离传输。</p>
+<p><img src="/img/image-20250412164712521.png" srcset="/img/loading.gif" lazyload alt="image-20250412164712521"></p>
+<p>二进制数字符号0和1分别用零电平和正电平（也可以用负电平）表示。脉冲幅值要么是正电平、要么是零电平，只有一个极性，因此称为“单极”；所谓“不归零”是指在整个脉冲持续时间内，电平保持不变，且脉冲持续期结束时也不要求必须回归0电平。</p>
+<p>该码型易于产生，但不适合长距离传输。</p>
 <h5 id="4-2-1-2、双极不归零码">4.2.1.2、双极不归零码</h5>
-<p>双极不归零码的信号波形如下图所示</p>
-<p>二进制数字符号0和分别用负电平和正电平（当然，也可以反过来）表示。双极不归零码在0和1等概率出现的情况下，不会产生直流分量，有利于在信道中传输，且抗干扰能力强。</p>
+<p>双极不归零码的信号波形如下图所示：</p>
+<p><img src="/img/image-20250412165544651.png" srcset="/img/loading.gif" lazyload alt="image-20250412165544651"></p>
+<p>二进制数字符号0和1分别用负电平和正电平（当然，也可以反过来）表示。</p>
+<p>双极不归零码在0和1等概率出现的情况下，不会产生直流分量，有利于在信道中传输，且抗干扰能力强。</p>
 <p>ITU-T的V.24 接口标准和 EIA（美国电工协会）的RS-232C接口标准中均采用双极不归零码。</p>
 <h5 id="4-2-1-3、单极归零码">4.2.1.3、单极归零码</h5>
 <p>单极归零码（Return to Zero，RZ）的信号波形如下图所示</p>
-<p>二进制数字符号0和1别用零电平和正电平表示。与单极不归零码不同的是，在每个正脉冲持续期的中间时刻，电平要由正电平回到零电平。假设脉冲持续期（即脉冲周期）为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>b</mi></msub></mrow><annotation encoding="application/x-tex">T_b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，则每个正脉冲在<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msub><mi>T</mi><mi>b</mi></msub><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">\frac{T_b}{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.2392em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8942em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.4159em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3488em;margin-left:-0.1389em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1512em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>时刻，电平回到零电平。</p>
-<p>码元不为零的时间占一个码元周期的百分比称为占空比。在归零码中，若码元不为零时间为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msub><mi>T</mi><mi>b</mi></msub><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">\frac{T_b}{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.2392em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8942em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.4159em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3488em;margin-left:-0.1389em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1512em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>，码元周期为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>b</mi></msub></mrow><annotation encoding="application/x-tex">T_b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，则该单极归零码的占空比为50%。</p>
+<p><img src="/img/image-20250412170212107.png" srcset="/img/loading.gif" lazyload alt="image-20250412170212107"></p>
+<p>二进制数字符号0和1分别用零电平和正电平表示。在每个正脉冲持续期的中间时刻，电平要由正电平回到零电平。</p>
+<p>假设脉冲持续期（即脉冲周期）为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>b</mi></msub></mrow><annotation encoding="application/x-tex">T_b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，则每个正脉冲在<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msub><mi>T</mi><mi>b</mi></msub><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">\frac{T_b}{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.2392em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8942em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.4159em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3488em;margin-left:-0.1389em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1512em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>时刻，电平回到零电平。码元不为零的时间占一个码元周期的百分比称为占空比。在归零码中，若码元不为零时间为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msub><mi>T</mi><mi>b</mi></msub><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">\frac{T_b}{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.2392em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8942em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.4159em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3488em;margin-left:-0.1389em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1512em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>，码元周期为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>b</mi></msub></mrow><annotation encoding="application/x-tex">T_b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，则该单极归零码的占空比为50%。</p>
 <h5 id="4-2-1-4、双极归零码">4.2.1.4、双极归零码</h5>
 <p>双极归零码的信号波形如下图所示</p>
-<p>二进制数字符号0和1分别用负电平和正电表示。如同单极归零码，每个正、负脉冲周期的中间时刻，电平都要回到零电平。双极归零码的占空比也为50%。</p>
-<p>双极归零码如同双极不归零码，在0和1等概率出现的情况下，不产生直流分量，有利于在信道中传输，且抗干扰能力强。另外，归零码（包括单极归零码和双极归零码）均有利于时钟信号的提取，便于同步。</p>
+<p><img src="/img/image-20250412171406726.png" srcset="/img/loading.gif" lazyload alt="image-20250412171406726"></p>
+<p>二进制数字符号0和1分别用负电平和正电表示。在每个正、负脉冲周期的中间时刻，电平要由正或负电平回到零电平。双极归零码的占空比也为50%。</p>
+<p>同双极不归零码类似，双极归零码在0和1等概率出现的情况下，不会产生直流分量，有利于在信道中传输，且抗干扰能力强。另外，归零码（包括单极归零码和双极归零码）均有利于时钟信号的提取，便于同步。</p>
 <h5 id="4-2-1-5、差分码">4.2.1.5、差分码</h5>
-<p>差分码又称为相对码（与之对应的 NRZ、RZ等称为绝对码），差分码的信号波形如下图所示。</p>
-<p>差分码不是利用脉冲幅值的绝对电平来表示二进制数字符号0和1，而是利用电平的变化与否来表示信息。上图中，相邻脉冲用电平跳变表示1，无跳变表示0。</p>
+<p>差分码，又称为相对码（与之对应的 NRZ、RZ等称为绝对码），差分码的信号波形如下图所示。</p>
+<p><img src="/img/image-20250412172326178.png" srcset="/img/loading.gif" lazyload alt="image-20250412172326178"></p>
+<p>差分码不是利用脉冲幅值的绝对电平来表示二进制数字符号0和1，而是利用电平的变化与否来表示信息。在上图中，相邻脉冲用电平跳变表示1，无跳变表示0。</p>
 <h4 id="4-2-2、常见的传输码型">4.2.2、常见的传输码型</h4>
-<p>前面介绍的几种编码是将二进制数字数据映射为脉冲信号，可以在信道中直接传输。但是，有些数字基带信号并不适合在信道中直接传输，比如含有直流分量的数字基带信号（如单极NRZ码）可能造成信号畸变，并且当出现连续的0或者1的基带数字信号时，接收端难以提取同步信号。因此，实际的基带传输系统需要对数字基带信号的基本码型进行变换，变换为适合传输的数字基带传输码型。</p>
+<p>前面介绍的几种信号码型是将二进制数字数据映射（编码）为脉冲信号，可以在信道中直接传输。</p>
+<p>但是，有些数字基带信号并不适合在信道中直接传输，比如含有直流分量的数字基带信号（如单极NRZ码）可能造成信号畸变，并且当出现连续的0或者1的基带数字信号时，接收端难以提取同步信号。因此，实际的基带传输系统需要对数字基带信号的基本码型进行变换，变换为适合传输的数字基带传输码型。</p>
 <p>下面介绍几种常用的基带传输码型。</p>
 <h5 id="4-2-2-1、AMI码">4.2.2.1、AMI码</h5>
-<p>AMI (Alternative Mark Inversion)码的全称是信号交替反转码，用3种电平进行编码，零电平编码二进制信息0，二进制信息1（传号）则交替用正电平和负电平表示。</p>
-<p>AMI码的编码规则是：信息码中的0编码为AMI传输码中的0（零电平）；信号码中的1交替编码为AMI传输码中的＋1（正脉冲）和-1（负脉冲）。</p>
-<p>参考例6.2, AMI码的信号波形如图6.14所示。以下信息码对应的AMI (RZ) 码的信号波形如下</p>
+<p>AMI （Alternative Mark Inversion）码的全称是信号交替反转码。</p>
+<p>AMI码用3种电平进行编码，零电平编码二进制信息0，二进制信息1（传号）则交替用正电平和负电平表示。其编码规则是：信息码中的0编码为AMI传输码中的0（零电平）；信号码中的1交替编码为AMI传输码中的＋1（正脉冲）和-1（负脉冲）。</p>
+<p>如下表，是信息码对应的AMI（RZ）码：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">信息码</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">0</th>
+<th style="text-align:center">0</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">0</th>
+<th style="text-align:center">0</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">AMI码</td>
+<td style="text-align:center">+1</td>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">+1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">+1</td>
+<td style="text-align:center">-1</td>
+</tr>
+</tbody>
+</table>
+<p>其信号波形如下：</p>
+<p><img src="/img/image-20250412173320447.png" srcset="/img/loading.gif" lazyload alt="image-20250412173320447"></p>
 <p>AMI 码的优点是，由于采用正、负脉冲交替编码信息1，不会产生直流分量的积累，有利于进行基带传输。另外，AMI 码的编译码电路实现简单，并且可以利用正、负脉冲交替变化的规律检测误码。但是，当信息码中出现大量连续的0位串时，AMI码的信号电平会长时间保持不变，这样会造成定时信息提取困难。</p>
 <p>AMI码是ITU-T 建议采用的传输码型之—。</p>
 <h5 id="4-2-2-2、双相码">4.2.2.2、双相码</h5>
-<p>双相码(Biphase Code)又称为曼彻斯特(Manchester)码。双相码只有正、负两种电平，每位持续时间的中间时刻要进行电平跳变，双相码就是利用该跳变编码信息，正（高）电平跳到负（低）电平表示1，负电平跳到正电平表示0。双相码利用了两个脉冲编码信息码中的一位，相当于双极码中的两位，即利用2位编码信息码中的1位。相当于信息码中的1编码为双极非归零码的10，信息码中的0编码为双极非归零码的01。双相码在每位周期中间时刻都会有电平跳变，因此便于提取定时信息，且不会生直流分量，但带宽比信息码大1倍。</p>
-<p>双相码的另一种码型是差分双相码，也称为差分曼彻斯特码。差分双相码的每位周期的中间时刻也要进行电平跳变，但该跳变仅用于同步，而利用每位开始处是否存在电平跳变编码信息。其中，开始处有跳变表示1，无跳变表示0。</p>
-<p>双相码可以实现在传输数据的同时提供准确的同步信号，但由于带宽开销大，因此适合近距离数据传输。如10 Mbit/s 的以太网采用曼彻斯特码，IEEE802.5令牌环网采用差分曼彻斯特码。</p>
-<p>双相码和差分双相码的信号波形如下图所示。</p>
+<p>双相码（Biphase Code），又称为曼彻斯特（Manchester）码，其信号波形如下：</p>
+<p><img src="/img/image-20250412175908972.png" srcset="/img/loading.gif" lazyload alt="image-20250412175908972"></p>
+<p>双相码只有正、负两种电平，每位持续时间的中间时刻要进行电平跳变。</p>
+<p>双相码利用跳变编码信息，正（高）电平跳到负（低）电平表示1，负电平跳到正电平表示0。双相码使用两个脉冲信号编码信息码中的一位，相当于双极码中的两位，即利用2位编码信息码中的1位。信息码中的1编码为双极不归零码的10，信息码中的0编码为双极不归零码的01。</p>
+<p>双相码的另一种码型是差分双相码，也称为差分曼彻斯特码。</p>
+<p><img src="/img/image-20250412180733360.png" srcset="/img/loading.gif" lazyload alt="image-20250412180733360"></p>
+<p>差分双相码的每位持续时间的中间时刻也要进行电平跳变，但该跳变仅用于同步，而利用每位开始处是否存在电平跳变编码信息。其中，开始处有跳变表示1，无跳变表示0。</p>
+<p>双相码在每位周期中间时刻都会有电平跳变，因此便于提取定时信息，且不会生直流分量，但带宽比信息码大1倍。双相码可以实现在传输数据的同时提供准确的同步信号，但由于带宽开销大，因此适合近距离数据传输。如10 Mbit/s 的以太网采用曼彻斯特码，IEEE802.5令牌环网采用差分曼彻斯特码。</p>
 <h5 id="4-2-2-3、米勒码">4.2.2.3、米勒码</h5>
-<p>米勒码（Mile Code）是—种双相码的变形，也称为延迟调制码。米勒码的编码规则如下。</p>
-<p>1)信息码中的1编码为双极非归零码的01或者10。</p>
-<p>2)信息码连1时，后面的1要交替编码，即前面的1如果编码为01，后面的1就编10，反之亦然。</p>
-<p>3)信息码中的0编码为双极非归零码的00或者11，即码元中间不跳。</p>
-<p>4)信息码单个0时，其前沿、中间时刻、后沿均不跳变。</p>
-<p>5)信息码连0时，两个0码元间隔跳变，即前一个0的后沿（后一个0 的前沿）跳变。</p>
-<p>米勒码的信号波形如下图所示。</p>
-<p>从米勒码的波形中可以看出，当信息码中出现单个0时，米勒码会对应出现2个码元周期的波形，这个性质可以用来对米勒码进行宏观检错。另外，对比米勒码和双相码可以发现，双相码的每个下降沿均对应米勒码的一个电平跳变。因此，利用双相码的下降沿触发双稳电路，就可以输出米勒码。</p>
+<p>米勒码（Mile Code）是双相码的—种变形，也称为延迟调制码。其信号波形如下图所示：</p>
+<p><img src="/img/image-20250412181933435.png" srcset="/img/loading.gif" lazyload alt="image-20250412181933435"></p>
+<p>米勒码的编码规则如下：</p>
+<ul>
+<li>
+<p>信息码中的1编码为双极不归零码的01或者10。</p>
+</li>
+<li>
+<p>信息码连1时，后面的1要交替编码，即前面的1如果编码为01，后面的1就编10，反之亦然。</p>
+</li>
+<li>
+<p>信息码中的0编码为双极不归零码的00或者11，即码元中间不跳。</p>
+</li>
+<li>
+<p>信息码单个0时，其前沿、中间时刻、后沿均不跳变。</p>
+</li>
+<li>
+<p>信息码连0时，两个0码元间隔跳变，即前一个0的后沿（后一个0 的前沿）跳变。</p>
+</li>
+</ul>
+<p>从米勒码的波形中可以看出，当信息码中出现单个0时，米勒码会对应出现2个码元周期的波形，这个性质可以用来对米勒码进行宏观检错。</p>
+<p>另外，对比米勒码和双相码可以发现，双相码的每个下降沿均对应米勒码的一个电平跳变。因此，利用双相码的下降沿触发双稳电路，就可以输出米勒码。</p>
 <p>米勒码最初主要用于气象卫星通信和磁记录。</p>
 <h5 id="4-2-2-4、CMI码">4.2.2.4、CMI码</h5>
-<p>CMI (Coded Mark Inversion)码即传号反转码，是一种双极性二电平码，并且也是将息码的1位映射为双极不归零码的2位。CMI 码的编码规则是，信息码的0编码为双极不归零码的01，信息码的1交替编码为双极不归零码的11和00。</p>
-<p>CMI码的信号波形如下图所示。</p>
+<p>CMI（Coded Mark Inversion）码的全称是信号替反转码，其信号波形如下图所示：</p>
+<p><img src="/img/image-20250412182650531.png" srcset="/img/loading.gif" lazyload alt="image-20250412182650531"></p>
+<p>CMI是一种双极二电平码，并且也是将信息码的1位映射为双极不归零码的2位。其码的编码规则是，信息码的0编码为双极不归零码的01，信息码的1交替编码为双极不归零码的11和00。</p>
 <p>CMI 码的波形具有较多的电平跳变，有利于定时信息的提取。另外，10作为禁用码型，可用于宏观检错。CMI 码已经被 ITU-T推荐为PCM四次群的接口码型，并且在速率低8.448 Mbit/s的光纤传输系统中有时也用CMI 码作为传输码型。</p>
 <p>不难看出，双相码、米勒码和 CMI 码均利用两位二进制码编码信息码中的一位二进信息，这类码型也概括称为1B2B码。</p>
 <h5 id="4-2-2-5、nBmB码">4.2.2.5、nBmB码</h5>
-<p>nBmB 码将 n 位二进制信息码作为一组，映射成m位二进制新码组，其中 m&gt; n。</p>
-<p>由于m＞n, 因此<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>m</mi></msup></mrow><annotation encoding="application/x-tex">2^m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span></span></span></span></span></span></span></span>个码的新码组中只会用到<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">2^n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span></span></span></span>个，多出<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><msup><mn>2</mn><mi>m</mi></msup><mo>−</mo><msup><mn>2</mn><mi>n</mi></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(2^m-2^n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>个码。这样，可以从<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>m</mi></msup></mrow><annotation encoding="application/x-tex">2^m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span></span></span></span></span></span></span></span>个码中优选出<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">2^n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span></span></span></span>个码作为有效码，以获得良好的编码性能，其余码则作为禁用码，用于检错。</p>
+<p>nBmB 码将 n 位二进制信息码作为一组，映射成m位二进制新码组，其中 m&gt; n。由于m＞n, 因此<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>m</mi></msup></mrow><annotation encoding="application/x-tex">2^m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span></span></span></span></span></span></span></span>个码的新码组中只会用到<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">2^n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span></span></span></span>个，多出<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><msup><mn>2</mn><mi>m</mi></msup><mo>−</mo><msup><mn>2</mn><mi>n</mi></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(2^m-2^n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>个码。这样，可以从<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>m</mi></msup></mrow><annotation encoding="application/x-tex">2^m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span></span></span></span></span></span></span></span>个码中优选出<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">2^n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span></span></span></span>个码作为有效码，以获得良好的编码性能，其余码则作为禁用码，用于检错。</p>
 <p>例如，快速以太网(100BASE-TX和100BASE-FX)的传输码采用的是4B5B编码。这样只需从<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>5</mn></msup><mo>=</mo><mn>32</mn></mrow><annotation encoding="application/x-tex">2^5=32</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">32</span></span></span></span>个码中优选<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>4</mn></msup><mo>=</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">2^4=16</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">16</span></span></span></span>个码，以便保证足够的同步信息，并且可以利用剩余的16个禁用进行差错检测。</p>
 <p>事实上，在光纤数字传输系统中，通常选择m=n+1构造编码，如1B2B码、2B3B码、3B4B码、5B6B码等。</p>
 <p>当然， nBmB码在带来良好的同步和检错能力的同时，也增加了对带宽的需求。</p>
 <h5 id="4-2-2-6、nBmT码">4.2.2.6、nBmT码</h5>
 <p>nBmT码将n位二进制信息码作为一组，映射成m位三进制新码组，且m≤n。</p>
-<p>为了提高传输效率和频带利用率，某些高速远程传输系统会将二进制信息码每若干位成一组，然后映射为需要较少位数的三进制码进行传输。</p>
+<p>为了提高传输效率和频带利用率，某些高速远程传输系统会将二进制信息码的每若干位成一组，然后映射为需要较少位数的三进制码进行传输。</p>
 <p>例如，4B3T码就是对1B1T码的改进。4B3T 码将4位二进制码映射为3位三进制码，这样，在相同的码元速率下，4B3T 码的数据传输速率就大于1B1T 码，可以提高频带利用率。因此，诸如4B3T码、8B6T码等都比较适合较高速率的数据传输系统。</p>
 <h2 id="五、频带传输">五、频带传输</h2>
 <p>基带信号具有低通特性，可以在具有低通特性的信道中进行传输。然而，许多信道（如无线信道）由于不具有低通特性，因此在这些信道中不能直接传输基带信号。相反，这些信道具备带通特性，因此只能利用基带信号去调制与对应信道传输特性相匹配的载波信号，通过在信道中传送经过调制的载波信号实现将基带信号所携带信息传送出去，因此需要引入频带传输这一信号传输方式。</p>

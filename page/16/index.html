@@ -265,15 +265,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2020/09/26/JVM%E5%A0%86%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%9A%84%E8%B0%83%E4%BC%98%E8%BF%87%E7%A8%8B/" target="_self">
-          JVM堆内存分配的调优过程
+        <a href="/2020/09/26/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E8%B0%83%E4%BC%98%E7%AD%96%E7%95%A5/" target="_self">
+          JVM垃圾回收调优策略
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/09/26/JVM%E5%A0%86%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%9A%84%E8%B0%83%E4%BC%98%E8%BF%87%E7%A8%8B/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/09/26/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E8%B0%83%E4%BC%98%E7%AD%96%E7%95%A5/" target="_self">
         <div>
-          在JVM内存分配中，我们提出了一个问题，当遇到JVM内存性能问题时，应该如何调优？接下来我们通过一个案例来回答这个问题。 一、案例场景 现模拟一个抢购接口，假设需要满足5W的并发请求，且每次请求会产生20KB对象。这里，我们可以通过千级并发创建一个1MB对象的接口来模拟万级并发请求产生大量对象的场景，具体代码如下： 12345678@RequestMapping(value = &#x27;/te
+          对于不同的业务场景，垃圾回收调优策略是不一样的。比如，在对内存要求苛刻的情况下，需要提高对象回收效率；在CPU使用率高的情况下，需要降低高并发时垃圾回收的频率。那么面对不同的场景，我们该如何进行调优呢？ 一、GC性能衡量指标 在进行实际的GC调优前，我们需要根据一些GC性能指标，确定具体的调优方向。常用的GC性能指标如下：  吞吐量，这里的吞吐量是指应用程序所花费的时间和系统总运行时间的比值。我们
         </div>
       </a>
 
@@ -326,15 +326,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2020/09/26/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E8%B0%83%E4%BC%98%E7%AD%96%E7%95%A5/" target="_self">
-          JVM垃圾回收调优策略
+        <a href="/2020/09/26/JVM%E5%A0%86%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%9A%84%E8%B0%83%E4%BC%98%E8%BF%87%E7%A8%8B/" target="_self">
+          JVM堆内存分配的调优过程
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/09/26/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E8%B0%83%E4%BC%98%E7%AD%96%E7%95%A5/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/09/26/JVM%E5%A0%86%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%9A%84%E8%B0%83%E4%BC%98%E8%BF%87%E7%A8%8B/" target="_self">
         <div>
-          对于不同的业务场景，垃圾回收调优策略是不一样的。比如，在对内存要求苛刻的情况下，需要提高对象回收效率；在CPU使用率高的情况下，需要降低高并发时垃圾回收的频率。那么面对不同的场景，我们该如何进行调优呢？ 一、GC性能衡量指标 在进行实际的GC调优前，我们需要根据一些GC性能指标，确定具体的调优方向。常用的GC性能指标如下：  吞吐量，这里的吞吐量是指应用程序所花费的时间和系统总运行时间的比值。我们
+          在JVM内存分配中，我们提出了一个问题，当遇到JVM内存性能问题时，应该如何调优？接下来我们通过一个案例来回答这个问题。 一、案例场景 现模拟一个抢购接口，假设需要满足5W的并发请求，且每次请求会产生20KB对象。这里，我们可以通过千级并发创建一个1MB对象的接口来模拟万级并发请求产生大量对象的场景，具体代码如下： 12345678@RequestMapping(value = &#x27;/te
         </div>
       </a>
 
